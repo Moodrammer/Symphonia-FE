@@ -1,4 +1,9 @@
-# symphonia-fe
+# Symphonia FE 🎵
+A Project that mimics the FrontEnd part of Spotify Web player.
+
+___
+
+# Main commands for running the Project
 
 ## Project setup
 ```
