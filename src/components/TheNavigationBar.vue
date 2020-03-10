@@ -1,13 +1,15 @@
 <template>
 <nav>
-    <v-app-bar flat app color="rgba(0, 0, 0, 0.6)">
-        <v-toolbar flat color="rgba(0, 0, 0, 0)">
+    <v-app-bar flat app color="rgba(0, 0, 0, 0.6)" height="80">
+        <v-toolbar flat color="rgba(0, 0, 0, 0)" >
         <v-row>
-            <v-col cols="2">
+            <v-col cols="1">
             </v-col>
 
-            <v-col cols="1">
-                <svg viewBox="0 0 63 20" 
+            <v-col cols="11">
+                <v-row>
+                    <v-col cols="6">
+                <svg viewBox="0 0 63 20" width="132px" height="42px"
                 preserveAspectRatio="xMidYMin meet"
                 fill = "white">
                     <g fill-rule="evenodd" class="svelte-1gcdbl9">
@@ -19,21 +21,21 @@
                         </path>
                     </g>
                 </svg>
-            </v-col>
+                    </v-col>
 
-            <v-col cols="4">
-            </v-col>
+                <v-col cols="6" style="padding-top:25px;">
+                <router-link to="/foo" class="Links1">Premium</router-link>
+                <router-link to="/foo" class="Links1">Help</router-link>
+                <router-link to="/foo" class="Links1">Download</router-link>
+                <span class="Bar">|</span>
 
-            <v-col cols="5">
-                    <router-link to="/foo" class="Links1">Premium</router-link>
-                    <router-link to="/foo" class="Links1">Help</router-link>
-                    <router-link to="/foo" class="Links1">Download</router-link>
-                    <span>|</span>
-
-                    <router-link to="/foo" class="Links1 Links2">Sign up</router-link>
-                    <router-link to="/foo" class="Links1 Links2">Log in</router-link>
-            </v-col>
+                <router-link to="/foo" class="Links1 Links2">Sign up</router-link>
+                <router-link to="/foo" class="Links1 Links2">Log in</router-link>
+                </v-col>
+                </v-row>
+             </v-col>
             
+
             </v-row>
             </v-toolbar>
     </v-app-bar>
@@ -58,7 +60,7 @@ export default {
 .Links1 {
 -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 -webkit-box-direction: normal;
-font-family: Helvetica, Arial, sans-serif;
+font-family: Circular, spotify-circular, Helvetica, Arial, sans-serif;
 list-style: none;
 font-size: 16px;
 line-height: inherit;
@@ -66,11 +68,18 @@ letter-spacing: 0;
 box-sizing: border-box;
 background-color: transparent;
 color: #fff;
+display: inline-flexbox;
 text-decoration: none;
 font-weight: 700;
 padding: 28px 17px;
+font-size: 14px;
 }
 
+.Bar {
+    color: white;
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
 .Links2 {
 color: #d9dadc;
 }
