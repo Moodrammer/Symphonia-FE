@@ -61,7 +61,7 @@
 
     <!-- for sm and xs -->
     <v-app-bar flat app color="black" height="54" class="hidden-md-and-up">
-      <v-toolbar flat color="rgba(0,0,0,0)" class="SmallToolbar">
+      <v-toolbar flat color="rgba(0,0,0,0)" class="SmToolbar">
         <router-link to="/">
           <svg
             viewBox="0 0 63 20"
