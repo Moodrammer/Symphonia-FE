@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="overflow:hidden;">
     <NavBar/>
     <Content/>
   </v-app>
@@ -24,5 +24,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
