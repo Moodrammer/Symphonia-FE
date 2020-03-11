@@ -62,7 +62,7 @@
     <!-- for sm and xs -->
     <v-app-bar flat app color="black" height="54" class="hidden-md-and-up">
       <v-toolbar flat color="rgba(0,0,0,0)" class="SmallToolbar">
-        <router-link to="/" class="Links1">
+        <router-link to="/">
           <svg
             viewBox="0 0 63 20"
             width="89px"
@@ -82,11 +82,54 @@
           </svg>
         </router-link>
 
-        <span class="right">
+        <v-btn text v-on:click="drawer = !drawer" class="right">
           <v-icon large color="white">mdi-menu</v-icon>
-        </span>
+        </v-btn>
       </v-toolbar>
     </v-app-bar>
+
+    <v-navigation-drawer
+      v-if="!isLg()"
+      v-model="drawer"
+      app
+      right
+      class="drawer"
+      color="black"
+      width="447"
+    >
+      <ul style="padding:0px;">
+        <li>
+          <router-link to="/premium/?checkout=false" class="Links1 SmToolbarBtn1"
+            >Premium</router-link
+          >
+        </li>
+        <li>
+          <router-link to="/help" class="Links1 SmToolbarBtn1"
+            >Help</router-link
+          >
+        </li>
+        <li>
+          <router-link to="/download" class="Links1 SmToolbarBtn1"
+            >Download</router-link
+          >
+        </li>
+        <li>
+          <span class="Hyphen"
+            >-</span
+          >
+        </li>
+        <li>
+          <router-link to="/signup" class="Links1 SmToolbarBtn1 SmToolbarBtn2"
+            >Sign up</router-link
+          >
+        </li>
+        <li>
+          <router-link to="/account/overview" class="Links1 SmToolbarBtn1 SmToolbarBtn2"
+            >Sign in</router-link
+          >
+        </li>
+      </ul>
+    </v-navigation-drawer>
   </nav>
 </template>
 
@@ -96,7 +139,11 @@ export default {
 
   components: {},
 
-  data: () => ({}),
+  data() {
+    return {
+      drawer: false
+    };
+  },
 
   methods: {
     isLg() {
@@ -153,10 +200,36 @@ export default {
   width: 970px;
 }
 
-.SmallToolbar {
+.SmToolbar {
   flex: none;
   margin: auto;
   width: 750px;
   padding-left: 0px;
 }
+
+.SmToolbarBtn1 {
+  display: block;
+  line-height: 1;
+  font-weight: 700;
+  font-size: 36px;
+  padding: 0 0 25px;
+}
+
+.Hyphen {
+color: white;
+font-weight: 700;
+font-size: 36px;
+padding: 0 0 25px;
+}
+
+.SmToolbarBtn2 {
+font-weight: 400;
+font-size: 28px;
+color: #d9dadc;
+}
+
+.drawer {
+  padding: 38px;
+}
+
 </style>
