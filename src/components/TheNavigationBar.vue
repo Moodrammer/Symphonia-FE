@@ -25,7 +25,7 @@
           </g>
         </svg>
 
-        <v-toolbar flat color="rgba(0, 0, 0, 0)" class="right">
+        <v-toolbar flat color="rgba(0, 0, 0, 0)" class="right" style="padding-right:0px;">
           <router-link to="/foo" class="Links1">Premium</router-link>
           <router-link to="/foo" class="Links1">Help</router-link>
           <router-link to="/foo" class="Links1">Download</router-link>
@@ -33,7 +33,7 @@
           <span class="Bar">|</span>
 
           <router-link to="/foo" class="Links1 Links2">Sign up</router-link>
-          <router-link to="/foo" class="Links1 Links2">Log in</router-link>
+          <router-link to="/foo" class="Links1 Links2" style="padding-right:0px;">Log in</router-link>
         </v-toolbar>
       </v-toolbar>
     </v-app-bar>
@@ -69,7 +69,7 @@ export default {
   text-decoration: none;
   font-weight: 700;
   padding: 28px 17px;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .Bar {
