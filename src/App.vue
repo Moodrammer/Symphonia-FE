@@ -1,7 +1,7 @@
 <template>
   <v-app style="overflow:hidden;">
-    <NavBar/>
-    <Content/>
+    <NavBar />
+    <Content />
   </v-app>
 </template>
 
