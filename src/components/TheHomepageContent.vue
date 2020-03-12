@@ -25,8 +25,12 @@
 </template>
 
 <script>
+
 export default {
   name: "HomepageContent",
+
+  components:{ 
+  },
 
   methods: {
     isLg() {
@@ -57,7 +61,7 @@ export default {
   font-size: 16px;
   line-height: 1.5;
   font-weight: 400;
-  font-family: Circular, Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   -webkit-box-direction: normal;
   color: #fff;
   box-sizing: border-box;
@@ -117,6 +121,7 @@ export default {
   padding-left: 15px;
   padding-right: 15px;
   width: 1170px;
+  height: 755px;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
