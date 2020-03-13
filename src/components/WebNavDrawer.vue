@@ -1,11 +1,12 @@
 <template>
   <v-navigation-drawer app dark color="black" left fixed permanent > 
-    <v-list color="black" nav>
+    <v-list color="black" nav class="list">
       <v-list-item >
         <router-link to="/webhome">
-         <v-img src="../assets/spotify.png" max-width="130" max-height="45" class="ma-4" ></v-img>
+         <v-img src="../assets/spotify.png" max-width="130" max-height="45" class="ma-3" ></v-img>
         </router-link>
       </v-list-item>
+
 
       <v-list-item
         v-for="item in items"
@@ -14,7 +15,7 @@
         :to="item.route"
         > 
           <v-icon class="mr-2">{{ item.icon }}</v-icon>
-          <v-list-item-title  >{{ item.text }}</v-list-item-title>
+          <v-list-item-title class="draweritem primary--text" >{{ item.text }}</v-list-item-title>
       </v-list-item>
 
       <v-list-item-subtitle class="ml-2" >
@@ -25,6 +26,7 @@
           <v-btn color="white" fab x-small>
             <v-icon color="black">mdi-plus</v-icon>
           </v-btn>
+          
           <v-list-item-title>Create Playlist</v-list-item-title>
         </v-list-item>
 
@@ -34,10 +36,7 @@
           </v-btn>
           <v-list-item-title>Liked Songs</v-list-item-title>
         </v-list-item>
-
-    
       <v-divider></v-divider>
-
     </v-list>
   </v-navigation-drawer> 
 </template>
@@ -63,22 +62,7 @@ export default {
             route: "/Library"
           }
 
-        ],
-      playlists: [
-        {
-          icon: "mdi-plus",
-          text: "Create Playlist",
-          color: "white",
-          iconcolor: "black"
-        },
-        {
-          icon: "mdi-cards-heart",
-          text: "Liked Songs",
-          route: "/likedsongs",
-          color: "red",
-          iconcolor: "white"
-        }
-      ]  
+        ]  
       }
     }
 }
@@ -90,7 +74,10 @@ button{
   margin-right: 7%
 }
 .liked{
-
   background-image: linear-gradient(135deg, #450af5,#c4efd9);
+}
+.draweritem:hover v-list-item-title{
+  color:white;
+  
 }
 </style>
