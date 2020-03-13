@@ -14,7 +14,7 @@
         class="toolbar"
         v-bind:class="{ lgWidth: isLg(), mdWidth: !isLg() }"
       >
-        <router-link to="/" class="Links1">
+        <router-link to="/">
           <svg
             viewBox="0 0 63 20"
             width="132px"

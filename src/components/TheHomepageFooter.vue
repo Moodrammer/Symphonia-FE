@@ -5,6 +5,7 @@
         flat
         color="rgba(0, 0, 0, 0)"
         v-bind:class="{ lgWidth: isLg(), mdWidth: !isLg() }"
+        style="position: relative;"
       >
         <router-link to="/" class="Col1">
           <svg viewBox="0 0 63 20" width="132px" height="42px" fill="white">
@@ -20,7 +21,7 @@
           </svg>
         </router-link>
 
-        <div class="Col2">
+        <v-container class="Col2">
           <ul style="list-style-type:none;">
             <li class="title1">
               company
@@ -35,9 +36,9 @@
               For the record
             </li>
           </ul>
-        </div>
+        </v-container>
 
-        <div class="Col2">
+        <v-container class="Col2">
           <ul style="list-style-type:none;">
             <li class="title1">
               communities
@@ -58,9 +59,9 @@
               Vendors
             </li>
           </ul>
-        </div>
+        </v-container>
 
-        <div class="Col2">
+        <v-container class="Col2">
           <ul style="list-style-type:none;">
             <li class="title1">
               useful links
@@ -75,19 +76,19 @@
               For Mobile App
             </li>
           </ul>
-        </div>
-     
-          <div class="Col3">
-            <router-link class="SocialMediaIcons" to="/instagram">
-              <v-icon medium class="Icons">mdi-instagram</v-icon>
-            </router-link>
-            <router-link class="SocialMediaIcons" to="/instagram">
-              <v-icon medium class="Icons">mdi-twitter</v-icon>
-            </router-link>
-            <router-link class="SocialMediaIcons" to="/facebook">
-              <v-icon medium class="Icons">mdi-facebook</v-icon>
-            </router-link>
-          </div>
+        </v-container>
+
+        <v-container class="Col3">
+          <router-link class="SocialMediaIcons" to="/instagram">
+            <v-icon medium class="Icons">mdi-instagram</v-icon>
+          </router-link>
+          <router-link class="SocialMediaIcons" to="/instagram">
+            <v-icon medium class="Icons">mdi-twitter</v-icon>
+          </router-link>
+          <router-link class="SocialMediaIcons" to="/facebook">
+            <v-icon medium class="Icons">mdi-facebook</v-icon>
+          </router-link>
+        </v-container>
 
       </v-container>
     </div>
@@ -130,7 +131,9 @@ export default {
 }
 
 .Col3 {
-  padding-left: 150px;
+  width: auto;
+  position: absolute;
+  right: 0px;
   float: left; 
 }
 
