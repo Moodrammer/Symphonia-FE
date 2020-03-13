@@ -25,12 +25,10 @@
 </template>
 
 <script>
-
 export default {
   name: "HomepageContent",
 
-  components:{ 
-  },
+  components: {},
 
   methods: {
     isLg() {

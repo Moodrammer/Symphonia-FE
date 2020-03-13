@@ -7,7 +7,7 @@
         v-bind:class="{ lgWidth: isLg(), mdWidth: !isLg() }"
         style="position: relative;"
       >
-        <router-link to="/" class="Col1">
+        <router-link to="/" class="Col1" v-bind:class="{ mdCol1: !isLg() }">
           <svg viewBox="0 0 63 20" width="132px" height="42px" fill="white">
             <g fill-rule="evenodd">
               <path
@@ -21,7 +21,7 @@
           </svg>
         </router-link>
 
-        <v-container class="Col2">
+        <v-container class="Col1" v-bind:class="{ mdCol1: !isLg() }">
           <ul style="list-style-type:none;">
             <li class="title1">
               company
@@ -38,7 +38,7 @@
           </ul>
         </v-container>
 
-        <v-container class="Col2">
+        <v-container class="Col1" v-bind:class="{ mdCol1: !isLg() }">
           <ul style="list-style-type:none;">
             <li class="title1">
               communities
@@ -61,7 +61,7 @@
           </ul>
         </v-container>
 
-        <v-container class="Col2">
+        <v-container class="Col1" v-bind:class="{ mdCol1: !isLg() }">
           <ul style="list-style-type:none;">
             <li class="title1">
               useful links
@@ -89,7 +89,6 @@
             <v-icon medium class="Icons">mdi-facebook</v-icon>
           </router-link>
         </v-container>
-
       </v-container>
     </div>
   </v-footer>
@@ -119,22 +118,24 @@ export default {
 </script>
 
 <style scoped>
-
 .Col1 {
   width: 195px;
   float: left;
 }
 
-.Col2 {
-  width: 195px;
-  float: left;
+.Col1 ul {
+  padding-left: 0px;
+}
+
+.mdCol1 {
+  width: 162px;
 }
 
 .Col3 {
   width: auto;
   position: absolute;
   right: 0px;
-  float: left; 
+  float: left;
 }
 
 .items {
