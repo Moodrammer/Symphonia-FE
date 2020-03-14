@@ -1,23 +1,8 @@
 <template>
   <div>
      <!-- Header of Sign Up page  -->
-    <v-container>
-        <v-row justify="center">
-            <v-col cols="12" sm="10" md="6">
-            <v-row justify="center">
-            <router-link to = '/'>
-                <h1 
-                display-4 
-                class="black--text"
-                >
-                Symphonia
-                </h1>
-            </router-link>
-            </v-row>
-            </v-col>
-        </v-row>
-    </v-container>      
-    
+    <symphonia-Header></symphonia-Header>
+
     <v-divider></v-divider>
 
     <v-container>
@@ -37,7 +22,7 @@
             <!-- The form takes a fixed width and the rest of the elements take the form's width -->
             <!-- Adding a reference to the form to be able to refer to it on submission -->
             <v-form 
-            ref="UserDataForm"
+            ref="userDataForm"
             class="compact-form"
             style="margin-top: 20px; width: 100%; margin: auto;"
             v-model="valid"
@@ -63,7 +48,7 @@
                 type="email"
                 :rules="emailRules"
                 v-model="userData.email"
-                maxlength="200"
+                maxlength="200" 
                 >
                 </v-text-field>
                 
@@ -123,6 +108,7 @@
                         outlined
                         width="90%"
                         :items="item"
+                        :rules="monthRules"
                         v-model="userData.monthSelected"
                         >
                         </v-overflow-btn>
@@ -133,7 +119,7 @@
                         placeholder="Year"
                         outlined
                         width="90%"
-                        :rules="monthRules"
+                        :rules="yearRules"
                         v-model="userData.yearSelected"
                         >
                         </v-text-field>
@@ -144,6 +130,7 @@
                 <v-radio-group 
                 row
                 style="padding-left: 35px"
+                :rules="genderRules"
                 v-model="userData.gender"
                 >
                     <v-radio label="Male" value="Male"></v-radio>
@@ -166,7 +153,11 @@
 
                 <v-row justify="center">
                     <span class="text--center">Already Have an account? 
-                    <router-link to="/" class="green--text">Log in</router-link>
+                    <router-link 
+                    to="/Login" 
+                    class="green--text">
+                    Log in
+                    </router-link>
                     </span>
                 </v-row>
             </v-form>
@@ -177,7 +168,12 @@
 </template>
     
 <script>
+import symphoniaHeader from '@/components/SymphoniaHeader.vue';
+
 export default {
+    components:{
+        symphoniaHeader
+    },
     data(){
         return{
             valid: false,
@@ -191,14 +187,20 @@ export default {
                 v => (v && v.length >= 8) || "Password is too short"
             ],
             dayRules: [
-                v => (v >= 1 && v <= 31) || "Enter a valid day of the month"
+                v => (v >= 1 && v <= 31) || "Please enter a valid day of the month"
+            ],
+            yearRules: [
+                v => (v >= 1900) || "Please enter a valid year",
+                v => (v <= 2000) || "Sorry, but you don't meet Symphonia's age requirements"
             ],
             monthRules: [
-                v => (v >= 1900) || "Enter a valid year",
-                v => (v <= 2000) || "Sorry, but you don't meet Symphonia's age requirements"
+                v => !!v || "Please enter your birth month"
             ],
             usernameRules: [
                 v => !!v || "What should we call you?"    
+            ],
+            genderRules: [
+                v => !!v || "Please indicate your gender"
             ],
 
             //items and data
@@ -224,14 +226,17 @@ export default {
       return [
         v => !!v || 'Please enter your email',  
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-        () => ((this.email === this.emailToMatch) && !this.changed) || 'E-mail must match'
+        () => ((this.userData.email === this.userData.emailToMatch) && !this.changed) || 'E-mail must match'
         ];
     },
     
     },
     methods: {
         submitForm(){
-            console.log(this.userData);
+            if(this.$refs.userDataForm.validate())
+                console.log(this.userData);
+            else
+                console.log("emit errors first");    
         }
 }
 
@@ -246,7 +251,5 @@ export default {
     transform-origin: center top;
     }
 
-    a{
-    text-decoration: none;
-    }
+    
 </style>
