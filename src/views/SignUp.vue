@@ -3,6 +3,8 @@
      <!-- Header of Sign Up page  -->
     <v-container>
         <v-row justify="center">
+            <v-col cols="12" sm="10" md="6">
+            <v-row justify="center">
             <router-link to = '/'>
                 <h1 
                 display-4 
@@ -11,34 +13,40 @@
                 Symphonia
                 </h1>
             </router-link>
+            </v-row>
+            </v-col>
         </v-row>
     </v-container>      
     
     <v-divider></v-divider>
 
-    <v-container class="main">
-        <v-row justify="center">
-        <v-col cols="12" sm="5">
+    <v-container>
+        <v-row 
+        justify="center"
+        >
+        <v-col cols="12" sm="6" md="5">
             <!-- Facebook sign division -->
-            <div id="fbSign" style="margin-bottom: 20px;">  
-                <v-row justify="center">
+            <v-row 
+                justify="center"
+                style="margin-bottom: 20px;"
+                >
                 <v-btn rounded color="#3B5998" class="white--text">Sign up with Facebook</v-btn>
-                </v-row>
-            </div>
-
-            <!-- Divider between both ways to sign up -->
-            <v-row>
-            <v-divider></v-divider>
-            <span style="font-size:14px;">or</span>
-            <v-divider></v-divider>
-            </v-row>
+            </v-row>    
             
             <!-- Email Sign division -->
-            <div id="emailSign">
+            <!-- The form takes a fixed width and the rest of the elements take the form's width -->
             <v-form 
             class="compact-form"
-            style="margin-top: 20px;"
+            style="margin-top: 20px; width: 100%; margin: auto;"
+            v-model="valid"
             >
+                <!-- Divider between both ways to sign up -->
+                <v-row>
+                    <v-divider></v-divider>
+                    <span style="font-size:14px;">or</span>
+                    <v-divider></v-divider>
+                </v-row>
+
                 <div 
                 class="text-center mb-3"
                 style="font: 18px arial,sans serif; font-weight: bold;"
@@ -49,44 +57,55 @@
                 <v-text-field 
                 placeholder="Email" 
                 outlined
-                pb-0
-                style="width : 427px; height: 70px; margin: auto"
+                style="width : 100%; height: 80px; margin: auto"
+                type="email"
+                :rules="emailRules"
+                v-model="email"
                 >
                 </v-text-field>
                 
                 <v-text-field 
                 placeholder="Confirm email" 
                 outlined
-                style="width : 427px; height: 70px; margin: auto"
+                style="width : 100%; height: 80px; margin: auto"
+                type="email"
+                :rules="emailConfirmationRules"
+                v-model="emailToMatch"
                 >
                 </v-text-field>
                 
                 <v-text-field 
                 placeholder="Password" 
                 outlined
-                style="width : 427px; height: 70px; margin: auto"
+                style="width : 100%; height: 80px; margin: auto"
+                type="password"
+                :rules="passwordRules"
+                required
+                v-model="password"
                 >
                 </v-text-field>
 
                 <v-text-field 
                 placeholder="What should we call you?" 
                 outlined
-                style="width : 427px; height: 70px; margin: auto"
+                style="width : 100%; height: 80px; margin: auto"
+                :rules="usernameRules"
                 >
                 </v-text-field>
                 
-                <span class="text-left"
-                style="padding-left : 23px;">Date of birth</span> 
+                <span class="text-left">Date of birth</span>
+
                 <v-row 
-                style="width: 427px; margin: auto;"
-                justify-center
-                d-flex
-                dense
+                style="width: 100%; margin: auto;"
+                no-gutters
                 >
                    <v-col cols="3">
                         <v-text-field
                         placeholder="Day"
                         outlined
+                        width="90%"
+                        :rules="dayRules"
+                        v-model="daySelected"
                         >
                         </v-text-field>
                     </v-col>
@@ -95,6 +114,9 @@
                         <v-select
                         placeholder="month"
                         outlined
+                        width="90%"
+                        :items="item"
+                        v-model="monthSelected"
                         >
                         </v-select>
                     </v-col>
@@ -103,6 +125,9 @@
                         <v-text-field
                         placeholder="Year"
                         outlined
+                        width="90%"
+                        :rules="monthRules"
+                        v-model="yearSelected"
                         >
                         </v-text-field>
                     </v-col>
@@ -136,8 +161,6 @@
                     </span>
                 </v-row>
             </v-form>
-            <!-- div end of emailSign -->
-            </div>
             </v-col>
       </v-row>
   </v-container>
@@ -146,8 +169,55 @@
     
 <script>
 export default {
+    data(){
+        return{
+            valid: false,
+            //Set of rules for validation
+            emailRules: [
+                v => !!v || "Please enter your email",
+                v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+            ],
+            passwordRules: [
+                v => !!v || "Enter a password to continue",
+                v => (v && v.length >= 8) || "Password is too short"
+            ],
+            dayRules: [
+                v => (v >= 1 && v <= 31) || "Enter a valid day of the month"
+            ],
+            monthRules: [
+                v => (v >= 1900) || "Enter a valid year",
+                v => (v <= 2000) || "Sorry, but you don't meet Symphonia's age requirements"
+            ],
+            usernameRules: [
+                v => !!v || "What should we call you?"    
+            ],
+
+            //items and data
+            item: ['January', 'February' , 'March' , 'April' , 'May' , 'June' , 'July' , 'August' , 'September'
+            , 'October' , 'November' , 'December'],
+
+            email: '',
+            emailToMatch: '',
+            monthSelected: '',
+            daySelected: '',
+            yearSelected: '',
+            password: ''
+        }
+    },
+    //Taken from : https://stackoverflow.com/questions/47213703/vuetify-form-validation-defining-es6-rules-for-matching-inputs
+   computed: {
+    emailConfirmationRules() {
+      return [
+        v => !!v || 'Please enter your email',  
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        () => ((this.email === this.emailToMatch) && !this.changed) || 'E-mail must match'
+        ];
+    },
+}
 
 }
+
+
 </script>
 
 <style scoped> 
