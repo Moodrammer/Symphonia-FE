@@ -35,7 +35,9 @@
             
             <!-- Email Sign division -->
             <!-- The form takes a fixed width and the rest of the elements take the form's width -->
+            <!-- Adding a reference to the form to be able to refer to it on submission -->
             <v-form 
+            ref="UserDataForm"
             class="compact-form"
             style="margin-top: 20px; width: 100%; margin: auto;"
             v-model="valid"
@@ -60,7 +62,8 @@
                 style="width : 100%; height: 80px; margin: auto"
                 type="email"
                 :rules="emailRules"
-                v-model="email"
+                v-model="userData.email"
+                maxlength="200"
                 >
                 </v-text-field>
                 
@@ -70,7 +73,8 @@
                 style="width : 100%; height: 80px; margin: auto"
                 type="email"
                 :rules="emailConfirmationRules"
-                v-model="emailToMatch"
+                v-model="userData.emailToMatch"
+                maxlength="200"
                 >
                 </v-text-field>
                 
@@ -81,7 +85,8 @@
                 type="password"
                 :rules="passwordRules"
                 required
-                v-model="password"
+                v-model="userData.password"
+                maxlength="30"
                 >
                 </v-text-field>
 
@@ -90,6 +95,8 @@
                 outlined
                 style="width : 100%; height: 80px; margin: auto"
                 :rules="usernameRules"
+                maxlength="30"
+                v-model="userData.username"
                 >
                 </v-text-field>
                 
@@ -105,20 +112,20 @@
                         outlined
                         width="90%"
                         :rules="dayRules"
-                        v-model="daySelected"
+                        v-model="userData.daySelected"
                         >
                         </v-text-field>
                     </v-col>
 
                     <v-col cols="6">
-                        <v-select
+                        <v-overflow-btn
                         placeholder="month"
                         outlined
                         width="90%"
                         :items="item"
-                        v-model="monthSelected"
+                        v-model="userData.monthSelected"
                         >
-                        </v-select>
+                        </v-overflow-btn>
                     </v-col>
 
                     <v-col cols="3">
@@ -127,7 +134,7 @@
                         outlined
                         width="90%"
                         :rules="monthRules"
-                        v-model="yearSelected"
+                        v-model="userData.yearSelected"
                         >
                         </v-text-field>
                     </v-col>
@@ -137,9 +144,10 @@
                 <v-radio-group 
                 row
                 style="padding-left: 35px"
+                v-model="userData.gender"
                 >
-                    <v-radio label="Male"></v-radio>
-                    <v-radio label="Female"></v-radio>
+                    <v-radio label="Male" value="Male"></v-radio>
+                    <v-radio label="Female" value="Female"></v-radio>
                 </v-radio-group>
                 </v-row>
 
@@ -151,6 +159,7 @@
                         rounded
                         block
                         large
+                        v-on:click="submitForm"
                         >Sign up</v-btn>
                     </v-col>
                 </v-row>
@@ -163,7 +172,7 @@
             </v-form>
             </v-col>
       </v-row>
-  </v-container>
+      </v-container>
 </div>
 </template>
     
@@ -196,12 +205,17 @@ export default {
             item: ['January', 'February' , 'March' , 'April' , 'May' , 'June' , 'July' , 'August' , 'September'
             , 'October' , 'November' , 'December'],
 
-            email: '',
-            emailToMatch: '',
-            monthSelected: '',
-            daySelected: '',
-            yearSelected: '',
-            password: ''
+            //All the userData provided by the form
+            userData: {
+                email: '',
+                emailToMatch: '',
+                password: '',
+                username: '',
+                daySelected: '',
+                monthSelected: '',
+                yearSelected: '',
+                gender: ''
+            }
         }
     },
     //Taken from : https://stackoverflow.com/questions/47213703/vuetify-form-validation-defining-es6-rules-for-matching-inputs
@@ -213,6 +227,12 @@ export default {
         () => ((this.email === this.emailToMatch) && !this.changed) || 'E-mail must match'
         ];
     },
+    
+    },
+    methods: {
+        submitForm(){
+            console.log(this.userData);
+        }
 }
 
 }
