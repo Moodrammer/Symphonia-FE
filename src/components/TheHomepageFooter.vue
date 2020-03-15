@@ -1,17 +1,17 @@
 <template>
   <v-footer color="black">
-    <div class="Footer" v-bind:class="{ smFooter: isSm() || isXs() }">
+    <div class="footer" v-bind:class="{ 'footer-small': isSm() || isXs() }">
       <v-container
         flat
         color="rgba(0, 0, 0, 0)"
         v-bind:class="{
           'toolbar-large-width': isLg(),
           'toolbar-medium-width': isMd(),
-          smWidth: isSm() || isXs()
+          'toolbar-small-width': isSm() || isXs()
         }"
         style="position: relative;"
       >
-        <router-link to="/" class="Col1" v-if="isLg() || isMd()">
+        <router-link to="/" class="links-column-1" v-if="isLg() || isMd()">
           <svg viewBox="0 0 63 20" width="132px" height="42px" fill="white">
             <g fill-rule="evenodd">
               <path
@@ -25,7 +25,7 @@
           </svg>
         </router-link>
 
-        <router-link class="Col1" to="/" v-if="isSm() || isXs()">
+        <router-link class="links-column-1" to="/" v-if="isSm() || isXs()">
           <svg
             fill="white"
             viewBox="0 0 63 20"
@@ -43,92 +43,95 @@
         </router-link>
 
         <v-container
-          class="Col1"
+          class="links-column-1"
           v-bind:class="{
-            mdCol1: isMd(),
-            smLogo: isSm() || isXs(),
-            smCol1: isSm()
+            'links-column-1-medium': isMd(),
+            'small-spotify-logo': isSm() || isXs(),
+            'links-column-1-small': isSm()
           }"
         >
           <ul style="list-style-type:none;">
-            <li class="title1">
+            <li class="links-column-title">
               company
             </li>
-            <li class="items">
+            <li class="links-column-item">
               About
             </li>
-            <li class="items">
+            <li class="links-column-item">
               Jobs
             </li>
-            <li class="items">
+            <li class="links-column-item">
               For the record
             </li>
           </ul>
         </v-container>
 
         <v-container
-          class="Col1"
+          class="links-column-1"
           v-bind:class="{
-            mdCol1: isMd(),
-            xsCol1: isXs(),
-            smCol1: isSm()
+            'links-column-1-medium': isMd(),
+            'links-column-1-xsmall': isXs(),
+            'links-column-1-small': isSm()
           }"
         >
           <ul style="list-style-type:none;">
-            <li class="title1">
+            <li class="links-column-title">
               communities
             </li>
-            <li class="items">
+            <li class="links-column-item">
               For Artists
             </li>
-            <li class="items">
+            <li class="links-column-item">
               Developer
             </li>
-            <li class="items">
+            <li class="links-column-item">
               Brands
             </li>
-            <li class="items">
+            <li class="links-column-item">
               Investors
             </li>
-            <li class="items">
+            <li class="links-column-item">
               Vendors
             </li>
           </ul>
         </v-container>
 
         <v-container
-          class="Col1"
+          class="links-column-1"
           v-bind:class="{
-            mdCol1: isMd(),
-            xsCol1: isXs(),
-            smCol1: isSm()
+            'links-column-1-medium': isMd(),
+            'links-column-1-xsmall': isXs(),
+            'links-column-1-small': isSm()
           }"
         >
           <ul style="list-style-type:none;">
-            <li class="title1">
+            <li class="links-column-title">
               useful links
             </li>
-            <li class="items">
+            <li class="links-column-item">
               Help
             </li>
-            <li class="items">
+            <li class="links-column-item">
               Web Player
             </li>
-            <li class="items">
+            <li class="links-column-item">
               For Mobile App
             </li>
           </ul>
         </v-container>
 
-        <v-container class="Col3" v-bind:class="{ smCol3: isSm() || isXs() }">
-          <router-link class="SocialMediaIcons" to="/instagram">
-            <v-icon medium class="Icons">mdi-instagram</v-icon>
+        <v-container
+          class="links-column-3"
+          v-bind:class="{ 'links-column-3-small': isSm() || isXs() }"
+        >
+          <router-link class="socialmedia-icon" to="/instagram">
+            <v-icon medium class="socialmedia-icon-color">mdi-instagram</v-icon>
           </router-link>
-          <router-link class="SocialMediaIcons" to="/twitter">
-            <v-icon medium class="Icons">mdi-twitter</v-icon>
+          <router-link class="socialmedia-icon" to="/twitter">
+            <v-icon medium class="socialmedia-icon-color">mdi-twitter</v-icon>
           </router-link>
-          <router-link class="SocialMediaIcons" to="/facebook">
-            <v-icon medium class="Icons">mdi-facebook</v-icon>
+          <router-link class="socialmedia-icon" to="/facebook">
+            <v-icon medium class="socialmedia-icon-color">mdi-facebook</v-icon>
           </router-link>
         </v-container>
       </v-container>
@@ -160,73 +163,69 @@ export default {
 </script>
 
 <style scoped>
-.smLogo {
+.small-spotify-logo {
   clear: left;
 }
 
-.Col1 {
+.links-column-1 {
   width: 195px;
   float: left;
 }
 
-.Col1 ul {
+.links-column-1 ul {
   padding-left: 0px;
 }
 
-.mdCol1 {
+.links-column-1-medium {
   width: 162px;
 }
 
-.smCol1 {
+.links-column-1-small {
   width: 230px;
 }
 
-.xsCol1 {
+.links-column-1-xsmall {
   clear: left;
 }
 
-.Col3 {
+.links-column-3 {
   width: auto;
   position: absolute;
   right: 0px;
   float: left;
 }
 
-.smCol3 {
+.links-column-3-small {
   position: static;
   clear: left;
 }
 
-.items {
+.links-column-item {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-family: Circular, spotify-circular, Helvetica, Arial, sans-serif;
   -webkit-box-direction: normal;
   box-sizing: border-box;
   background-color: transparent;
   outline: 0;
-  font-size: 16px;
-  font-weight: 400;
   line-height: 1.5;
   text-decoration: none;
   padding: 3px 0 15px;
   color: white;
+  font: 400 16px Helvetica, Arial, sans-serif;
 }
 
-.title1 {
+.links-column-title {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-family: Helvetica, Arial, sans-serif;
   -webkit-box-direction: normal;
   box-sizing: border-box;
   color: #919496;
-  font-size: 12px;
-  font-weight: 900;
   line-height: 1.4;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin: 20px 0;
+  font: 900 12px Helvetica, Arial, sans-serif;
 }
 
-.items:hover {
+.links-column-item:hover {
   color: #1db954;
 }
 
@@ -239,7 +238,7 @@ export default {
   width: 970px;
 }
 
-.smWidth {
+.toolbar-small-width {
   width: 750px;
 }
 
@@ -248,28 +247,20 @@ export default {
   margin: auto;
 }
 
-.Footer {
+.footer {
   width: 1519px;
   height: 540px;
-  padding-top: 80px;
-  padding-bottom: 50px;
+  padding: 80px 0px 50px 0px;
 }
 
-.smFooter {
+.footer-small {
   height: 1000px;
 }
 
-.Links1:hover {
-  color: #1db954;
-}
-
-.SocialMediaIcons {
+.socialmedia-icon {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   line-height: 1.5;
   -webkit-box-direction: normal;
-  font-size: 16px;
-  font-family: Helvetica, Arial, sans-serif;
-  font-weight: 400;
   box-sizing: border-box;
   text-decoration: none;
   color: #fff;
@@ -284,13 +275,14 @@ export default {
   border-radius: 50%;
   background-color: #222326;
   margin-left: 15px;
+  font: 400 16px Helvetica, Arial, sans-serif;
 }
 
-.Icons {
+.socialmedia-icon-color {
   color: white;
 }
 
-.Icons:hover {
+.socialmedia-icon-color:hover {
   color: #1db954;
 }
 </style>
