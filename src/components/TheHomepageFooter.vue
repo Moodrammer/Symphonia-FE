@@ -11,7 +11,7 @@
         }"
         style="position: relative;"
       >
-        <router-link to="/" class="links-column-1" v-if="isLg() || isMd()">
+        <router-link v-if="isLg() || isMd()" to="/" class="links-column-1">
           <svg viewBox="0 0 63 20" width="132px" height="42px" fill="white">
             <g fill-rule="evenodd">
               <path
