@@ -1,6 +1,9 @@
 <template>
   <v-footer color="black">
-    <div class="footer" v-bind:class="{ 'footer-small': isSm() || isXs() }">
+    <div
+      class="footer"
+      v-bind:class="{ 'footer-small': isSm(), 'footer-xsmall': isXs() }"
+    >
       <v-container
         flat
         color="rgba(0, 0, 0, 0)"
@@ -254,6 +257,10 @@ export default {
 }
 
 .footer-small {
+  height: 573px;
+}
+
+.footer-xsmall {
   height: 1000px;
 }
 
