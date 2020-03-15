@@ -75,7 +75,9 @@
                     </v-col>
                 </v-row>
                 <!-- Login form -->
-                <v-form>
+                <v-form
+                ref="loginForm"
+                >
                     <v-row>
                         <v-col cols="12" class="pa-0 pb-3"> 
                             <v-text-field
@@ -114,6 +116,7 @@
                                 color="green">
                                 </v-checkbox>
                         </v-col>
+                        <!-- Log in button -->
                         <v-col cols="12" sm="6" class="pa-0" align-self="center">
                                <v-btn 
                                 id="login-button"
@@ -122,6 +125,7 @@
                                 rounded
                                 large
                                 block
+                                @click="login"
                                 >LOG IN
                                 </v-btn>
                         </v-col>
@@ -214,6 +218,21 @@ export default {
             passwordRules: [
                 v => !!v || "Please enter your password."
             ]
+        }
+    },
+    methods: {
+        //This is the login method to be documented later 
+        login(){
+            //if the form validates and had no restrictions
+            if(this.$refs.loginForm.validate()){
+                //console.log("the form is valid :D")
+                //this.$router.push("/")
+                this.$store.dispatch("loginuser", {
+                    email: this.formData.username,
+                    password: this.formData.password
+                }).then(() => {this.$router.push("/")})
+                .catch((error) => {console.log(error)})
+            }   
         }
     }
 }
