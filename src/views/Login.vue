@@ -18,7 +18,9 @@
                 </v-row>
                 <!-- Facebook button  -->
                 <v-row>
-                    <v-col cols="12">
+                    <v-col 
+                    cols="12"
+                    class="py-0 pb-1">
                         <v-btn 
                         block
                         large 
@@ -27,6 +29,22 @@
                         class="white--text"
                         >
                             CONTINUE WITH FACEBOOK
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                <!-- Google button -->
+                <v-row>
+                    <v-col 
+                    cols="12"
+                    class="pt-1">
+                        <v-btn 
+                        block
+                        large 
+                        rounded
+                        color="#007ec6"
+                        class="white--text"
+                        >
+                            CONTINUE WITH GOOGLE
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -59,7 +77,7 @@
                 <!-- Login form -->
                 <v-form>
                     <v-row>
-                        <v-col cols="12"> 
+                        <v-col cols="12" class="pa-0 pb-3"> 
                             <v-text-field
                             id="login-username"
                             name="username"
@@ -67,14 +85,14 @@
                             placeholder="Email adderss or username"
                             outlined
                             dense
-                            style="height: 40px;"
                             v-model="formData.username"
+                            style="height: 40px;"
                             :rules="usernameRules"
                             ></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12">
+                        <v-col cols="12" class="pa-0 pt-3 pb-2">
                             <v-text-field
                             id="login-password"
                             name="password"
@@ -82,23 +100,30 @@
                             placeholder="Password"
                             outlined
                             dense
-                            style="height: 40px;"
                             v-model="formData.password"
+                            style="height: 40px;"
                             :rules="passwordRules"
                             ></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" align="space-between">
-                            <v-row justify="center">
-                                <v-btn 
+                        <v-col cols="12" sm="6" class="pa-0" align-self="center">
+                                <v-checkbox 
+                                label="Remember me" 
+                                v-model="rememberMe" 
+                                color="green">
+                                </v-checkbox>
+                        </v-col>
+                        <v-col cols="12" sm="6" class="pa-0" align-self="center">
+                               <v-btn 
                                 id="login-button"
                                 color="#1db954"
                                 class="white--text"
                                 rounded
+                                large
+                                block
                                 >LOG IN
                                 </v-btn>
-                            </v-row>
                         </v-col>
                     </v-row>
                 </v-form>
@@ -176,10 +201,13 @@ export default {
     },
     data(){
         return{
+            //The user data
             formData: {
                 username: '',
                 password: ''
             },
+            rememberMe: false,
+            //validation rules for input data
             usernameRules: [
                 v => !!v || "Please enter your Symphonia username or email address."
             ],
