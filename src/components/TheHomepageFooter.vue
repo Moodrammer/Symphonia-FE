@@ -5,8 +5,8 @@
         flat
         color="rgba(0, 0, 0, 0)"
         v-bind:class="{
-          lgWidth: isLg(),
-          mdWidth: isMd(),
+          'toolbar-large-width': isLg(),
+          'toolbar-medium-width': isMd(),
           smWidth: isSm() || isXs()
         }"
         style="position: relative;"
@@ -32,7 +32,7 @@
             preserveAspectRatio="xMidYMin meet"
             width="90px"
             height="28px"
-            class="SmToolbarIcon"
+            class="small-spotify-icon"
           >
             <g fill-rule="evenodd">
               <path
@@ -230,11 +230,11 @@ export default {
   color: #1db954;
 }
 
-.lgWidth {
+.toolbar-large-width {
   width: 1170px;
 }
 
-.mdWidth {
+.toolbar-medium-width {
   max-width: 970px;
   width: 970px;
 }

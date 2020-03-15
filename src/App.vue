@@ -17,7 +17,7 @@ export default {
   components: {
     NavBar,
     Content,
-    Footer,
+    Footer
   },
 
   data: () => ({
@@ -26,5 +26,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

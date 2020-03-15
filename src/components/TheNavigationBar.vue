@@ -12,7 +12,10 @@
         flat
         color="rgba(0, 0, 0, 0)"
         class="toolbar"
-        v-bind:class="{ lgWidth: isLg(), mdWidth: !isLg() }"
+        v-bind:class="{
+          'toolbar-large-width': isLg(),
+          'toolbar-medium-width': !isLg()
+        }"
       >
         <router-link to="/">
           <svg
@@ -40,18 +43,22 @@
           class="right"
           style="padding-right:0px;"
         >
-          <router-link to="/premium/?checkout=false" class="Links1"
+          <router-link to="/premium/?checkout=false" class="toolbar-link-1"
             >Premium</router-link
           >
-          <router-link to="/help" class="Links1">Help</router-link>
-          <router-link to="/download" class="Links1">Download</router-link>
+          <router-link to="/help" class="toolbar-link-1">Help</router-link>
+          <router-link to="/download" class="toolbar-link-1"
+            >Download</router-link
+          >
 
-          <span class="Bar">|</span>
+          <span class="bar-icon">|</span>
 
-          <router-link to="/signup" class="Links1 Links2">Sign up</router-link>
+          <router-link to="/signup" class="toolbar-link-1 toolbar-link-2"
+            >Sign up</router-link
+          >
           <router-link
             to="/account/overview"
-            class="Links1 Links2"
+            class="toolbar-link-1 toolbar-link-2"
             style="padding-right:0px;"
             >Log in</router-link
           >
@@ -61,7 +68,7 @@
 
     <!-- for sm and xs -->
     <v-app-bar flat app color="black" height="54" class="hidden-md-and-up">
-      <v-toolbar flat color="rgba(0,0,0,0)" class="SmToolbar">
+      <v-toolbar flat color="rgba(0,0,0,0)" class="small-toolbar">
         <router-link to="/">
           <svg
             viewBox="0 0 63 20"
@@ -104,32 +111,34 @@
         <li>
           <router-link
             to="/premium/?checkout=false"
-            class="Links1 SmToolbarBtn1"
+            class="toolbar-link-1 small-toolbar-btn-1"
             >Premium</router-link
           >
         </li>
         <li>
-          <router-link to="/help" class="Links1 SmToolbarBtn1"
+          <router-link to="/help" class="toolbar-link-1 small-toolbar-btn-1"
             >Help</router-link
           >
         </li>
         <li>
-          <router-link to="/download" class="Links1 SmToolbarBtn1"
+          <router-link to="/download" class="toolbar-link-1 small-toolbar-btn-1"
             >Download</router-link
           >
         </li>
         <li>
-          <span class="Hyphen">-</span>
+          <span class="hyphen-icon">-</span>
         </li>
         <li>
-          <router-link to="/signup" class="Links1 SmToolbarBtn1 SmToolbarBtn2"
+          <router-link
+            to="/signup"
+            class="toolbar-link-1 small-toolbar-btn-1 small-toolbar-btn-2"
             >Sign up</router-link
           >
         </li>
         <li>
           <router-link
             to="/account/overview"
-            class="Links1 SmToolbarBtn1 SmToolbarBtn2"
+            class="toolbar-link-1 small-toolbar-btn-1 small-toolbar-btn-2"
             >Sign in</router-link
           >
         </li>
@@ -141,7 +150,7 @@
           preserveAspectRatio="xMidYMin meet"
           width="90px"
           height="28px"
-          class="SmToolbarIcon"
+          class="small-spotify-icon"
         >
           <g fill-rule="evenodd">
             <path
@@ -184,30 +193,28 @@ export default {
 </script>
 
 <style scoped>
-.Links1 {
+.toolbar-link-1 {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-box-direction: normal;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 16px;
   box-sizing: border-box;
   background-color: transparent;
   color: #fff;
   text-decoration: none;
-  font-weight: 700;
   padding: 28px 17px;
-  font-size: 15px;
+  font: 700 15px Helvetica, Arial, sans-serif;
 }
 
-.Bar {
+.bar-icon {
   color: white;
   padding-right: 1rem;
   padding-left: 1rem;
 }
-.Links2 {
+
+.toolbar-link-2 {
   color: #d9dadc;
 }
 
-.Links1:hover {
+.toolbar-link-1:hover {
   color: #1db954;
 }
 
@@ -221,22 +228,22 @@ export default {
   margin: auto;
 }
 
-.lgWidth {
+.toolbar-large-width {
   width: 1170px;
 }
 
-.mdWidth {
+.toolbar-medium-width {
   width: 970px;
 }
 
-.SmToolbar {
+.small-toolbar {
   flex: none;
   margin: auto;
   width: 750px;
   padding-left: 0px;
 }
 
-.SmToolbarBtn1 {
+.small-toolbar-btn-1 {
   display: block;
   line-height: 1;
   font-weight: 700;
@@ -244,14 +251,14 @@ export default {
   padding: 0 0 25px;
 }
 
-.Hyphen {
+.hyphen-icon {
   color: white;
   font-weight: 700;
   font-size: 36px;
   padding: 0 0 25px;
 }
 
-.SmToolbarBtn2 {
+.small-toolbar-btn-2 {
   font-weight: 400;
   font-size: 28px;
   color: #d9dadc;
@@ -261,7 +268,7 @@ export default {
   padding: 38px;
 }
 
-.SmToolbarIcon {
+.small-spotify-icon {
   position: absolute;
   bottom: 50px;
 }
