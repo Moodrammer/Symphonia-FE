@@ -5,18 +5,20 @@
 
     <v-container width="1170" style="padding:0px;">
       <v-container
-        class="lgContent"
-        v-bind:class="{ smContent: isSm(), xsContent: isXs() }"
+        class="large-content"
+        v-bind:class="{ 'small-content': isSm(), 'xsmall-content': isXs() }"
       >
         <h1
-          class="lgHeader1"
-          v-bind:class="{ smHeader1: isSm(), xsHeader1: isXs() }"
+          class="header-1-large"
+          v-bind:class="{ 'header-1-small': isSm(), 'header-1-xsmall': isXs() }"
         >
           Music for everyone.
         </h1>
-        <h4 class="lgHeader4">Millions of songs. No credit card needed.</h4>
+        <h4 class="header-4-large">
+          Millions of songs. No credit card needed.
+        </h4>
 
-        <router-link to="/download" class="lgDownloadBtn">
+        <router-link to="/download" class="download-button-large">
           get spotify free
         </router-link>
       </v-container>
@@ -53,13 +55,9 @@ export default {
 
 <style scoped>
 .hero-home-sm-cover {
-  background: url("http://localhost:8080/hero-burst-mobile.svg") no-repeat
-    scroll;
+  background: url(http://localhost:8080/hero-burst-mobile.svg) no-repeat scroll;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-size: 16px;
   line-height: 1.5;
-  font-weight: 400;
-  font-family: Helvetica, Arial, sans-serif;
   -webkit-box-direction: normal;
   color: #fff;
   box-sizing: border-box;
@@ -69,16 +67,13 @@ export default {
   min-width: 878px;
   height: 676px;
   transform: translate(-50%, 10%);
+  font: 400 16px Helvetica, Arial, sans-serif;
 }
 
 .hero-home-bg-cover {
-  background: url("http://localhost:8080/hero-burst.svg") no-repeat;
-
+  background: url(http://localhost:8080/hero-burst.svg) no-repeat;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-size: 16px;
   line-height: 1.5;
-  font-weight: 400;
-  font-family: Circular, Helvetica, Arial, sans-serif, Ruble;
   -webkit-box-direction: normal;
   color: #fff;
   box-sizing: border-box;
@@ -89,35 +84,29 @@ export default {
   height: 1523px;
   background-position: top -410px center;
   transform: translate(-50%, 0%);
+  font: 400 16px Helvetica, Arial, sans-serif;
 }
 
 .wrap {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-size: 16px;
   line-height: 1.5;
   color: #222326;
-  font-weight: 400;
-  font-family: Circular, Helvetica, Arial, sans-serif, Ruble;
   -webkit-box-direction: normal;
   box-sizing: border-box;
   -webkit-box-flex: 1;
   flex: 1;
   background-color: #f037a5;
   background: linear-gradient(#f037a5 -60%, #fae62d 140%);
+  font: 400 16px Helvetica, Arial, sans-serif;
 }
 
-.lgContent {
+.large-content {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-size: 16px;
   line-height: 1.5;
-  font-weight: 400;
-  font-family: Circular, Helvetica, Arial, sans-serif, Ruble;
   color: #fff;
   box-sizing: border-box;
   margin-right: auto;
   margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px;
   width: 1170px;
   height: 755px;
   display: flex;
@@ -129,26 +118,22 @@ export default {
   -webkit-box-pack: center;
   justify-content: center;
   min-height: 100vh;
-  padding-top: 250px;
-  padding-bottom: 250px;
+  padding: 250px 15px 250px 15px;
   position: relative;
+  font: 400 16px Helvetica, Arial, sans-serif;
 }
 
-.smContent {
+.small-content {
   width: 750px;
   min-height: 100vh;
-  padding-top: 75px;
-  padding-bottom: 75px;
+  padding: 75px 15px 75px 15px;
 }
 
-.xsContent {
+.xsmall-content {
   width: auto;
-  min-height: 100vh;
-  padding-top: 75px;
-  padding-bottom: 75px;
 }
 
-.lgHeader1 {
+.header-1-large {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-box-direction: normal;
   text-align: center;
@@ -162,47 +147,40 @@ export default {
   font-size: 80px;
 }
 
-.smHeader1 {
+.header-1-small {
   font-size: 64px;
 }
 
-.xsHeader1 {
+.header-1-xsmall {
   width: auto;
   display: block;
   font-size: 48px;
 }
 
-.lgHeader4 {
+.header-4-large {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-box-direction: normal;
   text-align: center;
   box-sizing: border-box;
-  font-family: inherit;
   line-height: 1.1;
   color: inherit;
   margin: 0.5em 0 1em;
-  font-size: 18px;
-  font-weight: 400;
+  font: 400 18px inherit;
 }
 
-.lgDownloadBtn {
+.download-button-large {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-family: Helvetica, Arial, sans-serif;
   -webkit-box-direction: normal;
   box-sizing: border-box;
   display: inline-block;
-  margin-bottom: 0;
-  font-weight: 700;
   text-align: center;
   vertical-align: middle;
   touch-action: manipulation;
   cursor: pointer;
   border: 1px solid transparent;
   user-select: none;
-  font-size: 14px;
   line-height: 1;
   border-radius: 500px;
-  padding: 16px 48px 18px;
   transition-duration: 0.3s;
   border-width: 0;
   letter-spacing: 2px;
@@ -215,10 +193,13 @@ export default {
   color: #fff;
   background-color: #1aa34a;
   box-shadow: none;
+  padding: 16px 48px 18px;
   margin-top: 16px;
+  margin-bottom: 0;
+  font: 700 14px Helvetica, Arial, sans-serif;
 }
 
-.lgDownloadBtn:hover {
+.download-button-large:hover {
   background-color: #1ed760;
 }
 </style>
