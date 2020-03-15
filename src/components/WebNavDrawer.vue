@@ -15,7 +15,7 @@
         :to="item.route"
         > 
           <v-icon class="mr-2">{{ item.icon }}</v-icon>
-          <v-list-item-title class="draweritem primary--text" >{{ item.text }}</v-list-item-title>
+          <v-list-item-title class="draweritem white--text" >{{ item.text }}</v-list-item-title>
       </v-list-item>
 
       <v-list-item-subtitle class="ml-2" >
@@ -25,6 +25,7 @@
         <v-list-item>
           <v-btn color="white" fab x-small>
             <v-icon color="black">mdi-plus</v-icon>
+            <create-playlist></create-playlist>
           </v-btn>
           
           <v-list-item-title>Create Playlist</v-list-item-title>
@@ -37,12 +38,18 @@
           <v-list-item-title>Liked Songs</v-list-item-title>
         </v-list-item>
       <v-divider></v-divider>
+     
+     
     </v-list>
   </v-navigation-drawer> 
 </template>
 
 <script>
+import CreatePlaylist from "./CreatePlaylist"
 export default {
+    components: {
+      CreatePlaylist
+    },
     data: function() {
       return {
         items: [
@@ -62,7 +69,8 @@ export default {
             route: "/Library"
           }
 
-        ]  
+        ],
+        pop: false
       }
     }
 }
@@ -78,6 +86,18 @@ button{
 }
 .draweritem:hover v-list-item-title{
   color:white;
-  
 }
+
+#newPlaylist{
+  border: 0px;
+  font-size: 48px;
+}
+.popbutton{
+  border-radius: 500px;
+   border:2px solid;
+}
+input{
+  font-size: 48px
+}
+
 </style>
