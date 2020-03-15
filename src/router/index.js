@@ -24,17 +24,6 @@ const routes = [
     path:"/webhome",
     name: "WebHome",
     component:WebPlayerHome,
-    children: [
-      {
-        path:"/search",
-        name: "search",
-        //component: ....
-      },
-      {
-        path: "/collection/playlists"
-        
-      }
-    ]
   }
 ];
 

@@ -22,24 +22,20 @@
         PLAYLISTS
       </v-list-item-subtitle>
 
-        <v-list-item>
-          <v-btn color="white" fab x-small>
-            <v-icon color="black">mdi-plus</v-icon>
-            <create-playlist></create-playlist>
-          </v-btn>
-          
-          <v-list-item-title>Create Playlist</v-list-item-title>
-        </v-list-item>
+      <v-list-item>
+        <create-playlist ></create-playlist>
+        <v-list-item-title>Create Playlist</v-list-item-title>
+      </v-list-item>
 
-         <v-list-item>
-          <v-btn class="liked" fab x-small>
-            <v-icon color="white">mdi-cards-heart</v-icon>
-          </v-btn>
-          <v-list-item-title>Liked Songs</v-list-item-title>
-        </v-list-item>
+      <v-list-item>
+        <v-btn class="liked" fab x-small>
+          <v-icon color="white">mdi-cards-heart</v-icon>
+        </v-btn>
+        <v-list-item-title>Liked Songs</v-list-item-title>
+      </v-list-item>
+
       <v-divider></v-divider>
-     
-     
+       <!--Playlist will be printed from here-->
     </v-list>
   </v-navigation-drawer> 
 </template>
@@ -69,20 +65,18 @@ export default {
             route: "/Library"
           }
 
-        ],
-        pop: false
+        ]
       }
     }
 }
 </script>
 
 <style  scoped>
-button{
-  border-radius: 0%;
-  margin-right: 7%
-}
+
 .liked{
   background-image: linear-gradient(135deg, #450af5,#c4efd9);
+   border-radius: 0%;
+  margin-right: 7%
 }
 .draweritem:hover v-list-item-title{
   color:white;
@@ -92,10 +86,7 @@ button{
   border: 0px;
   font-size: 48px;
 }
-.popbutton{
-  border-radius: 500px;
-   border:2px solid;
-}
+
 input{
   font-size: 48px
 }
