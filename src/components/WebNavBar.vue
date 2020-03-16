@@ -35,6 +35,7 @@ export default {
     }
   },
   methods: {
+    //Some validations are needed 
     prev:function(){
        this.$router.go(-1)
     },

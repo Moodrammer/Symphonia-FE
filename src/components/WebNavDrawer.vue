@@ -36,16 +36,30 @@
 
       <v-divider></v-divider>
        <!--Playlist will be printed from here-->
+  
+       <v-list-item
+        v-for="playlist in playlists"
+        :key="playlist.id"
+        > 
+          <v-list-item-title class="draweritem white--text" >{{ playlist.name }}</v-list-item-title>
+      </v-list-item> 
     </v-list>
   </v-navigation-drawer> 
 </template>
 
 <script>
 import CreatePlaylist from "./CreatePlaylist"
+import { mapState } from 'vuex'
 export default {
     components: {
       CreatePlaylist
     },
+    mounted() {
+      this.$store.dispatch("getPlaylists");
+      },
+    computed: mapState([
+      'playlists'
+      ]),
     data: function() {
       return {
         items: [

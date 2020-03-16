@@ -1,30 +1,32 @@
-import { Server } from "miragejs";
+import { Server  } from "miragejs";
+
 
 //The makeserver function to be used to enable Mirage to intercept your requests
 export function makeServer({ environment = "development" } = {}) {
   let server = new Server({
-    environment
+    environment,
 
-    //Leaving the user model as a reference example to be removed later
-
-    //models: {
-    //user: Model,
-    //},
-
-    //seeds(server) {
-    //server.create("user", { name: "Bob" })
-    //server.create("user", { name: "Alice" })
-    //},
-
-    //routes() {
-    //this.urlPrefix = 'https://api.edamam.com';
-
-    //this.get("/search", schema => {
-
-    //return schema.users.all()
-
-    //})
-    //},
+    seeds(server) {
+    server.db.loadData({
+    playlist: [
+    { 
+       'name' : "playlist1"
+    }
+    ]})
+    }, 
+    routes(){
+      this.post("/api/playlists",(schema,request) => {
+        let newPlaylist= JSON.parse(request.requestBody).data;
+        return schema.db.playlist.insert({
+          'name':newPlaylist
+        })
+      });
+      this.get("/api/playlists",  schema => {
+        return schema.db.playlist
+      });
+    },
+     
+    
   });
 
   return server;

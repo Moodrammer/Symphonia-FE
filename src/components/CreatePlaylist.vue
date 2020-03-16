@@ -23,11 +23,12 @@
         id="newPlaylist" 
         class="playlist font-weight-bold"
         autofocus
+        v-model="name"
         >
         </v-text-field>
 
         <v-btn color="white" outlined rounded  @click="dialog = false" class="popbutton px-8 mx-8" >Cancel </v-btn>
-        <v-btn color="success" class="white--text popbutton px-8" rounded>Create </v-btn>
+        <v-btn color="success" class="white--text popbutton px-8" rounded @click="create">Create </v-btn>
     </v-card>
   </v-dialog>
 </template>
@@ -36,7 +37,18 @@
 export default {
     data: function() {
       return {
-        dialog: false
+        dialog: false,
+        name: ""
+      }
+    },
+    methods: {
+      create: function(){
+        if(this.name=="")
+          this.name="New Playlist"
+        this.$store
+        .dispatch("createPlaylist",this.name) 
+        this.name=""
+        this.dialog= false;
       }
     }
 }
