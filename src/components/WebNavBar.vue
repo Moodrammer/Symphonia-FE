@@ -1,11 +1,11 @@
 <template>
   <v-app-bar color="#1a1a1a" class="bar" app flat>
-    <v-btn fab x-small color="black" class="mr-4 ml-6">
-      <v-icon color="grey darken-1" large>mdi-chevron-left</v-icon>
+    <v-btn fab x-small color="black" class="mr-4 ml-6" @click="prev">
+      <v-icon color="grey darken-1" large >mdi-chevron-left</v-icon>
     </v-btn>
 
-    <v-btn fab x-small color="black" class="hidden-md-and-down">
-      <v-icon color="grey darken-1" large>mdi-chevron-right</v-icon>
+    <v-btn fab x-small color="black" class="hidden-md-and-down" @click="next">
+      <v-icon color="grey darken-1" large >mdi-chevron-right</v-icon>
     </v-btn>
 
     <v-spacer></v-spacer>
@@ -26,18 +26,25 @@
 </template>
 
 <script>
+
 export default {
   data: function() {
     return {
-      hover: false
+      hover: false,
+      prevRoute:null
     }
   },
   methods: {
-    transparency: function(){
-     
+    prev:function(){
+       this.$router.go(-1)
+    },
+    next:function(){
+      this.$router.go(1)
     }
   }
+
 }
+
 </script>
 
 <style scoped>
