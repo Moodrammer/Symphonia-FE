@@ -1,5 +1,5 @@
 <template>
-  <div class="content" style="margin-top:120px">
+  <div class="content">
     <v-container>
       <v-row>
         <v-col

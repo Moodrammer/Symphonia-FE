@@ -1,7 +1,7 @@
 <template>
   <div class="home" style="background-color: #121212">
-    <div class="collection-toolbar">
-      <v-app-bar color="transparent" app class="px-10">
+    <div class="collection-toolbar mb-12">
+      <v-app-bar color="transparent" app class="px-10 nav-bar-gradient">
         <v-btn fab class="mx-2" text dark small>
           <v-icon color="grey" large>mdi-chevron-left</v-icon>
         </v-btn>
@@ -34,7 +34,7 @@
         </v-container>
       </v-app-bar>
     </div>
-    <router-view></router-view>
+        <router-view class="pt-10"></router-view>
   </div>
 </template>
 
@@ -51,4 +51,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+  .nav-bar-gradient{
+background: rgb(0,0,0);
+background: radial-gradient(circle, rgba(0,0,0,0.7150210425967262) 0%, rgba(0,0,0,1) 100%);  }
+</style>

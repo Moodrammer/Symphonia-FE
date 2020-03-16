@@ -1,8 +1,8 @@
 <template>
-  <div class="content" style="margin-top:120px">
+  <div class="content">
     <v-container>
       <v-row>
-        <v-col cols="12" lg="6" md="4" sm="6" v-if="likedSongs.length > 0">
+        <v-col cols="12" lg="6" v-if="likedSongs.length > 0">
           <v-menu absolute offset-y style="max-width: 600px" dark>
             <template v-slot:activator="{ on }">
               <v-card
@@ -15,25 +15,29 @@
                 color="#282828"
                 dark
               >
-                <v-card-title class="white--text pl-0 pb-0">
-                  name
-                </v-card-title>
-                <v-layout row wrap>
-                  <v-flex>
-                    <v-card-text> description </v-card-text>
-                  </v-flex>
-                  <v-flex>
-                    <v-btn
-                      v-if="playDisplayIndex === -1"
-                      fab
-                      text
-                      color="green"
-                      class="ml-10"
-                    >
-                      <v-icon x-large lg-12>mdi-play-circle</v-icon>
-                    </v-btn>
-                  </v-flex>
-                </v-layout>
+                <div style="height:150px">
+                  <v-card-text max-height="500">
+                    <span v-for="(song, index)  in likedSongs" :key="index">
+                      {{song.artist}}
+                      <span class="grey--text">{{song.title}}.</span>
+                    </span>
+                  </v-card-text>
+                </div>
+                <div>
+                  <v-card-title class="white--text pl-0 pb-0">
+                    <h1>Liked Songs</h1>
+                  </v-card-title>
+                </div>
+                <v-card-subtitle class="pl-0">{{likedSongs.length}} liked songs</v-card-subtitle>
+                <v-btn
+                  v-if="playDisplayIndex === -1"
+                  fab
+                  text
+                  color="green"
+                  class="ml-10 float-right"
+                >
+                  <v-icon x-large lg-12>mdi-play-circle</v-icon>
+                </v-btn>
               </v-card>
             </template>
             <v-list>
@@ -43,14 +47,7 @@
             </v-list>
           </v-menu>
         </v-col>
-        <v-col
-          cols="12"
-          lg="3"
-          md="4"
-          sm="6"
-          v-for="(playlist, index) in playlists"
-          :key="index"
-        >
+        <v-col cols="12" lg="3" md="4" sm="6" v-for="(playlist, index) in playlists" :key="index">
           <v-menu absolute offset-y style="max-width: 600px" dark>
             <template v-slot:activator="{ on }">
               <v-card
@@ -63,29 +60,19 @@
                 color="#282828"
                 dark
               >
-                <v-img
-                  class="mx-auto pa-0"
-                  height="200px"
-                  width="200px"
-                  :src="playlist.image"
-                >
-                </v-img>
+                <v-img class="mx-auto pa-0" height="200px" width="200px" :src="playlist.image"></v-img>
 
-                <v-card-title class="white--text pl-0 pb-0">{{
+                <v-card-title class="white--text pl-0 pb-0">
+                  {{
                   playlist.name
-                }}</v-card-title>
+                  }}
+                </v-card-title>
                 <v-layout row wrap>
                   <v-flex>
                     <v-card-text>{{ playlist.description }}</v-card-text>
                   </v-flex>
                   <v-flex>
-                    <v-btn
-                      v-if="playDisplayIndex === index"
-                      fab
-                      text
-                      color="green"
-                      class="ml-10"
-                    >
+                    <v-btn v-if="playDisplayIndex === index" fab text color="green" class="ml-10">
                       <v-icon x-large lg-12>mdi-play-circle</v-icon>
                     </v-btn>
                   </v-flex>
@@ -116,49 +103,60 @@ export default {
         { title: "Delete" },
         { title: "Copy Playlist link" }
       ],
-      likedSongs: ["Ana m4 Ana"],
+      likedSongs: [
+        { title: "Lose your self", artist: "Eminem" },
+        { title: "Lose your self", artist: "Eminem" },
+        { title: "Lose your self", artist: "Eminem" },
+        { title: "Lose your self", artist: "Eminem" },
+        { title: "Lose your self", artist: "Eminem" },
+        { title: "Lose your self", artist: "Eminem" },
+        { title: "Lose your self", artist: "Eminem" },
+        { title: "Lose your self", artist: "Eminem" },
+        { title: "Lose your self", artist: "Eminem" },
+        { title: "Lose your self", artist: "Eminem" }
+      ],
       playDisplayIndex: null,
       playlists: [
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
           description: "1 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
           description: "2 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
           description: "3 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
           description: "4 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
           description: "5 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
           description: "6 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
           description: "7 new playlist"
         }
       ]

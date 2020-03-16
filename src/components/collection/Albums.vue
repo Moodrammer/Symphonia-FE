@@ -1,5 +1,5 @@
 <template>
-  <div class="content" style="margin-top:120px">
+  <div class="content">
     <v-container>
       <v-row>
         <v-col
@@ -85,43 +85,43 @@ export default {
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
           description: "1 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
           description: "2 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
           description: "3 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
           description: "4 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
           description: "5 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
           description: "6 new playlist"
         },
         {
           name: "Amr Diab Collection",
           image:
-            "https://www.shorouknews.com/uploadedimages/Sections/ART/original/amrdianinblack.jpg",
+            "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
           description: "7 new playlist"
         }
       ]
