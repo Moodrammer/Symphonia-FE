@@ -1,6 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Library from "../components/Library.vue";
+import Playlists from '../components/collection/Playlists.vue';
+import ALbums from '../components/collection/Albums.vue';
+import Artists from '../components/collection/Artists.vue';
 
 Vue.use(VueRouter);
 
@@ -18,7 +22,30 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue")
-  }
+  },
+  {
+    path: "/library",
+    name: "Library",
+    component: Library,
+    redirect: "/library/playlists",
+    children:
+    [
+      {
+        path: "playlists",
+        component: Playlists
+      },
+      {
+        path: "artists",
+        component: Artists
+      },
+      {
+        path: "albums",
+        component: ALbums
+      }
+  ]
+}
+
+
 ];
 
 const router = new VueRouter({
