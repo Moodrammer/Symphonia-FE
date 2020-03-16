@@ -8,19 +8,40 @@
       <v-icon color="grey darken-1" large >mdi-chevron-right</v-icon>
     </v-btn>
 
-    <v-spacer></v-spacer>
+    <v-divider></v-divider>
 
     <v-btn outlined  rounded class="upgarde white--text px-8 py-2 hidden-sm-and-down">UPGARDE</v-btn>
 
-    <v-btn rounded color="#282828" class="profile white--text pa-0">
-      <v-btn fab x-small color="grey darken-4" class="ml-1">
-        <v-icon color="white" class="mx-2">mdi-account-outline</v-icon>
-      </v-btn> 
+   
 
-      <span class="hidden-md-and-down"> UserName</span>
-      
-      <v-icon color="white" class="hidden-md-and-down">mdi-menu-down</v-icon>
-    </v-btn>
+       <v-menu  offset-y >
+            <template v-slot:activator="{ on }" >
+              <v-btn rounded color="rgb(0,0,0,0.7)" class="profile white--text pa-0" v-on="on">
+                <v-btn fab x-small color="rgb(0,0,0,0.7)" class="ml-1">
+                  <v-icon color="white" class="mx-2">mdi-account-outline</v-icon>
+                </v-btn> 
+
+                <span class="hidden-md-and-down"> UserName</span>
+                <v-icon color="white" class="hidden-md-and-down" v-if="on">mdi-menu-down</v-icon>
+                <v-icon color="white" class="hidden-md-and-down" v-else>mdi-menu-up</v-icon>
+                
+              </v-btn>
+            </template>
+
+            <v-list color="#282828" dark class="mt-3">
+              <v-list-item>
+                <v-list-item-title color="#b3b3b3">Account</v-list-item-title>
+              </v-list-item>
+              
+              <v-list-item class="hidden-md-and-up">
+                <v-list-item-title >Updarde to premium</v-list-item-title>
+              </v-list-item>
+              <v-divider></v-divider>
+              <v-list-item>
+                <v-list-item-title>Log out</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
 
   </v-app-bar>
 </template>
