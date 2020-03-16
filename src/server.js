@@ -11,8 +11,8 @@ export function makeServer({ environment = "development" } = {}) {
 
     seeds(server) {
       //creating some users to test login page
-      server.create("user", { username: "Bob" , password: "12345678" })
-      server.create("user", { username: "Alice" , password: "123456789" })
+      server.create("user", { email: "Bob@gmail.com" , password: "12345678" })
+      server.create("user", { email: "Alice@gmail.com" , password: "123456789" })
     },
 
     //Define serializers to format the responses
@@ -31,15 +31,24 @@ export function makeServer({ environment = "development" } = {}) {
       
       //})
       this.post("/v1/users/login", (schema, request) => {
+        //turn attributes to json to be able to access the data of the request
         let attrs = JSON.parse(request.requestBody);
-        if(schema.users.find(1).username == attrs.email && schema.users.find(1).password == attrs.password){
+        if(schema.users.find(1).email == attrs.email && schema.users.find(1).password == attrs.password){
           return new Response(
-            200,{token: "12345"},{user: {username: "bob" ,email: "Bob@gmail.com" }}
+            200,{},
+            {
+              token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MzQ2MiwiZXhwIjoxNTgzNTc3MDYyfQ.P_nm8thbkOzKBnbpqkBL1_SuRzZxt5eFFFN0aZ6AbBQ",
+              user: {
+                  _id: "5e6363431afd690fe0698560",
+                  email: attrs.email,
+                  name:  "Bobuser"
+                }
+            }
           )
         }
         else{
           return new Response(
-            404, {}, {}
+            400, {}, {}
       )
         }
       })

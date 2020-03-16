@@ -4,165 +4,167 @@
     <symphonia-Header></symphonia-Header>
 
     <v-divider></v-divider>
-
+    <!-- Body of the sign up page -->
     <v-container>
-        <v-row 
-        justify="center"
-        >
-        <v-col cols="12" sm="6" md="5">
-            <!-- Facebook sign division -->
+        <v-content>
             <v-row 
-                justify="center"
-                style="margin-bottom: 20px;"
-                >
-                <v-btn rounded color="#3B5998" class="white--text">Sign up with Facebook</v-btn>
-            </v-row>    
-            
-            <!-- Email Sign division -->
-            <!-- The form takes a fixed width and the rest of the elements take the form's width -->
-            <!-- Adding a reference to the form to be able to refer to it on submission -->
-            <v-form 
-            ref="userDataForm"
-            class="compact-form"
-            style="margin-top: 20px; width: 100%; margin: auto;"
-            v-model="valid"
+            justify="center"
             >
-                <!-- Divider between both ways to sign up -->
-                <v-row>
-                    <v-divider></v-divider>
-                    <span style="font-size:14px;">or</span>
-                    <v-divider></v-divider>
-                </v-row>
-
-                <div 
-                class="text-center mb-3"
-                style="font: 18px arial,sans serif; font-weight: bold;"
-                >
-                Sign up with your email address
-                </div>
-
-                <v-text-field 
-                placeholder="Email" 
-                outlined
-                style="width : 100%; height: 80px; margin: auto"
-                type="email"
-                :rules="emailRules"
-                v-model="userData.email"
-                maxlength="200" 
-                >
-                </v-text-field>
-                
-                <v-text-field 
-                placeholder="Confirm email" 
-                outlined
-                style="width : 100%; height: 80px; margin: auto"
-                type="email"
-                :rules="emailConfirmationRules"
-                v-model="userData.emailToMatch"
-                maxlength="200"
-                >
-                </v-text-field>
-                
-                <v-text-field 
-                placeholder="Password" 
-                outlined
-                style="width : 100%; height: 80px; margin: auto"
-                type="password"
-                :rules="passwordRules"
-                required
-                v-model="userData.password"
-                maxlength="30"
-                >
-                </v-text-field>
-
-                <v-text-field 
-                placeholder="What should we call you?" 
-                outlined
-                style="width : 100%; height: 80px; margin: auto"
-                :rules="usernameRules"
-                maxlength="30"
-                v-model="userData.username"
-                >
-                </v-text-field>
-                
-                <span class="text-left">Date of birth</span>
-
+            <v-col cols="12" sm="6" md="5">
+                <!-- Facebook sign division -->
                 <v-row 
-                style="width: 100%; margin: auto;"
-                no-gutters
+                    justify="center"
+                    style="margin-bottom: 20px;"
+                    >
+                    <v-btn rounded color="#3B5998" class="white--text">Sign up with Facebook</v-btn>
+                </v-row>    
+                
+                <!-- Email Sign division -->
+                <!-- The form takes a fixed width and the rest of the elements take the form's width -->
+                <!-- Adding a reference to the form to be able to refer to it on submission -->
+                <v-form 
+                ref="userDataForm"
+                class="compact-form"
+                style="margin-top: 20px; width: 100%; margin: auto;"
+                v-model="valid"
                 >
-                   <v-col cols="3">
-                        <v-text-field
-                        placeholder="Day"
-                        outlined
-                        width="90%"
-                        :rules="dayRules"
-                        v-model="userData.daySelected"
-                        >
-                        </v-text-field>
-                    </v-col>
+                    <!-- Divider between both ways to sign up -->
+                    <v-row>
+                        <v-divider></v-divider>
+                        <span style="font-size:14px;">or</span>
+                        <v-divider></v-divider>
+                    </v-row>
 
-                    <v-col cols="6">
-                        <v-overflow-btn
-                        placeholder="month"
-                        outlined
-                        width="90%"
-                        :items="item"
-                        :rules="monthRules"
-                        v-model="userData.monthSelected"
-                        >
-                        </v-overflow-btn>
-                    </v-col>
+                    <div 
+                    class="text-center mb-3"
+                    style="font: 18px arial,sans serif; font-weight: bold;"
+                    >
+                    Sign up with your email address
+                    </div>
 
+                    <v-text-field 
+                    placeholder="Email" 
+                    outlined
+                    style="width : 100%; height: 80px; margin: auto"
+                    type="email"
+                    :rules="emailRules"
+                    v-model="userData.email"
+                    maxlength="200" 
+                    >
+                    </v-text-field>
+                    
+                    <v-text-field 
+                    placeholder="Confirm email" 
+                    outlined
+                    style="width : 100%; height: 80px; margin: auto"
+                    type="email"
+                    :rules="emailConfirmationRules"
+                    v-model="userData.emailToMatch"
+                    maxlength="200"
+                    >
+                    </v-text-field>
+                    
+                    <v-text-field 
+                    placeholder="Password" 
+                    outlined
+                    style="width : 100%; height: 80px; margin: auto"
+                    type="password"
+                    :rules="passwordRules"
+                    required
+                    v-model="userData.password"
+                    maxlength="30"
+                    >
+                    </v-text-field>
+
+                    <v-text-field 
+                    placeholder="What should we call you?" 
+                    outlined
+                    style="width : 100%; height: 80px; margin: auto"
+                    :rules="usernameRules"
+                    maxlength="30"
+                    v-model="userData.username"
+                    >
+                    </v-text-field>
+                    
+                    <span class="text-left">Date of birth</span>
+
+                    <v-row 
+                    style="width: 100%; margin: auto;"
+                    no-gutters
+                    >
                     <v-col cols="3">
-                        <v-text-field
-                        placeholder="Year"
-                        outlined
-                        width="90%"
-                        :rules="yearRules"
-                        v-model="userData.yearSelected"
-                        >
-                        </v-text-field>
-                    </v-col>
-                </v-row>
+                            <v-text-field
+                            placeholder="Day"
+                            outlined
+                            width="90%"
+                            :rules="dayRules"
+                            v-model="userData.daySelected"
+                            >
+                            </v-text-field>
+                        </v-col>
 
-                <v-row justify-left>
-                <v-radio-group 
-                row
-                style="padding-left: 35px"
-                :rules="genderRules"
-                v-model="userData.gender"
-                >
-                    <v-radio label="Male" value="Male"></v-radio>
-                    <v-radio label="Female" value="Female"></v-radio>
-                </v-radio-group>
-                </v-row>
+                        <v-col cols="6">
+                            <v-overflow-btn
+                            placeholder="month"
+                            outlined
+                            width="90%"
+                            :items="item"
+                            :rules="monthRules"
+                            v-model="userData.monthSelected"
+                            >
+                            </v-overflow-btn>
+                        </v-col>
 
-                <v-row justify="center">
-                    <v-col cols="8"> 
-                        <v-btn 
-                        color="#1DB954"
-                        dark
-                        rounded
-                        block
-                        large
-                        v-on:click="submitForm"
-                        >Sign up</v-btn>
-                    </v-col>
-                </v-row>
+                        <v-col cols="3">
+                            <v-text-field
+                            placeholder="Year"
+                            outlined
+                            width="90%"
+                            :rules="yearRules"
+                            v-model="userData.yearSelected"
+                            >
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
 
-                <v-row justify="center">
-                    <span class="text--center">Already Have an account? 
-                    <router-link 
-                    to="/Login" 
-                    class="green--text">
-                    Log in
-                    </router-link>
-                    </span>
-                </v-row>
-            </v-form>
-            </v-col>
-      </v-row>
+                    <v-row justify-left>
+                    <v-radio-group 
+                    row
+                    style="padding-left: 35px"
+                    :rules="genderRules"
+                    v-model="userData.gender"
+                    >
+                        <v-radio label="Male" value="Male"></v-radio>
+                        <v-radio label="Female" value="Female"></v-radio>
+                    </v-radio-group>
+                    </v-row>
+
+                    <v-row justify="center">
+                        <v-col cols="8"> 
+                            <v-btn 
+                            color="#1DB954"
+                            dark
+                            rounded
+                            block
+                            large
+                            v-on:click="submitForm"
+                            >Sign up</v-btn>
+                        </v-col>
+                    </v-row>
+
+                    <v-row justify="center">
+                        <span class="text--center">Already Have an account? 
+                        <router-link 
+                        to="/Login" 
+                        class="green--text">
+                        Log in
+                        </router-link>
+                        </span>
+                    </v-row>
+                </v-form>
+                </v-col>
+        </v-row>
+      </v-content>
       </v-container>
 </div>
 </template>

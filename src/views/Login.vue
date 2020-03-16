@@ -16,6 +16,23 @@
                         </v-row>
                     </v-col>
                 </v-row>
+                <!-- alert that shows on false login -->
+                <v-row v-if="errorState">
+                    <v-col 
+                    cols="12"
+                    class="py-1"
+                    >
+                        <v-alert 
+                        color="#e22134" 
+                        style="font-size: 12px" 
+                        dense
+                        >
+                            <v-row justify="center">
+                                <div class="white--text px-3 py-2">Incorrect email or password.</div>
+                            </v-row>
+                        </v-alert>
+                    </v-col>
+                </v-row>
                 <!-- Facebook button  -->
                 <v-row>
                     <v-col 
@@ -84,12 +101,13 @@
                             id="login-username"
                             name="username"
                             type="text"
-                            placeholder="Email adderss or username"
+                            placeholder="Email adderss"
                             outlined
                             dense
-                            v-model="formData.username"
+                            v-model="formData.email"
                             style="height: 40px;"
-                            :rules="usernameRules"
+                            maxlength="200"
+                            :rules="emailRules"
                             ></v-text-field>
                         </v-col>
                     </v-row>
@@ -104,6 +122,7 @@
                             dense
                             v-model="formData.password"
                             style="height: 40px;"
+                            maxlength="30"
                             :rules="passwordRules"
                             ></v-text-field>
                         </v-col>
@@ -126,6 +145,7 @@
                                 large
                                 block
                                 @click="login"
+                                
                                 >LOG IN
                                 </v-btn>
                         </v-col>
@@ -207,13 +227,15 @@ export default {
         return{
             //The user data
             formData: {
-                username: '',
+                email: '',
                 password: ''
             },
             rememberMe: false,
+            errorState: false,
             //validation rules for input data
-            usernameRules: [
-                v => !!v || "Please enter your Symphonia username or email address."
+            emailRules: [
+                v => !!v || "Please enter your Symphonia username or email address.",
+                v => /.+@.+\..+/.test(v) || "E-mail must be valid"
             ],
             passwordRules: [
                 v => !!v || "Please enter your password."
@@ -225,15 +247,13 @@ export default {
         login(){
             //if the form validates and had no restrictions
             if(this.$refs.loginForm.validate()){
-                //console.log("the form is valid :D")
-                //this.$router.push("/")
                 this.$store.dispatch("loginuser", {
-                    email: this.formData.username,
+                    email: this.formData.email,
                     password: this.formData.password
                 }).then(() => {this.$router.push("/")})
-                .catch((error) => {console.log(error)})
+                .catch(() => {this.errorState = true})
             }   
-        }
+        },
     }
 }
 </script>
