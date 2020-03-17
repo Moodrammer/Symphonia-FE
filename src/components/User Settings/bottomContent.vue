@@ -2,7 +2,7 @@
   <div>
     <div class="bottom-card">
       <form action="#" class="">
-        <section v-show="first">
+        <section v-if="first">
           <h3>Help us improve your account experience</h3>
           <p>Did you find what you were looking for?</p>
           <div class="radio-button">
@@ -11,7 +11,7 @@
                 type="radio"
                 value="yes"
                 class="radio"
-                v-on:click="secondStage"
+                @click="secondStage()"
                 v-model="A1"
               />
               Yes
@@ -23,15 +23,25 @@
                 type="radio"
                 value="no"
                 class="radio"
-                v-on:click="secondStage"
+                v-on:click="secondStage()"
                 v-model="A1"
               />
               No
             </label>
           </div>
         </section>
-        <section v-show="second">
-          <h1>{{ A1 }}</h1>
+        <section v-if="second">
+          <h3>Thanks! Let us know more.</h3>
+          <p>What were you trying to do in your account?</p>
+          <textarea required v-model="text"></textarea>
+          <p class="note">
+            We continuously use this feedback to improve your experience, but
+            are unable to respond individually.
+          </p>
+          <button class="btn" @click="thirdStage">Submit</button>
+        </section>
+        <section v-show="third" class="third-stage">
+          <h3>Thanks for your feedback!</h3>
         </section>
       </form>
     </div>
@@ -45,19 +55,40 @@ export default {
       first: true,
       second: false,
       third: false,
-      A1: ""
+      A1: "",
+      text: ""
     };
   },
-  computed: {
-    secondStage: () => {
-      this.first = false;
-      this.second = true;
+  methods: {
+    secondStage: function() {
+      this.first = !this.first;
+      this.second = !this.second;
+    },
+    thirdStage: function() {
+      if (this.text) {
+        this.second = !this.second;
+        this.third = !this.third;
+      }
     }
+  },
+  created() {
+    this.first = true;
+    this.second = false;
+    this.third = false;
   }
 };
 </script>
 
 <style scoped>
+@font-face {
+  font-family: Circular;
+  src: url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.woff2")
+      format("woff2"),
+    url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.woff") format("woff"),
+    url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.ttf") format("ttf");
+  font-style: normal;
+  font-weight: 400;
+}
 * {
   box-sizing: border-box;
 }
@@ -131,5 +162,70 @@ label {
   line-height: inherit;
   margin-top: 3px;
   margin-right: 3px;
+}
+textarea {
+  padding: 14px;
+  height: 148px;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #bdbdbd;
+  box-shadow: none;
+  display: block;
+  font-size: 14px;
+  margin-bottom: 16px;
+  width: 100%;
+  font-family: inherit;
+  line-height: inherit;
+}
+.note {
+  color: #181818;
+  font-family: Circular;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0;
+  font-style: normal;
+  padding: 12px;
+  background: #f8f8f8;
+  border-radius: 5px;
+  border: 1px solid #d9dadc;
+  display: flex;
+}
+.note::before {
+  content: "";
+  display: block;
+  background: url(https://img.icons8.com/ios/100/000000/info.png) no-repeat 50% /
+    contain;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+.btn {
+  letter-spacing: 1.5px;
+  font-size: 14px;
+  width: auto;
+  display: inline-block;
+  background-color: #1db954;
+  color: #fff;
+  border-radius: 100px;
+  min-height: 48px;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  line-height: 20px;
+  padding: 1em 3em;
+  border: none;
+  transition-duration: 33ms;
+  transition-property: background-color, border-color, color, box-shadow, filter,
+    transform, -webkit-box-shadow, -webkit-filter, -webkit-transform;
+  user-select: none;
+  text-decoration: none;
+  cursor: pointer;
+  max-width: none;
+  margin: 0 auto;
+}
+.third-stage {
+  padding: 24px 0px 10px;
+  text-align: center;
 }
 </style>

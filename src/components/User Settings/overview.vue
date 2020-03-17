@@ -115,6 +115,12 @@ export default {
 </script>
 
 <style scoped>
+@font-face {
+  font-family: Circular;
+  src: url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.woff2") format("woff2"), url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.woff") format("woff"), url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.ttf") format("ttf");
+  font-style: normal;
+  font-weight: 400;
+}
 * {
   box-sizing: border-box;
 }
