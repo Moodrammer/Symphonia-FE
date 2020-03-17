@@ -60,12 +60,6 @@
             <li class="links-column-item">
               About
             </li>
-            <li class="links-column-item">
-              Jobs
-            </li>
-            <li class="links-column-item">
-              For the record
-            </li>
           </ul>
         </v-container>
 
@@ -84,18 +78,6 @@
             <li class="links-column-item">
               For Artists
             </li>
-            <li class="links-column-item">
-              Developer
-            </li>
-            <li class="links-column-item">
-              Brands
-            </li>
-            <li class="links-column-item">
-              Investors
-            </li>
-            <li class="links-column-item">
-              Vendors
-            </li>
           </ul>
         </v-container>
 
@@ -111,12 +93,11 @@
             <li class="links-column-title">
               useful links
             </li>
-            <li class="links-column-item">
-              Help
-            </li>
-            <li class="links-column-item">
-              Web Player
-            </li>
+            <router-link to="/webhome" style="text-decoration: none;">
+              <li class="links-column-item">
+                Web Player
+              </li>
+            </router-link>
             <li class="links-column-item">
               For Mobile App
             </li>
