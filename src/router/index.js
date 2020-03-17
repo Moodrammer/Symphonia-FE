@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import WebPlayerHome from "../views/WebPlayerHome"
 import Homepage from "../views/Home.vue";
 
 Vue.use(VueRouter);
@@ -11,6 +12,11 @@ const routes = [
     component: Homepage
   },
   {
+    path:"/webhome",
+    name: "WebHome",
+    component:WebPlayerHome
+  },
+{
     path: "/signup",
     name: "signup",
     // route level code-splitting
@@ -28,7 +34,7 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Login.vue")
   }
-];
+]
 
 const router = new VueRouter({
   mode: "history",

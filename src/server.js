@@ -18,6 +18,13 @@ export function makeServer({ environment = "development" } = {}) {
          DateOfBirth: '12-12-1980',
          gender: "male" 
         })
+
+        server.db.loadData({
+          playlist: [
+          { 
+             'name' : "playlist1"
+          }
+          ]})
       },
 
     //Define serializers to format the responses
@@ -26,6 +33,20 @@ export function makeServer({ environment = "development" } = {}) {
     },
 
     routes() {
+      this.post("/api/playlists",(schema,request) => {
+        let newPlaylist= JSON.parse(request.requestBody).data;
+        return schema.db.playlist.insert({
+          'name':newPlaylist
+        })
+      });
+
+      this.get("/api/playlists",  schema => {
+        return schema.db.playlist
+      });
+
+      this.get("/api/v1/me/player/tracks/history",schema => {
+        return schema.db.playlist
+      })
       // this.urlPrefix = 'http://localhost:8080';
       this.namespace = '/api';
 
