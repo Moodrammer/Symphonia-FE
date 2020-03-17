@@ -21,7 +21,7 @@ const mutations = {
 const actions = {
   createPlaylist({commit},playlistName){
     axios
-    .post("/api/playlists",{
+    .post("/playlists",{
       data: playlistName
     })
     .then(response =>{
@@ -38,7 +38,7 @@ const actions = {
   },
   getPlaylists({commit}){
     axios
-    .get("/api/playlists")
+    .get("/playlists")
     .then(response =>{
       let list=response.data;
       console.log(list)

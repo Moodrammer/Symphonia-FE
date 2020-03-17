@@ -33,22 +33,23 @@ export function makeServer({ environment = "development" } = {}) {
     },
 
     routes() {
-      this.post("/api/playlists",(schema,request) => {
+      this.namespace = '/api';
+      this.post("/playlists",(schema,request) => {
         let newPlaylist= JSON.parse(request.requestBody).data;
         return schema.db.playlist.insert({
           'name':newPlaylist
         })
       });
 
-      this.get("/api/playlists",  schema => {
+      this.get("/playlists",  schema => {
         return schema.db.playlist
       });
 
-      this.get("/api/v1/me/player/tracks/history",schema => {
+      this.get("/v1/me/player/tracks/history",schema => {
         return schema.db.playlist
       })
       // this.urlPrefix = 'http://localhost:8080';
-      this.namespace = '/api';
+ 
 
       //this.get("/search", schema => {
         

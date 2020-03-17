@@ -93,7 +93,10 @@
             <li class="links-column-title">
               useful links
             </li>
-            <router-link to="/webhome" style="text-decoration: none;">
+            <li class="links-column-item">
+              Help
+            </li>
+            <router-link to="/webhome">
               <li class="links-column-item">
                 Web Player
               </li>
@@ -272,5 +275,9 @@ export default {
 
 .socialmedia-icon-color:hover {
   color: #1db954;
+}
+
+a {
+  text-decoration: none;
 }
 </style>
