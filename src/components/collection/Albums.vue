@@ -83,30 +83,6 @@ export default {
             "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
           description: "3 new album"
         },
-        {
-          name: "Amr Diab Collection",
-          image:
-            "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
-          description: "4 new album"
-        },
-        {
-          name: "Amr Diab Collection",
-          image:
-            "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
-          description: "5 new album"
-        },
-        {
-          name: "Amr Diab Collection",
-          image:
-            "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
-          description: "6 new album"
-        },
-        {
-          name: "Amr Diab Collection",
-          image:
-            "https://direct.rhapsody.com/imageserver/images/alb.195641441/500x500.jpg",
-          description: "7 new album"
-        }
       ]
     };
   },

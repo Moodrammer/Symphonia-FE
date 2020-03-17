@@ -1,5 +1,5 @@
 <template>
-  <div class="home" style="background-color: #121212">
+  <div class="home" style="background-color: #121212; min-height:768px ">
     <div class="collection-toolbar mb-12">
       <v-app-bar color="transparent" app class="px-10 nav-bar-gradient">
         <v-btn fab class="mx-2" text dark small>
