@@ -74,7 +74,7 @@ export function makeServer({ environment = "development" } = {}) {
             DateOfBirth: attrs.DateOfBirth,
             gender: attrs.gender
             })
-          console.log(schema.users.find(3))
+          
 
           //return a request for now that the operation of creating the user was a success
           return new Response(
