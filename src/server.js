@@ -21,9 +21,14 @@ export function makeServer({ environment = "development" } = {}) {
           'name':newPlaylist
         })
       });
+
       this.get("/api/playlists",  schema => {
         return schema.db.playlist
       });
+
+      this.get("/api/v1/me/player/tracks/history",schema => {
+        return schema.db.playlist
+      })
     },
      
     
