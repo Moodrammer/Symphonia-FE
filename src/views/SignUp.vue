@@ -6,19 +6,32 @@
     <v-divider></v-divider>
     <!-- Body of the sign up page -->
     <v-container>
-        <v-content>
+        <v-content max-width="500px">
             <v-row 
             justify="center"
             >
-            <v-col cols="12" sm="6" md="5">
+            <v-col cols="12">
                 <!-- Facebook sign division -->
                 <v-row 
                     justify="center"
                     style="margin-bottom: 20px;"
                     >
-                    <v-btn rounded color="#3B5998" class="white--text">Sign up with Facebook</v-btn>
-                </v-row>    
-                
+                    <v-col cols="6">
+                        <v-row justify="center">
+                        <v-btn 
+                        id="fb-sign-btn"
+                        rounded color="#3B5998" 
+                        class="white--text"
+                        style="font-size: 14px"
+                        large
+                        block
+                        >
+                        Sign up with Facebook
+                        </v-btn>
+                        </v-row>
+                    </v-col>
+                </v-row>
+                    
                 <!-- Email Sign division -->
                 <!-- The form takes a fixed width and the rest of the elements take the form's width -->
                 <!-- Adding a reference to the form to be able to refer to it on submission -->
@@ -26,7 +39,6 @@
                 ref="userDataForm"
                 class="compact-form"
                 style="margin-top: 20px; width: 100%; margin: auto;"
-                v-model="valid"
                 >
                     <!-- Divider between both ways to sign up -->
                     <v-row>
@@ -41,7 +53,7 @@
                     >
                     Sign up with your email address
                     </div>
-
+                    <!-- User email text field -->
                     <v-text-field 
                     placeholder="Email" 
                     outlined
@@ -49,10 +61,11 @@
                     type="email"
                     :rules="emailRules"
                     v-model="userData.email"
-                    maxlength="200" 
+                    maxlength="200"
+                    id="user-email" 
                     >
                     </v-text-field>
-                    
+                    <!-- Confiramtion email text field -->
                     <v-text-field 
                     placeholder="Confirm email" 
                     outlined
@@ -61,21 +74,22 @@
                     :rules="emailConfirmationRules"
                     v-model="userData.emailToMatch"
                     maxlength="200"
+                    id="user-confirmation-email"
                     >
                     </v-text-field>
-                    
+                    <!-- Password text field -->
                     <v-text-field 
                     placeholder="Password" 
                     outlined
                     style="width : 100%; height: 80px; margin: auto"
                     type="password"
                     :rules="passwordRules"
-                    required
                     v-model="userData.password"
                     maxlength="30"
+                    id="user-password"
                     >
                     </v-text-field>
-
+                    <!-- user name text field -->
                     <v-text-field 
                     placeholder="What should we call you?" 
                     outlined
@@ -83,27 +97,29 @@
                     :rules="usernameRules"
                     maxlength="30"
                     v-model="userData.username"
+                    id="username"
                     >
                     </v-text-field>
-                    
+                    <!-- Date of birth division -->
                     <span class="text-left">Date of birth</span>
 
                     <v-row 
                     style="width: 100%; margin: auto;"
-                    no-gutters
+                    justify="space-between"
                     >
-                    <v-col cols="3">
+                    <v-col cols="3" class="pl-0 pb-1">
                             <v-text-field
                             placeholder="Day"
                             outlined
                             width="90%"
                             :rules="dayRules"
                             v-model="userData.daySelected"
+                            id="birth-day"
                             >
                             </v-text-field>
                         </v-col>
 
-                        <v-col cols="6">
+                        <v-col cols="6" class="pb-1">
                             <v-overflow-btn
                             placeholder="month"
                             outlined
@@ -111,17 +127,19 @@
                             :items="item"
                             :rules="monthRules"
                             v-model="userData.monthSelected"
+                            id="birth-month"
                             >
                             </v-overflow-btn>
                         </v-col>
 
-                        <v-col cols="3">
+                        <v-col cols="3" class="pr-0 pb-1">
                             <v-text-field
                             placeholder="Year"
                             outlined
                             width="90%"
                             :rules="yearRules"
                             v-model="userData.yearSelected"
+                            id="birth-year"
                             >
                             </v-text-field>
                         </v-col>
@@ -130,28 +148,30 @@
                     <v-row justify-left>
                     <v-radio-group 
                     row
-                    style="padding-left: 35px"
+                    class="pl-2"
                     :rules="genderRules"
                     v-model="userData.gender"
+                    id="gender"
                     >
-                        <v-radio label="Male" value="Male"></v-radio>
-                        <v-radio label="Female" value="Female"></v-radio>
+                        <v-radio label="Male" value="Male" id="male-select"></v-radio>
+                        <v-radio label="Female" value="Female" id="female-select"></v-radio>
                     </v-radio-group>
                     </v-row>
-
+                    <!-- Sign up button -->
                     <v-row justify="center">
-                        <v-col cols="8"> 
+                        <v-col cols="8" class="py-2"> 
                             <v-btn 
+                            id="sign-up-btn"
                             color="#1DB954"
                             dark
                             rounded
                             block
                             large
-                            v-on:click="submitForm"
+                            @click="submitForm"
                             >Sign up</v-btn>
                         </v-col>
                     </v-row>
-
+                    <!-- link to the Login page -->
                     <v-row justify="center">
                         <span class="text--center">Already Have an account? 
                         <router-link 
@@ -178,7 +198,18 @@ export default {
     },
     data(){
         return{
-            valid: false,
+            //User sign up data
+            //All the userData provided by the form
+            userData: {
+                email: '',
+                emailToMatch: '',
+                password: '',
+                username: '',
+                daySelected: '',
+                monthSelected: '',
+                yearSelected: '',
+                gender: ''
+            },
             //Set of rules for validation
             emailRules: [
                 v => !!v || "Please enter your email",
@@ -208,18 +239,6 @@ export default {
             //items and data
             item: ['January', 'February' , 'March' , 'April' , 'May' , 'June' , 'July' , 'August' , 'September'
             , 'October' , 'November' , 'December'],
-
-            //All the userData provided by the form
-            userData: {
-                email: '',
-                emailToMatch: '',
-                password: '',
-                username: '',
-                daySelected: '',
-                monthSelected: '',
-                yearSelected: '',
-                gender: ''
-            }
         }
     },
     //Taken from : https://stackoverflow.com/questions/47213703/vuetify-form-validation-defining-es6-rules-for-matching-inputs
@@ -251,6 +270,11 @@ export default {
     .compact-form {
     transform: scale(0.8);
     transform-origin: center top;
+    }
+
+    .v-content {
+        max-width: 500px;
+        margin: auto;
     }
 
     
