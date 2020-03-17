@@ -253,14 +253,17 @@ export default {
     
     },
     methods: {
+        //Submitting the sign up form
         submitForm(){
-            if(this.$refs.userDataForm.validate())
-                console.log(this.userData);
-            else
-                console.log("emit errors first");    
+            if(this.$refs.userDataForm.validate()){
+                //This action returns a promise to show whether the user had sighned up successfully or not
+                this.$store.dispatch('registerUser' , this.userData)
+                .then(() => {this.$router.push("/Login")})
+                //if an error object was caught temporarily display it in the console
+                .catch((error) => {console.log(error)})
+            }
         }
 }
-
 }
 
 

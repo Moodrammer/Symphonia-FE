@@ -11,9 +11,14 @@ export function makeServer({ environment = "development" } = {}) {
 
     seeds(server) {
       //creating some users to test login page
-      server.create("user", { email: "Bob@gmail.com" , password: "12345678" })
-      server.create("user", { email: "Alice@gmail.com" , password: "123456789" })
-    },
+      server.create("user", {
+         name: "Bobuser",
+         email: "Bob@gmail.com", 
+         password: "12345678",
+         DateOfBirth: '12-12-1980',
+         gender: "male" 
+        })
+      },
 
     //Define serializers to format the responses
     serializers: {
@@ -30,10 +35,14 @@ export function makeServer({ environment = "development" } = {}) {
          
       
       //})
+      //Intercepting Login post requests
       this.post("/v1/users/login", (schema, request) => {
         //turn attributes to json to be able to access the data of the request
         let attrs = JSON.parse(request.requestBody);
-        if(schema.users.find(1).email == attrs.email && schema.users.find(1).password == attrs.password){
+        let i;
+        for(i = 1; i <= schema.users.all().length; i++)
+        {
+          if(schema.users.find(i).email == attrs.email && schema.users.find(i).password == attrs.password){
           return new Response(
             200,{},
             {
@@ -41,18 +50,45 @@ export function makeServer({ environment = "development" } = {}) {
               user: {
                   _id: "5e6363431afd690fe0698560",
                   email: attrs.email,
-                  name:  "Bobuser"
+                  name:  schema.users.find(i).name
                 }
             }
           )
         }
-        else{
-          return new Response(
+      }
+      return new Response(
             400, {}, {}
-      )
-        }
-      })
+        )
+       }),
+      
+      //Intercepts post requests from Register page
+      this.post('/v1/users/signup', (schema,request) => {
+        //create a new user in the server schema
+          //parse the sent request body to JSON
+          let attrs = JSON.parse(request.requestBody)
+          //create a new user with the given data
+          schema.create('user' , {
+            username: attrs.name , 
+            email: attrs.email,
+            password: attrs.password,
+            DateOfBirth: attrs.DateOfBirth,
+            gender: attrs.gender
+            })
+          console.log(schema.users.find(3))
 
+          //return a request for now that the operation of creating the user was a success
+          return new Response(
+            201, {} , {
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
+              "user": {
+                "_id": "5e6363431afd690fe0698560",
+                "email": attrs.email,
+                "name": attrs.name,
+                "__v": 0
+              }
+            }
+          )
+      })
     },
   })
 
