@@ -113,10 +113,13 @@
             </li>
             <li class="links-column-item">
               Help
-            </li>
-            <li class="links-column-item">
+            </li >
+           <router-link to="/webhome">
+            <li class="links-column-item" >
               Web Player
             </li>
+           </router-link>
+       
             <li class="links-column-item">
               For Mobile App
             </li>
@@ -291,5 +294,9 @@ export default {
 
 .socialmedia-icon-color:hover {
   color: #1db954;
+}
+
+a{
+  text-decoration:none
 }
 </style>
