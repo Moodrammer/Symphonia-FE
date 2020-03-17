@@ -10,7 +10,9 @@ const state = {
     //The username of the current user
     username: '',
     //The email of the current user
-    userEmail: '' 
+    userEmail: '' ,
+    //The user's date of Birth
+    userDOB: ''
 }
 
 const mutations = {
@@ -21,6 +23,10 @@ const mutations = {
         state.userId = payload.user._id;
         state.username = payload.user.name;
         state.userEmail = payload.user.email;
+    },
+    //To set the user's date of birth
+    setuserDOB(state,payload){
+        state.userDOB = payload
     }
 }
 
@@ -28,14 +34,13 @@ const actions = {
     //an action to take user data on registering
     registerUser({state},payload){
         return new Promise((resolve, reject) => {
-            state.username = "dummy"
             //send a post request with the user data to the database
             axios.post('/v1/users/signup',{
                 name: payload.username,
                 email: payload.email,
                 emailconfirm: payload.emailToMatch,
                 password: payload.password,
-                DateOfBirth: '12-12-1980', //hardcoding the date for testing purposes
+                DateOfBirth: state.userDOB, //hardcoding the date for testing purposes
                 gender: payload.gender
 
             })

@@ -153,8 +153,8 @@
                     v-model="userData.gender"
                     id="gender"
                     >
-                        <v-radio label="Male" value="Male" id="male-select"></v-radio>
-                        <v-radio label="Female" value="Female" id="female-select"></v-radio>
+                        <v-radio label="Male" value="male" id="male-select"></v-radio>
+                        <v-radio label="Female" value="female" id="female-select"></v-radio>
                     </v-radio-group>
                     </v-row>
                     <!-- Sign up button -->
@@ -208,7 +208,8 @@ export default {
                 daySelected: '',
                 monthSelected: '',
                 yearSelected: '',
-                gender: ''
+                gender: '',
+                 
             },
             //Set of rules for validation
             emailRules: [
@@ -250,12 +251,24 @@ export default {
         () => ((this.userData.email === this.userData.emailToMatch) && !this.changed) || 'E-mail must match'
         ];
     },
-    
+    //computing the date of birth from the three text fields of the user
+        DateOfBirth(){
+            //get the month number from the array
+            let monthnumber;
+            for (monthnumber = 1; monthnumber < this.item.length; monthnumber++) {
+                if(this.item[monthnumber - 1] == this.userData.monthSelected)
+                    
+                    break;
+            }
+            return `${this.userData.daySelected}-${monthnumber}-${this.userData.yearSelected}`
+        }
     },
     methods: {
         //Submitting the sign up form
         submitForm(){
             if(this.$refs.userDataForm.validate()){
+                //Store the user's date of birth in the store
+                this.$store.commit('setuserDOB', this.DateOfBirth)
                 //This action returns a promise to show whether the user had sighned up successfully or not
                 this.$store.dispatch('registerUser' , this.userData)
                 .then(() => {this.$router.push("/Login")})
