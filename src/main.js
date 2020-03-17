@@ -3,7 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
-import { makeServer } from "./server";
+import axios from "axios"
+import { makeServer } from './server';
 
 Vue.config.productionTip = false;
 
@@ -12,6 +13,9 @@ Vue.config.productionTip = false;
 if (process.env.NODE_ENV === "development") {
   makeServer();
 }
+
+//configure axios base url
+axios.defaults.baseURL = "/api"
 
 new Vue({
   router,
