@@ -2,9 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Library from "../components/Library.vue";
-import Playlists from '../components/collection/Playlists.vue';
-import ALbums from '../components/collection/Albums.vue';
-import Artists from '../components/collection/Artists.vue';
+import Playlists from "../components/collection/Playlists.vue";
+import ALbums from "../components/collection/Albums.vue";
+import Artists from "../components/collection/Artists.vue";
 
 Vue.use(VueRouter);
 
@@ -28,24 +28,24 @@ const routes = [
     name: "Library",
     component: Library,
     redirect: "/library/playlists",
-    children:
-    [
+    children: [
       {
+        name: "Playlists",
         path: "playlists",
         component: Playlists
       },
       {
+        name: "Artists",
         path: "artists",
         component: Artists
       },
       {
+        name: "Albums",
         path: "albums",
         component: ALbums
       }
-  ]
-}
-
-
+    ]
+  }
 ];
 
 const router = new VueRouter({

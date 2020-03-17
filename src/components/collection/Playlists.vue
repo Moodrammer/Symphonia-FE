@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col cols="12" lg="6" v-if="likedSongs.length > 0">
-          <v-menu absolute offset-y style="max-width: 600px" dark>
+          <v-menu absolute offset-y style="max-width: 600px" dark v-model="showMenu">
             <template v-slot:activator="{ on }">
               <v-card
                 @mouseover="playDisplayIndex = -1"
@@ -96,6 +96,7 @@ export default {
   name: "Playlists",
   data() {
     return {
+      showMenu: false,
       likedSongsMenu: [{ title: "Copy Link" }],
       playlistsMenu: [
         { title: "Start Radio" },

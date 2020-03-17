@@ -9,29 +9,39 @@
         <v-btn fab class="mx-2" text dark small>
           <v-icon color="grey" large>mdi-chevron-right</v-icon>
         </v-btn>
-        <v-container class="mx-3">
-          <v-btn text color="white" class="mx-2" to="/library/playlists">
+        <div class="mx-3" min-width="600">
+          <v-btn text color="white" class="mx-2" :to="{name:'Playlists'} ">
             <span class="text-capitalize white--text">Playlists</span>
           </v-btn>
 
-          <v-menu offset-y dark>
+          <v-menu offset-y dark v-model="showMenu">
             <template v-slot:activator="{ on }">
-              <v-btn dark text v-on="on" class="hidden-lg-and-up">More..</v-btn>
+              <v-btn
+                dark
+                :text="selectedItem == 'More..' "
+                width="100"
+                v-on="on"
+                class="hidden-lg-and-up"
+              >
+                <span class="text-capitalize white--text">{{ selectedItem }}</span>
+                <v-icon v-if="showMenu" color="grey" right>mdi-menu-up</v-icon>
+                <v-icon v-else color="grey" right>mdi-menu-down</v-icon>
+              </v-btn>
             </template>
             <v-list>
-              <v-list-item v-for="(item, index) in moreMenu" :key="index" :to="item.path">
-                <v-list-item-title :id="item.title">{{ item.title }}</v-list-item-title>
+              <v-list-item v-for="(item, index) in moreMenu" :key="index" :to="{ name: item }">
+                <v-list-item-title class="text-capitalize white--text">{{ item }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
-          
-          <v-btn text color="white" class="mx-2 hidden-md-and-down" to="/library/artists">
+
+          <v-btn text color="white" class="mx-2 hidden-md-and-down" :to="{name:'Artists'}">
             <span class="text-capitalize white--text">Artists</span>
           </v-btn>
-          <v-btn text class="mx-2 hidden-md-and-down" to="/library/albums">
+          <v-btn text color="white" class="mx-2 hidden-md-and-down" :to="{name:'Albums'}">
             <span class="text-capitalize white--text">Albums</span>
           </v-btn>
-        </v-container>
+        </div>
       </v-app-bar>
     </div>
     <router-view class="pt-10"></router-view>
@@ -45,10 +55,37 @@ export default {
 
   data() {
     return {
-      moreMenu: [{ title: "Artists", path:'/library/artists' }, { title: "Albums", path:'/library/albums' }]
+      showMenu: false,
+      selectedItem: "More..",
+      moreMenu: ["More..", "Artists", "Albums"]
     };
   },
-  methods: {}
+  created() {
+    this.itemChosen(this.$route.name);
+  },
+  watch: {
+    $route: function() {
+      this.itemChosen(this.$route.name);
+      console.log(this.$route.name);
+    }
+  },
+  methods: {
+    log(x) {
+      console.log(x);
+    },
+    itemChosen(item) {
+      if (item == "Artists") {
+        this.selectedItem = "Artists";
+        this.moreMenu = ["Albums"];
+      } else if (item == "Albums") {
+        this.selectedItem = "Albums";
+        this.moreMenu = ["Artists"];
+      } else {
+        this.selectedItem = "More..";
+        this.moreMenu = ["Artists", "Albums"];
+      }
+    }
+  }
 };
 </script>
 
