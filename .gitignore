@@ -19,3 +19,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+/src/components/HelloWorld.vue
+/tests/unit/example.spec.js
+/package-lock.json
