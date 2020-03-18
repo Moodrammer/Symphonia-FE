@@ -60,12 +60,6 @@
             <li class="links-column-item">
               About
             </li>
-            <li class="links-column-item">
-              Jobs
-            </li>
-            <li class="links-column-item">
-              For the record
-            </li>
           </ul>
         </v-container>
 
@@ -84,18 +78,6 @@
             <li class="links-column-item">
               For Artists
             </li>
-            <li class="links-column-item">
-              Developer
-            </li>
-            <li class="links-column-item">
-              Brands
-            </li>
-            <li class="links-column-item">
-              Investors
-            </li>
-            <li class="links-column-item">
-              Vendors
-            </li>
           </ul>
         </v-container>
 
@@ -113,13 +95,12 @@
             </li>
             <li class="links-column-item">
               Help
-            </li >
-           <router-link to="/webhome">
-            <li class="links-column-item" >
-              Web Player
             </li>
-           </router-link>
-       
+            <router-link to="/webhome">
+              <li class="links-column-item">
+                Web Player
+              </li>
+            </router-link>
             <li class="links-column-item">
               For Mobile App
             </li>
@@ -296,7 +277,7 @@ export default {
   color: #1db954;
 }
 
-a{
-  text-decoration:none
+a {
+  text-decoration: none;
 }
 </style>
