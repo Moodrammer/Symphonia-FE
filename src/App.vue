@@ -5,19 +5,16 @@
 </template>
 
 <script>
-
-
 export default {
   name: "App",
   data: () => ({}),
-  
-  created(){
+
+  created() {
     //if the user has no token stored initialize an empty user token
-    if(localStorage.getItem('userToken') == null){
-      localStorage.setItem('userToken' , '')
+    if (localStorage.getItem("userToken") == null) {
+      localStorage.setItem("userToken", "");
     }
   }
-
 };
 </script>
 
