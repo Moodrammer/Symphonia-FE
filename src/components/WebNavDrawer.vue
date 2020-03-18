@@ -28,7 +28,6 @@
       <!--Nesting the popup-->
       <v-list-item>
         <create-playlist ></create-playlist>
-        <v-list-item-title>Create Playlist</v-list-item-title>
       </v-list-item>
 
       <v-list-item>

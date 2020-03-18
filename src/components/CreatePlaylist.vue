@@ -6,6 +6,7 @@
       <v-btn color="white" fab x-small  v-on="on" style="border-radius: 0px; margin-right: 7%" id="openPopup">
         <v-icon color="black">mdi-plus</v-icon> 
       </v-btn>
+      <p v-on="on" class="pt-4">Create Playlist</p>
     </template>
 
     <v-card align="center" color="rgb(0,0,0,0.9)" class="white--text justify-content-center">
@@ -28,6 +29,7 @@
         class="playlist font-weight-bold"
         autofocus
         v-model="name"
+        v-on:keyup.enter="create"
         >
         </v-text-field>
         <!--The actions of the popup cancel-create-->
