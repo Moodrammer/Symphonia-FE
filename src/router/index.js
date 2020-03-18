@@ -37,6 +37,12 @@ const routes = [
         name: "Recover playlists",
         component: () =>
             import ("../components/User Settings/recoverPlaylist.vue")
+    },
+    {
+        path: "/notifications",
+        name: "Notifications setting",
+        component: () =>
+            import ("../components/User Settings/notification.vue")
     }
 ];
 

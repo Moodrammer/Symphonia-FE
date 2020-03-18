@@ -22,7 +22,7 @@
           >
         </li> -->
         <li>
-          <router-link to="#" exact
+          <router-link to="/notifications" exact
             ><i class="fas fa-bell svg"></i>Notification settings</router-link
           >
         </li>
