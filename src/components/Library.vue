@@ -1,7 +1,7 @@
 <template>
 
   <div class="home" style="background-color: #121212; min-height:768px ">
-    <drawer class="mr-12"></drawer>
+    <drawer  v-if="$vuetify.breakpoint.lgAndUp"></drawer>
     <v-content>
     <div class="collection-toolbar mb-12">
 
