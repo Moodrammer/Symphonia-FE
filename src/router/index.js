@@ -25,6 +25,12 @@ const routes = [
         name: "Account overview",
         component: () =>
             import ("../components/User Settings/overview.vue")
+    },
+    {
+        path: "/edit",
+        name: "Edit Profile",
+        component: () =>
+            import ("../components/User Settings/editProfile.vue")
     }
 ];
 

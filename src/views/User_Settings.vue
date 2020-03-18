@@ -20,7 +20,8 @@
 <script>
 import PreAds from "../components/User Settings/PremiumAds.vue";
 import sideBar from "../components/User Settings/sideBar.vue";
-import overview from "../components/User Settings/overview.vue"
+import overview from "../components/User Settings/overview.vue";
+import editProfile from "../components/User Settings/editProfile.vue";
 export default {
   data() {
     return {};
@@ -29,7 +30,9 @@ export default {
     premiumAds: PreAds,
     sideBar: sideBar,
     // eslint-disable-next-line vue/no-unused-components
-    overview: overview
+    overview: overview,
+    // eslint-disable-next-line vue/no-unused-components
+    editProfile: editProfile
   }
 };
 </script>
@@ -37,7 +40,10 @@ export default {
 <style scoped>
 @font-face {
   font-family: Circular;
-  src: url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.woff2") format("woff2"), url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.woff") format("woff"), url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.ttf") format("ttf");
+  src: url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.woff2")
+      format("woff2"),
+    url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.woff") format("woff"),
+    url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.ttf") format("ttf");
   font-style: normal;
   font-weight: 400;
 }
@@ -61,7 +67,7 @@ export default {
   flex: 1;
   background-image: linear-gradient(#212c39, #121e3d 50%, #000);
   background-repeat: no-repeat;
-} 
+}
 .container {
   padding: 0;
 }

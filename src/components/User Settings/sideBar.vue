@@ -12,36 +12,36 @@
           >
         </li>
         <li>
-          <router-link to="#" exact
+          <router-link to="/edit" exact
             ><i class="fas fa-pencil-alt svg"></i>Edit profile</router-link
           >
         </li>
-        <li>
+        <!-- <li>
           <router-link to="#" exact
             ><i class="fas fa-lock svg"></i>Set device password</router-link
           >
-        </li>
+        </li> -->
         <li>
           <router-link to="#" exact
             ><i class="fas fa-bell svg"></i>Notification settings</router-link
           >
         </li>
-        <li>
+        <!-- <li>
           <router-link to="#" exact
             ><i class="fas fa-lock svg"></i>Privacy settings</router-link
           >
-        </li>
+        </li> -->
         <li>
           <router-link to="#" exact
             ><i class="fas fa-redo svg"></i>Recover playlists</router-link
           >
         </li>
-        <li>
+        <!-- <li>
           <router-link to="#" exact
             ><i class="far fa-clock svg"></i>Receipts</router-link
           >
-        </li>
-        <li>
+        </li> -->
+        <!-- <li>
           <router-link to="#" exact
             ><i class="fas fa-puzzle-piece svg"></i>Apps</router-link
           >
@@ -50,7 +50,7 @@
           <router-link to="#" exact
             ><i class="far fa-clipboard svg"></i>Redeem</router-link
           >
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>
@@ -164,5 +164,9 @@ li::before {
   top: 15px;
   left: 30px;
   float: left;
+}
+.sidebar .nav-tabs.nav-stacked > li.active::before,
+.sidebar .nav-tabs.nav-stacked > li:hover::before {
+  background-color: #1ed760;
 }
 </style>
