@@ -1,19 +1,16 @@
 <template>
-
   <div class="home" style="background-color: #121212; min-height:768px ">
-    <drawer  v-if="$vuetify.breakpoint.lgAndUp"></drawer>
-    <v-content>
-    <div class="collection-toolbar mb-12">
-
-      <v-app-bar color="transparent" app class="px-10 nav-bar-gradient">
-        <v-btn fab class="mx-2" text dark small>
+    <drawer v-if="$vuetify.breakpoint.lgAndUp"></drawer>
+    <div class="collection-toolbar ml-0">
+      <v-app-bar color="transparent" app class="px-0 nav-bar-gradient">
+        <v-btn fab class="mr-2" text dark small>
           <v-icon color="grey" large>mdi-chevron-left</v-icon>
         </v-btn>
 
-        <v-btn fab class="mx-2" text dark small>
+        <v-btn fab class="ml-2" text dark small>
           <v-icon color="grey" large>mdi-chevron-right</v-icon>
         </v-btn>
-        <div class="mx-3" min-width="600">
+        <div class="mx-3" style="min-width:220px">
           <v-btn text color="white" class="mx-2" :to="{name:'Playlists'} ">
             <span class="text-capitalize white--text">Playlists</span>
           </v-btn>
@@ -47,15 +44,15 @@
           </v-btn>
         </div>
       </v-app-bar>
-
     </div>
-    <router-view></router-view>
+    <v-content>
+      <router-view></router-view>
     </v-content>
   </div>
 </template>
 
 <script>
-import  drawer from './WebNavDrawer'
+import drawer from "./WebNavDrawer";
 export default {
   name: "Library",
   components: {

@@ -15,19 +15,19 @@
                 color="#282828"
                 dark
               >
-                <div style="height:150px">
-                  <v-card-text max-height="500">
+                <v-row>
+                  <v-card-text>
                     <span v-for="(song, index)  in likedSongs" :key="index">
                       {{song.artist}}
                       <span class="grey--text">{{song.title}}.</span>
                     </span>
                   </v-card-text>
-                </div>
-                <div>
+                </v-row>
+                <v-row>
                   <v-card-title class="white--text pl-0 pb-0">
                     <h1>Liked Songs</h1>
                   </v-card-title>
-                </div>
+                </v-row>
                 <v-card-subtitle class="pl-0">{{likedSongs.length}} liked songs</v-card-subtitle>
                 <v-btn
                   v-if="playDisplayIndex === -1"
