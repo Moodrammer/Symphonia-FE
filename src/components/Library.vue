@@ -1,6 +1,10 @@
 <template>
+
   <div class="home" style="background-color: #121212; min-height:768px ">
+    <drawer class="mr-12"></drawer>
+    <v-content>
     <div class="collection-toolbar mb-12">
+
       <v-app-bar color="transparent" app class="px-10 nav-bar-gradient">
         <v-btn fab class="mx-2" text dark small>
           <v-icon color="grey" large>mdi-chevron-left</v-icon>
@@ -43,15 +47,20 @@
           </v-btn>
         </div>
       </v-app-bar>
+
     </div>
-    <router-view class="pt-10"></router-view>
+    <router-view></router-view>
+    </v-content>
   </div>
 </template>
 
 <script>
+import  drawer from './WebNavDrawer'
 export default {
   name: "Library",
-  components: {},
+  components: {
+    drawer
+  },
 
   data() {
     return {
