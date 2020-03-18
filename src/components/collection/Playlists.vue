@@ -24,20 +24,19 @@
                   </v-card-text>
                 </v-row>
                 <v-row>
-                  <v-card-title class="white--text pl-0 pb-0">
+                  <v-card-title class="white--text pl-0 pb-1">
                     <h1>Liked Songs</h1>
                   </v-card-title>
                 </v-row>
-                <v-card-subtitle class="pl-0">{{likedSongs.length}} liked songs</v-card-subtitle>
-                <v-btn
-                  v-if="playDisplayIndex === -1"
-                  fab
-                  text
-                  color="green"
-                  class="ml-10 float-right"
-                >
-                  <v-icon x-large lg-12>mdi-play-circle</v-icon>
-                </v-btn>
+                <v-row>
+                  <v-card-subtitle class="pa-0">{{likedSongs.length}} liked songs</v-card-subtitle>
+                </v-row>
+                <v-row>
+                  <v-spacer></v-spacer>
+                  <v-btn v-if="playDisplayIndex === -1" fab text color="green">
+                    <v-icon x-large lg-12>mdi-play-circle</v-icon>
+                  </v-btn>
+                </v-row>
               </v-card>
             </template>
             <v-list>
