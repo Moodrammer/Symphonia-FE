@@ -32,7 +32,7 @@
           >
         </li> -->
         <li>
-          <router-link to="#" exact
+          <router-link to="/recover-playlists" exact
             ><i class="fas fa-redo svg"></i>Recover playlists</router-link
           >
         </li>

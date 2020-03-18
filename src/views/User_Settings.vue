@@ -22,6 +22,7 @@ import PreAds from "../components/User Settings/PremiumAds.vue";
 import sideBar from "../components/User Settings/sideBar.vue";
 import overview from "../components/User Settings/overview.vue";
 import editProfile from "../components/User Settings/editProfile.vue";
+import recoverPlaylists from "../components/User Settings/recoverPlaylist.vue";
 export default {
   data() {
     return {};
@@ -32,7 +33,9 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     overview: overview,
     // eslint-disable-next-line vue/no-unused-components
-    editProfile: editProfile
+    editProfile: editProfile,
+    // eslint-disable-next-line vue/no-unused-components
+    recoverPlaylists: recoverPlaylists
   }
 };
 </script>

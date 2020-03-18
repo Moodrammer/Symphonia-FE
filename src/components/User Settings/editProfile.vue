@@ -12,7 +12,6 @@
               type="email"
               class="text"
               v-model="user.email"
-              
               v-show="!facebook"
             />
             <p v-show="facebook">{{ user.email }}</p>
@@ -23,7 +22,6 @@
               type="text"
               class="text"
               v-model="user.gender"
-              
               v-show="!facebook"
             />
             <p v-show="facebook">{{ user.gender }}</p>
@@ -34,7 +32,6 @@
               type="date"
               class="text"
               v-model="user.date"
-             
               v-show="!facebook"
             />
             <p v-show="facebook">{{ user.date }}</p>
@@ -47,13 +44,7 @@
           </div>
           <div class="form-group">
             <label for="mobile">Mobile phone number</label>
-            <input
-              type="text"
-              class="text"
-              required
-              v-model="user.mobile"
-              
-            />
+            <input type="text" class="text" required v-model="user.mobile" />
           </div>
           <div class="form-group">
             <label for="text" class="checkbox">

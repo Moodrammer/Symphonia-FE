@@ -31,6 +31,12 @@ const routes = [
         name: "Edit Profile",
         component: () =>
             import ("../components/User Settings/editProfile.vue")
+    },
+    {
+        path: "/recover-playlists",
+        name: "Recover playlists",
+        component: () =>
+            import ("../components/User Settings/recoverPlaylist.vue")
     }
 ];
 
