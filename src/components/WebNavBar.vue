@@ -63,8 +63,8 @@
       </template>
       <!--Menu list-->
       <v-list color="#282828" dark class="mt-3">
-        <v-list-item id="account">
-          <v-list-item-title color="#b3b3b3">Account</v-list-item-title>
+        <v-list-item id="account" to="/account/">
+          <v-list-item-title color="#b3b3b3" >Account</v-list-item-title>
         </v-list-item>
 
         <v-list-item class="hidden-md-and-up" id="upgardepremium">
