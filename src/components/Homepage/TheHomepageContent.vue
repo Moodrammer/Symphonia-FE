@@ -169,30 +169,15 @@ export default {
 }
 
 .download-button-large {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-box-direction: normal;
-  box-sizing: border-box;
+  line-height: 1.5;
+  margin: 0;
   display: inline-block;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  cursor: pointer;
-  border: 1px solid transparent;
-  user-select: none;
-  line-height: 1;
   border-radius: 500px;
-  transition-duration: 0.3s;
-  border-width: 0;
   letter-spacing: 2px;
-  min-width: 160px;
   text-transform: uppercase;
-  white-space: normal;
   text-decoration: none;
-  outline: 0;
-  background-image: none;
   color: #fff;
   background-color: #1aa34a;
-  box-shadow: none;
   padding: 16px 48px 18px;
   margin-top: 16px;
   margin-bottom: 0;

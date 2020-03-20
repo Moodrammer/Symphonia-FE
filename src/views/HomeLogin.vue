@@ -8,7 +8,7 @@
 
 <script>
 import NavigationBar from "../components/Homepage/TheHomepageNavigationBar.vue";
-import Content from "../components/Homepage/TheHomepageContent.vue";
+import Content from "../components/Homepage/TheHomepageLoginContent.vue";
 import Footer from "../components/Homepage/TheHomepageFooter";
 
 export default {
@@ -24,4 +24,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped></style>  
