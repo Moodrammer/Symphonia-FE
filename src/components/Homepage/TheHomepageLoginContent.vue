@@ -157,10 +157,15 @@ export default {
   margin-top: 16px;
   margin-bottom: 0;
   font: 700 14px Helvetica, Arial, sans-serif;
+  transition-duration: .3s;
 }
 
 .download-button-large:hover {
   background-color: #1ed760;
+}
+
+.download-button-large:active {
+  background-color: #1aa34a;
 }
 
 .large-content {

@@ -43,25 +43,76 @@
           class="right"
           style="padding-right:0px;"
         >
-          <router-link to="/premium/?checkout=false" class="toolbar-link-1"
+          <router-link
+            to="/premium/?checkout=false"
+            class="toolbar-link-1"
+            v-bind:class="{ 'blue-hover': isLoggedIn() }"
             >Premium</router-link
           >
-          <router-link to="/help" class="toolbar-link-1">Help</router-link>
-          <router-link to="/download" class="toolbar-link-1"
+          <router-link
+            to="/help"
+            class="toolbar-link-1"
+            v-bind:class="{ 'blue-hover': isLoggedIn() }"
+            >Help</router-link
+          >
+          <router-link
+            to="/download"
+            class="toolbar-link-1"
+            v-bind:class="{ 'blue-hover': isLoggedIn() }"
             >Download</router-link
           >
 
           <span class="bar-icon">|</span>
 
-          <router-link to="/signup" class="toolbar-link-1 toolbar-link-2"
+          <router-link
+            v-if="!isLoggedIn()"
+            to="/signup"
+            class="toolbar-link-1 toolbar-link-2"
             >Sign up</router-link
           >
           <router-link
             to="/login"
             class="toolbar-link-1 toolbar-link-2"
             style="padding-right:0px;"
-          >Log in</router-link
+            v-if="!isLoggedIn()"
+            >Log in</router-link
           >
+
+          <v-avatar v-if="isLoggedIn()" width="40" height="40">
+            <img src="http://localhost:8080/profile.jpg" alt="profile pic" />
+          </v-avatar>
+
+          <v-menu offset-y>
+            <template v-slot:activator="{ on }">
+              <v-btn
+                :ripple="false"
+                id="no-background-hover"
+                text
+                v-on="on"
+                class="toolbar-link-1 blue-hover"
+              >
+                <span style="text-transform: none;">Profile</span>
+                <span class="mdi mdi-18px mdi-chevron-down"></span>
+              </v-btn>
+            </template>
+
+            <v-list>
+              <v-list-item>
+                <router-link to="/account" style="text-decoration: none;">
+                  <v-list-item-title class="account-button blue-hover"
+                    >Account</v-list-item-title
+                  >
+                </router-link>
+              </v-list-item>
+              <v-list-item>
+                <router-link to="/" style="text-decoration: none;">
+                  <v-list-item-title class="account-button logout-button blue-hover"
+                    >Log Out</v-list-item-title
+                  >
+                </router-link>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </v-toolbar>
       </v-toolbar>
     </v-app-bar>
@@ -130,6 +181,7 @@
         </li>
         <li>
           <router-link
+            v-if="!isLoggedIn()"
             to="/signup"
             class="toolbar-link-1 small-toolbar-btn-1 small-toolbar-btn-2"
             >Sign up</router-link
@@ -137,6 +189,7 @@
         </li>
         <li>
           <router-link
+            v-if="!isLoggedIn()"
             to="/login"
             class="toolbar-link-1 small-toolbar-btn-1 small-toolbar-btn-2"
             >Sign in</router-link
@@ -187,6 +240,9 @@ export default {
     isXs() {
       const { xs } = this.$vuetify.breakpoint;
       return xs ? true : false;
+    },
+    isLoggedIn() {
+      return true;
     }
   }
 };
@@ -271,5 +327,29 @@ export default {
 .small-spotify-icon {
   position: absolute;
   bottom: 50px;
+}
+
+.blue-hover:hover {
+  color: #2d46b9;
+}
+
+.account-button {
+  font-family: Helvetica, Arial, sans-serif;
+  -webkit-box-direction: normal;
+  box-sizing: border-box;
+  background-color: transparent;
+  text-decoration: none;
+  line-height: 1.5;
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+}
+
+.logout-button {
+  color: #919496;
+}
+
+#no-background-hover::before {
+  background-color: transparent !important;
 }
 </style>
