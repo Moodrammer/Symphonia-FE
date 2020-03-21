@@ -10,6 +10,7 @@ import User_Settings from "../views/User_Settings.vue";
 import Search from "../components/Search.vue";
 import HomeContent from "../components/HomeContent.vue";
 import Tracks from "../views/LikedSongs.vue";
+import HomepagePremium from "../views/PremiumOffer.vue"
 
 Vue.use(VueRouter);
 
@@ -64,6 +65,11 @@ const routes = [
         ]
       }
     ]
+  },
+  {
+    path: "/premium/",
+    name: "HomePremium",
+    component: HomepagePremium
   },
   {
     path: "/signup",
