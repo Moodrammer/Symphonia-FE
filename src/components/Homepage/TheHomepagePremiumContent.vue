@@ -95,6 +95,39 @@
         </v-col>
       </v-row>
     </v-content>
+
+    <v-content>
+      <v-card :loading="loading" class="mx-auto my-12" max-width="374">
+        <v-card-title style="font-size 32px; color: black;"
+          >Spotify Premium</v-card-title
+        >
+
+        <v-card-text>
+          <h1 style="font-size: 32px; color: black; float: left;">
+            EGP 49.99
+          </h1>
+          <p style="color: black;">/ month</p>
+          <h5 style="color: grey;">1 month free</h5>
+
+          <v-divider class="mx-4"></v-divider>
+
+          <h4><v-icon>mdi-check</v-icon> Play any song.</h4>
+          <h4><v-icon>mdi-check</v-icon> Listen offline.</h4>
+          <h4><v-icon>mdi-check</v-icon> No ad interruptions.</h4>
+          <h4><v-icon>mdi-check</v-icon> Unlimited skips</h4>
+          <h4><v-icon>mdi-check</v-icon> High audio quality</h4>
+
+          <v-divider class="mx-4"></v-divider>
+
+          <router-link
+            to="/trial"
+            class="download-button-large download-button-xs"
+          >
+            get premium
+          </router-link>
+        </v-card-text>
+      </v-card>
+    </v-content>
   </div>
 </template>
 
