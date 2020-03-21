@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import WebPlayerHome from "../views/WebPlayerHome";
 import Homepage from "../views/Home.vue";
-import HomepageLogin from "../views/HomeLogin.vue";
 import Library from "../components/Library.vue";
 import Playlists from "../components/collection/Playlists.vue";
 import ALbums from "../components/collection/Albums.vue";
@@ -16,11 +15,6 @@ const routes = [
     path: "/",
     name: "Home",
     component: Homepage
-  },
-  {
-    path: "/loggedin",
-    name: "loggedin",
-    component: HomepageLogin
   },
   {
     path: "/webhome",
