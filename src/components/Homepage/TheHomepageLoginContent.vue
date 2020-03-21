@@ -31,11 +31,11 @@
         </v-row>
       </v-container>
     </v-content>
-    <!--<v-content app class="hero-home-sm-cover hidden-md-and-up"></v-content>-->
 
     <v-container class="large-content">
       <v-row justify="center">
         <h2
+          class="looking-for-music-h2"
           v-bind:class="{
             'looking-for-music-sm': isSm(),
             'looking-for-music-md': isMd() || isLg(),
@@ -45,9 +45,7 @@
           Looking for music?
         </h2>
       </v-row>
-      <v-row
-        justify="center"
-      >
+      <v-row justify="center">
         <p class="lead">
           Pick up your recently played right where you left off.
         </p>
@@ -57,6 +55,42 @@
           Listen on Spotify
         </router-link>
       </v-row>
+
+      <v-row justify="center" v-for="b in 2" :key="b">
+        <v-col cols="3" v-for="n in 3" :key="n">
+          <v-hover v-slot:default="{ hover }">
+            <router-link to="/" style="text-decoration: none;">
+              <v-card class="mx-auto" max-width="374">
+                <v-img
+                  aspect-ratio="1"
+                  width="374"
+                  max-width="374"
+                  height="374"
+                  src="https://picsum.photos/510/300?random"
+                  v-bind:class="{ 'card-hover': hover }"
+                >
+                  <v-card-title style="margin-top: 140px; padding: 0px;" v-if="hover">
+                    <v-row justify="center" width="374">
+                      <h2 class="song-name">song name</h2>
+                    </v-row>
+                  </v-card-title>
+                  <v-card-title v-if="hover">
+                    <v-row justify="center" class="singer-name" style="padding: 0px; margin: 0px;">
+                      Singer Name
+                    </v-row>
+                  </v-card-title>
+                  <v-card-title v-if="hover">
+                    <v-row justify="center" class="play-now">
+                      play now
+                    </v-row>
+                  </v-card-title>
+                </v-img>
+              </v-card>
+            </router-link>
+          </v-hover>
+        </v-col>
+      </v-row>
+
     </v-container>
   </div>
 </template>
@@ -157,7 +191,7 @@ export default {
   margin-top: 16px;
   margin-bottom: 0;
   font: 700 14px Helvetica, Arial, sans-serif;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 
 .download-button-large:hover {
@@ -175,7 +209,7 @@ export default {
   color: black;
 }
 
-.large-content h2 {
+.looking-for-music-h2 {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-box-direction: normal;
   text-align: center;
@@ -236,8 +270,9 @@ export default {
   line-height: 1;
   border-radius: 500px;
   padding: 16px 48px 18px;
-  transition-property: background-color, border-color, color, box-shadow, filter, -webkit-box-shadow, -webkit-filter;
-  transition-duration: .3s;
+  transition-property: background-color, border-color, color, box-shadow, filter,
+    -webkit-box-shadow, -webkit-filter;
+  transition-duration: 0.3s;
   border-width: 0;
   letter-spacing: 2px;
   min-width: 160px;
@@ -259,5 +294,44 @@ export default {
   background-color: black;
   border-color: black;
   box-shadow: 0 0 0 2px black inset;
+}
+
+.song-name {
+  font-family: inherit;
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  color: #fff;
+  font-size: 32px;
+}
+
+.singer-name {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-box-direction: normal;
+  list-style-type: none;
+  visibility: visible;
+  cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
+  font-family: inherit;
+  line-height: 1.1;
+  margin: .5em 0 1em;
+  font-size: 18px;
+  font-weight: 400;
+  color: #919496;
+}
+
+.play-now {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #1ed760;
+}
+
+.card-hover {
+  filter: brightness(50%);
 }
 </style>
