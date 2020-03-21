@@ -7,6 +7,7 @@
       color="rgba(0, 0, 0, 0.6)"
       height="80"
       class="hidden-sm-and-down"
+      id="nav"
     >
       <v-toolbar
         flat

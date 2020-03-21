@@ -7,6 +7,7 @@ import Playlists from "../components/collection/Playlists.vue";
 import ALbums from "../components/collection/Albums.vue";
 import Artists from "../components/collection/Artists.vue";
 import User_Settings from "../views/User_Settings.vue";
+import HomepagePremium from "../views/PremiumOffer.vue"
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Homepage
+  },
+  {
+    path: "/premium/",
+    name: "HomePremium",
+    component: HomepagePremium
   },
   {
     path: "/webhome",

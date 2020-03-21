@@ -128,7 +128,7 @@
       <v-container style="clear: left;" class="hidden-xs-only"></v-container>
 
       <!-- slide group of cards in xs devices -->
-      <v-slide-group v-model="model" class="pa-4 hidden-sm-and-up">
+      <v-slide-group class="pa-4 hidden-sm-and-up">
         <v-slide-item v-for="n in 5" :key="n">
           <router-link to="/" style="text-decoration: none;">
             <v-card
