@@ -56,26 +56,44 @@
         </router-link>
       </v-row>
 
-      <v-row justify="center" v-for="b in 2" :key="b">
-        <v-col cols="3" v-for="n in 3" :key="n">
+      <v-container
+        v-for="b in 2"
+        :key="b"
+        v-bind:class="{ 'cards-div-md': isMd(), 'cards-div-lg': isLg(), 'cards-div-sm': isSm()}"
+
+      >
+        <v-content
+          v-for="n in 3"
+          :key="n"
+          style="float: left; padding: 10px 10px 0px 0px;"
+        >
+        
           <v-hover v-slot:default="{ hover }">
             <router-link to="/" style="text-decoration: none;">
               <v-card class="mx-auto" max-width="374">
                 <v-img
                   aspect-ratio="1"
-                  width="374"
-                  max-width="374"
-                  height="374"
                   src="https://picsum.photos/510/300?random"
-                  v-bind:class="{ 'card-hover': hover }"
+                  v-bind:class="{ 'card-hover': hover,  'card-size-lg': isLg(), 'card-size-md': isMd()
+                  , 'card-size-sm': isSm()}"
                 >
-                  <v-card-title style="margin-top: 140px; padding: 0px;" v-if="hover">
+                  <v-card-title
+                    v-if="hover"
+                  >
                     <v-row justify="center" width="374">
-                      <h2 class="song-name">song name</h2>
+                      <h2 class="song-name"
+                      v-bind:class="{'song-name-lg': isLg(),'song-name-md': isMd(), 'song-name-sm': isSm()}"
+                      >song name</h2>
                     </v-row>
                   </v-card-title>
                   <v-card-title v-if="hover">
-                    <v-row justify="center" class="singer-name" style="padding: 0px; margin: 0px;">
+                    <v-row
+                      justify="center"
+                      style="padding: 0px; margin: 0px;"
+                      class="singer-name"
+                      v-bind:class="{'singer-name-lg': isLg(), 'singer-name-md': isMd(),
+                      'singer-name-sm': isSm()}"
+                    >
                       Singer Name
                     </v-row>
                   </v-card-title>
@@ -88,9 +106,10 @@
               </v-card>
             </router-link>
           </v-hover>
-        </v-col>
-      </v-row>
+        </v-content>
+      </v-container>
 
+      <v-container style="clear: left;"></v-container>
     </v-container>
   </div>
 </template>
@@ -204,7 +223,6 @@ export default {
 
 .large-content {
   min-width: 100%;
-  min-height: 1096px;
   background-color: white;
   color: black;
 }
@@ -302,23 +320,22 @@ export default {
   letter-spacing: -0.015em;
   line-height: 1.3;
   color: #fff;
-  font-size: 32px;
+  padding: 0px;
 }
 
-.singer-name {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-box-direction: normal;
-  list-style-type: none;
-  visibility: visible;
-  cursor: pointer;
-  text-align: center;
-  box-sizing: border-box;
-  font-family: inherit;
-  line-height: 1.1;
-  margin: .5em 0 1em;
+.song-name-lg {
+  font-size: 32px;
+  margin-top: 140px; 
+}
+
+.song-name-md {
+  font-size: 24px;
+  margin-top: 100px; 
+}
+
+.song-name-sm {
   font-size: 18px;
-  font-weight: 400;
-  color: #919496;
+  margin-top: 80px; 
 }
 
 .play-now {
@@ -334,4 +351,59 @@ export default {
 .card-hover {
   filter: brightness(50%);
 }
+
+.card-size-lg {
+  width: 374px;
+}
+
+.card-size-md {
+  width: 300px;
+}
+
+.card-size-sm {
+  width: 250px;
+}
+
+.cards-div-lg {
+  width: 1200px;
+  max-width: 1200px;
+}
+
+.cards-div-md {
+  width: 970px;
+  max-width: 970px;
+}
+
+.cards-div-sm {
+  width: 804px;
+  max-width: 804px;
+}
+
+.singer-name {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-box-direction: normal;
+  list-style-type: none;
+  visibility: visible;
+  cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
+  font-family: inherit;
+  line-height: 1.1;
+  margin: 0.5em 0 1em;
+  font-weight: 400;
+  color: #919496;
+}
+
+.singer-name-lg {
+  font-size: 18px;
+}
+
+.singer-name-md {
+  font-size: 16px; 
+}
+
+.singer-name-sm {
+  font-size: 14px;
+}
+
 </style>
