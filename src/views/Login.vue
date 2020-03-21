@@ -198,7 +198,11 @@ export default {
     };
   },
   methods: {
-    //This is the login method to be documented later
+    /**
+     * This is the login method to validate and submit the user credentials to the server then redirect the user to
+     * the application if the user enters valid data
+     * @public
+     */
     login() {
       //if the form validates and had no restrictions
       if (this.$refs.loginForm.validate()) {
