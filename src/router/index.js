@@ -9,6 +9,7 @@ import Artists from "../components/collection/Artists.vue";
 import User_Settings from "../views/User_Settings.vue";
 import Search from "../components/Search.vue";
 import HomeContent from "../components/HomeContent.vue";
+import HomepagePremium from "../views/PremiumOffer.vue"
 
 Vue.use(VueRouter);
 
@@ -58,6 +59,11 @@ const routes = [
         ]
       }
     ]
+  },
+  {
+    path: "/premium/",
+    name: "HomePremium",
+    component: HomepagePremium
   },
   {
     path: "/signup",
