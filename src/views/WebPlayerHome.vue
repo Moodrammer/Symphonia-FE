@@ -14,11 +14,6 @@ export default {
   components: {
     NavDrawer,
     NavBar
-  },
-  data: function() {
-    return {
-      hover: false
-    };
   }
 };
 </script>

@@ -128,7 +128,11 @@
           <v-list-item-title color="#b3b3b3">Account</v-list-item-title>
         </v-list-item>
 
-        <v-list-item class="hidden-md-and-up" id="upgardepremium">
+        <v-list-item
+          class="hidden-md-and-up"
+          id="upgardepremium"
+          v-show="showUpgrade"
+        >
           <v-list-item-title>Upgarde to premium</v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>

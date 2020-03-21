@@ -2,7 +2,14 @@
   <div class="content">
     <v-container>
       <v-row>
-        <v-col cols="12" lg="3" md="4" sm="6" v-for="(artist, index) in artists" :key="index">
+        <v-col
+          cols="12"
+          lg="3"
+          md="4"
+          sm="6"
+          v-for="(artist, index) in artists"
+          :key="index"
+        >
           <v-menu absolute offset-y style="max-width: 600px" dark>
             <template v-slot:activator="{ on }">
               <v-card
@@ -23,13 +30,21 @@
                   style="border-radius: 50%;"
                 ></v-img>
 
-                <v-card-title class="white--text pl-0 pb-0">{{ artist.name }}</v-card-title>
+                <v-card-title class="white--text pl-0 pb-0">{{
+                  artist.name
+                }}</v-card-title>
                 <v-layout row wrap>
                   <v-flex>
                     <v-card-text>{{ artist.description }}</v-card-text>
                   </v-flex>
                   <v-flex>
-                    <v-btn v-if="playDisplayIndex === index" fab text color="green" class="ml-10">
+                    <v-btn
+                      v-if="playDisplayIndex === index"
+                      fab
+                      text
+                      color="green"
+                      class="ml-10"
+                    >
                       <v-icon x-large lg-12>mdi-play-circle</v-icon>
                     </v-btn>
                   </v-flex>
@@ -53,9 +68,7 @@ export default {
   name: "Artists",
   data() {
     return {
-      items: [
-        { title: "Unfollow" },
-      ],
+      items: [{ title: "Unfollow" }],
       playDisplayIndex: null,
       artists: [
         {

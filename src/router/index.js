@@ -22,6 +22,7 @@ const routes = [
     path: "/webhome",
     name: "WebHome",
     component: WebPlayerHome,
+    redirect: "webhome/home" ,
     children: [
       {
         name: "home",

@@ -17,7 +17,9 @@
           <v-col cols="12" class="py-1">
             <v-alert color="#e22134" style="font-size: 12px" dense>
               <v-row justify="center">
-                <div class="white--text px-3 py-2">Incorrect email or password.</div>
+                <div class="white--text px-3 py-2">
+                  Incorrect email or password.
+                </div>
               </v-row>
             </v-alert>
           </v-col>
@@ -25,13 +27,17 @@
         <!-- Facebook button  -->
         <v-row>
           <v-col cols="12" class="py-0 pb-1">
-            <v-btn block large rounded color="#3B5998" class="white--text">CONTINUE WITH FACEBOOK</v-btn>
+            <v-btn block large rounded color="#3B5998" class="white--text"
+              >CONTINUE WITH FACEBOOK</v-btn
+            >
           </v-col>
         </v-row>
         <!-- Google button -->
         <v-row>
           <v-col cols="12" class="pt-1">
-            <v-btn block large rounded color="#007ec6" class="white--text">CONTINUE WITH GOOGLE</v-btn>
+            <v-btn block large rounded color="#007ec6" class="white--text"
+              >CONTINUE WITH GOOGLE</v-btn
+            >
           </v-col>
         </v-row>
         <!-- Divider row -->
@@ -90,7 +96,11 @@
           </v-row>
           <v-row>
             <v-col cols="12" sm="6" class="pa-0" align-self="center">
-              <v-checkbox label="Remember me" v-model="rememberMe" color="green"></v-checkbox>
+              <v-checkbox
+                label="Remember me"
+                v-model="rememberMe"
+                color="green"
+              ></v-checkbox>
             </v-col>
             <!-- Log in button -->
             <v-col cols="12" sm="6" class="pa-0" align-self="center">
@@ -102,7 +112,8 @@
                 large
                 block
                 @click="login"
-              >LOG IN</v-btn>
+                >LOG IN</v-btn
+              >
             </v-col>
           </v-row>
         </v-form>
@@ -135,7 +146,8 @@
               large
               style="border: solid 3px grey !important"
               to="/SignUp"
-            >SIGN UP FOR SYMPHONIA</v-btn>
+              >SIGN UP FOR SYMPHONIA</v-btn
+            >
           </v-col>
         </v-row>
         <!-- Simple tip for facebook sign -->
@@ -149,10 +161,10 @@
         <v-row>
           <v-col cols="12">
             <v-row justify="center">
-              <div
-                style="font-size: 10px;"
-                class="grey--text"
-              >If you click "Log in with Facebook" and are not a Symphonia user, you will be registered</div>
+              <div style="font-size: 10px;" class="grey--text">
+                If you click "Log in with Facebook" and are not a Symphonia
+                user, you will be registered
+              </div>
             </v-row>
           </v-col>
         </v-row>

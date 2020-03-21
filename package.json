@@ -7,9 +7,9 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "unit": "jest --watch",
-    "styleguide": "vue-styleguidist server",
-    "styleguide:build": "vue-styleguidist build"
+    "styleguide": "vue-cli-service styleguidist",
+    "styleguide:build": "vue-cli-service styleguidist:build",
+    "unit": "jest --watch"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -37,6 +37,7 @@
     "prettier": "^1.19.1",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
+    "vue-cli-plugin-styleguidist": "~4.14.0",
     "vue-cli-plugin-vuetify": "~2.0.5",
     "vue-styleguidist": "^4.14.0",
     "vue-template-compiler": "^2.6.11",

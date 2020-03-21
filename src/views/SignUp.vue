@@ -21,7 +21,8 @@
                     style="font-size: 14px"
                     large
                     block
-                  >Sign up with Facebook</v-btn>
+                    >Sign up with Facebook</v-btn
+                  >
                 </v-row>
               </v-col>
             </v-row>
@@ -44,7 +45,9 @@
               <div
                 class="text-center mb-3"
                 style="font: 18px arial,sans serif; font-weight: bold;"
-              >Sign up with your email address</div>
+              >
+                Sign up with your email address
+              </div>
               <!-- User email text field -->
               <v-text-field
                 placeholder="Email"
@@ -136,7 +139,11 @@
                   id="gender"
                 >
                   <v-radio label="Male" value="male" id="male-select"></v-radio>
-                  <v-radio label="Female" value="female" id="female-select"></v-radio>
+                  <v-radio
+                    label="Female"
+                    value="female"
+                    id="female-select"
+                  ></v-radio>
                 </v-radio-group>
               </v-row>
               <!-- Sign up button -->
@@ -150,14 +157,17 @@
                     block
                     large
                     @click="submitForm"
-                  >Sign up</v-btn>
+                    >Sign up</v-btn
+                  >
                 </v-col>
               </v-row>
               <!-- link to the Login page -->
               <v-row justify="center">
                 <span class="text--center">
                   Already Have an account?
-                  <router-link to="/Login" class="green--text">Log in</router-link>
+                  <router-link to="/Login" class="green--text"
+                    >Log in</router-link
+                  >
                 </span>
               </v-row>
             </v-form>
@@ -167,7 +177,7 @@
     </v-container>
   </div>
 </template>
-    
+
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
 

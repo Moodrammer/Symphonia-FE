@@ -135,7 +135,8 @@
                 <td>
                   Concert Notifications
                   <p class="description">
-                    Updates about live shows by artists you like, in places near you
+                    Updates about live shows by artists you like, in places near
+                    you
                   </p>
                 </td>
                 <td class="td-checkbox">
@@ -153,9 +154,10 @@
               </tr>
               <tr class="form-group">
                 <td>
-                  Artist Updates 
+                  Artist Updates
                   <p class="description">
-                    Hear about artists you listen to and artists we think you’ll like
+                    Hear about artists you listen to and artists we think you’ll
+                    like
                   </p>
                 </td>
                 <td class="td-checkbox">

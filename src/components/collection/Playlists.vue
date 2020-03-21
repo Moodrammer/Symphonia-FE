@@ -3,7 +3,13 @@
     <v-container>
       <v-row>
         <v-col cols="12" lg="6" v-if="likedSongs.length > 0">
-          <v-menu absolute offset-y style="max-width: 600px" dark v-model="showMenu">
+          <v-menu
+            absolute
+            offset-y
+            style="max-width: 600px"
+            dark
+            v-model="showMenu"
+          >
             <template v-slot:activator="{ on }">
               <v-card
                 @mouseover="playDisplayIndex = -1"
@@ -17,9 +23,9 @@
               >
                 <v-row>
                   <v-card-text>
-                    <span v-for="(song, index)  in likedSongs" :key="index">
-                      {{song.artist}}
-                      <span class="grey--text">{{song.title}}.</span>
+                    <span v-for="(song, index) in likedSongs" :key="index">
+                      {{ song.artist }}
+                      <span class="grey--text">{{ song.title }}.</span>
                     </span>
                   </v-card-text>
                 </v-row>
@@ -29,7 +35,9 @@
                   </v-card-title>
                 </v-row>
                 <v-row>
-                  <v-card-subtitle class="pa-0">{{likedSongs.length}} liked songs</v-card-subtitle>
+                  <v-card-subtitle class="pa-0"
+                    >{{ likedSongs.length }} liked songs</v-card-subtitle
+                  >
                 </v-row>
                 <v-row>
                   <v-spacer></v-spacer>
@@ -46,7 +54,14 @@
             </v-list>
           </v-menu>
         </v-col>
-        <v-col cols="12" lg="3" md="4" sm="6" v-for="(playlist, index) in playlists" :key="index">
+        <v-col
+          cols="12"
+          lg="3"
+          md="4"
+          sm="6"
+          v-for="(playlist, index) in playlists"
+          :key="index"
+        >
           <v-menu absolute offset-y style="max-width: 600px" dark>
             <template v-slot:activator="{ on }">
               <v-card
@@ -59,19 +74,28 @@
                 color="#282828"
                 dark
               >
-                <v-img class="mx-auto pa-0" height="200px" width="200px" :src="playlist.image"></v-img>
+                <v-img
+                  class="mx-auto pa-0"
+                  height="200px"
+                  width="200px"
+                  :src="playlist.image"
+                ></v-img>
 
                 <v-card-title class="white--text pl-0 pb-0">
-                  {{
-                  playlist.name
-                  }}
+                  {{ playlist.name }}
                 </v-card-title>
                 <v-layout row wrap>
                   <v-flex>
                     <v-card-text>{{ playlist.description }}</v-card-text>
                   </v-flex>
                   <v-flex>
-                    <v-btn v-if="playDisplayIndex === index" fab text color="green" class="ml-10">
+                    <v-btn
+                      v-if="playDisplayIndex === index"
+                      fab
+                      text
+                      color="green"
+                      class="ml-10"
+                    >
                       <v-icon x-large lg-12>mdi-play-circle</v-icon>
                     </v-btn>
                   </v-flex>
