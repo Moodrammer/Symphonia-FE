@@ -7,6 +7,8 @@ import Playlists from "../components/collection/Playlists.vue";
 import ALbums from "../components/collection/Albums.vue";
 import Artists from "../components/collection/Artists.vue";
 import User_Settings from "../views/User_Settings.vue";
+import Search from "../components/Search.vue";
+import HomeContent from "../components/HomeContent.vue";
 
 Vue.use(VueRouter);
 
@@ -19,7 +21,42 @@ const routes = [
   {
     path: "/webhome",
     name: "WebHome",
-    component: WebPlayerHome
+    component: WebPlayerHome,
+    children: [
+      {
+        name: "home",
+        path: "home",
+        component: HomeContent
+      },
+      {
+        name: "search",
+        path: "search",
+        component: Search
+      },
+      {
+        name: "collection",
+        path: "collection",
+        component: Library,
+        redirect: "collection/playlists",
+        children: [
+          {
+            name: "Playlists",
+            path: "playlists",
+            component: Playlists
+          },
+          {
+            name: "Artists",
+            path: "artists",
+            component: Artists
+          },
+          {
+            name: "Albums",
+            path: "albums",
+            component: ALbums
+          }
+        ]
+      }
+    ]
   },
   {
     path: "/signup",
@@ -38,29 +75,6 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Login.vue")
-  },
-  {
-    path: "/library",
-    name: "Library",
-    component: Library,
-    redirect: "/library/playlists",
-    children: [
-      {
-        name: "Playlists",
-        path: "playlists",
-        component: Playlists
-      },
-      {
-        name: "Artists",
-        path: "artists",
-        component: Artists
-      },
-      {
-        name: "Albums",
-        path: "albums",
-        component: ALbums
-      }
-    ]
   },
   {
     path: "/account/",

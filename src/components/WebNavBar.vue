@@ -23,6 +23,66 @@
       <v-icon color="grey darken-1" large>mdi-chevron-right</v-icon>
     </v-btn>
 
+    <v-text-field
+      hide-details
+      prepend-inner-icon="mdi-magnify"
+      placeholder="Search for Artists,Songs"
+      solo
+      color="black"
+      class="tf ml-3 py-0"
+      v-show="showSearch"
+    ></v-text-field>
+
+    <div class="mx-3" style="min-width:220px" v-show="showCollection">
+      <v-btn text color="white" class="mx-2" :to="{ name: 'Playlists' }">
+        <span class="text-capitalize white--text">Playlists</span>
+      </v-btn>
+
+      <v-menu offset-y dark v-model="showMenu">
+        <template v-slot:activator="{ on }">
+          <v-btn
+            dark
+            :text="selectedItem == 'More..'"
+            width="100"
+            v-on="on"
+            class="hidden-lg-and-up"
+          >
+            <span class="text-capitalize white--text">{{ selectedItem }}</span>
+            <v-icon v-if="showMenu" color="grey" right>mdi-menu-up</v-icon>
+            <v-icon v-else color="grey" right>mdi-menu-down</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in moreMenu"
+            :key="index"
+            :to="{ name: item }"
+          >
+            <v-list-item-title class="text-capitalize white--text">
+              {{ item }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <v-btn
+        text
+        color="white"
+        class="mx-2 hidden-md-and-down"
+        :to="{ name: 'Artists' }"
+      >
+        <span class="text-capitalize white--text">Artists</span>
+      </v-btn>
+      <v-btn
+        text
+        color="white"
+        class="mx-2 hidden-md-and-down"
+        :to="{ name: 'Albums' }"
+      >
+        <span class="text-capitalize white--text">Albums</span>
+      </v-btn>
+    </div>
+
     <!--Spacer to make the next elements start from the end-->
     <v-spacer></v-spacer>
 
@@ -32,8 +92,9 @@
       rounded
       class="upgarde white--text px-8 py-2 hidden-sm-and-down"
       id="upgarde"
+      v-show="showUpgrade"
     >
-      UPGARDE
+      UPGRADE
     </v-btn>
 
     <!--A menu of account, upgarde to premium ,logout -->
@@ -64,7 +125,7 @@
       <!--Menu list-->
       <v-list color="#282828" dark class="mt-3">
         <v-list-item id="account" to="/account/">
-          <v-list-item-title color="#b3b3b3" >Account</v-list-item-title>
+          <v-list-item-title color="#b3b3b3">Account</v-list-item-title>
         </v-list-item>
 
         <v-list-item class="hidden-md-and-up" id="upgardepremium">
@@ -84,8 +145,23 @@ export default {
   data: function() {
     return {
       hover: false,
-      prevRoute: null
+      showSearch: false,
+      showCollection: false,
+      showUpgrade: false,
+      showMenu: false,
+      selectedItem: "More..",
+      moreMenu: ["More..", "Artists", "Albums"]
     };
+  },
+  created() {
+    this.itemChosen(this.$route.name);
+    this.handleTabs(this.$route.name);
+  },
+  watch: {
+    $route: function() {
+      this.handleTabs(this.$route.name);
+      this.itemChosen(this.$route.name);
+    }
   },
   methods: {
     //Some validations are needed
@@ -96,6 +172,37 @@ export default {
     next: function() {
       //the way to go forward
       this.$router.go(1);
+    },
+    handleTabs: function(item) {
+      if (item === "search") {
+        this.showSearch = true;
+        this.showCollection = false;
+        this.showUpgrade = false;
+      } else if (
+        item === "Playlists" ||
+        item === "Artists" ||
+        item === "Albums"
+      ) {
+        this.showSearch = false;
+        this.showCollection = true;
+        this.showUpgrade = false;
+      } else {
+        this.showCollection = false;
+        this.showSearch = false;
+        this.showUpgrade = true;
+      }
+    },
+    itemChosen(item) {
+      if (item == "Artists") {
+        this.selectedItem = "Artists";
+        this.moreMenu = ["Albums"];
+      } else if (item == "Albums") {
+        this.selectedItem = "Albums";
+        this.moreMenu = ["Artists"];
+      } else {
+        this.selectedItem = "More..";
+        this.moreMenu = ["Artists", "Albums"];
+      }
     }
   }
 };
@@ -116,5 +223,11 @@ export default {
 .profile {
   border-radius: 23px;
   font-size: 10px;
+}
+
+.tf {
+  border-radius: 500px;
+  margin-left: 5px;
+  text-overflow: ellipsis;
 }
 </style>

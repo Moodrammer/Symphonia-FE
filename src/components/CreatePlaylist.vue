@@ -1,5 +1,5 @@
-<template slot="activator" >
-  <v-dialog fullscreen v-model="dialog" >
+<template slot="activator">
+  <v-dialog fullscreen v-model="dialog">
     <!--Slot to activate the popup it will be shown in the drawer-->
     <template v-slot:activator="{ on }">
       <v-btn
@@ -7,7 +7,6 @@
         fab
         x-small
         v-on="on"
-       
         v-on:keyup.esc="close"
         style="border-radius: 0px; margin-right: 7%"
         id="openPopup"
@@ -36,7 +35,7 @@
 
       <h1 class="font-weight-bold display-2 mb-9">Create new playlist</h1>
       <!--take the playlist name from here-->
-      
+
       <p class="playlist">Playlist Name</p>
       <input
         class="input"
@@ -46,8 +45,8 @@
         name="Playlist Name"
         placeholder="New Playlist"
         v-on:keyup.enter="create"
-      >
-    
+      />
+
       <!--The actions of the popup cancel-create-->
       <v-btn
         color="white"
@@ -56,15 +55,15 @@
         @click="close"
         class="popbutton px-8 mx-8"
         id="cancel"
-        >Cancel</v-btn
-      >
+        >Cancel
+      </v-btn>
       <v-btn
         class="white--text popbutton px-8"
         rounded
         @click="create"
         id="create"
-        >Create</v-btn
-      >
+        >Create
+      </v-btn>
     </v-card>
   </v-dialog>
 </template>
@@ -88,9 +87,9 @@ export default {
       this.dialog = false;
     },
 
-    close: function(){
-      this.name="";
-      this.dialog=false;
+    close: function() {
+      this.name = "";
+      this.dialog = false;
     }
   }
 };
@@ -103,57 +102,55 @@ export default {
 }
 
 .popbutton:hover {
-   transform: scale(1.05, 1.05);
- 
+  transform: scale(1.05, 1.05);
 }
 
-#create{
+#create {
   color: #fff;
   background-color: #1aa34a;
   border-width: 0;
 }
 
-#create:hover{
+#create:hover {
   background-color: #1ed760;
 }
 .v-text-field {
   font-size: 32px;
 }
 
-#closeIcon{
-  padding-top: 180px
+#closeIcon {
+  padding-top: 180px;
 }
 
-#playlistName{
+#playlistName {
   padding-left: 50px;
 }
 
-.input{
- background-color: #282828; 
- height: 90px;
- width:100%;
- margin-bottom: 40px;
- padding-bottom: 20px;
- outline: none;
- font-size: 44px;
- font-weight: bold;
- caret-color: #1db954;
- justify-content: center;
+.input {
+  background-color: #282828;
+  height: 90px;
+  width: 100%;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  outline: none;
+  font-size: 44px;
+  font-weight: bold;
+  caret-color: #1db954;
+  justify-content: center;
 }
 
-::placeholder{
+::placeholder {
   color: #666666;
   font-size: 44px;
   font-weight: bold;
 }
 
-.playlist{
-  background-color: #282828; 
+.playlist {
+  background-color: #282828;
   font-size: 14px;
   margin-bottom: 0%;
   padding-top: 20px;
   text-align: start;
   padding-left: 50px;
 }
-
 </style>

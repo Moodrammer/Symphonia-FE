@@ -4,7 +4,7 @@
     <v-list color="black" nav class="list">
       <!--logo and organization name (todo:change it to symphonia)-->
       <v-list-item>
-        <router-link to="/webhome">
+        <router-link to="/webhome/home">
           <v-img
             src="../assets/spotify.png"
             max-width="130"
@@ -78,17 +78,17 @@ export default {
         {
           icon: "mdi-home-variant",
           text: "Home",
-          route: "/webhome"
+          route: "/webhome/home"
         },
         {
           icon: "mdi-magnify",
           text: "Search",
-          route: "/search"
+          route: "/webhome/search"
         },
         {
           icon: "mdi-bookshelf",
           text: "Your Library",
-          route: "/Library"
+          route: "/webhome/collection"
         }
       ]
     };
