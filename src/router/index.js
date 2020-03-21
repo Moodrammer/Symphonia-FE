@@ -7,6 +7,8 @@ import Playlists from "../components/collection/Playlists.vue";
 import ALbums from "../components/collection/Albums.vue";
 import Artists from "../components/collection/Artists.vue";
 import User_Settings from "../views/User_Settings.vue";
+import Search from "../components/Search.vue";
+import HomeContent from "../components/HomeContent.vue";
 
 Vue.use(VueRouter);
 
@@ -17,11 +19,46 @@ const routes = [
     component: Homepage
   },
   {
-    path:"/webhome",
+    path: "/webhome",
     name: "WebHome",
-    component:WebPlayerHome
+    component: WebPlayerHome,
+    children: [
+      {
+        name: "home",
+        path: "home",
+        component: HomeContent
+      },
+      {
+        name: "search",
+        path: "search",
+        component: Search
+      },
+      {
+        name: "collection",
+        path: "collection",
+        component: Library,
+        redirect: "collection/playlists",
+        children: [
+          {
+            name: "Playlists",
+            path: "playlists",
+            component: Playlists
+          },
+          {
+            name: "Artists",
+            path: "artists",
+            component: Artists
+          },
+          {
+            name: "Albums",
+            path: "albums",
+            component: ALbums
+          }
+        ]
+      }
+    ]
   },
-{
+  {
     path: "/signup",
     name: "signup",
     // route level code-splitting
@@ -40,62 +77,35 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/Login.vue")
   },
   {
-    path: "/library",
-    name: "Library",
-    component: Library,
-    redirect: "/library/playlists",
-    children: [
-      {
-        name: "Playlists",
-        path: "playlists",
-        component: Playlists
-      },
-      {
-        name: "Artists",
-        path: "artists",
-        component: Artists
-      },
-      {
-        name: "Albums",
-        path: "albums",
-        component: ALbums
-      }
-    ]
-  },
-  {
     path: "/account/",
     name: "Acccount Setting",
     component: User_Settings,
-    children: [{
-            path: "",
-            component: () =>
-                import ("../components/User Settings/overview.vue")
-        },
-        {
-            path: "edit",
-            component: () =>
-                import ("../components/User Settings/editProfile.vue")
-        },
-        {
-            path: "recover-playlists",
-            component: () =>
-                import ("../components/User Settings/recoverPlaylist.vue")
-        },
-        {
-            path: "notifications",
-            component: () =>
-                import ("../components/User Settings/notification.vue")
-        }
+    children: [
+      {
+        path: "",
+        component: () => import("../components/User Settings/overview.vue")
+      },
+      {
+        path: "edit",
+        component: () => import("../components/User Settings/editProfile.vue")
+      },
+      {
+        path: "recover-playlists",
+        component: () =>
+          import("../components/User Settings/recoverPlaylist.vue")
+      },
+      {
+        path: "notifications",
+        component: () => import("../components/User Settings/notification.vue")
+      }
     ]
-}
-
-]
-
+  }
+];
 
 const router = new VueRouter({
-    mode: "history",
-    base: process.env.BASE_URL,
-    routes
+  mode: "history",
+  base: process.env.BASE_URL,
+  routes
 });
 
 export default router;

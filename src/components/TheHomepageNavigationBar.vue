@@ -60,7 +60,7 @@
             to="/login"
             class="toolbar-link-1 toolbar-link-2"
             style="padding-right:0px;"
-          >Log in</router-link
+            >Log in</router-link
           >
         </v-toolbar>
       </v-toolbar>

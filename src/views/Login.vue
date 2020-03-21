@@ -196,7 +196,7 @@ export default {
             password: this.formData.password
           })
           .then(() => {
-            this.$router.push("/webhome");
+            this.$router.push("/webhome/home");
           })
           .catch(() => {
             this.errorState = true;

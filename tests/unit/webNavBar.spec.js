@@ -18,4 +18,6 @@ describe("NavBar", () => {
     expect(shallowMount(NavBar).isVueInstance()).toBe(true);
   });
 
+
+
 });

@@ -96,7 +96,7 @@
             <li class="links-column-item">
               Help
             </li>
-            <router-link to="/webhome">
+            <router-link to="/webhome/home">
               <li class="links-column-item">
                 Web Player
               </li>
