@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- md and lg only-->
     <v-content
       app
       v-bind:class="{
@@ -9,12 +8,13 @@
         'hero-home-sm-cover': isSm() || isXs()
       }"
     >
-      <v-container style="">
+      <v-container>
         <v-row>
           <v-col sm="1" v-if="isSm()"></v-col>
           <v-col sm="10" md="12" lg="12" xs="12">
-            <h1 class="premium-header"
-            v-bind:class="{'premium-header-xs': isXs()}"
+            <h1
+              class="premium-header"
+              v-bind:class="{ 'premium-header-xs': isXs() }"
             >
               Get Premium free for 1 month
             </h1>
@@ -25,9 +25,9 @@
         <v-row>
           <v-col sm="1" v-if="isSm()"></v-col>
           <v-col sm="10" md="12" lg="12" xs="12">
-            <p class="price"
-            v-bind:class="{'price-xs': isXs()}"
-            >Just EGP 49.99/month after. Cancel anytime.</p>
+            <p class="price" v-bind:class="{ 'price-xs': isXs() }">
+              Just EGP 49.99/month after. Cancel anytime.
+            </p>
           </v-col>
           <v-col sm="1" v-if="isSm()"></v-col>
         </v-row>
@@ -35,8 +35,10 @@
         <v-row>
           <v-col sm="1" v-if="isSm()"></v-col>
           <v-col sm="10" md="12" lg="12" xs="12">
-            <router-link to="/trial" class="download-button-large"
-            v-bind:class="{'download-button-xs': isXs()}"
+            <router-link
+              to="/trial"
+              class="download-button-large"
+              v-bind:class="{ 'download-button-xs': isXs() }"
             >
               get premium
             </router-link>
@@ -46,12 +48,84 @@
       </v-container>
     </v-content>
 
-    <!-- sm and xs only-->
+    <!-- Benefits -->
+    <v-content>
+      <v-row>
+        <v-col>
+          <h1 class="why-premium">Why go Premium?</h1>
+        </v-col>
+      </v-row>
+
+      <v-row justify="center">
+        <v-col lg="2" md="6" sm="6" cols="12" v-for="n in benefits" :key="n.no">
+          <v-card class="mx-auto" max-width="400" flat>
+            <v-img
+              aspect-ratio="1"
+              v-bind:src="
+                'http://localhost:8080/benefits/benefit-' + n.no + '.png'
+              "
+              style="
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+              "
+              v-bind:class="{
+                'benefits-img-sm': isSm() || isXs(),
+                'benefits-img-lg': !isSm()
+              }"
+            >
+            </v-img>
+
+            <v-card-title style="padding-bottom: 0px;">
+              <v-row justify="center">
+                <h2 class="benefit-title">
+                  {{ n.text1 }}
+                </h2>
+              </v-row>
+            </v-card-title>
+
+            <v-card-title style="padding-top: 0px;">
+              <v-row justify="center">
+                <p class="benefit-title2">
+                  {{ n.text2 }}
+                </p>
+              </v-row>
+            </v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-content>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      benefits: {
+        benefit1: {
+          no: 1,
+          text1: "Download music.",
+          text2: "Listen anywhere."
+        },
+        benefit2: {
+          no: 2,
+          text1: "No ad interruptions.",
+          text2: "Enjoy nonstop music."
+        },
+        benefit3: {
+          no: 3,
+          text1: "Play any song.",
+          text2: "Even on mobile."
+        },
+        benefit4: {
+          no: 4,
+          text1: "Unlimited skips.",
+          text2: "Just hit next."
+        }
+      }
+    };
+  },
   mounted: function() {
     this.hideNavBackground(); //hideNavBackground will execute at pageload
   },
@@ -68,7 +142,6 @@ export default {
     },
 
     NavFunction: function() {
-      console.log("Scrolling");
       var nav = document.getElementById("nav");
       if (window.pageYOffset > 50) {
         nav.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
@@ -135,11 +208,11 @@ export default {
   font-size: 70px;
   color: white;
 
-  padding-top:70px;
+  padding-top: 70px;
 }
 
 .premium-header-xs {
-  padding-top:30px;
+  padding-top: 30px;
   font-size: 43px;
 }
 
@@ -186,5 +259,45 @@ export default {
 
 .download-button-large:active {
   background-color: #1aa34a;
+}
+
+.why-premium {
+  text-align: center;
+  font-family: Helvetica, Arial, sans-serif;
+  color: black;
+  margin: 0.5em 0 0.25em;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  font-weight: 900;
+  font-size: 48px;
+}
+
+.benefit-title {
+  color: #222326;
+  font-family: Helvetica, Arial, sans-serif;
+  text-align: center;
+  display: block;
+  font-weight: bold;
+  font-size: 21px;
+}
+
+.benefit-title2 {
+  color: #222326;
+  font-weight: 400;
+  font-family: Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.benefits-img-lg {
+  height: 142px;
+  width: 142px;
+}
+
+.benefits-img-sm {
+  float: left;
+  width: 100px;
 }
 </style>
