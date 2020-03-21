@@ -37,7 +37,7 @@
         <create-playlist></create-playlist>
       </v-list-item>
 
-      <v-list-item>
+      <v-list-item  to="collection/tracks">
         <v-btn class="liked" fab x-small id="liked">
           <v-icon color="white">mdi-cards-heart</v-icon>
         </v-btn>

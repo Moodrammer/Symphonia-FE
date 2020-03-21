@@ -9,6 +9,7 @@ import Artists from "../components/collection/Artists.vue";
 import User_Settings from "../views/User_Settings.vue";
 import Search from "../components/Search.vue";
 import HomeContent from "../components/HomeContent.vue";
+import Tracks from "../views/LikedSongs.vue";
 
 Vue.use(VueRouter);
 
@@ -54,6 +55,11 @@ const routes = [
             name: "Albums",
             path: "albums",
             component: ALbums
+          },
+          {
+            name: "tracks",
+            path: "tracks",
+            component: Tracks
           }
         ]
       }

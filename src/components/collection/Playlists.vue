@@ -20,6 +20,7 @@
                 height="340"
                 color="#282828"
                 dark
+                 to="tracks"
               >
                 <v-row>
                   <v-card-text>
