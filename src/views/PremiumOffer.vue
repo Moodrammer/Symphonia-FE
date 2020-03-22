@@ -17,10 +17,10 @@ export default {
   components: {
     NavigationBar,
     Content,
-    Footer,
+    Footer
   },
 
-  data: () => ({}),
+  data: () => ({})
 };
 </script>
 

@@ -2,7 +2,7 @@
   <v-content style="overflow:hidden; padding: 0px;">
     <NavigationBar />
     <Content v-if="!isLoggedIn()" />
-    <ContentLoggedIn v-if="isLoggedIn()" />
+    <ContentLoggedIn v-if="isLoggedIn()" id="content" />
     <Footer />
   </v-content>
 </template>
@@ -12,7 +12,7 @@ import NavigationBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import Content from "../components/Homepage/TheHomepageContent.vue";
 import Footer from "../components/Homepage/TheHomepageFooter";
 import ContentLoggedIn from "../components/Homepage/TheHomepageLoginContent.vue";
-
+import isLoggedIn from "../components/isLoggedIn"
 export default {
   name: "App",
 
@@ -23,13 +23,14 @@ export default {
     ContentLoggedIn
   },
 
-  data: () => ({}),
+  mounted: function() {
+    this.$root.$on('forceUpdateContent', () => {
+      // your code goes here
+      this.$forceUpdate();
+    });
+  },
 
-  methods: {
-    isLoggedIn() {
-      return true;
-    }
-  }
+  mixins: [isLoggedIn]
 };
 </script>
 
