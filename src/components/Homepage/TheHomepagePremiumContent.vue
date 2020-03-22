@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-content
-      app
       v-bind:class="{
         'hero-home-bg-cover': isLg(),
         'hero-home-md-cover': isMd(),
@@ -97,7 +96,7 @@
     </v-content>
 
     <v-content>
-      <v-card :loading="loading" class="mx-auto my-12" max-width="374">
+      <v-card class="mx-auto my-12" max-width="374">
         <v-card-title style="font-size 32px; color: black;"
           >Spotify Premium</v-card-title
         >
@@ -159,22 +158,16 @@ export default {
       }
     };
   },
-  mounted: function() {
-    this.hideNavBackground(); //hideNavBackground will execute at pageload
-  },
-  destroyed: function() {
-    this.removeNavEventListener();
-  },
 
   methods: {
-    hideNavBackground: function() {
+    hideNavBackground() {
       var nav = document.getElementById("nav");
       nav.style.backgroundColor = "rgba(0, 0, 0, 0)";
 
       window.addEventListener("scroll", this.NavFunction);
     },
 
-    NavFunction: function() {
+    NavFunction() {
       var nav = document.getElementById("nav");
       if (window.pageYOffset > 50) {
         nav.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
@@ -183,9 +176,10 @@ export default {
       }
     },
 
-    removeNavEventListener: function() {
+    removeNavEventListener() {
       window.removeEventListener("scroll", this.NavFunction);
     },
+
     isLg() {
       const { lg } = this.$vuetify.breakpoint;
       return lg ? true : false;
@@ -202,6 +196,14 @@ export default {
       const { xs } = this.$vuetify.breakpoint;
       return xs ? true : false;
     }
+  },
+
+  mounted: function() {
+    this.hideNavBackground(); //hideNavBackground will execute at pageload
+  },
+
+  destroyed: function() {
+    this.removeNavEventListener();
   }
 };
 </script>

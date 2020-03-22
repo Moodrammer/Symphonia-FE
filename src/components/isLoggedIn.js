@@ -1,4 +1,4 @@
-export default {
+  export default {
   methods: {
     isLoggedIn() {
       if (localStorage.getItem("userToken") == "") {

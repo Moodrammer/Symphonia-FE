@@ -2,7 +2,7 @@
   <v-content style="overflow:hidden; padding: 0px;">
     <NavigationBar />
     <Content v-if="!isLoggedIn()" />
-    <ContentLoggedIn v-if="isLoggedIn()" id="content" />
+    <ContentLoggedIn v-if="isLoggedIn()" />
     <Footer />
   </v-content>
 </template>

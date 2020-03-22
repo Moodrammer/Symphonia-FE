@@ -19,8 +19,6 @@ export default {
     Content,
     Footer
   },
-
-  data: () => ({})
 };
 </script>
 
