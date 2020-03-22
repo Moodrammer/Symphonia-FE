@@ -247,6 +247,7 @@
 
 <script>
 import isLoggedIn from "../isLoggedIn";
+import getDeviceSize from "../getDeviceSize"
 
 export default {
   name: "NavBar",
@@ -258,19 +259,6 @@ export default {
   },
 
   methods: {
-    isLg() {
-      const { lg } = this.$vuetify.breakpoint;
-      return lg ? true : false;
-    },
-    isSm() {
-      const { sm } = this.$vuetify.breakpoint;
-      return sm ? true : false;
-    },
-    isXs() {
-      const { xs } = this.$vuetify.breakpoint;
-      return xs ? true : false;
-    },
-
     logOutAndRender() {
       this.logOut();
       this.$forceUpdate();
@@ -278,7 +266,7 @@ export default {
     }
   },
 
-  mixins: [isLoggedIn]
+  mixins: [isLoggedIn, getDeviceSize]
 };
 </script>
 
