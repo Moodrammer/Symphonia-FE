@@ -133,7 +133,14 @@
 <script>
 import getDeviceSize from "../getDeviceSize"
 
+/**
+ * The homepage content when pressing premium tab.
+ * @version 1.0.0
+ */
+
 export default {
+  name: "HomepagePremium",
+
   data() {
     return {
       benefits: {
@@ -162,6 +169,11 @@ export default {
   },
 
   methods: {
+    /**
+     * Hide the navbar when this view is loaded 
+     * by adding an event listener to the window.
+     * @public
+     */
     hideNavBackground() {
       var nav = document.getElementById("nav");
       nav.style.backgroundColor = "rgba(0, 0, 0, 0)";
@@ -169,6 +181,10 @@ export default {
       window.addEventListener("scroll", this.NavFunction);
     },
 
+    /**
+     * Change the opacity of the Navbar after scrolling.
+     * @public
+     */
     NavFunction() {
       var nav = document.getElementById("nav");
       if (window.pageYOffset > 50) {
@@ -178,6 +194,10 @@ export default {
       }
     },
 
+    /**
+     * After get out of this page, remove the scroll event listener from the window.
+     * @public
+     */
     removeNavEventListener() {
       window.removeEventListener("scroll", this.NavFunction);
     },

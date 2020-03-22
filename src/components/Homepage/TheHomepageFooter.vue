@@ -129,6 +129,11 @@
 <script>
 import getDeviceSize from "../getDeviceSize"
 
+/**
+ * The homepage footer.
+ * @version 1.0.0
+ */
+
 export default {
   mixins: [getDeviceSize]
 };

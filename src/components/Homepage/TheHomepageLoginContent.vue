@@ -171,8 +171,13 @@
 <script>
 import getDeviceSize from "../getDeviceSize"
 
+/**
+ * The homepage content after login.
+ * @version 1.0.0
+ */
+
 export default {
-  name: "HomepageContent",
+  name: "HomepageLoginContent",
 
   components: {},
 

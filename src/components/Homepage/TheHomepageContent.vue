@@ -29,6 +29,11 @@
 <script>
 import getDeviceSize from "../getDeviceSize"
 
+/**
+ * The Home page body content before logging in.
+ * @version 1.0.0
+ */
+
 export default {
   name: "HomepageContent",
 

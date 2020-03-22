@@ -115,7 +115,7 @@
                   <v-list-item-title
                     class="account-button logout-button blue-hover"
                   >
-                    <span v-on:click="logOutAndRender()"> Log Out</span>
+                    <span v-on:click="logOutAndRerender()"> Log Out</span>
                   </v-list-item-title>
                 </router-link>
               </v-list-item>
@@ -249,8 +249,13 @@
 import isLoggedIn from "../isLoggedIn";
 import getDeviceSize from "../getDeviceSize"
 
+/**
+ * The homepage navigation bar.
+ * @version 1.0.0
+ */
+
 export default {
-  name: "NavBar",
+  name: "TheHomepageNavBar",
 
   data() {
     return {
@@ -259,7 +264,12 @@ export default {
   },
 
   methods: {
-    logOutAndRender() {
+    /**
+     * Gets called when the user logs out 
+     *
+     * @public 
+     */
+    logOutAndRerender() {
       this.logOut();
       this.$forceUpdate();
       this.$root.$emit("forceUpdateContent"); //like this

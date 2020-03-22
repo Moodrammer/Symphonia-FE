@@ -13,6 +13,12 @@ import Content from "../components/Homepage/TheHomepageContent.vue";
 import Footer from "../components/Homepage/TheHomepageFooter";
 import ContentLoggedIn from "../components/Homepage/TheHomepageLoginContent.vue";
 import isLoggedIn from "../components/isLoggedIn"
+
+/**
+ * The homepage view
+ * @version 1.0.0
+ */
+
 export default {
   name: "App",
 
