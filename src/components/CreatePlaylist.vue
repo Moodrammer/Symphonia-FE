@@ -2,18 +2,18 @@
   <v-dialog fullscreen v-model="dialog">
     <!--Slot to activate the popup it will be shown in the drawer-->
     <template v-slot:activator="{ on }">
-      <v-btn
-        color="white"
-        fab
-        x-small
-        v-on="on"
-        v-on:keyup.esc="close"
-        style="border-radius: 0px; margin-right: 7%"
-        id="openPopup"
-      >
-        <v-icon color="black">mdi-plus</v-icon>
-      </v-btn>
-      <p v-on="on" class="pt-4">Create Playlist</p>
+      <v-list-item class="temp" v-on:keyup.esc="close" v-on="on" inactive>
+        <v-btn
+          fab
+          x-small
+          color="white"
+          id="openPopup"
+          style="border-radius: 0px; margin-right: 7%"
+        >
+          <v-icon color="black">mdi-plus</v-icon>
+        </v-btn>
+        <v-list-item-title>Create Playlist</v-list-item-title>
+      </v-list-item>
     </template>
 
     <v-card
@@ -152,5 +152,15 @@ export default {
   padding-top: 20px;
   text-align: start;
   padding-left: 50px;
+}
+
+.temp {
+  opacity: 0.6;
+}
+
+.temp:hover {
+  opacity: 1;
+  cursor: pointer;
+  background-color: transparent;
 }
 </style>

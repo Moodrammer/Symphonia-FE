@@ -10,7 +10,7 @@ import User_Settings from "../views/User_Settings.vue";
 import Search from "../components/Search.vue";
 import HomeContent from "../components/HomeContent.vue";
 import Tracks from "../views/LikedSongs.vue";
-import HomepagePremium from "../views/PremiumOffer.vue"
+import HomepagePremium from "../views/PremiumOffer.vue";
 
 Vue.use(VueRouter);
 
@@ -24,7 +24,7 @@ const routes = [
     path: "/webhome",
     name: "WebHome",
     component: WebPlayerHome,
-    redirect: "webhome/home" ,
+    redirect: "webhome/home",
     children: [
       {
         name: "home",

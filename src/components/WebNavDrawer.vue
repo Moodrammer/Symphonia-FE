@@ -5,13 +5,7 @@
       <!--logo and organization name (todo:change it to symphonia)-->
       <v-list-item>
         <router-link to="/webhome/home">
-          <v-img
-            src="../assets/spotify.png"
-            max-width="130"
-            max-height="45"
-            class="ma-3"
-            id="imageReload"
-          ></v-img>
+          <h1 class="ma-5 pl-4 white--text">Symphonia</h1>
         </router-link>
       </v-list-item>
 
@@ -22,6 +16,8 @@
         router
         :to="item.route"
         :id="item.text"
+        class="listItem mainMenu"
+        active-class="active"
       >
         <v-icon class="mr-2">{{ item.icon }}</v-icon>
 
@@ -33,11 +29,9 @@
       <v-list-item-subtitle class="ml-2">PLAYLISTS</v-list-item-subtitle>
 
       <!--Nesting the popup-->
-      <v-list-item>
-        <create-playlist></create-playlist>
-      </v-list-item>
+      <create-playlist></create-playlist>
 
-      <v-list-item  to="collection/tracks">
+      <v-list-item to="/webhome/collection/tracks" class="listItem" active-class="active" tag="p">
         <v-btn class="liked" fab x-small id="liked">
           <v-icon color="white">mdi-cards-heart</v-icon>
         </v-btn>
@@ -47,7 +41,11 @@
       <v-divider></v-divider>
       <!--Playlist will be printed from here-->
 
-      <v-list-item v-for="playlist in playlists" :key="playlist.id">
+      <v-list-item
+        v-for="playlist in playlists"
+        :key="playlist.id"
+        class="listItem"
+      >
         <v-list-item-title class="draweritem white--text">
           {{ playlist.name }}
         </v-list-item-title>
@@ -101,5 +99,22 @@ export default {
   background-image: linear-gradient(135deg, #450af5, #c4efd9);
   border-radius: 0%;
   margin-right: 7%;
+}
+
+.listItem {
+  opacity: 0.6;
+}
+
+.listItem:hover {
+  opacity: 1;
+}
+
+a{
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+}
+.active {
+  opacity: 1;
 }
 </style>

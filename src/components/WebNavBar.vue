@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="#1a1a1a" class="bar" app flat>
+  <v-app-bar color="rgba(0, 0, 0, 0.6)" class="bar" app flat>
     <!--To angle brackets to navigate with-->
     <v-btn
       fab

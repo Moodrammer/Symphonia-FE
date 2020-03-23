@@ -6,7 +6,8 @@ export function makeServer({ environment = "development" } = {}) {
     environment,
 
     models: {
-      user: Model
+      user: Model,
+      track: Model
     },
 
     seeds(server) {
@@ -17,6 +18,25 @@ export function makeServer({ environment = "development" } = {}) {
         password: "12345678",
         DateOfBirth: "12-12-1980",
         gender: "male"
+      });
+
+      server.create("track", {
+        artists:
+        {
+          "href": "https://api.spotify.com/v1/artists/6sFIWsNpZYqfjUpaCgueju",
+          "id": "6sFIWsNpZYqfjUpaCgueju",
+          "name": "Carly Rae Jepsen",
+        },
+        duration_ms: 207959,
+        name: "Cut To The Feeling",
+        "id": "11dFghVXANMlKmJXsNCbNl",
+        "href": "https://api.symphonia.com/v1/tracks/11dFghVXANMlKmJXsNCbNl",
+        "album":
+        {
+          "id": "0tGPJ0bkWOUmH7MEOR77qc",
+          "name": "Heaven"
+        }
+
       });
 
       server.db.loadData({
@@ -49,6 +69,12 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/me/player/tracks/history", schema => {
         return schema.db.playlist;
       });
+
+      this.get("/v1/me/tracks", (schema) => {
+        console.log(schema.tracks.all())
+        return schema.tracks.all().models
+      });
+
       // this.urlPrefix = 'http://localhost:8080';
 
       //this.get("/search", schema => {
