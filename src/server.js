@@ -76,6 +76,7 @@ export function makeServer({ environment = "development" } = {}) {
     },
 
     routes() {
+      //namespace will be prepended to any route (it acts like the server base address)
       this.namespace = "/api";
       this.post("/playlists", (schema, request) => {
         let newPlaylist = JSON.parse(request.requestBody).data;

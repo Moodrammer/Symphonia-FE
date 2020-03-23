@@ -175,9 +175,7 @@ export default {
      * @public
      */
     hideNavBackground() {
-      var nav = document.getElementById("nav");
-      nav.style.backgroundColor = "rgba(0, 0, 0, 0)";
-
+      this.NavFunction();
       window.addEventListener("scroll", this.NavFunction);
     },
 

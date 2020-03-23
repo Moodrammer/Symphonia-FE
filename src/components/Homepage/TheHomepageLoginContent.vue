@@ -194,7 +194,6 @@ export default {
       .get("/v1/bestsongs")
       .then(response => {
         let list = response.data.data[0].attributes.songs;
-        console.log(list)
         this.bestSixSongsLoaded = true;
         this.bestSixSongs = list;
       }); 
