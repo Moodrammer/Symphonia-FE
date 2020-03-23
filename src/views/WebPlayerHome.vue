@@ -1,7 +1,7 @@
 <template>
-  <v-app >
+  <v-app>
     <nav-drawer></nav-drawer>
-    <nav-bar ></nav-bar>
+    <nav-bar></nav-bar>
 
     <router-view></router-view>
   </v-app>
@@ -10,6 +10,11 @@
 <script>
 import NavDrawer from "../components/WebNavDrawer";
 import NavBar from "../components/WebNavBar";
+/**
+ * The webplayer view it contains (the side bar - the navigation bar - the sound player)
+ * @displayName Webplayer Home
+ * @example [none]
+ */
 export default {
   components: {
     NavDrawer,

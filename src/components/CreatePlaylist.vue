@@ -69,6 +69,10 @@
 </template>
 
 <script>
+/**
+ * @displayName Create Playlist
+ * @example [none]
+ */
 export default {
   data: function() {
     return {
@@ -77,6 +81,11 @@ export default {
     };
   },
   methods: {
+    /**
+     * Gets called when the user clicks on the create button or press enter
+     * @public This is a public method
+     * @param {none}
+     */
     create: function() {
       //if the input was empty the playlist name will be "New Playlist" (it allows duplicats)
       if (this.name == "") this.name = "New Playlist";
@@ -86,7 +95,11 @@ export default {
       this.name = "";
       this.dialog = false;
     },
-
+    /**
+     * Gets called when the user clicks on the cancel button or the close icon or press esc
+     * @public This is a public method
+     * @param {none}
+     */
     close: function() {
       this.name = "";
       this.dialog = false;

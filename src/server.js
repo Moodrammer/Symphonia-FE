@@ -17,27 +17,47 @@ export function makeServer({ environment = "development" } = {}) {
         email: "Bob@gmail.com",
         password: "12345678",
         DateOfBirth: "12-12-1980",
-        gender: "male"
+        gender: "male",
+        id: 1
       });
 
       server.create("track", {
         artists:
         {
-          "href": "https://api.spotify.com/v1/artists/6sFIWsNpZYqfjUpaCgueju",
-          "id": "6sFIWsNpZYqfjUpaCgueju",
-          "name": "Carly Rae Jepsen",
+          href: "https://api.spotify.com/v1/artists/6sFIWsNpZYqfjUpaCguejur",
+          id: "6sFIWsNpZYqfjUpaCguejuf",
+          name: "Carly Rae Jepsenq",
+        },
+        duration_ms: 20795,
+        name: "Cutqq",
+        id: "11dFghVXANMlKmJXsNCbNlq",
+        href: "https://api.symphonia.com/v1/tracks/11dFghVXANMlKmJXsNCbNlw",
+        album:
+        {
+          id: "0tGPJ0bkWOUmH7MEOR77qcs",
+          name: "Heaven22"
+        }
+      });
+
+      server.create("track", {
+        artists:
+        {
+          href: "https://api.spotify.com/v1/artists/6sFIWsNpZYqfjUpaCgueju",
+          id: "6sFIWsNpZYqfjUpaCgueju",
+          name: "Carly Rae Jepsen",
         },
         duration_ms: 207959,
         name: "Cut To The Feeling",
-        "id": "11dFghVXANMlKmJXsNCbNl",
-        "href": "https://api.symphonia.com/v1/tracks/11dFghVXANMlKmJXsNCbNl",
-        "album":
+        id: "11dFghVXANMlKmJXsNCbNl",
+        href: "https://api.symphonia.com/v1/tracks/11dFghVXANMlKmJXsNCbNl",
+        album:
         {
-          "id": "0tGPJ0bkWOUmH7MEOR77qc",
-          "name": "Heaven"
+          id: "0tGPJ0bkWOUmH7MEOR77qc",
+          name: "Heaven"
         }
-
       });
+
+  
 
       server.db.loadData({
         playlist: [
@@ -71,7 +91,7 @@ export function makeServer({ environment = "development" } = {}) {
       });
 
       this.get("/v1/me/tracks", (schema) => {
-        console.log(schema.tracks.all())
+        console.log(schema.users.all())
         return schema.tracks.all().models
       });
 

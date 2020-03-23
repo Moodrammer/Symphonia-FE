@@ -23,14 +23,14 @@
       <v-col lg="9" sm="12" md="12">
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
         <v-list color="transparent">
-          <song v-for="track in tracks"
+          <song
+            v-for="track in tracks"
             :key="track.name"
             :songName="track.name"
             :artistName="track.artists.name"
             :albumName="track.album.name"
             :duration="track.duration_ms"
           />
-   
         </v-list>
       </v-col>
     </v-row>
@@ -61,8 +61,7 @@ export default {
   },
   computed: mapState({
     tracks: state => state.track.tracks
-  }),
- 
+  })
 };
 </script>
 
@@ -97,5 +96,4 @@ export default {
 h1 {
   padding-left: 12%;
 }
-
 </style>
