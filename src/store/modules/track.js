@@ -9,13 +9,19 @@ const mutations = {
     state.tracks = list;
   }
 };
+const token=localStorage.getItem("userToken");
+
 
 const actions = {
   getTracks({ commit }) {
     axios
-      .get("/v1/me/tracks")
+      .get("/v1/me/tracks", {
+        headers: {
+          'Authorization': `Bearer ${token}`
+      }})
       .then(response => {
         let list = response.data;
+        console.log(response);
         console.log(list);
         commit("load_tracks", list);
       })
