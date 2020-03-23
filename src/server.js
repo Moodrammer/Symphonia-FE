@@ -6,7 +6,8 @@ export function makeServer({ environment = "development" } = {}) {
     environment,
 
     models: {
-      user: Model
+      user: Model,
+      bestsong: Model
     },
 
     seeds(server) {
@@ -19,6 +20,47 @@ export function makeServer({ environment = "development" } = {}) {
         gender: "male"
       });
 
+      server.create("bestsong", 
+      {
+        songs: [
+          {
+            singerName: "Eminim",
+            songName: "changes1",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          },
+          {
+            singerName: "2Pac",
+            songName: "changes2",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          },
+          {
+            singerName: "2Pac",
+            songName: "changes3",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          },
+          {
+            singerName: "2Pac",
+            songName: "changes4",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          },
+          {
+            singerName: "2Pac",
+            songName: "changes5",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          },
+          {
+            singerName: "2Pac",
+            songName: "changes6",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          }
+        ]
+      });
       server.db.loadData({
         playlist: [
           {
@@ -56,6 +98,10 @@ export function makeServer({ environment = "development" } = {}) {
       //return schema.users.all()
 
       //})
+
+      this.get("/v1/bestsongs"), schema => {
+        return schema.bestsongs.bestSixSongs;
+      }
       //Intercepting Login post requests
       this.post("/v1/users/login", (schema, request) => {
         //turn attributes to json to be able to access the data of the request

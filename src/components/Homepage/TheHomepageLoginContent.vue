@@ -71,7 +71,7 @@
           :key="a"
           style="float: left; padding: 10px 10px 0px 0px;"
         >
-          <v-hover v-slot:default="{ hover }">
+          <v-hover v-slot:default="{ hover }" v-if="bestSixSongsLoaded">
             <router-link v-bind:to="bestSixSongs[(a-1) + (3 * (b-1))].songLink" style="text-decoration: none;">
               <v-card class="mx-auto" max-width="374">
                 <v-img
@@ -128,7 +128,7 @@
       <v-container style="clear: left;" class="hidden-xs-only"></v-container>
 
       <!-- slide group of cards in xs devices -->
-      <v-slide-group class="pa-4 hidden-sm-and-up">
+      <v-slide-group class="pa-4 hidden-sm-and-up" v-if="bestSixSongsLoaded">
         <v-slide-item v-for="(song, index) in bestSixSongs" :key="index">
           <router-link v-bind:to="song.songLink" style="text-decoration: none;">
             <v-card
@@ -170,6 +170,7 @@
 
 <script>
 import getDeviceSize from "../getDeviceSize"
+import axios from "axios";
 
 /**
  * The homepage content after login.
@@ -180,48 +181,23 @@ export default {
   name: "HomepageLoginContent",
 
   components: {},
-
+  
   data() {
     return {
-      bestSixSongs: [
-        {
-          singerName: "2Pac",
-          songName: "changes1",
-          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-          songLink: "/songlink"
-        },
-        {
-          singerName: "2Pac",
-          songName: "changes2",
-          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-          songLink: "/songlink"
-        },
-        {
-          singerName: "2Pac",
-          songName: "changes3",
-          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-          songLink: "/songlink"
-        },
-        {
-          singerName: "2Pac",
-          songName: "changes4",
-          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-          songLink: "/songlink"
-        },
-        {
-          singerName: "2Pac",
-          songName: "changes5",
-          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-          songLink: "/songlink"
-        },
-        {
-          singerName: "2Pac",
-          songName: "changes6",
-          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-          songLink: "/songlink"
-        }
-      ]
+        bestSixSongsLoaded: false,
+        bestSixSongs: false
     }
+  },
+
+  mounted: function() {
+    axios
+      .get("/v1/bestsongs")
+      .then(response => {
+        let list = response.data.data[0].attributes.songs;
+        console.log(list)
+        this.bestSixSongsLoaded = true;
+        this.bestSixSongs = list;
+      }); 
   },
 
   mixins: [getDeviceSize]
