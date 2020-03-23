@@ -7,8 +7,11 @@
       <premiumAds></premiumAds>
       <v-container fluid>
         <div class="container">
+          <!-- the main container to the side bad & view router -->
           <div class="row" style="width: 1185px; margin:0px;">
+            <!-- Side bar content -->
             <side-bar />
+            <!-- Views go here from side bar -->
             <router-view></router-view>
           </div>
         </div>

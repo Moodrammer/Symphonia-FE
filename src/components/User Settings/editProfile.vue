@@ -1,11 +1,14 @@
 <template>
   <div class="col-sm-9">
+    <!-- the main contant of the page of Edit profile -->
     <div class="content">
       <div class="header-container">
         <h1>Edit Profile</h1>
       </div>
       <div class="form-container">
+        <!-- here we take the changes for both users facebook & normal ones to change the profile -->
         <form action="#">
+          <!-- The name content -->
           <div class="form-group">
             <label for="email">Email</label>
             <input
@@ -16,6 +19,7 @@
             />
             <p v-show="facebook">{{ user.email }}</p>
           </div>
+          <!-- The gender content -->
           <div class="form-group">
             <label for="gender">Gender</label>
             <input
@@ -26,6 +30,7 @@
             />
             <p v-show="facebook">{{ user.gender }}</p>
           </div>
+          <!-- The date of birth content -->
           <div class="form-group">
             <label for="bod">Date of birth</label>
             <input
@@ -36,24 +41,32 @@
             />
             <p v-show="facebook">{{ user.date }}</p>
           </div>
+          <!-- The country content -->
           <div class="form-group">
             <label for="country">Country</label>
             <select name="country" id="country" required>
               <option value="EG" selected>{{ user.country }}</option>
             </select>
           </div>
+          <!-- The mobile content -->
           <div class="form-group">
             <label for="mobile">Mobile phone number</label>
             <input type="text" class="text" required v-model="user.mobile" />
           </div>
+          <!-- One more option to check -->
           <div class="form-group">
             <label for="text" class="checkbox">
-              <input type="checkbox" class="checkbox-input" id="text" />
-              Share my registration data with Spotify's content providers for
-              marketing purposes.
+              <v-checkbox
+                class="checkbox-input"
+                v-model="share"
+                color="green"
+                label="Share my registration data with Symphonia's content providers for
+              marketing purposes."
+              ></v-checkbox>
             </label>
           </div>
           <div class="button-col">
+            <!-- get the changes or cancel it -->
             <button>save profile</button>
             <a href="/" class="a-cancel">cancel</a>
           </div>
@@ -76,7 +89,8 @@ export default {
         gender: "",
         form: "facebook"
       },
-      facebook: false
+      facebook: false,
+      share: false
     };
   },
   components: {

@@ -1,7 +1,9 @@
 <template>
   <div>
+    <!-- this view is for getting the reviews or reports about the service -->
     <div class="bottom-card">
       <form action="#" class="">
+        <!-- we first see if we help the user -->
         <section v-if="first">
           <h3>Help us improve your account experience</h3>
           <p>Did you find what you were looking for?</p>
@@ -30,6 +32,7 @@
             </label>
           </div>
         </section>
+        <!-- then we take his comment about the service -->
         <section v-if="second">
           <h3>Thanks! Let us know more.</h3>
           <p>What were you trying to do in your account?</p>
@@ -40,6 +43,7 @@
           </p>
           <button class="btn" @click="thirdStage">Submit</button>
         </section>
+        <!-- here we send that to the service team to check the message -->
         <section v-show="third" class="third-stage">
           <h3>Thanks for your feedback!</h3>
         </section>

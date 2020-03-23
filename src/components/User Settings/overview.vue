@@ -52,7 +52,7 @@
           <div class="card">
             <div class="card-header">
               <div class="card-title">
-                <span class="card-span-title">Spotify Free</span>
+                <span class="card-span-title">Symphonia Free</span>
               </div>
             </div>
             <div class="card-body">
@@ -76,7 +76,7 @@
       <article class="section">
         <h3>Sign out everywhere</h3>
         <p class="card-body-plant-content">
-          Sign out wherever you have Spotify open, including the web, mobile,
+          Sign out wherever you have Symphonia open, including the web, mobile,
           desktop or any other devices.
         </p>
         <div class="note">
@@ -84,7 +84,7 @@
             <span class="card-body-plant-content"
               >Note: This doesn’t include partner devices, such as Sonos and
               PlayStation. For more information about logging out (or unlinking)
-              Spotify from a partner device, check the device’s manufacturer
+              Symphonia from a partner device, check the device’s manufacturer
               guide.</span
             >
           </div>

@@ -22,39 +22,47 @@
                   Product News
                   <p class="description">
                     Getting started, new features and the latest product updates
-                    on Spotify
+                    on Symphonia
                   </p>
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="1" />
-                    <label for="1"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="2" />
-                    <label for="2"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
               </tr>
               <tr class="form-group">
                 <td>
-                  Spotify News and Offers
+                  Symphonia News and Offers
                   <p class="description">
                     News, promos and events for you
                   </p>
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="3" />
-                    <label for="3"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="4" />
-                    <label for="4"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
               </tr>
@@ -80,14 +88,18 @@
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="5" />
-                    <label for="5"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="6" />
-                    <label for="6"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
               </tr>
@@ -100,14 +112,18 @@
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="7" />
-                    <label for="7"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="8" />
-                    <label for="8"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
               </tr>
@@ -120,14 +136,18 @@
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="9" />
-                    <label for="9"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="10" />
-                    <label for="10"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
               </tr>
@@ -141,14 +161,18 @@
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="11" />
-                    <label for="11"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="12" />
-                    <label for="12"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
               </tr>
@@ -162,14 +186,18 @@
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="13" />
-                    <label for="7"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
                 <td class="td-checkbox">
                   <div class="checkbox">
-                    <input type="checkbox" name="" id="14" />
-                    <label for="8"></label>
+                    <v-checkbox
+                      class="checkbox-input"
+                      color="green"
+                    ></v-checkbox>
                   </div>
                 </td>
               </tr>
