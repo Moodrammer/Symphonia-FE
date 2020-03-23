@@ -67,16 +67,16 @@
         class="hidden-xs-only"
       >
         <v-content
-          v-for="n in 3"
-          :key="n"
+          v-for="a in 3"
+          :key="a"
           style="float: left; padding: 10px 10px 0px 0px;"
         >
           <v-hover v-slot:default="{ hover }">
-            <router-link to="/" style="text-decoration: none;">
+            <router-link v-bind:to="bestSixSongs[(a-1) + (3 * (b-1))].songLink" style="text-decoration: none;">
               <v-card class="mx-auto" max-width="374">
                 <v-img
                   aspect-ratio="1"
-                  src="https://picsum.photos/510/300?random"
+                  v-bind:src="bestSixSongs[(a-1) + (3 * (b-1))].imageLink"
                   v-bind:class="{
                     'card-hover': hover,
                     'card-size-lg': isLg(),
@@ -94,7 +94,7 @@
                           'song-name-sm': isSm()
                         }"
                       >
-                        song name
+                        {{bestSixSongs[(a-1) + (3 * (b-1))].songName}}
                       </h2>
                     </v-row>
                   </v-card-title>
@@ -109,7 +109,7 @@
                         'singer-name-sm': isSm()
                       }"
                     >
-                      Singer Name
+                      {{bestSixSongs[(a-1) + (3 * (b-1))].singerName}}
                     </v-row>
                   </v-card-title>
                   <v-card-title v-if="hover">
@@ -129,8 +129,8 @@
 
       <!-- slide group of cards in xs devices -->
       <v-slide-group class="pa-4 hidden-sm-and-up">
-        <v-slide-item v-for="n in 5" :key="n">
-          <router-link to="/" style="text-decoration: none;">
+        <v-slide-item v-for="(song, index) in bestSixSongs" :key="index">
+          <router-link v-bind:to="song.songLink" style="text-decoration: none;">
             <v-card
               class="mx-auto"
               max-width="344"
@@ -138,20 +138,20 @@
               flat
             >
               <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                v-bind:src="song.imageLink"
                 width="190px"
                 aspect-ratio="1"
               ></v-img>
 
               <v-card-title class="song-name-xs">
                 <v-row justify="center">
-                  song name
+                  {{song.songName}}
                 </v-row>
               </v-card-title>
 
               <v-card-title class="singer-name-xs">
                 <v-row justify="center">
-                  singer name
+                  {{song.singerName}}
                 </v-row>
               </v-card-title>
 
@@ -180,6 +180,49 @@ export default {
   name: "HomepageLoginContent",
 
   components: {},
+
+  data() {
+    return {
+      bestSixSongs: [
+        {
+          singerName: "2Pac",
+          songName: "changes1",
+          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+          songLink: "/songlink"
+        },
+        {
+          singerName: "2Pac",
+          songName: "changes2",
+          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+          songLink: "/songlink"
+        },
+        {
+          singerName: "2Pac",
+          songName: "changes3",
+          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+          songLink: "/songlink"
+        },
+        {
+          singerName: "2Pac",
+          songName: "changes4",
+          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+          songLink: "/songlink"
+        },
+        {
+          singerName: "2Pac",
+          songName: "changes5",
+          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+          songLink: "/songlink"
+        },
+        {
+          singerName: "2Pac",
+          songName: "changes6",
+          imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+          songLink: "/songlink"
+        }
+      ]
+    }
+  },
 
   mixins: [getDeviceSize]
 };
