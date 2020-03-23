@@ -182,7 +182,7 @@ export default {
   margin-top: 16px;
   margin-bottom: 0;
   font: 700 14px Helvetica, Arial, sans-serif;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 
 .download-button-large:hover {
