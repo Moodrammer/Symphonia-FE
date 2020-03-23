@@ -9,10 +9,11 @@
       <v-content max-width="500px">
         <v-row justify="center">
           <v-col cols="12">
-            <!-- Facebook sign division -->
-            <v-row justify="center" style="margin-bottom: 20px;">
+            <!-- Facebook and Google SignUp division -->
+            <v-row justify="center" class="mb-5">
               <v-col cols="6">
-                <v-row justify="center">
+                <!-- Facebook button -->
+                <v-row justify="center" class="mb-2">
                   <v-btn
                     id="fb-sign-btn"
                     rounded
@@ -22,6 +23,18 @@
                     large
                     block
                     >Sign up with Facebook</v-btn>
+                </v-row>
+                <!-- Google button -->
+                <v-row justify="center" class="my-0">
+                    <v-btn
+                    id="ggl-sign-btn"
+                    rounded
+                    color="#007ec6"
+                    class="white--text"
+                    style="font-size: 14px"
+                    large
+                    block
+                    ><div class="px-2"> Sign up with Google </div></v-btn>
                 </v-row>
               </v-col>
             </v-row>
@@ -255,6 +268,12 @@ export default {
         if (this.item[monthnumber - 1] == this.userData.monthSelected) break;
       }
       return `${this.userData.daySelected}-${monthnumber}-${this.userData.yearSelected}`;
+    }
+  },
+  beforeCreate() {
+    //check if the user is logged in
+    if(localStorage.getItem("userToken") != null){
+      this.$router.push("/")
     }
   },
   methods: {

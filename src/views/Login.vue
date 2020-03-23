@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @keyup="checkEnterKey">
     <symphonia-header></symphonia-header>
     <v-divider></v-divider>
     <!-- container for login section -->
@@ -197,7 +197,19 @@ export default {
       passwordRules: [v => !!v || "Please enter your password."]
     };
   },
+  beforeCreate() {
+    //check if the user is already logged in
+    if(localStorage.getItem("userToken") != null)
+      this.$router.push("/webhome/home")
+  },
   methods: {
+    /**
+     * This method checks on any keyup event if the user has pressed the Enter key to submit the Login form
+     */
+    checkEnterKey(e) {
+      if(e.keyCode == '13')
+        this.login()
+    },
     /**
      * This is the login method to validate and submit the user credentials to the server then redirect the user to
      * the application if the user enters valid data

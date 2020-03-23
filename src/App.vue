@@ -11,9 +11,10 @@ export default {
 
   created() {
     //if the user has no token stored initialize an empty user token
-    if (localStorage.getItem("userToken") == null) {
-      localStorage.setItem("userToken", "");
-    }
+    // if (localStorage.getItem("userToken") == null) {
+    //   localStorage.setItem("userToken", "");
+    // }
+    localStorage.clear()
   }
 };
 </script>

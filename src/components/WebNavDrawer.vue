@@ -102,4 +102,5 @@ export default {
   border-radius: 0%;
   margin-right: 7%;
 }
+
 </style>
