@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="rgba(0, 0, 0, 0.6)" class="bar" app flat>
+  <v-app-bar class="bar" app flat :color="handleTransparency()">
     <!--To angle brackets to navigate with-->
     <v-btn
       fab
@@ -154,7 +154,9 @@ export default {
       showUpgrade: false,
       showMenu: false,
       selectedItem: "More..",
-      moreMenu: ["More..", "Artists", "Albums"]
+      moreMenu: ["More..", "Artists", "Albums"],
+      scrollPosition: null,
+      scrolled: null,
     };
   },
   created() {
@@ -165,6 +167,10 @@ export default {
     $route: function() {
       this.handleTabs(this.$route.name);
       this.itemChosen(this.$route.name);
+    },
+      scroll: function() {
+      var scrollTop = window.pageYOffset;
+      console.log(scrollTop);
     }
   },
   methods: {
@@ -207,7 +213,24 @@ export default {
         this.selectedItem = "More..";
         this.moreMenu = ["Artists", "Albums"];
       }
-    }
+    },
+    updateScroll() {
+      var winScroll = window.scrollY
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      this.scrolled=(winScroll / height);
+      
+    },
+    handleTransparency(){
+      var opactiy=this.scrolled*3;
+      return "rgb(26, 26, 26,"+opactiy+")";
+      }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.updateScroll);
+    this.handleTransparency();
+  },
+  destroy() {
+  window.removeEventListener('scroll', this.updateScroll)
   }
 };
 </script>
@@ -227,6 +250,10 @@ export default {
 .profile {
   border-radius: 23px;
   font-size: 10px;
+}
+
+.bar {
+  color: blue;
 }
 
 .tf {
