@@ -98,7 +98,7 @@
             <v-col cols="12" sm="6" class="pa-0" align-self="center">
               <v-checkbox
                 label="Remember me"
-                v-model="rememberMe"
+                v-model="formData.rememberMe"
                 color="green"
               ></v-checkbox>
             </v-col>
@@ -185,9 +185,9 @@ export default {
       //The user data
       formData: {
         email: "",
-        password: ""
+        password: "",
+        rememberMe: false
       },
-      rememberMe: false,
       errorState: false,
       //validation rules for input data
       emailRules: [
@@ -199,7 +199,7 @@ export default {
   },
   beforeCreate() {
     //check if the user is already logged in
-    if(localStorage.getItem("userToken") != null)
+    if(localStorage.getItem("userToken") != null || sessionStorage.getItem("userToken"))
       this.$router.push("/webhome/home")
   },
   methods: {
@@ -221,7 +221,8 @@ export default {
         this.$store
           .dispatch("loginuser", {
             email: this.formData.email,
-            password: this.formData.password
+            password: this.formData.password,
+            rm: this.formData.rememberMe
           })
           .then(() => {
             this.$router.push("/webhome/home");
