@@ -2,7 +2,7 @@
   <v-content style="overflow:hidden; padding: 0px;">
     <NavigationBar />
     <Content v-if="!isLoggedIn()" />
-    <ContentLoggedIn v-if="isLoggedIn()" id="content" />
+    <ContentLoggedIn v-if="isLoggedIn()" />
     <Footer />
   </v-content>
 </template>
@@ -13,6 +13,12 @@ import Content from "../components/Homepage/TheHomepageContent.vue";
 import Footer from "../components/Homepage/TheHomepageFooter";
 import ContentLoggedIn from "../components/Homepage/TheHomepageLoginContent.vue";
 import isLoggedIn from "../components/isLoggedIn"
+
+/**
+ * The homepage view
+ * @version 1.0.0
+ */
+
 export default {
   name: "App",
 
