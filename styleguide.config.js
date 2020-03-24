@@ -16,6 +16,12 @@ module.exports = {
       components: ['src/components/**/*.vue']
     }
   ],
+  theme: {
+    color: {
+      base: "black",
+    },
+     
+  },
   // webpackConfig: {
   //   // custom config goes here
   // },

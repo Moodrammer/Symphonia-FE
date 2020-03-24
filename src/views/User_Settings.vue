@@ -2,6 +2,7 @@
   <!-- App.vue -->
   <v-app>
     <!-- Sizes your content based upon application components -->
+    <navBar />
     <v-content>
       <!-- Provides the application the proper gutter -->
       <premiumAds></premiumAds>
@@ -17,6 +18,7 @@
         </div>
       </v-container>
     </v-content>
+    <appFooter />
   </v-app>
 </template>
 
@@ -26,6 +28,8 @@ import sideBar from "../components/User Settings/sideBar.vue";
 import overview from "../components/User Settings/overview.vue";
 import editProfile from "../components/User Settings/editProfile.vue";
 import recoverPlaylists from "../components/User Settings/recoverPlaylist.vue";
+import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
+import appFooter from "../components/Homepage/TheHomepageFooter";
 export default {
   data() {
     return {};
@@ -38,7 +42,9 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     editProfile: editProfile,
     // eslint-disable-next-line vue/no-unused-components
-    recoverPlaylists: recoverPlaylists
+    recoverPlaylists: recoverPlaylists,
+    navBar: navBar,
+    appFooter: appFooter
   }
 };
 </script>

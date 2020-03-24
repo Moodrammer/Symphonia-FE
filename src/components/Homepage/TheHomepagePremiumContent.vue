@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-content
-      app
       v-bind:class="{
         'hero-home-bg-cover': isLg(),
         'hero-home-md-cover': isMd(),
@@ -97,7 +96,7 @@
     </v-content>
 
     <v-content>
-      <v-card :loading="loading" class="mx-auto my-12" max-width="374">
+      <v-card class="mx-auto my-12" max-width="374">
         <v-card-title style="font-size 32px; color: black;"
           >Spotify Premium</v-card-title
         >
@@ -132,7 +131,16 @@
 </template>
 
 <script>
+import getDeviceSize from "../../mixins/getDeviceSize"
+
+/**
+ * The homepage content when pressing premium tab.
+ * @version 1.0.0
+ */
+
 export default {
+  name: "HomepagePremium",
+
   data() {
     return {
       benefits: {
@@ -159,22 +167,23 @@ export default {
       }
     };
   },
-  mounted: function() {
-    this.hideNavBackground(); //hideNavBackground will execute at pageload
-  },
-  destroyed: function() {
-    this.removeNavEventListener();
-  },
 
   methods: {
-    hideNavBackground: function() {
-      var nav = document.getElementById("nav");
-      nav.style.backgroundColor = "rgba(0, 0, 0, 0)";
-
+    /**
+     * Hide the navbar when this view is loaded 
+     * by adding an event listener to the window.
+     * @public
+     */
+    hideNavBackground() {
+      this.NavFunction();
       window.addEventListener("scroll", this.NavFunction);
     },
 
-    NavFunction: function() {
+    /**
+     * Change the opacity of the Navbar after scrolling.
+     * @public
+     */
+    NavFunction() {
       var nav = document.getElementById("nav");
       if (window.pageYOffset > 50) {
         nav.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
@@ -183,26 +192,24 @@ export default {
       }
     },
 
-    removeNavEventListener: function() {
+    /**
+     * After get out of this page, remove the scroll event listener from the window.
+     * @public
+     */
+    removeNavEventListener() {
       window.removeEventListener("scroll", this.NavFunction);
     },
-    isLg() {
-      const { lg } = this.$vuetify.breakpoint;
-      return lg ? true : false;
-    },
-    isMd() {
-      const { md } = this.$vuetify.breakpoint;
-      return md ? true : false;
-    },
-    isSm() {
-      const { sm } = this.$vuetify.breakpoint;
-      return sm ? true : false;
-    },
-    isXs() {
-      const { xs } = this.$vuetify.breakpoint;
-      return xs ? true : false;
-    }
-  }
+  },
+
+  mounted: function() {
+    this.hideNavBackground(); //hideNavBackground will execute at pageload
+  },
+
+  destroyed: function() {
+    this.removeNavEventListener();
+  },
+
+  mixins: [getDeviceSize]
 };
 </script>
 
