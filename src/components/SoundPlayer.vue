@@ -273,7 +273,8 @@ export default {
       this.audio.addEventListener("loadeddata", this._handleLoaded);
       this.audio.addEventListener("pause", this._handlePlayPause);
       this.audio.addEventListener("play", this._handlePlayPause);
-      this.updateVolume();
+      this.audio.volume = this.volumeValue / 100
+      this.volumeLevelStyle = `width:${this.volumeValue}%;`;
     },
     getAudio: function() {
       return this.$el.querySelectorAll("audio")[0];
