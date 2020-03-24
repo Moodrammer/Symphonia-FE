@@ -11,7 +11,9 @@ const state = {
   //The email of the current user
   userEmail: "",
   //The user's date of Birth
-  userDOB: ""
+  userDOB: "",
+  //If the user selects to remeber him
+  RememberMe: false
 };
 
 const mutations = {
@@ -26,6 +28,10 @@ const mutations = {
   //To set the user's date of birth
   setuserDOB(state, payload) {
     state.userDOB = payload;
+  },
+  //Set remember me to true so that not to delete the user token
+  setRememberMe(state) {
+    state.RememberMe = false
   }
 };
 
@@ -76,7 +82,13 @@ const actions = {
             commit("setUserData", response.data);
             //since the local storage only stores strings we should convert the returned object first
             // let userData = JSON.stringify(response.data)
-            window.localStorage.setItem("userToken", response.data.token);
+            //REMEMBER ME LOGIC
+            //If the user choses to remember him store his data in the local storage
+            if(payload.rm == true)
+              window.localStorage.setItem("userToken", response.data.token);
+            //If the user choses not to remember him store his data in the session Storage
+            else
+              window.sessionStorage.setItem("userToken" , response.data.token);
             resolve(true);
           }
         })

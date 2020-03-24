@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @keyup="checkEnterKey">
     <symphonia-header></symphonia-header>
     <v-divider></v-divider>
     <!-- container for login section -->
@@ -98,7 +98,7 @@
             <v-col cols="12" sm="6" class="pa-0" align-self="center">
               <v-checkbox
                 label="Remember me"
-                v-model="rememberMe"
+                v-model="formData.rememberMe"
                 color="green"
               ></v-checkbox>
             </v-col>
@@ -175,6 +175,7 @@
 
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
+import isLoggedIn from "@/mixins/userService"
 
 export default {
   components: {
@@ -185,9 +186,9 @@ export default {
       //The user data
       formData: {
         email: "",
-        password: ""
+        password: "",
+        rememberMe: false
       },
-      rememberMe: false,
       errorState: false,
       //validation rules for input data
       emailRules: [
@@ -197,15 +198,33 @@ export default {
       passwordRules: [v => !!v || "Please enter your password."]
     };
   },
+  mixins: [isLoggedIn],
+  created() {
+    //check if the user is already logged in
+    if(this.isLoggedIn() == true)
+      this.$router.push("/webhome/home")
+  },
   methods: {
-    //This is the login method to be documented later
+    /**
+     * This method checks on any keyup event if the user has pressed the Enter key to submit the Login form
+     */
+    checkEnterKey(e) {
+      if(e.keyCode == '13')
+        this.login()
+    },
+    /**
+     * This is the login method to validate and submit the user credentials to the server then redirect the user to
+     * the application if the user enters valid data
+     * @public
+     */
     login() {
       //if the form validates and had no restrictions
       if (this.$refs.loginForm.validate()) {
         this.$store
           .dispatch("loginuser", {
             email: this.formData.email,
-            password: this.formData.password
+            password: this.formData.password,
+            rm: this.formData.rememberMe
           })
           .then(() => {
             this.$router.push("/webhome/home");

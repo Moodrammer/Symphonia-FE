@@ -9,10 +9,11 @@
       <v-content max-width="500px">
         <v-row justify="center">
           <v-col cols="12">
-            <!-- Facebook sign division -->
-            <v-row justify="center" style="margin-bottom: 20px;">
+            <!-- Facebook and Google SignUp division -->
+            <v-row justify="center" class="mb-5">
               <v-col cols="6">
-                <v-row justify="center">
+                <!-- Facebook button -->
+                <v-row justify="center" class="mb-2">
                   <v-btn
                     id="fb-sign-btn"
                     rounded
@@ -21,8 +22,19 @@
                     style="font-size: 14px"
                     large
                     block
-                    >Sign up with Facebook</v-btn
-                  >
+                    >Sign up with Facebook</v-btn>
+                </v-row>
+                <!-- Google button -->
+                <v-row justify="center" class="my-0">
+                    <v-btn
+                    id="ggl-sign-btn"
+                    rounded
+                    color="#007ec6"
+                    class="white--text"
+                    style="font-size: 14px"
+                    large
+                    block
+                    ><div class="px-2"> Sign up with Google </div></v-btn>
                 </v-row>
               </v-col>
             </v-row>
@@ -55,6 +67,7 @@
                 style="width : 100%; height: 80px; margin: auto"
                 type="email"
                 :rules="emailRules"
+                @input="checkEmailConf()"
                 v-model="userData.email"
                 maxlength="200"
                 id="user-email"
@@ -66,6 +79,7 @@
                 style="width : 100%; height: 80px; margin: auto"
                 type="email"
                 :rules="emailConfirmationRules"
+                :error-messages="checkEmailConf()"
                 v-model="userData.emailToMatch"
                 maxlength="200"
                 id="user-confirmation-email"
@@ -139,11 +153,7 @@
                   id="gender"
                 >
                   <v-radio label="Male" value="male" id="male-select"></v-radio>
-                  <v-radio
-                    label="Female"
-                    value="female"
-                    id="female-select"
-                  ></v-radio>
+                  <v-radio label="Female" value="female" id="female-select"></v-radio>
                 </v-radio-group>
               </v-row>
               <!-- Sign up button -->
@@ -157,17 +167,14 @@
                     block
                     large
                     @click="submitForm"
-                    >Sign up</v-btn
-                  >
+                  >Sign up</v-btn>
                 </v-col>
               </v-row>
               <!-- link to the Login page -->
               <v-row justify="center">
                 <span class="text--center">
                   Already Have an account?
-                  <router-link to="/Login" class="green--text"
-                    >Log in</router-link
-                  >
+                  <router-link to="/Login" class="green--text">Log in</router-link>
                 </span>
               </v-row>
             </v-form>
@@ -180,6 +187,7 @@
 
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
+import isLoggedIn from "@/mixins/userService"
 
 export default {
   components: {
@@ -239,17 +247,21 @@ export default {
   },
   //Taken from : https://stackoverflow.com/questions/47213703/vuetify-form-validation-defining-es6-rules-for-matching-inputs
   computed: {
+    /**
+     * This function is for validation that the confiration email matches the email address written in the form Data
+     */
     emailConfirmationRules() {
       return [
         v => !!v || "Please enter your email",
-        v => /.+@.+\..+/.test(v) || "E-mail must be valid",
-        () =>
-          (this.userData.email === this.userData.emailToMatch &&
-            !this.changed) ||
-          "E-mail must match"
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+        //() =>
+        //  this.userData.email === this.userData.emailToMatch ||
+        //  "E-mail must match"
       ];
     },
-    //computing the date of birth from the three text fields of the user
+    /**
+     * Computing the Date of birth from the three text fields of the user and setting their format
+     */
     DateOfBirth() {
       //get the month number from the array
       let monthnumber;
@@ -259,8 +271,36 @@ export default {
       return `${this.userData.daySelected}-${monthnumber}-${this.userData.yearSelected}`;
     }
   },
+  mixins: [isLoggedIn],
+  created() {
+    //check if the user is logged in
+    if(this.isLoggedIn() == true){
+      this.$router.push("/")
+    }
+  },
   methods: {
-    //Submitting the sign up form
+    /**
+     * This function continuously checks that the email matches the confirmation email
+     * for validation
+     * @public
+     */
+    checkEmailConf() {
+      if (this.userData.emailToMatch != "") {
+        if (this.userData.email == this.userData.emailToMatch) {
+          return "";
+        } else {
+          if (!/.+@.+\..+/.test(this.userData.emailToMatch))
+            return "Email must be valid";
+          else return "Email must match";
+        }
+      }
+    },
+    /**
+     * This functions Submits the form data , then gives the user feedback about his sign up operation
+     * If the operation is successful the user is directed to the application
+     * Else the user stays till the form is valid
+     * @public
+     */
     submitForm() {
       if (this.$refs.userDataForm.validate()) {
         //Store the user's date of birth in the store
