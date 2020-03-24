@@ -246,7 +246,7 @@
 </template>
 
 <script>
-import isLoggedIn from "../isLoggedIn";
+import isLoggedIn from "../../mixins/userService";
 import getDeviceSize from "../getDeviceSize"
 
 /**

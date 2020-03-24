@@ -175,6 +175,7 @@
 
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
+import isLoggedIn from "@/mixins/userService"
 
 export default {
   components: {
@@ -197,9 +198,10 @@ export default {
       passwordRules: [v => !!v || "Please enter your password."]
     };
   },
-  beforeCreate() {
+  mixins: [isLoggedIn],
+  created() {
     //check if the user is already logged in
-    if(localStorage.getItem("userToken") != null || sessionStorage.getItem("userToken"))
+    if(this.isLoggedIn() == true)
       this.$router.push("/webhome/home")
   },
   methods: {
