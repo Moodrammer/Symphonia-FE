@@ -4,17 +4,17 @@
       <div class="header-container">
         <h1>Recover playlists</h1>
       </div>
-      <p class="p" v-if="count > 0">
+      <p class="p" v-show="PlaylistsRecover">
         Accidentally deleted a playlist? No worries, find the deleted playlist
         you'd like to recover below then click RESTORE to recover it.
       </p>
-      <p class="alert-info" v-if="(count = 0)">
+      <p class="alert-info" v-show="PlaylistNoRecover">
         You haven't deleted any playlists
       </p>
-      <p class="alert-danger" v-if="(count = -1)">
+      <p class="alert-danger" v-show="NoPlaylists">
         Sorry please try this later in another time or reload the page
       </p>
-      <section class="section" v-if="count > 0">
+      <section class="section" v-show="PlaylistsRecover">
         <div class="table-responsive hidden-xs-only">
           <table class="table">
             <thead>
@@ -61,7 +61,9 @@ export default {
           restored: false
         }
       ],
-      count: -1
+      NoPlaylists: true,
+      PlaylistNoRecover: false,
+      PlaylistsRecover: false
     };
   },
   components: {
