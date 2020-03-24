@@ -22,8 +22,8 @@
           </div>
           <a @click="saveToLikedSongs()">
             <v-icon small title="save your liked songs" class="icons">
-              mdi-heart-outline</v-icon
-            >
+              mdi-heart-outline
+            </v-icon>
           </a>
         </v-toolbar>
       </v-col>
@@ -41,26 +41,45 @@
           </a>
         </div>
 
-        <v-toolbar flat color="rgba(0,0,0,0)" height="10">
-          <!-- progress bar -->
-          <span class="time" style="padding-right: 10px;">{{
-            currentTime
-          }}</span>
-          <div
-            id="progressBar"
-            v-on:click="setPosition"
-            class="playback-time-wrapper"
-            title="Time played : Total time"
-          >
+        <v-hover v-slot:default="{ hover }">
+          <v-toolbar flat color="rgba(0,0,0,0)" height="10">
+            <!-- progress bar -->
+            <span class="time" style="padding-right: 10px;">{{
+              currentTime
+            }}</span>
             <div
-              v-bind:style="progressStyle"
-              class="playback-time-indicator"
-            ></div>
-          </div>
+              id="progressBar"
+              v-on:click="setPosition"
+              class="playback-time-wrapper"
+              title="Time played : Total time"
+            >
+              <div
+                v-bind:style="progressStyle"
+                class="playback-time-indicator"
+                v-bind:class="{'playback-time-indicator-hover': hover}"
+              ></div>
 
-          <!-- time -->
-          <span class="time" style="padding-left: 10px;">{{ duration }}</span>
-        </v-toolbar>
+              <div 
+              v-if="hover"
+              style="position: absolute;" v-bind:style="progressStyle">
+                <svg
+                  style="
+                  top: -4px;
+                  right: -9px;
+                  position: absolute;
+                  "
+                  height="12"
+                  width="12"
+                >
+                  <circle cx="6" cy="6" r="5" fill="white" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- time -->
+            <span class="time" style="padding-left: 10px;">{{ duration }}</span>
+          </v-toolbar>
+        </v-hover>
       </v-col>
 
       <v-spacer></v-spacer>
@@ -139,6 +158,7 @@ export default {
   },
   methods: {
     saveToLikedSongs: function() {
+      //stub
       alert("saveToLikedSongs");
     },
     setPosition: function name(e) {
@@ -177,7 +197,7 @@ export default {
     mute: function() {
       this.isMuted = !this.isMuted;
       this.audio.muted = this.isMuted;
-      if (this.isMuted){
+      if (this.isMuted) {
         this.previousVolumeValue = this.volumeValue;
       }
       this.volumeValue = this.isMuted ? 0 : this.previousVolumeValue;
@@ -325,5 +345,9 @@ export default {
 .change-volume {
   padding-top: 5px;
   margin-left: 10px;
+}
+
+.playback-time-indicator-hover {
+  background: rgb(29, 185, 84);
 }
 </style>
