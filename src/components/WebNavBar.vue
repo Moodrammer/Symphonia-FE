@@ -218,7 +218,6 @@ export default {
       var winScroll = window.scrollY
       var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       this.scrolled=(winScroll / height);
-      
     },
     handleTransparency(){
       var opactiy=this.scrolled*3;

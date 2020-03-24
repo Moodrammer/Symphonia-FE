@@ -1,18 +1,24 @@
 <template>
   <v-container class="pt-0 ">
     <v-row justify="center">
-      <v-col lg="3" sm="12" md="12" class="column pr-10">
+      <v-col lg="4" sm="12" md="12" class="column pr-10">
         <v-img
           src="https://t.scdn.co/images/3099b3803ad9496896c43f22fe9be8c4.png"
           id="playPhoto"
           @mouseover="hover = true"
           @mouseleave="hover = false"
         >
-          <v-row justify="center" v-if="hover">
-            <v-btn fab outlined color="white" id="playIcon">
-              <v-icon large color="white">mdi-play</v-icon>
-            </v-btn>
-          </v-row>
+          <v-overlay
+          v-show="hover"
+          class="overlay"
+          absolute
+          opacity="0.8"
+          >
+           <v-btn fab outlined color="white" id="playIcon" @click="iconClick=!iconClick">
+              <v-icon large color="white" v-if="iconClick">mdi-pause</v-icon>
+              <v-icon large color="white" v-else>mdi-play</v-icon>
+             </v-btn>
+        </v-overlay>
         </v-img>
 
         <h1 class="mt-5">Liked Songs</h1>
@@ -20,7 +26,7 @@
         <v-btn rounded class="white--text px-8" id="playBtn">Play</v-btn>
       </v-col>
 
-      <v-col lg="9" sm="12" md="12">
+      <v-col lg="8" sm="12" md="12">
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
         <v-list color="transparent">
           <song
@@ -46,11 +52,8 @@ export default {
   },
   data: function() {
     return {
-      song_name: "Song Name",
-      artist_name: "Artist Name",
-      album_name: "Album Name",
-      duration: "5:00",
-      hover: false
+      hover: false,
+      iconClick: false
     };
   },
   methods: {
@@ -71,9 +74,6 @@ export default {
   max-width: 300px;
 }
 
-#playPhoto:hover {
-  filter: brightness(25%);
-}
 #playBtn {
   background-color: #1aa34a;
   border-width: 0;
@@ -82,11 +82,8 @@ export default {
   margin-left: 20%;
 }
 
-#playIcon {
-  padding-top: 2px;
-  margin-top: 33%;
-  opacity: 1;
-  filter: brightness(100%);
+#playIcon:hover {
+  transform: scale(1.1, 1.1);
 }
 
 #playBtn:hover {
