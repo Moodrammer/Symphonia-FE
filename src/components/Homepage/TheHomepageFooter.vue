@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import getDeviceSize from "../getDeviceSize"
+import getDeviceSize from "../../mixins/getDeviceSize"
 
 /**
  * The homepage footer.

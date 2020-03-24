@@ -247,7 +247,7 @@
 
 <script>
 import isLoggedIn from "../../mixins/userService";
-import getDeviceSize from "../getDeviceSize"
+import getDeviceSize from "../../mixins/getDeviceSize"
 
 /**
  * The homepage navigation bar.
