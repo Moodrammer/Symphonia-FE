@@ -94,14 +94,46 @@
               mdi-volume-high
             </v-icon>
           </a>
-          <input
+          <!-- <input
             v-model.lazy="volumeValue"
             v-on:change="updateVolume()"
             type="range"
             min="0"
             max="100"
             class="change-volume"
-          />
+          /> -->
+          <v-hover v-slot:default="{ hover }">
+          <div
+            style="margin-top: 0px; width: 80px; margin-left: 10px;"
+            id="volumeBar"
+            v-on:click="changeVolume"
+            class="playback-time-wrapper"
+            title="Volume"
+          >
+            <div
+              v-bind:style="volumeLevelStyle"
+              class="playback-time-indicator"
+              v-bind:class="{'playback-time-indicator-hover': hover}"
+            ></div>
+
+            <div 
+            v-if="hover"
+            style="position: absolute;" v-bind:style="volumeLevelStyle">
+              <svg
+                style="
+                top: -4px;
+                right: -9px;
+                position: absolute;
+                "
+                height="12"
+                width="12"
+              >
+                <circle cx="6" cy="6" r="5" fill="white" />
+              </svg>
+            </div>
+          </div>
+          </v-hover>
+          
         </div>
       </v-col>
     </v-row>
@@ -148,6 +180,7 @@ export default {
       playing: false,
       paused: true,
       progressStyle: "",
+      volumeLevelStyle: "",
       currentTime: "00:00",
       innerLoop: undefined,
       audio: undefined,
@@ -174,15 +207,21 @@ export default {
         document.getElementById("progressBar").clientWidth;
       this.audio.currentTime = parseInt(this.audio.duration * seekPos);
     },
-    updateVolume: function() {
-      this.audio.volume = this.volumeValue / 100;
-      if (this.volumeValue / 100 > 0) {
-        this.isMuted = this.audio.muted = false;
-      }
+    changeVolume: function name(e) {
+      let target = e.target;
+      //getBoundingClientRect(): Return the size of an element and
+      //its position relative to the viewport
+      const pos = target.getBoundingClientRect();
+      //cursor x position of the event relative to the view port -
+      //position of the target relative to the view port
+      //returns a value from 0 to 1
+      const seekPos =
+        (e.clientX - pos.left) /
+        document.getElementById("volumeBar").clientWidth;
+      this.audio.volume = seekPos;
 
-      if (this.volumeValue / 100 === 0) {
-        this.isMuted = this.audio.muted = true;
-      }
+      let percentage = seekPos * 100;
+      this.volumeLevelStyle = `width:${percentage}%;`;
     },
     play: function() {
       if (this.playing && !this.paused) return;
