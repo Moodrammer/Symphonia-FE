@@ -41,45 +41,29 @@
           </a>
         </div>
 
-        <v-hover v-slot:default="{ hover }">
-          <v-toolbar flat color="rgba(0,0,0,0)" height="10">
-            <!-- progress bar -->
-            <span class="time" style="padding-right: 10px;">{{
-              currentTime
-            }}</span>
-            <div
-              id="progressBar"
+        <v-toolbar flat color="rgba(0,0,0,0)" height="10">
+          <!-- progress bar -->
+          <span class="time" style="padding-right: 10px;">{{
+            currentTime
+          }}</span>
+
+            <v-hover v-slot:default="{ hover }">
+            <v-slider
+              track-color="rgba(64, 64, 64)"
+              v-bind:thumb-color="!hover ? 'rgba(0,0,0,0)' : 'white'"
+              v-bind:color="!hover ? '#b3b3b3' : 'rgb(29, 185, 84)'"
+              v-model.lazy="currentTimeInSec"
               v-on:click="setPosition"
-              class="playback-time-wrapper"
+              min="0"
+              v-bind:max="totalDuration"
+              style=" margin-top: 40px;"
               title="Time played : Total time"
-            >
-              <div
-                v-bind:style="progressStyle"
-                class="playback-time-indicator"
-                v-bind:class="{'playback-time-indicator-hover': hover}"
-              ></div>
+            ></v-slider>
+          </v-hover>
 
-              <div 
-              v-if="hover"
-              style="position: absolute;" v-bind:style="progressStyle">
-                <svg
-                  style="
-                  top: -4px;
-                  right: -9px;
-                  position: absolute;
-                  "
-                  height="12"
-                  width="12"
-                >
-                  <circle cx="6" cy="6" r="5" fill="white" />
-                </svg>
-              </div>
-            </div>
-
-            <!-- time -->
-            <span class="time" style="padding-left: 10px;">{{ duration }}</span>
-          </v-toolbar>
-        </v-hover>
+          <!-- time -->
+          <span class="time" style="padding-left: 10px;">{{ duration }}</span>
+        </v-toolbar>
       </v-col>
 
       <v-spacer></v-spacer>
@@ -94,46 +78,17 @@
               mdi-volume-high
             </v-icon>
           </a>
-          <!-- <input
-            v-model.lazy="volumeValue"
-            v-on:change="updateVolume()"
-            type="range"
-            min="0"
-            max="100"
-            class="change-volume"
-          /> -->
           <v-hover v-slot:default="{ hover }">
-          <div
-            style="margin-top: 0px; width: 80px; margin-left: 10px;"
-            id="volumeBar"
-            v-on:click="changeVolume"
-            class="playback-time-wrapper"
-            title="Volume"
-          >
-            <div
-              v-bind:style="volumeLevelStyle"
-              class="playback-time-indicator"
-              v-bind:class="{'playback-time-indicator-hover': hover}"
-            ></div>
-
-            <div 
-            v-if="hover"
-            style="position: absolute;" v-bind:style="volumeLevelStyle">
-              <svg
-                style="
-                top: -4px;
-                right: -9px;
-                position: absolute;
-                "
-                height="12"
-                width="12"
-              >
-                <circle cx="6" cy="6" r="5" fill="white" />
-              </svg>
-            </div>
-          </div>
+            <v-slider
+              v-bind:thumb-color="!hover ? 'rgba(0,0,0,0)' : 'white'"
+              track-color="rgba(64, 64, 64)"
+              v-bind:color="!hover ? '#b3b3b3' : 'rgb(29, 185, 84)'"
+              v-model.lazy="volumeValue"
+              min="0"
+              max="100"
+              v-on:click="updateVolume()"
+            ></v-slider>
           </v-hover>
-          
         </div>
       </v-col>
     </v-row>
@@ -179,14 +134,13 @@ export default {
       loaded: false,
       playing: false,
       paused: true,
-      progressStyle: "",
-      volumeLevelStyle: "",
       currentTime: "00:00",
       innerLoop: undefined,
       audio: undefined,
       totalDuration: 0,
       volumeValue: 50,
-      previousVolumeValue: 50
+      previousVolumeValue: 50,
+      currentTimeInSec: 0,
     };
   },
   methods: {
@@ -194,34 +148,18 @@ export default {
       //stub
       alert("saveToLikedSongs");
     },
-    setPosition: function name(e) {
-      let target = e.target;
-      //getBoundingClientRect(): Return the size of an element and
-      //its position relative to the viewport
-      const pos = target.getBoundingClientRect();
-      //cursor x position of the event relative to the view port -
-      //position of the target relative to the view port
-      //returns a value from 0 to 1
-      const seekPos =
-        (e.clientX - pos.left) /
-        document.getElementById("progressBar").clientWidth;
-      this.audio.currentTime = parseInt(this.audio.duration * seekPos);
+    setPosition: function name() {
+      this.audio.currentTime = parseInt(this.currentTimeInSec);
     },
-    changeVolume: function name(e) {
-      let target = e.target;
-      //getBoundingClientRect(): Return the size of an element and
-      //its position relative to the viewport
-      const pos = target.getBoundingClientRect();
-      //cursor x position of the event relative to the view port -
-      //position of the target relative to the view port
-      //returns a value from 0 to 1
-      const seekPos =
-        (e.clientX - pos.left) /
-        document.getElementById("volumeBar").clientWidth;
-      this.audio.volume = seekPos;
+    updateVolume: function() {
+      this.audio.volume = this.volumeValue / 100;
+      if (this.volumeValue / 100 > 0) {
+        this.isMuted = this.audio.muted = false;
+      }
 
-      let percentage = seekPos * 100;
-      this.volumeLevelStyle = `width:${percentage}%;`;
+      if (this.volumeValue / 100 === 0) {
+        this.isMuted = this.audio.muted = true;
+      }
     },
     play: function() {
       if (this.playing && !this.paused) return;
@@ -257,8 +195,7 @@ export default {
       //this.audio.currentTime gets the current time of the playing track
       //in terms of how many seconds have been passed.
       let currTime = parseInt(this.audio.currentTime);
-      let percentage = parseInt((currTime / this.totalDuration) * 100);
-      this.progressStyle = `width:${percentage}%;`;
+      this.currentTimeInSec = currTime;
       this.currentTime = convertTimeHHMMSS(currTime);
     },
     _handlePlayPause: function(e) {
@@ -273,7 +210,7 @@ export default {
       this.audio.addEventListener("loadeddata", this._handleLoaded);
       this.audio.addEventListener("pause", this._handlePlayPause);
       this.audio.addEventListener("play", this._handlePlayPause);
-      this.audio.volume = this.volumeValue / 100
+      this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
     },
     getAudio: function() {
@@ -295,32 +232,6 @@ export default {
 </script>
 
 <style scoped>
-.player {
-  height: 30px;
-  line-height: 30px;
-}
-
-.playback-time-wrapper {
-  background: transparent;
-  position: relative;
-  display: inline-block;
-  background: rgb(64, 64, 64);
-  height: 3px;
-  cursor: pointer;
-  font-size: 14px;
-  vertical-align: middle;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.playback-time-indicator {
-  background: #b3b3b3;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-
 .sound-player {
   height: 90px;
   background-color: #282828;
@@ -382,12 +293,5 @@ export default {
   text-align: center;
 }
 
-.change-volume {
-  padding-top: 5px;
-  margin-left: 10px;
-}
 
-.playback-time-indicator-hover {
-  background: rgb(29, 185, 84);
-}
 </style>
