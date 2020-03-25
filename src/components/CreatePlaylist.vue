@@ -69,7 +69,6 @@
 </template>
 
 <script>
-
 import getDeviceSize from "../mixins/getDeviceSize";
 
 /**
@@ -108,7 +107,7 @@ export default {
       this.dialog = false;
     }
   },
- mixins: [getDeviceSize]
+  mixins: [getDeviceSize]
 };
 </script>
 

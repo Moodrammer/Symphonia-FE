@@ -137,7 +137,7 @@
           <v-list-item-title>Upgarde to premium</v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item id="logout">
+        <v-list-item id="logout" @click="logOutAndRerender()" to="/webhome" exact>
           <v-list-item-title>Log out</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -245,6 +245,11 @@ export default {
     handleTransparency(){
       var opactiy=this.scrolled*3;
       return "rgb(26, 26, 26,"+opactiy+")";
+    },
+    logOutAndRerender() {
+      this.logOut();
+      this.$forceUpdate();
+      this.$root.$emit("updateContent"); //like this
     }
   },
   mounted() {

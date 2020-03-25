@@ -12,9 +12,9 @@
       {{ songName }}
       <v-list-item-subtitle class="mt-3 pl-3 white--text">
         <v-row>
-        <p class="subtitle mr-2">{{ artistName }}</p>
-        <p> . </p>
-        <p class="subtitle ml-2">{{ albumName }}</p>
+          <p class="subtitle mr-2">{{ artistName }}</p>
+          <p>.</p>
+          <p class="subtitle ml-2">{{ albumName }}</p>
         </v-row>
       </v-list-item-subtitle>
 
@@ -41,13 +41,13 @@
       </v-list>
     </v-menu>
 
-    <p class="white--text ml-12">{{ min }}:{{sec}}</p>
+    <p class="white--text ml-12">{{ min }}:{{ sec }}</p>
   </v-list-item>
 </template>
 
 <script>
 export default {
-  props:{
+  props: {
     songName: String,
     artistName: String,
     albumName: String,
@@ -70,12 +70,11 @@ export default {
   created() {
     this.hover = false;
     this.convert(this.$props.duration);
-    
   },
   methods: {
-    convert: function(val){
-     this.min = Math.floor((val/1000/60) << 0),
-     this.sec = Math.floor((val/1000) % 60);
+    convert: function(val) {
+      this.min = Math.floor((val / 1000 / 60) << 0);
+      this.sec = Math.floor((val / 1000) % 60);
     }
   }
 };

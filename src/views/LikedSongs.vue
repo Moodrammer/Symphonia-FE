@@ -5,8 +5,10 @@
         <v-container class="pt-0 ">
           <v-row justify-lg="center">
             <v-col lg="12" md="3" sm="5" xs="2" cols="12"
-             v-bind:class="{ 'small-col': isSm()|| isXs() || isMd() }">
-             <v-card elevation="9" color="trasparent" max-width="300">
+             v-bind:class="{ 'small-col': isSm()|| isXs() || isMd(),
+             'lg-col': isLg()}">
+             <v-card elevation="9" color="trasparent"
+              v-bind:class="{ 'small-card': isSm()|| isXs() || isMd(),'lg-card': isLg()}">
               <v-img
                 src="https://t.scdn.co/images/3099b3803ad9496896c43f22fe9be8c4.png"
                 id="playPhoto"
@@ -107,17 +109,19 @@ export default {
 }
 
 
-.lg-img {
+.lg-img , .lg-card , .lg-col{
   height: 300px;
   width: 300px;
 }
 
-.sm-img {
+.sm-img , .small-col , .v-card.v-sheet.theme--light.small-card{
   width: 157px;
   height: 157px;
 }
 
 .small-col {
-  width: 167;
+  width: 157px;
+  height: 157px;
 }
+
 </style>

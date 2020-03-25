@@ -2,7 +2,7 @@
   <!--the webplayer navigation drawer-->
   <v-navigation-drawer app dark color="black" left fixed permanent>
     <v-list color="black" nav class="list">
-      <!--logo and organization name (todo:change it to symphonia)-->
+      <!--logo and organization name-->
       <v-list-item>
         <router-link to="/webhome/home">
            <v-row class=" pa-3">
@@ -31,21 +31,21 @@
         </v-list-item-title>
       </v-list-item>
 
-      <v-list-item-subtitle class="ml-2" v-if="isLoggedIn()">PLAYLISTS</v-list-item-subtitle>
+      <v-list-item-subtitle class="ml-2" v-if="loggedIn">PLAYLISTS</v-list-item-subtitle>
 
       <!--Nesting the popup-->
-      <create-playlist v-if="isLoggedIn()"></create-playlist>
+      <create-playlist v-if="loggedIn"></create-playlist>
 
-      <v-list-item to="/webhome/collection/tracks" class="listItem" active-class="active" tag="p" v-if="isLoggedIn()">
+      <v-list-item to="/webhome/collection/tracks" class="listItem" active-class="active" tag="p" v-if="loggedIn">
         <v-btn class="liked" fab x-small id="liked">
           <v-icon color="white">mdi-cards-heart</v-icon>
         </v-btn>
         <v-list-item-title>Liked Songs</v-list-item-title>
       </v-list-item>
 
-      <v-divider v-if="isLoggedIn()"></v-divider>
+      <v-divider v-if="loggedIn"></v-divider>
       <!--Playlist will be printed from here-->
-      <div v-if="isLoggedIn()">
+      <div v-if="loggedIn">
       <v-list-item
         v-for="playlist in playlists"
         :key="playlist.id"
@@ -62,9 +62,11 @@
 
 <script>
 import CreatePlaylist from "./CreatePlaylist";
-import isLoggedIn from "../mixins/userService";
 import { mapState, mapActions } from "vuex";
 export default {
+  props: {
+    loggedIn : Boolean
+  },
   components: {
     CreatePlaylist
   },
@@ -97,8 +99,7 @@ export default {
         }
       ]
     };
-  },
-  mixins: [isLoggedIn]
+  }
 };
 </script>
 
