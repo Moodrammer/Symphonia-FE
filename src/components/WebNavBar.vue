@@ -33,7 +33,7 @@
       v-show="showSearch"
     ></v-text-field>
 
-    <div class="mx-3" style="min-width:220px" v-show="showCollection">
+    <div class="mx-3" style="min-width:220px" v-show="showCollection" v-if="isLoggedIn()">
       <v-btn text color="white" class="mx-2" :to="{ name: 'Playlists' }">
         <span class="text-capitalize white--text">Playlists</span>
       </v-btn>
@@ -93,12 +93,13 @@
       class="upgarde white--text px-8 py-2 hidden-sm-and-down"
       id="upgarde"
       v-show="showUpgrade"
+      v-if="isLoggedIn()"
     >
       UPGRADE
     </v-btn>
 
     <!--A menu of account, upgarde to premium ,logout -->
-    <v-menu offset-y>
+    <v-menu offset-y v-if="isLoggedIn()">
       <template v-slot:activator="{ on }">
         <!--Button to activate the menu-->
         <v-btn
@@ -141,10 +142,32 @@
         </v-list-item>
       </v-list>
     </v-menu>
+
+    <v-btn
+      v-if="!isLoggedIn()"
+      outlined
+      color="white"
+      id="signUp"
+      to="/signup"
+    >
+      SIGN UP
+    </v-btn>
+
+    <v-btn
+      v-if="!isLoggedIn()"
+      color="white"
+      id="logIn"
+      class="mx-5"
+      rounded
+      to="/login"
+    >
+      LOG IN
+    </v-btn>
   </v-app-bar>
 </template>
 
 <script>
+import isLoggedIn from "../mixins/userService";
 export default {
   data: function() {
     return {
@@ -222,7 +245,7 @@ export default {
     handleTransparency(){
       var opactiy=this.scrolled*3;
       return "rgb(26, 26, 26,"+opactiy+")";
-      }
+    }
   },
   mounted() {
     window.addEventListener('scroll', this.updateScroll);
@@ -230,7 +253,8 @@ export default {
   },
   destroy() {
   window.removeEventListener('scroll', this.updateScroll)
-  }
+  },
+  mixins: [isLoggedIn]
 };
 </script>
 
@@ -259,5 +283,21 @@ export default {
   border-radius: 500px;
   margin-left: 5px;
   text-overflow: ellipsis;
+}
+
+#signUp {
+  border-width: 0;
+}
+#signUp:hover,#logIn:hover{
+  transform: scale(1.1, 1.1);
+}
+.v-btn:before{
+  background-color: rgba(0,0,0,0);
+}
+
+#logIn {
+  border-radius: 500px;
+  padding-left: 35px;
+  padding-right: 35px;
 }
 </style>

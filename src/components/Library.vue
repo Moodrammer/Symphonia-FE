@@ -1,6 +1,6 @@
 <template>
   <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
-    <v-container class="ma-5">
+    <v-container class="mx-4">
       <router-view></router-view>
     </v-container>
   </v-content>

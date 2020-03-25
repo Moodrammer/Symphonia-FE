@@ -1,9 +1,9 @@
 <template>
   <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
     <v-container class="ma-5">
-      <h1 class="mb-3">Recently played</h1>
+      <h1 class="mb-3" v-if="isLoggedIn()">Recently played</h1>
 
-      <v-row>
+      <v-row v-if="isLoggedIn()">
         <v-col md="2" lg="2" sm="6" xl="2">
           <v-card
             color="#282828"
@@ -43,11 +43,13 @@
 </template>
 
 <script>
+import isLoggedIn from "../mixins/userService";
 export default {
   data() {
     return {
       hover: "false"
     };
-  }
+  },
+  mixins: [isLoggedIn]
 };
 </script>

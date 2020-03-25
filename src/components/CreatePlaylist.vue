@@ -69,6 +69,9 @@
 </template>
 
 <script>
+
+import getDeviceSize from "../mixins/getDeviceSize";
+
 /**
  * @displayName Create Playlist
  * @example [none]
@@ -80,6 +83,7 @@ export default {
       name: ""
     };
   },
+
   methods: {
     /**
      * Gets called when the user clicks on the create button or press enter
@@ -89,7 +93,6 @@ export default {
     create: function() {
       //if the input was empty the playlist name will be "New Playlist" (it allows duplicats)
       if (this.name == "") this.name = "New Playlist";
-
       this.$store.dispatch("playlist/createPlaylist", this.name);
       //Reset the input data and close the popup
       this.name = "";
@@ -104,7 +107,8 @@ export default {
       this.name = "";
       this.dialog = false;
     }
-  }
+  },
+ mixins: [getDeviceSize]
 };
 </script>
 

@@ -4,14 +4,18 @@
     @mouseover="hover = true"
     @mouseleave="hover = false"
   >
-    <v-icon class="mr-2 pb-7" color="white" v-if="hover">mdi-play</v-icon>
-    <v-icon class="mr-2 pb-7" color="white" v-else>
+    <v-icon class="mr-2 pb-9" color="white" v-if="hover">mdi-play</v-icon>
+    <v-icon class="mr-2 pb-9" color="white" v-else>
       mdi-music-note-eighth
     </v-icon>
     <v-list-item-title class="draweritem white--text">
       {{ songName }}
-      <v-list-item-subtitle class="mt-3 white--text subtitle">
-        {{ artistName }} . {{ albumName }}
+      <v-list-item-subtitle class="mt-3 pl-3 white--text">
+        <v-row>
+        <p class="subtitle mr-2">{{ artistName }}</p>
+        <p> . </p>
+        <p class="subtitle ml-2">{{ albumName }}</p>
+        </v-row>
       </v-list-item-subtitle>
 
       <v-spacer></v-spacer>
@@ -85,6 +89,7 @@ export default {
 .subtitle:hover {
   opacity: 1;
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .songItem:hover {
