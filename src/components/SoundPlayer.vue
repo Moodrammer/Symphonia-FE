@@ -42,7 +42,7 @@
 
         <v-toolbar flat color="rgba(0,0,0,0)" height="10">
           <!-- progress bar -->
-          <span class="time" style="padding-right: 10px;">{{
+          <span class="time" style="padding-right: 10px; margin-top:0px;">{{
             currentTime
           }}</span>
 
@@ -50,8 +50,8 @@
             type="range"
             min="0"
             v-bind:max="totalDuration"
-            @mousedown="mouseDown"
-            @mouseup="mouseUp"
+            @mousedown="progressBarPressed"
+            @mouseup="progressBarReleased"
             class="rangeslider"
             v-model="currentTimeInSec"
           />
@@ -70,7 +70,7 @@
           </v-hover> -->
 
           <!-- time -->
-          <span class="time" style="padding-left: 10px;">{{ duration }}</span>
+          <span class="time" style="padding-left: 10px; margin-top:0px;">{{ duration }}</span>
         </v-toolbar>
       </v-col>
 
@@ -227,11 +227,11 @@ export default {
     getAudio: function() {
       return this.$el.querySelectorAll("audio")[0];
     },
-    mouseDown: function () {
+    progressBarPressed: function () {
       console.log("pressed")
       this.isProgressBarPressed = true;
     },
-    mouseUp: function () {
+    progressBarReleased: function () {
       console.log("released")
       this.audio.currentTime = this.currentTimeInSec;
       this.isProgressBarPressed = false;
@@ -290,6 +290,7 @@ export default {
 .audio-controls {
   display: block;
   text-align: center;
+  margin-bottom: 10px;
 }
 
 .icons {
@@ -323,15 +324,14 @@ export default {
 $slider-width-number: 1500; //TODO: make it responsive
 $slider-width: #{$slider-width-number}px;
 $slider-height: 2px;
-$background-slider: #c7c7c7;
-$background-filled-slider: #e33d44;
-$thumb-width: 28px;
-$thumb-height: 18px;
-$thumb-radius: 8px;
-$thumb-background: #fff;
-$thumb-border: 1px solid #777;
-$shadow-size: -8px;
-$fit-thumb-in-slider: -8px;
+$background-slider: rgb(65, 65, 65);
+$background-filled-slider: rgb(180, 180, 180);
+$thumb-width: 12px;
+$thumb-height: 12px;
+$thumb-radius: 5px;
+$thumb-background: rgba(0, 0, 0, 0);
+$shadow-size: -5px; //must be equal to -$thumb-radius
+$fit-thumb-in-slider: -5px; //must be equal to -$thumb-radius
 
 @function makelongshadow($color, $size) {
   $val: 5px 0 0 $size $color;
@@ -343,14 +343,22 @@ $fit-thumb-in-slider: -8px;
   @return $val;
 }
 
+input:hover::-webkit-slider-thumb {
+  background: white;
+}
+
+input:hover::-webkit-slider-runnable-track {
+    background: rgb(29, 185, 84);
+}
+
 input {
   align-items: center;
   appearance: none;
   background: none;
   cursor: pointer;
   display: flex;
-  height: 50px;
-  min-height: 50px;
+  height: 25px;
+  min-height: 25px;
   overflow: hidden;
   width: $slider-width;
 
@@ -374,7 +382,6 @@ input {
     border-radius: $thumb-radius;
     box-shadow: makelongshadow($background-slider, $shadow-size);
     margin-top: $fit-thumb-in-slider;
-    border: $thumb-border;
   }
 
   &::-moz-range-track {
@@ -387,7 +394,6 @@ input {
 
     background: $thumb-background;
     border-radius: $thumb-radius;
-    border: $thumb-border;
     position: relative;
   }
 
@@ -415,7 +421,6 @@ input {
 
     background: $thumb-background;
     border-radius: $thumb-radius;
-    border: $thumb-border;
   }
 
   &::-ms-fill-lower {
