@@ -177,7 +177,9 @@
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
 import isLoggedIn from "@/mixins/userService"
 
+
 export default {
+  name: "login",
   components: {
     symphoniaHeader
   },

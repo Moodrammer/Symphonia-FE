@@ -10,7 +10,7 @@ describe("CreatePlaylist", () => {
   beforeEach(() => {
     Vue.use(vuetify);
     wrapper = shallowMount(CreatePlaylist, { localVue });
-  });
+    });
 
   it("renders a vue instance", () => {
     expect(shallowMount(CreatePlaylist).isVueInstance()).toBe(true);
