@@ -29,15 +29,39 @@
 
       <v-col cols="6">
         <div class="audio-controls">
+          <a @click="shuffle()" title="shuffle" style="margin-right: 20px;">
+            <v-icon small class="icons">
+              mdi-shuffle-variant
+            </v-icon>
+          </a>
+          <!-- Next -->
+          <a @click="next()" title="Previous" style="margin-right: 10px;">
+            <v-icon medium class="icons">
+              mdi-skip-previous
+            </v-icon>
+          </a>
           <!-- Start and Pause -->
-          <a @click="pause()" title="Play">
-            <v-icon v-if="paused" large class="icons">
+          <a @click="pause()">
+            <v-icon v-if="paused" large class="icons" title="play">
               mdi-play-circle-outline
             </v-icon>
-            <v-icon v-if="!paused" large class="icons">
+            <v-icon v-if="!paused" large class="icons" title="pause">
               mdi-pause-circle-outline
             </v-icon>
           </a>
+          <!-- Previous -->
+          <a @click="previous()" title="Next" style="margin-left: 10px;">
+            <v-icon medium class="icons">
+              mdi-skip-next
+            </v-icon>
+          </a>
+
+          <a @click="repeat()" title="repeat" style="margin-left: 20px;">
+            <v-icon small class="icons">
+              mdi-repeat
+            </v-icon>
+          </a>
+
         </div>
 
         <v-toolbar flat color="rgba(0,0,0,0)" height="10">
@@ -57,7 +81,9 @@
           />
 
           <!-- time -->
-          <span class="time" style="padding-left: 10px; margin-top:0px;">{{ duration }}</span>
+          <span class="time" style="padding-left: 10px; margin-top:0px;">{{
+            duration
+          }}</span>
         </v-toolbar>
       </v-col>
 
@@ -65,7 +91,11 @@
       <v-col cols="2">
         <!-- mute or change the volume-->
         <div style="padding-top: 20px;">
-          <a @click="mute()" title="Mute" style="float: left; margin-right: 10px;">
+          <a
+            @click="mute()"
+            title="Mute"
+            style="float: left; margin-right: 10px;"
+          >
             <v-icon v-if="isMuted" class="icons">
               mdi-volume-mute
             </v-icon>
@@ -79,9 +109,16 @@
             max="100"
             class="rangeslider"
             v-model="volumeValue"
-            style="width: 100px; margin-right: 0px;"
+            style="width: 100px; margin-right: 0px; float: left;"
           />
         </div>
+
+        <a @click="queue()" title="queue" style="margin-left: 20px;">
+          <v-icon small class="icons">
+            mdi-format-list-numbered-rtl
+          </v-icon>
+        </a>
+
       </v-col>
     </v-row>
   </v-footer>
@@ -145,8 +182,7 @@ export default {
       this.audio.volume = this.volumeValue / 100;
       if (this.volumeValue / 100 > 0) {
         this.isMuted = this.audio.muted = false;
-      }
-      else if (this.volumeValue / 100 === 0) {
+      } else if (this.volumeValue / 100 === 0) {
         this.isMuted = this.audio.muted = true;
       }
     },
@@ -159,6 +195,21 @@ export default {
     pause: function() {
       this.paused = !this.paused;
       this.paused ? this.audio.pause() : this.audio.play();
+    },
+    next: function() {
+      //stub
+    },
+    previous: function() {
+      //stub
+    },
+    shuffle: function() {
+      //stub
+    },
+    repeat: function() {
+      //stub
+    },
+    queue: function() {
+      //stub
     },
     mute: function() {
       this.isMuted = !this.isMuted;
@@ -187,8 +238,7 @@ export default {
 
       this.updateVolume();
 
-      if (!this.isProgressBarPressed)
-      {
+      if (!this.isProgressBarPressed) {
         this.currentTimeInSec = currTime;
       }
 
@@ -212,15 +262,15 @@ export default {
     getAudio: function() {
       return this.$el.querySelectorAll("audio")[0];
     },
-    progressBarPressed: function () {
-      console.log("pressed")
+    progressBarPressed: function() {
+      console.log("pressed");
       this.isProgressBarPressed = true;
     },
-    progressBarReleased: function () {
-      console.log("released")
+    progressBarReleased: function() {
+      console.log("released");
       this.audio.currentTime = this.currentTimeInSec;
       this.isProgressBarPressed = false;
-    },
+    }
   },
   mounted: function() {
     this.audio = this.getAudio();
@@ -333,7 +383,7 @@ input:hover::-webkit-slider-thumb {
 }
 
 input:hover::-webkit-slider-runnable-track {
-    background: rgb(29, 185, 84);
+  background: rgb(29, 185, 84);
 }
 
 input {

@@ -20,8 +20,7 @@ export function makeServer({ environment = "development" } = {}) {
         gender: "male"
       });
 
-      server.create("bestsong", 
-      {
+      server.create("bestsong", {
         songs: [
           {
             singerName: "Eminim",
@@ -100,9 +99,10 @@ export function makeServer({ environment = "development" } = {}) {
 
       //})
 
-      this.get("/v1/bestsongs"), schema => {
-        return schema.bestsongs.bestSixSongs;
-      }
+      this.get("/v1/bestsongs"),
+        schema => {
+          return schema.bestsongs.bestSixSongs;
+        };
       //Intercepting Login post requests
       this.post("/v1/users/login", (schema, request) => {
         //turn attributes to json to be able to access the data of the request

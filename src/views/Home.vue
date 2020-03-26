@@ -12,7 +12,7 @@ import NavigationBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import Content from "../components/Homepage/TheHomepageContent.vue";
 import Footer from "../components/Homepage/TheHomepageFooter";
 import ContentLoggedIn from "../components/Homepage/TheHomepageLoginContent.vue";
-import isLoggedIn from "../components/isLoggedIn"
+import isLoggedIn from "../components/isLoggedIn";
 
 /**
  * The homepage view
@@ -30,7 +30,7 @@ export default {
   },
 
   mounted: function() {
-    this.$root.$on('forceUpdateContent', () => {
+    this.$root.$on("forceUpdateContent", () => {
       // your code goes here
       this.$forceUpdate();
     });

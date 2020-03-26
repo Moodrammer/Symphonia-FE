@@ -5,13 +5,12 @@
   </div>
 </template>
 
-
 <script>
-import soundplayer from "../components/SoundPlayer.vue"
+import soundplayer from "../components/SoundPlayer.vue";
 
-export default ({
+export default {
   components: {
     "sound-player": soundplayer
   }
-})
+};
 </script>

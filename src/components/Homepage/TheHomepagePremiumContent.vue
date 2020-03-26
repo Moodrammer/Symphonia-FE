@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import getDeviceSize from "../getDeviceSize"
+import getDeviceSize from "../getDeviceSize";
 
 /**
  * The homepage content when pressing premium tab.
@@ -170,7 +170,7 @@ export default {
 
   methods: {
     /**
-     * Hide the navbar when this view is loaded 
+     * Hide the navbar when this view is loaded
      * by adding an event listener to the window.
      * @public
      */
@@ -198,7 +198,7 @@ export default {
      */
     removeNavEventListener() {
       window.removeEventListener("scroll", this.NavFunction);
-    },
+    }
   },
 
   mounted: function() {

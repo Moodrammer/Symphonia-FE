@@ -247,7 +247,7 @@
 
 <script>
 import isLoggedIn from "../isLoggedIn";
-import getDeviceSize from "../getDeviceSize"
+import getDeviceSize from "../getDeviceSize";
 
 /**
  * The homepage navigation bar.
@@ -265,9 +265,9 @@ export default {
 
   methods: {
     /**
-     * Gets called when the user logs out 
+     * Gets called when the user logs out
      *
-     * @public 
+     * @public
      */
     logOutAndRerender() {
       this.logOut();

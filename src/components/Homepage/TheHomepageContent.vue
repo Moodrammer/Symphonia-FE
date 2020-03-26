@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import getDeviceSize from "../getDeviceSize"
+import getDeviceSize from "../getDeviceSize";
 
 /**
  * The Home page body content before logging in.

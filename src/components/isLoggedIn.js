@@ -1,10 +1,9 @@
-  export default {
+export default {
   methods: {
     isLoggedIn() {
       if (localStorage.getItem("userToken") == "") {
         return false;
-      }
-      else {
+      } else {
         return true;
       }
     },
@@ -12,4 +11,4 @@
       localStorage.setItem("userToken", "");
     }
   }
-}
+};
