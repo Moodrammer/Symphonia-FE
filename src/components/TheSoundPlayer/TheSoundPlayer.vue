@@ -90,6 +90,11 @@
       <v-col cols="2">
         <!-- mute or change the volume-->
         <div style="padding-top: 20px;">
+        <a @click="queue()" title="queue" style="margin-right: 20px; float: left;">
+          <v-icon small class="icons">
+            mdi-format-list-numbered-rtl
+          </v-icon>
+        </a>
           <a
             @click="mute()"
             title="Mute"
@@ -110,15 +115,9 @@
             v-model="volumeValue"
             v-on:mousdown="volumeBarPressed"
             v-on:mouseup="volumeBarReleased"
-            style="width: 100px; margin-right: 0px; float: left;"
+            style="width: 100px; margin-right: 0px;"
           />
         </div>
-
-        <a @click="queue()" title="queue" style="margin-left: 20px;">
-          <v-icon small class="icons">
-            mdi-format-list-numbered-rtl
-          </v-icon>
-        </a>
       </v-col>
     </v-row>
   </v-footer>
@@ -139,10 +138,6 @@ export const convertTimeHHMMSS = val => {
 export default {
   name: "vue-audio",
   props: {
-    file: {
-      type: String,
-      default: null
-    },
     autoPlay: {
       type: Boolean,
       default: false
@@ -159,6 +154,7 @@ export default {
   },
   data() {
     return {
+      file: "http://localhost:8080/example.mp3",
       isMuted: false,
       loaded: false,
       playing: false,
@@ -265,7 +261,7 @@ export default {
     },
     progressBarReleased: function() {
       this.audio.currentTime = this.currentTimeInSec;
-      this.isVolumeBarPressed = false;
+      this.isProgressBarPressed = false;
     },
     volumeBarPressed: function() {
       this.isVolumeBarPressed = true;
@@ -292,7 +288,7 @@ export default {
 <style scoped>
 .sound-player {
   height: 90px;
-  background-color: #282828;
+  background-color: #282828 !important;
   padding: 0px 16px 0px 16px;
 }
 
