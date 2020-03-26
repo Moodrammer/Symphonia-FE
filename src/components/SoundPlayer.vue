@@ -55,19 +55,6 @@
             class="rangeslider"
             v-model="currentTimeInSec"
           />
-          <!-- <v-hover v-slot:default="{ hover }">
-            <v-slider
-              track-color="rgba(64, 64, 64)"
-              v-bind:thumb-color="!hover ? 'rgba(0,0,0,0)' : 'white'"
-              v-bind:color="!hover ? '#b3b3b3' : 'rgb(29, 185, 84)'"
-              v-model.lazy="currentTimeInSec"
-              v-on:click="setPosition"
-              min="0"
-              v-bind:max="totalDuration"
-              style=" margin-top: 40px;"
-              title="Time played : Total time"
-            ></v-slider>
-          </v-hover> -->
 
           <!-- time -->
           <span class="time" style="padding-left: 10px; margin-top:0px;">{{ duration }}</span>
@@ -78,7 +65,7 @@
       <v-col cols="2">
         <!-- mute or change the volume-->
         <div style="padding-top: 20px;">
-          <a @click="mute()" title="Mute" style="float: left;">
+          <a @click="mute()" title="Mute" style="float: left; margin-right: 10px;">
             <v-icon v-if="isMuted" class="icons">
               mdi-volume-mute
             </v-icon>
@@ -86,17 +73,14 @@
               mdi-volume-high
             </v-icon>
           </a>
-          <v-hover v-slot:default="{ hover }">
-            <v-slider
-              v-bind:thumb-color="!hover ? 'rgba(0,0,0,0)' : 'white'"
-              track-color="rgba(64, 64, 64)"
-              v-bind:color="!hover ? '#b3b3b3' : 'rgb(29, 185, 84)'"
-              v-model.lazy="volumeValue"
-              min="0"
-              max="100"
-              v-on:click="updateVolume()"
-            ></v-slider>
-          </v-hover>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            class="rangeslider"
+            v-model="volumeValue"
+            style="width: 100px; margin-right: 0px;"
+          />
         </div>
       </v-col>
     </v-row>
@@ -162,8 +146,7 @@ export default {
       if (this.volumeValue / 100 > 0) {
         this.isMuted = this.audio.muted = false;
       }
-
-      if (this.volumeValue / 100 === 0) {
+      else if (this.volumeValue / 100 === 0) {
         this.isMuted = this.audio.muted = true;
       }
     },
@@ -201,6 +184,8 @@ export default {
       //this.audio.currentTime gets the current time of the playing track
       //in terms of how many seconds have been passed.
       var currTime = parseInt(this.audio.currentTime);
+
+      this.updateVolume();
 
       if (!this.isProgressBarPressed)
       {

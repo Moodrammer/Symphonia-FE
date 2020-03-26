@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 v-for="n in 25" :key="n">hi</h1>
-    <sound-player file="http://www.bensound.com/bensound-music/bensound-summer.mp3" />
+    <sound-player file="http://localhost:8080/example.mp3" />
   </div>
 </template>
 
