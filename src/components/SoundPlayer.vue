@@ -2,7 +2,6 @@
   <v-footer app class="sound-player">
     <!-- audio tag -->
     <audio ref="audiofile" :src="file" style="display:none;"></audio>
-
     <!-- song info -->
     <v-row>
       <v-col cols="3">
@@ -47,7 +46,16 @@
             currentTime
           }}</span>
 
-            <v-hover v-slot:default="{ hover }">
+          <input
+            type="range"
+            min="0"
+            v-bind:max="totalDuration"
+            @mousedown="mouseDown"
+            @mouseup="mouseUp"
+            class="rangeslider"
+            v-model="currentTimeInSec"
+          />
+          <!-- <v-hover v-slot:default="{ hover }">
             <v-slider
               track-color="rgba(64, 64, 64)"
               v-bind:thumb-color="!hover ? 'rgba(0,0,0,0)' : 'white'"
@@ -59,7 +67,7 @@
               style=" margin-top: 40px;"
               title="Time played : Total time"
             ></v-slider>
-          </v-hover>
+          </v-hover> -->
 
           <!-- time -->
           <span class="time" style="padding-left: 10px;">{{ duration }}</span>
@@ -141,15 +149,13 @@ export default {
       volumeValue: 50,
       previousVolumeValue: 50,
       currentTimeInSec: 0,
+      isProgressBarPressed: false
     };
   },
   methods: {
     saveToLikedSongs: function() {
       //stub
       alert("saveToLikedSongs");
-    },
-    setPosition: function name() {
-      this.audio.currentTime = parseInt(this.currentTimeInSec);
     },
     updateVolume: function() {
       this.audio.volume = this.volumeValue / 100;
@@ -194,8 +200,13 @@ export default {
     _handlePlayingUI: function() {
       //this.audio.currentTime gets the current time of the playing track
       //in terms of how many seconds have been passed.
-      let currTime = parseInt(this.audio.currentTime);
-      this.currentTimeInSec = currTime;
+      var currTime = parseInt(this.audio.currentTime);
+
+      if (!this.isProgressBarPressed)
+      {
+        this.currentTimeInSec = currTime;
+      }
+
       this.currentTime = convertTimeHHMMSS(currTime);
     },
     _handlePlayPause: function(e) {
@@ -215,7 +226,16 @@ export default {
     },
     getAudio: function() {
       return this.$el.querySelectorAll("audio")[0];
-    }
+    },
+    mouseDown: function () {
+      console.log("pressed")
+      this.isProgressBarPressed = true;
+    },
+    mouseUp: function () {
+      console.log("released")
+      this.audio.currentTime = this.currentTimeInSec;
+      this.isProgressBarPressed = false;
+    },
   },
   mounted: function() {
     this.audio = this.getAudio();
@@ -292,6 +312,124 @@ export default {
   min-width: 40px;
   text-align: center;
 }
+</style>
 
+<style lang="scss" scoped>
+/* The style of a slider */
 
+/* sass package */
+@import "bourbon";
+
+$slider-width-number: 1500; //TODO: make it responsive
+$slider-width: #{$slider-width-number}px;
+$slider-height: 2px;
+$background-slider: #c7c7c7;
+$background-filled-slider: #e33d44;
+$thumb-width: 28px;
+$thumb-height: 18px;
+$thumb-radius: 8px;
+$thumb-background: #fff;
+$thumb-border: 1px solid #777;
+$shadow-size: -8px;
+$fit-thumb-in-slider: -8px;
+
+@function makelongshadow($color, $size) {
+  $val: 5px 0 0 $size $color;
+
+  @for $i from 6 through $slider-width-number {
+    $val: #{$val}, #{$i}px 0 0 $size #{$color};
+  }
+
+  @return $val;
+}
+
+input {
+  align-items: center;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  height: 50px;
+  min-height: 50px;
+  overflow: hidden;
+  width: $slider-width;
+
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+
+  &::-webkit-slider-runnable-track {
+    background: $background-filled-slider;
+    content: "";
+    height: $slider-height;
+    pointer-events: none;
+  }
+
+  &::-webkit-slider-thumb {
+    @include size($thumb-width, $thumb-height);
+
+    appearance: none;
+    background: $thumb-background;
+    border-radius: $thumb-radius;
+    box-shadow: makelongshadow($background-slider, $shadow-size);
+    margin-top: $fit-thumb-in-slider;
+    border: $thumb-border;
+  }
+
+  &::-moz-range-track {
+    width: $slider-width;
+    height: $slider-height;
+  }
+
+  &::-moz-range-thumb {
+    @include size($thumb-width, $thumb-height);
+
+    background: $thumb-background;
+    border-radius: $thumb-radius;
+    border: $thumb-border;
+    position: relative;
+  }
+
+  &::-moz-range-progress {
+    height: $slider-height;
+    background: $background-filled-slider;
+    border: 0;
+    margin-top: 0;
+  }
+
+  &::-ms-track {
+    background: transparent;
+    border: 0;
+    border-color: transparent;
+    border-radius: 0;
+    border-width: 0;
+    color: transparent;
+    height: $slider-height;
+    margin-top: 10px;
+    width: $slider-width;
+  }
+
+  &::-ms-thumb {
+    @include size($thumb-width, $thumb-height);
+
+    background: $thumb-background;
+    border-radius: $thumb-radius;
+    border: $thumb-border;
+  }
+
+  &::-ms-fill-lower {
+    background: $background-filled-slider;
+    border-radius: 0;
+  }
+
+  &::-ms-fill-upper {
+    background: $background-slider;
+    border-radius: 0;
+  }
+
+  &::-ms-tooltip {
+    display: none;
+  }
+}
 </style>
