@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import soundplayer from "../components/SoundPlayer.vue";
+import soundplayer from "../components/TheSoundPlayer/TheSoundPlayer.vue";
 
 export default {
   components: {

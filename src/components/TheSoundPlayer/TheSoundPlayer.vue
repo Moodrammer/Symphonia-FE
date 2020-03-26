@@ -61,7 +61,6 @@
               mdi-repeat
             </v-icon>
           </a>
-
         </div>
 
         <v-toolbar flat color="rgba(0,0,0,0)" height="10">
@@ -109,6 +108,8 @@
             max="100"
             class="rangeslider"
             v-model="volumeValue"
+            v-on:mousdown="volumeBarPressed"
+            v-on:mouseup="volumeBarReleased"
             style="width: 100px; margin-right: 0px; float: left;"
           />
         </div>
@@ -118,7 +119,6 @@
             mdi-format-list-numbered-rtl
           </v-icon>
         </a>
-
       </v-col>
     </v-row>
   </v-footer>
@@ -170,13 +170,13 @@ export default {
       volumeValue: 50,
       previousVolumeValue: 50,
       currentTimeInSec: 0,
-      isProgressBarPressed: false
+      isProgressBarPressed: false,
+      isVolumePressed: false
     };
   },
   methods: {
     saveToLikedSongs: function() {
       //stub
-      alert("saveToLikedSongs");
     },
     updateVolume: function() {
       this.audio.volume = this.volumeValue / 100;
@@ -236,8 +236,6 @@ export default {
       //in terms of how many seconds have been passed.
       var currTime = parseInt(this.audio.currentTime);
 
-      this.updateVolume();
-
       if (!this.isProgressBarPressed) {
         this.currentTimeInSec = currTime;
       }
@@ -263,14 +261,19 @@ export default {
       return this.$el.querySelectorAll("audio")[0];
     },
     progressBarPressed: function() {
-      console.log("pressed");
       this.isProgressBarPressed = true;
     },
     progressBarReleased: function() {
-      console.log("released");
       this.audio.currentTime = this.currentTimeInSec;
-      this.isProgressBarPressed = false;
-    }
+      this.isVolumeBarPressed = false;
+    },
+    volumeBarPressed: function() {
+      this.isVolumeBarPressed = true;
+    },
+    volumeBarReleased: function() {
+      this.updateVolume();
+      this.isVolumeBarPressed = false;
+    },
   },
   mounted: function() {
     this.audio = this.getAudio();
@@ -351,125 +354,5 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-/* The style of a slider */
-
-/* sass package */
-@import "bourbon";
-
-$slider-width-number: 1500; //TODO: make it responsive
-$slider-width: #{$slider-width-number}px;
-$slider-height: 2px;
-$background-slider: rgb(65, 65, 65);
-$background-filled-slider: rgb(180, 180, 180);
-$thumb-width: 12px;
-$thumb-height: 12px;
-$thumb-radius: 5px;
-$thumb-background: rgba(0, 0, 0, 0);
-$shadow-size: -5px; //must be equal to -$thumb-radius
-$fit-thumb-in-slider: -5px; //must be equal to -$thumb-radius
-
-@function makelongshadow($color, $size) {
-  $val: 5px 0 0 $size $color;
-
-  @for $i from 6 through $slider-width-number {
-    $val: #{$val}, #{$i}px 0 0 $size #{$color};
-  }
-
-  @return $val;
-}
-
-input:hover::-webkit-slider-thumb {
-  background: white;
-}
-
-input:hover::-webkit-slider-runnable-track {
-  background: rgb(29, 185, 84);
-}
-
-input {
-  align-items: center;
-  appearance: none;
-  background: none;
-  cursor: pointer;
-  display: flex;
-  height: 25px;
-  min-height: 25px;
-  overflow: hidden;
-  width: $slider-width;
-
-  &:focus {
-    box-shadow: none;
-    outline: none;
-  }
-
-  &::-webkit-slider-runnable-track {
-    background: $background-filled-slider;
-    content: "";
-    height: $slider-height;
-    pointer-events: none;
-  }
-
-  &::-webkit-slider-thumb {
-    @include size($thumb-width, $thumb-height);
-
-    appearance: none;
-    background: $thumb-background;
-    border-radius: $thumb-radius;
-    box-shadow: makelongshadow($background-slider, $shadow-size);
-    margin-top: $fit-thumb-in-slider;
-  }
-
-  &::-moz-range-track {
-    width: $slider-width;
-    height: $slider-height;
-  }
-
-  &::-moz-range-thumb {
-    @include size($thumb-width, $thumb-height);
-
-    background: $thumb-background;
-    border-radius: $thumb-radius;
-    position: relative;
-  }
-
-  &::-moz-range-progress {
-    height: $slider-height;
-    background: $background-filled-slider;
-    border: 0;
-    margin-top: 0;
-  }
-
-  &::-ms-track {
-    background: transparent;
-    border: 0;
-    border-color: transparent;
-    border-radius: 0;
-    border-width: 0;
-    color: transparent;
-    height: $slider-height;
-    margin-top: 10px;
-    width: $slider-width;
-  }
-
-  &::-ms-thumb {
-    @include size($thumb-width, $thumb-height);
-
-    background: $thumb-background;
-    border-radius: $thumb-radius;
-  }
-
-  &::-ms-fill-lower {
-    background: $background-filled-slider;
-    border-radius: 0;
-  }
-
-  &::-ms-fill-upper {
-    background: $background-slider;
-    border-radius: 0;
-  }
-
-  &::-ms-tooltip {
-    display: none;
-  }
-}
+  @import "./slider.scss";
 </style>
