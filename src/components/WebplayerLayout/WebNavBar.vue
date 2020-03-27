@@ -94,6 +94,7 @@
       id="upgarde"
       v-show="showUpgrade"
       v-if="isLoggedIn()"
+      to="/premium/?checkout=false"
     >
       UPGRADE
     </v-btn>
@@ -133,6 +134,7 @@
           class="hidden-md-and-up"
           id="upgardepremium"
           v-show="showUpgrade"
+          to="/premium/?checkout=false"
         >
           <v-list-item-title>Upgarde to premium</v-list-item-title>
         </v-list-item>
