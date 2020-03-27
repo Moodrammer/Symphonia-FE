@@ -13,7 +13,7 @@
       >
         <v-icon color="black">mdi-plus</v-icon>
       </v-btn>
-      <p v-on="on" class="pt-4">Create Playlist</p>
+      <p v-on="on" class="pt-4" v-show="$vuetify.breakpoint.lgAndUp">Create Playlist</p>
     </template>
 
     <v-card

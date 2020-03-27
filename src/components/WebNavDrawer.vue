@@ -1,6 +1,6 @@
 <template>
   <!--the webplayer navigation drawer-->
-  <v-navigation-drawer app dark color="black" left fixed permanent>
+  <v-navigation-drawer app dark color="black" :mini-variant="$vuetify.breakpoint.mdAndDown" left fixed permanent>
     <v-list color="black" nav class="list">
       <!--logo and organization name (todo:change it to symphonia)-->
       <v-list-item>
@@ -30,7 +30,7 @@
         </v-list-item-title>
       </v-list-item>
 
-      <v-list-item-subtitle class="ml-2">PLAYLISTS</v-list-item-subtitle>
+      <v-list-item-subtitle class="ml-2" v-show="$vuetify.breakpoint.lgAndUp">PLAYLISTS</v-list-item-subtitle>
 
       <!--Nesting the popup-->
       <v-list-item>
@@ -41,14 +41,14 @@
         <v-btn class="liked" fab x-small id="liked">
           <v-icon color="white">mdi-cards-heart</v-icon>
         </v-btn>
-        <v-list-item-title>Liked Songs</v-list-item-title>
+        <v-list-item-title v-show="$vuetify.breakpoint.lgAndUp">Liked Songs</v-list-item-title>
       </v-list-item>
 
       <v-divider></v-divider>
       <!--Playlist will be printed from here-->
 
       <v-list-item v-for="playlist in playlists" :key="playlist.id">
-        <v-list-item-title class="draweritem white--text">
+        <v-list-item-title class="draweritem white--text" v-show="$vuetify.breakpoint.lgAndUp">
           {{ playlist.name }}
         </v-list-item-title>
       </v-list-item>
