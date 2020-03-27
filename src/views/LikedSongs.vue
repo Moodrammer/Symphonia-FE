@@ -1,5 +1,5 @@
 <template>
-<!--The Liked Songs view wil be modified-->
+  <!--The Liked Songs view wil be modified-->
   <v-container class="pt-0">
     <v-row justify="center">
       <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">

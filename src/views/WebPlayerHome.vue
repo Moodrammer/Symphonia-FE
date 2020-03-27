@@ -3,7 +3,7 @@
     <!--Sending a prop to the drawer to be updated after logout-->
     <nav-drawer :loggedIn="isLoggedIn()"></nav-drawer>
     <nav-bar></nav-bar>
-    <router-view></router-view>
+    <router-view :loggedIn="isLoggedIn()"></router-view>
   </v-app>
 </template>
 

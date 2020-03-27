@@ -2,11 +2,25 @@
   <!--The navigation bar of the webplayer-->
   <v-app-bar class="bar" app flat :color="handleTransparency()">
     <!--Two angle brackets to navigate with-->
-    <v-btn fab x-small color="black" class="mr-4 ml-6" @click="prev" id="backward">
+    <v-btn
+      fab
+      x-small
+      color="black"
+      class="mr-4 ml-6"
+      @click="prev"
+      id="backward"
+    >
       <v-icon color="grey darken-1" large>mdi-chevron-left</v-icon>
     </v-btn>
 
-    <v-btn fab x-small color="black" class="hidden-md-and-down" @click="next" id="forward">
+    <v-btn
+      fab
+      x-small
+      color="black"
+      class="hidden-md-and-down"
+      @click="next"
+      id="forward"
+    >
       <v-icon color="grey darken-1" large>mdi-chevron-right</v-icon>
     </v-btn>
 
@@ -21,7 +35,12 @@
       v-show="showSearch"
     ></v-text-field>
     <!--The tabs of the the library-->
-    <div class="mx-3" style="min-width:220px" v-show="showCollection" v-if="isLoggedIn()">
+    <div
+      class="mx-3"
+      style="min-width:220px"
+      v-show="showCollection"
+      v-if="isLoggedIn()"
+    >
       <v-btn text color="white" class="mx-2" :to="{ name: 'Playlists' }">
         <span class="text-capitalize white--text">Playlists</span>
       </v-btn>
@@ -41,16 +60,32 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="(item, index) in moreMenu" :key="index" :to="{ name: item }">
-            <v-list-item-title class="text-capitalize white--text">{{ item }}</v-list-item-title>
+          <v-list-item
+            v-for="(item, index) in moreMenu"
+            :key="index"
+            :to="{ name: item }"
+          >
+            <v-list-item-title class="text-capitalize white--text">
+              {{ item }}
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
 
-      <v-btn text color="white" class="mx-2 hidden-md-and-down" :to="{ name: 'Artists' }">
+      <v-btn
+        text
+        color="white"
+        class="mx-2 hidden-md-and-down"
+        :to="{ name: 'Artists' }"
+      >
         <span class="text-capitalize white--text">Artists</span>
       </v-btn>
-      <v-btn text color="white" class="mx-2 hidden-md-and-down" :to="{ name: 'Albums' }">
+      <v-btn
+        text
+        color="white"
+        class="mx-2 hidden-md-and-down"
+        :to="{ name: 'Albums' }"
+      >
         <span class="text-capitalize white--text">Albums</span>
       </v-btn>
     </div>
@@ -67,7 +102,9 @@
       v-show="showUpgrade"
       v-if="isLoggedIn()"
       to="/premium/?checkout=false"
-    >UPGRADE</v-btn>
+    >
+      UPGRADE
+    </v-btn>
 
     <!--A menu of account, upgarde to premium ,logout -->
     <v-menu offset-y v-if="isLoggedIn()">
@@ -81,13 +118,19 @@
           id="dropMenu"
         >
           <v-btn fab x-small color="rgb(0,0,0,0.7)" class="ml-1">
-            <v-icon color="white" class="mx-2">mdi-account-outline</v-icon>
+            <v-icon color="white" class="mx-2">
+              mdi-account-outline
+            </v-icon>
           </v-btn>
 
           <span class="hidden-md-and-down">UserName</span>
           <!--This to handle the icon changes when the menu is opened and closed-->
-          <v-icon color="white" class="hidden-md-and-down" v-if="on">mdi-menu-down</v-icon>
-          <v-icon color="white" class="hidden-md-and-down" v-else>mdi-menu-up</v-icon>
+          <v-icon color="white" class="hidden-md-and-down" v-if="on">
+            mdi-menu-down
+          </v-icon>
+          <v-icon color="white" class="hidden-md-and-down" v-else>
+            mdi-menu-up
+          </v-icon>
         </v-btn>
       </template>
       <!--Menu list-->
@@ -105,16 +148,32 @@
           <v-list-item-title>Upgarde to premium</v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item id="logout" @click="logOutAndRerender()" to="/webhome" exact>
+        <v-list-item
+          id="logout"
+          @click="logOutAndRerender()"
+          to="/webhome"
+          exact
+        >
           <v-list-item-title>Log out</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
 
     <!--The next two buttons will be shown if the user hasen't logged in yet -->
-    <v-btn v-if="!isLoggedIn()" outlined color="white" id="signUp" to="/signup">SIGN UP</v-btn>
+    <v-btn v-if="!isLoggedIn()" outlined color="white" id="signUp" to="/signup">
+      SIGN UP
+    </v-btn>
 
-    <v-btn v-if="!isLoggedIn()" color="white" id="logIn" class="mx-5" rounded to="/login">LOG IN</v-btn>
+    <v-btn
+      v-if="!isLoggedIn()"
+      color="white"
+      id="logIn"
+      class="mx-5"
+      rounded
+      to="/login"
+    >
+      LOG IN
+    </v-btn>
   </v-app-bar>
 </template>
 
@@ -230,7 +289,7 @@ export default {
       return "rgb(26, 26, 26," + opactiy + ")";
     },
     /**
-     * Gets called when the user logs out 
+     * Gets called when the user logs out
      * @public This is a public method
      * @param {none}
      */
