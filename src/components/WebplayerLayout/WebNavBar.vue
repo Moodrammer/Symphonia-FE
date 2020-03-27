@@ -1,28 +1,16 @@
 <template>
+  <!--The navigation bar of the webplayer-->
   <v-app-bar class="bar" app flat :color="handleTransparency()">
-    <!--To angle brackets to navigate with-->
-    <v-btn
-      fab
-      x-small
-      color="black"
-      class="mr-4 ml-6"
-      @click="prev"
-      id="backward"
-    >
+    <!--Two angle brackets to navigate with-->
+    <v-btn fab x-small color="black" class="mr-4 ml-6" @click="prev" id="backward">
       <v-icon color="grey darken-1" large>mdi-chevron-left</v-icon>
     </v-btn>
 
-    <v-btn
-      fab
-      x-small
-      color="black"
-      class="hidden-md-and-down"
-      @click="next"
-      id="forward"
-    >
+    <v-btn fab x-small color="black" class="hidden-md-and-down" @click="next" id="forward">
       <v-icon color="grey darken-1" large>mdi-chevron-right</v-icon>
     </v-btn>
 
+    <!--input field for serach -->
     <v-text-field
       hide-details
       prepend-inner-icon="mdi-magnify"
@@ -53,32 +41,16 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item
-            v-for="(item, index) in moreMenu"
-            :key="index"
-            :to="{ name: item }"
-          >
-            <v-list-item-title class="text-capitalize white--text">
-              {{ item }}
-            </v-list-item-title>
+          <v-list-item v-for="(item, index) in moreMenu" :key="index" :to="{ name: item }">
+            <v-list-item-title class="text-capitalize white--text">{{ item }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
 
-      <v-btn
-        text
-        color="white"
-        class="mx-2 hidden-md-and-down"
-        :to="{ name: 'Artists' }"
-      >
+      <v-btn text color="white" class="mx-2 hidden-md-and-down" :to="{ name: 'Artists' }">
         <span class="text-capitalize white--text">Artists</span>
       </v-btn>
-      <v-btn
-        text
-        color="white"
-        class="mx-2 hidden-md-and-down"
-        :to="{ name: 'Albums' }"
-      >
+      <v-btn text color="white" class="mx-2 hidden-md-and-down" :to="{ name: 'Albums' }">
         <span class="text-capitalize white--text">Albums</span>
       </v-btn>
     </div>
@@ -95,9 +67,7 @@
       v-show="showUpgrade"
       v-if="isLoggedIn()"
       to="/premium/?checkout=false"
-    >
-      UPGRADE
-    </v-btn>
+    >UPGRADE</v-btn>
 
     <!--A menu of account, upgarde to premium ,logout -->
     <v-menu offset-y v-if="isLoggedIn()">
@@ -116,12 +86,8 @@
 
           <span class="hidden-md-and-down">UserName</span>
           <!--This to handle the icon changes when the menu is opened and closed-->
-          <v-icon color="white" class="hidden-md-and-down" v-if="on">
-            mdi-menu-down
-          </v-icon>
-          <v-icon color="white" class="hidden-md-and-down" v-else>
-            mdi-menu-up
-          </v-icon>
+          <v-icon color="white" class="hidden-md-and-down" v-if="on">mdi-menu-down</v-icon>
+          <v-icon color="white" class="hidden-md-and-down" v-else>mdi-menu-up</v-icon>
         </v-btn>
       </template>
       <!--Menu list-->
@@ -145,31 +111,19 @@
       </v-list>
     </v-menu>
 
-    <v-btn
-      v-if="!isLoggedIn()"
-      outlined
-      color="white"
-      id="signUp"
-      to="/signup"
-    >
-      SIGN UP
-    </v-btn>
+    <!--The next two buttons will be shown if the user hasen't logged in yet -->
+    <v-btn v-if="!isLoggedIn()" outlined color="white" id="signUp" to="/signup">SIGN UP</v-btn>
 
-    <v-btn
-      v-if="!isLoggedIn()"
-      color="white"
-      id="logIn"
-      class="mx-5"
-      rounded
-      to="/login"
-    >
-      LOG IN
-    </v-btn>
+    <v-btn v-if="!isLoggedIn()" color="white" id="logIn" class="mx-5" rounded to="/login">LOG IN</v-btn>
   </v-app-bar>
 </template>
 
 <script>
 import isLoggedIn from "../../mixins/userService";
+/**
+ * @displayName Webplayer Navigation Bar
+ * @example [none]
+ */
 export default {
   data: function() {
     return {
@@ -181,7 +135,7 @@ export default {
       selectedItem: "More..",
       moreMenu: ["More..", "Artists", "Albums"],
       scrollPosition: null,
-      scrolled: null,
+      scrolled: null
     };
   },
   created() {
@@ -193,21 +147,35 @@ export default {
       this.handleTabs(this.$route.name);
       this.itemChosen(this.$route.name);
     },
-      scroll: function() {
+    scroll: function() {
       var scrollTop = window.pageYOffset;
       console.log(scrollTop);
     }
   },
   methods: {
     //Some validations are needed
+    /**
+     * Gets called when the user clicks on the left chevron icon to go backward
+     * @public This is a public method
+     * @param {none}
+     */
     prev: function() {
       //the way to go backward             todo :Add the validation and change the buttons to disabled..
       this.$router.go(-1);
     },
+    /**
+     * Gets called when the user clicks on the right chevron icon to go forward
+     * @public This is a public method
+     * @param {none}
+     */
     next: function() {
-      //the way to go forward
       this.$router.go(1);
     },
+    /**
+     * Handle which tabs will be displayed according to the route
+     * @public This is a public method
+     * @param {string} item route name
+     */
     handleTabs: function(item) {
       if (item === "search") {
         this.showSearch = true;
@@ -227,6 +195,11 @@ export default {
         this.showUpgrade = true;
       }
     },
+    /**
+     * Handle the menu list items according to the rout names
+     * @public This is a public method
+     * @param {string} item route name
+     */
     itemChosen(item) {
       if (item == "Artists") {
         this.selectedItem = "Artists";
@@ -239,15 +212,32 @@ export default {
         this.moreMenu = ["Artists", "Albums"];
       }
     },
+    /**
+     * Calculate the scrolled amount in the page to handle the transparency of the navigation bar
+     * @public This is a public method
+     * @param {none}
+     */
     updateScroll() {
-      var winScroll = window.scrollY
-      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      this.scrolled=(winScroll / height);
+      var winScroll = window.scrollY;
+      var height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      this.scrolled = winScroll / height;
     },
-    handleTransparency(){
-      var opactiy=this.scrolled*3;
-      return "rgb(26, 26, 26,"+opactiy+")";
+    /**
+     * Changing the opacity of the navigation bar according to the scrolled amount
+     * @public This is a public method
+     * @param {none}
+     */
+    handleTransparency() {
+      var opactiy = this.scrolled * 3;
+      return "rgb(26, 26, 26," + opactiy + ")";
     },
+    /**
+     * Gets called when the user logs out 
+     * @public This is a public method
+     * @param {none}
+     */
     logOutAndRerender() {
       this.logOut();
       this.$forceUpdate();
@@ -255,11 +245,11 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener('scroll', this.updateScroll);
+    window.addEventListener("scroll", this.updateScroll);
     this.handleTransparency();
   },
   destroy() {
-  window.removeEventListener('scroll', this.updateScroll)
+    window.removeEventListener("scroll", this.updateScroll);
   },
   mixins: [isLoggedIn]
 };
@@ -295,11 +285,12 @@ export default {
 #signUp {
   border-width: 0;
 }
-#signUp:hover,#logIn:hover{
+#signUp:hover,
+#logIn:hover {
   transform: scale(1.1, 1.1);
 }
-.v-btn:before{
-  background-color: rgba(0,0,0,0);
+.v-btn:before {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 #logIn {

@@ -46,6 +46,9 @@
 </template>
 
 <script>
+/**
+ * @example [none]
+ */
 export default {
   props: {
     songName: String,
@@ -72,6 +75,11 @@ export default {
     this.convert(this.$props.duration);
   },
   methods: {
+    /**
+     * Convert the duration from ms to minutes and seconds
+     * @public This is a public method
+     * @param {Number} val the duration in ms
+     */
     convert: function(val) {
       this.min = Math.floor((val / 1000 / 60) << 0);
       this.sec = Math.floor((val / 1000) % 60);

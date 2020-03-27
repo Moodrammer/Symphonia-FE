@@ -5,12 +5,12 @@
       <!--logo and organization name-->
       <v-list-item>
         <router-link to="/webhome/home">
-           <v-row class=" pa-3">
+          <v-row class="pa-3">
             <v-img src="../../assets/s11 .png" max-width="50px"></v-img>
             <h2 display-4 class="white--text">
               Symphonia
             </h2>
-            </v-row>
+          </v-row>
         </router-link>
       </v-list-item>
 
@@ -31,12 +31,22 @@
         </v-list-item-title>
       </v-list-item>
 
-      <v-list-item-subtitle class="ml-2" v-if="loggedIn">PLAYLISTS</v-list-item-subtitle>
+      <!--This will be showed only if the user is logged in -->
+      <v-list-item-subtitle class="ml-2" v-if="loggedIn">
+        PLAYLISTS
+      </v-list-item-subtitle>
 
       <!--Nesting the popup-->
       <create-playlist v-if="loggedIn"></create-playlist>
 
-      <v-list-item to="/webhome/collection/tracks" class="listItem" active-class="active" tag="p" v-if="loggedIn">
+      <!--Liked Songs button-->
+      <v-list-item
+        to="/webhome/collection/tracks"
+        class="listItem"
+        active-class="active"
+        tag="p"
+        v-if="loggedIn"
+      >
         <v-btn class="liked" fab x-small id="liked">
           <v-icon color="white">mdi-cards-heart</v-icon>
         </v-btn>
@@ -44,17 +54,18 @@
       </v-list-item>
 
       <v-divider v-if="loggedIn"></v-divider>
+
       <!--Playlist will be printed from here-->
       <div v-if="loggedIn">
-      <v-list-item
-        v-for="playlist in playlists"
-        :key="playlist.id"
-        class="listItem"
-      >
-        <v-list-item-title class="draweritem white--text">
-          {{ playlist.name }}
-        </v-list-item-title>
-      </v-list-item>
+        <v-list-item
+          v-for="playlist in playlists"
+          :key="playlist.id"
+          class="listItem"
+        >
+          <v-list-item-title class="draweritem white--text">
+            {{ playlist.name }}
+          </v-list-item-title>
+        </v-list-item>
       </div>
     </v-list>
   </v-navigation-drawer>
@@ -63,9 +74,13 @@
 <script>
 import CreatePlaylist from "../CreatePlaylist";
 import { mapState, mapActions } from "vuex";
+/**
+ * @displayName Webplayer Navigation Drawer
+ * @example [none]
+ */
 export default {
   props: {
-    loggedIn : Boolean
+    loggedIn: Boolean
   },
   components: {
     CreatePlaylist
@@ -118,7 +133,7 @@ export default {
   opacity: 1;
 }
 
-a{
+a {
   text-decoration: none;
   font-weight: bold;
   font-size: 20px;
