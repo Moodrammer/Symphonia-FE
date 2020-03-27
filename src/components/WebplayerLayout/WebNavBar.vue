@@ -167,7 +167,7 @@
 </template>
 
 <script>
-import isLoggedIn from "../mixins/userService";
+import isLoggedIn from "../../mixins/userService";
 export default {
   data: function() {
     return {

@@ -99,15 +99,8 @@ const actions = {
   }
 };
 
-const getters={
-  getuserID: state =>{
-    return state.userId
-  }
-}
-
 export default {
   state,
   mutations,
-  actions,
-  getters
+  actions
 };

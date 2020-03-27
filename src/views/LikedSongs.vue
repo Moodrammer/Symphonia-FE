@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import Song from "../components/Song";
+import Song from "../components/general/Song";
 import { mapState, mapActions } from "vuex";
 import getDeviceSize from "../mixins/getDeviceSize"
 export default {

@@ -6,7 +6,7 @@
       <v-list-item>
         <router-link to="/webhome/home">
            <v-row class=" pa-3">
-            <v-img src="../assets/s11 .png" max-width="50px"></v-img>
+            <v-img src="../../assets/s11 .png" max-width="50px"></v-img>
             <h2 display-4 class="white--text">
               Symphonia
             </h2>
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import CreatePlaylist from "./CreatePlaylist";
+import CreatePlaylist from "../CreatePlaylist";
 import { mapState, mapActions } from "vuex";
 export default {
   props: {

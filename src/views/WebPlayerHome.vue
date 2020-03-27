@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import NavDrawer from "../components/WebNavDrawer";
-import NavBar from "../components/WebNavBar";
+import NavDrawer from "../components/WebplayerLayout/WebNavDrawer";
+import NavBar from "../components/WebplayerLayout/WebNavBar";
 import isLoggedIn from "../mixins/userService";
 /**
  * The webplayer view it contains (the side bar - the navigation bar - the sound player)
@@ -21,7 +21,7 @@ export default {
     NavBar
   },
   mounted: function() {
-    this.$root.$on('updateContent', () => {
+    this.$root.$on("updateContent", () => {
       // your code goes here
       console.log("Force Update");
       this.$forceUpdate();

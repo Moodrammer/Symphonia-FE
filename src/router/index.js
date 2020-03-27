@@ -2,13 +2,13 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import WebPlayerHome from "../views/WebPlayerHome";
 import Homepage from "../views/Home.vue";
-import Library from "../components/Library.vue";
+import Library from "../components/WebplayerContent/Library.vue";
 import Playlists from "../components/collection/Playlists.vue";
 import ALbums from "../components/collection/Albums.vue";
 import Artists from "../components/collection/Artists.vue";
 import User_Settings from "../views/User_Settings.vue";
-import Search from "../components/Search.vue";
-import HomeContent from "../components/HomeContent.vue";
+import Search from "../components/WebplayerContent/Search.vue";
+import HomeContent from "../components/WebplayerContent/HomeContent.vue";
 import Tracks from "../views/LikedSongs.vue";
 import HomepagePremium from "../views/PremiumOffer.vue";
 
