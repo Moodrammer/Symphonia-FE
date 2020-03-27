@@ -9,7 +9,7 @@ export function makeServer({ environment = "development" } = {}) {
       user: Model,
       bestsong: Model
     },
-
+    
     seeds(server) {
       //creating some users to test login page
       server.create("user", {
@@ -20,6 +20,13 @@ export function makeServer({ environment = "development" } = {}) {
         gender: "male"
       });
       
+      //This part is just to fake mirage in order to persist the data of only one user
+       if(sessionStorage.getItem("SignedUpUser") != null){
+        //The signed up user should remain in the localstorage so that when mirage loads each time it loads his data 
+        server.create("user" , JSON.parse(sessionStorage.getItem("SignedUpUser")))
+         localStorage.removeItem("SignedUpUser")
+       }
+
       server.create("bestsong", 
       {
         songs: [
@@ -145,6 +152,8 @@ export function makeServer({ environment = "development" } = {}) {
             gender: attrs.gender
           });
 
+          sessionStorage.setItem("SignedUpUser", JSON.stringify(schema.users.find(2)))
+          console.log(schema.users.all())
           //return a request for now that the operation of creating the user was a success
           return new Response(
             201,

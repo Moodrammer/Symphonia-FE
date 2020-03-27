@@ -17,8 +17,8 @@
      * We clear both the localStorage and the sessionStorage using this function when the user logs out 
      */
     logOut() {
-      localStorage.clear();
-      sessionStorage.clear();
+      localStorage.removeItem("userToken");
+      sessionStorage.removeItem("userToken");
     },
     /**
      * This function returns the userToken whether from the localStorage or the sessionStorage to be user
