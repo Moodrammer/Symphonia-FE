@@ -113,10 +113,6 @@ const routes = [
       }
     ]
   },
-  {
-    path: "/soundplayer",
-    component: () => import("../views/SoundPlayerTemp.vue")
-  }
 ];
 
 const router = new VueRouter({
