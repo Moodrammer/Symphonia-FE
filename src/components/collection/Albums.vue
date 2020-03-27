@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import CardGrid from "../CardGrid";
+import CardGrid from "../general/CardGrid";
 export default {
   name: "Albums",
   components: {

@@ -127,19 +127,23 @@ export default {
 
 <style>
 /* card styles section */
+
 .card {
   height: 270;
   padding: 0;
   overflow: hidden;
   word-break: normal;
 }
+
 .card-text {
   overflow: hidden;
   word-break: normal;
 }
+
 .card-text-title {
   height: 30px;
 }
+
 .card-text-subtitle {
   height: 20px;
 }
