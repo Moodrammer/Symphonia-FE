@@ -8,7 +8,7 @@ import ALbums from "../components/collection/Albums.vue";
 import Artists from "../components/collection/Artists.vue";
 import User_Settings from "../views/User_Settings.vue";
 import Search from "../components/WebplayerContent/Search.vue";
-import HomeContent from "../components/WebplayerContent/HomeContent.vue";
+import HomeContent from "../components/WebplayerContent/HomeContentRouter.vue";
 import Tracks from "../views/LikedSongs.vue";
 import HomepagePremium from "../views/PremiumOffer.vue";
 
