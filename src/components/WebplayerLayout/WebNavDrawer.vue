@@ -31,14 +31,10 @@
         </v-list-item-title>
       </v-list-item>
 
-<<<<<<< HEAD:src/components/WebNavDrawer.vue
-      <v-list-item-subtitle class="ml-2" v-show="$vuetify.breakpoint.lgAndUp">PLAYLISTS</v-list-item-subtitle>
-=======
       <!--This will be showed only if the user is logged in -->
-      <v-list-item-subtitle class="ml-2" v-if="loggedIn">
+      <v-list-item-subtitle class="ml-2" v-if="loggedIn" v-show="$vuetify.breakpoint.lgAndUp">
         PLAYLISTS
       </v-list-item-subtitle>
->>>>>>> b19ef174006557c07ab88b1cd547bbdc84db58aa:src/components/WebplayerLayout/WebNavDrawer.vue
 
       <!--Nesting the popup-->
       <create-playlist v-if="loggedIn"></create-playlist>
@@ -59,13 +55,6 @@
 
       <v-divider v-if="loggedIn"></v-divider>
 
-<<<<<<< HEAD:src/components/WebNavDrawer.vue
-      <v-list-item v-for="playlist in playlists" :key="playlist.id">
-        <v-list-item-title class="draweritem white--text" v-show="$vuetify.breakpoint.lgAndUp">
-          {{ playlist.name }}
-        </v-list-item-title>
-      </v-list-item>
-=======
       <!--Playlist will be printed from here-->
       <div v-if="loggedIn">
         <v-list-item
@@ -73,12 +62,11 @@
           :key="playlist.id"
           class="listItem"
         >
-          <v-list-item-title class="draweritem white--text">
+          <v-list-item-title class="draweritem white--text" v-show="$vuetify.breakpoint.lgAndUp">
             {{ playlist.name }}
           </v-list-item-title>
         </v-list-item>
       </div>
->>>>>>> b19ef174006557c07ab88b1cd547bbdc84db58aa:src/components/WebplayerLayout/WebNavDrawer.vue
     </v-list>
   </v-navigation-drawer>
 </template>
