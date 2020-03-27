@@ -265,9 +265,9 @@ export default {
 
   methods: {
     /**
-     * Gets called when the user logs out 
+     * Gets called when the user logs out
      *
-     * @public 
+     * @public
      */
     logOutAndRerender() {
       this.logOut();

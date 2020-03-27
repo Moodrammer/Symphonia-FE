@@ -72,11 +72,14 @@
           style="float: left; padding: 10px 10px 0px 0px;"
         >
           <v-hover v-slot:default="{ hover }" v-if="bestSixSongsLoaded">
-            <router-link v-bind:to="bestSixSongs[(a-1) + (3 * (b-1))].songLink" style="text-decoration: none;">
+            <router-link
+              v-bind:to="bestSixSongs[a - 1 + 3 * (b - 1)].songLink"
+              style="text-decoration: none;"
+            >
               <v-card class="mx-auto" max-width="374">
                 <v-img
                   aspect-ratio="1"
-                  v-bind:src="bestSixSongs[(a-1) + (3 * (b-1))].imageLink"
+                  v-bind:src="bestSixSongs[a - 1 + 3 * (b - 1)].imageLink"
                   v-bind:class="{
                     'card-hover': hover,
                     'card-size-lg': isLg(),
@@ -94,7 +97,7 @@
                           'song-name-sm': isSm()
                         }"
                       >
-                        {{bestSixSongs[(a-1) + (3 * (b-1))].songName}}
+                        {{ bestSixSongs[a - 1 + 3 * (b - 1)].songName }}
                       </h2>
                     </v-row>
                   </v-card-title>
@@ -109,7 +112,7 @@
                         'singer-name-sm': isSm()
                       }"
                     >
-                      {{bestSixSongs[(a-1) + (3 * (b-1))].singerName}}
+                      {{ bestSixSongs[a - 1 + 3 * (b - 1)].singerName }}
                     </v-row>
                   </v-card-title>
                   <v-card-title v-if="hover">
@@ -145,13 +148,13 @@
 
               <v-card-title class="song-name-xs">
                 <v-row justify="center">
-                  {{song.songName}}
+                  {{ song.songName }}
                 </v-row>
               </v-card-title>
 
               <v-card-title class="singer-name-xs">
                 <v-row justify="center">
-                  {{song.singerName}}
+                  {{ song.singerName }}
                 </v-row>
               </v-card-title>
 
@@ -181,22 +184,20 @@ export default {
   name: "HomepageLoginContent",
 
   components: {},
-  
+
   data() {
     return {
-        bestSixSongsLoaded: false,
-        bestSixSongs: false
-    }
+      bestSixSongsLoaded: false,
+      bestSixSongs: false
+    };
   },
 
   mounted: function() {
-    axios
-      .get("/v1/bestsongs")
-      .then(response => {
-        let list = response.data.data[0].attributes.songs;
-        this.bestSixSongsLoaded = true;
-        this.bestSixSongs = list;
-      }); 
+    axios.get("/v1/bestsongs").then(response => {
+      let list = response.data.data[0].attributes.songs;
+      this.bestSixSongsLoaded = true;
+      this.bestSixSongs = list;
+    });
   },
 
   mixins: [getDeviceSize]

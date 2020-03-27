@@ -112,6 +112,10 @@ const routes = [
         component: () => import("../components/User Settings/notification.vue")
       }
     ]
+  },
+  {
+    path: "/soundplayer",
+    component: () => import("../views/SoundPlayerTemp.vue")
   }
 ];
 

@@ -17,4 +17,4 @@ export default {
       return xs ? true : false;
     }
   }
-}
+};
