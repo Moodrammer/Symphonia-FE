@@ -209,6 +209,7 @@ export default {
   methods: {
     /**
      * This method checks on any keyup event if the user has pressed the Enter key to submit the Login form
+     * @public
      */
     checkEnterKey(e) {
       if(e.keyCode == '13')
