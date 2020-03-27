@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <!--Sending a prop to the drawer to be updated after logout-->
     <nav-drawer :loggedIn="isLoggedIn()"></nav-drawer>
     <nav-bar></nav-bar>
     <router-view></router-view>
@@ -21,8 +22,8 @@ export default {
     NavBar
   },
   mounted: function() {
+    //Handle the updateContent event by force the component to update
     this.$root.$on("updateContent", () => {
-      // your code goes here
       console.log("Force Update");
       this.$forceUpdate();
     });

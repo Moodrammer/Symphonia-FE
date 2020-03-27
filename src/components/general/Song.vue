@@ -11,13 +11,14 @@
     <v-list-item-title class="draweritem white--text">
       {{ songName }}
       <v-list-item-subtitle class="mt-3 pl-3 white--text">
+        <!--Display the artist and the album/playlist name-->
         <v-row>
           <p class="subtitle mr-2">{{ artistName }}</p>
           <p>.</p>
           <p class="subtitle ml-2">{{ albumName }}</p>
         </v-row>
       </v-list-item-subtitle>
-
+      <!--To make the next elements start from the end-->
       <v-spacer></v-spacer>
     </v-list-item-title>
 

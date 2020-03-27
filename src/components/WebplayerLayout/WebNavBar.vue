@@ -20,7 +20,7 @@
       class="tf ml-3 py-0"
       v-show="showSearch"
     ></v-text-field>
-
+    <!--The tabs of the the library-->
     <div class="mx-3" style="min-width:220px" v-show="showCollection" v-if="isLoggedIn()">
       <v-btn text color="white" class="mx-2" :to="{ name: 'Playlists' }">
         <span class="text-capitalize white--text">Playlists</span>
@@ -146,10 +146,6 @@ export default {
     $route: function() {
       this.handleTabs(this.$route.name);
       this.itemChosen(this.$route.name);
-    },
-    scroll: function() {
-      var scrollTop = window.pageYOffset;
-      console.log(scrollTop);
     }
   },
   methods: {
@@ -248,6 +244,7 @@ export default {
     window.addEventListener("scroll", this.updateScroll);
     this.handleTransparency();
   },
+  //Remove the listerner when the component is destroied
   destroy() {
     window.removeEventListener("scroll", this.updateScroll);
   },

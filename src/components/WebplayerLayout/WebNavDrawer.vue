@@ -89,9 +89,10 @@ export default {
     ...mapActions("playlist", ["getPlaylists"])
   },
   mounted() {
-    this.getPlaylists(this.$store.getters.getuserID);
+    this.getPlaylists();
   },
   computed: mapState({
+    //the playlists from the get request
     playlists: state => state.playlist.playlists
   }),
   data: function() {
