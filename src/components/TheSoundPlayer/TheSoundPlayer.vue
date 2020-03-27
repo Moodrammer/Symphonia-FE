@@ -90,11 +90,15 @@
       <v-col cols="2">
         <!-- mute or change the volume-->
         <div style="padding-top: 20px;">
-        <a @click="queue()" title="queue" style="margin-right: 20px; float: left;">
-          <v-icon small class="icons">
-            mdi-format-list-numbered-rtl
-          </v-icon>
-        </a>
+          <a
+            @click="queue()"
+            title="queue"
+            style="margin-right: 20px; float: left;"
+          >
+            <v-icon small class="icons">
+              mdi-format-list-numbered-rtl
+            </v-icon>
+          </a>
           <a
             @click="mute()"
             title="Mute"
@@ -177,9 +181,15 @@ export default {
     updateVolume: function() {
       this.audio.volume = this.volumeValue / 100;
       if (this.volumeValue / 100 > 0) {
-        this.isMuted = this.audio.muted = false;
+        if (this.isMuted) {
+          this.mute();
+        }
       } else if (this.volumeValue / 100 === 0) {
-        this.isMuted = this.audio.muted = true;
+        if (!this.isMuted) {
+          //the case when slide to 0 more than one time in a
+          //consecutive way
+          this.mute();
+        }
       }
     },
     play: function() {
@@ -211,9 +221,13 @@ export default {
       this.isMuted = !this.isMuted;
       this.audio.muted = this.isMuted;
       if (this.isMuted) {
-        this.previousVolumeValue = this.volumeValue;
+        if (this.volumeValue == 0)
+          //the case when the sound is muted due to the slider
+          this.previousVolumeValue = 50;
+        else this.previousVolumeValue = this.volumeValue;
       }
       this.volumeValue = this.isMuted ? 0 : this.previousVolumeValue;
+      this.audio.volume = this.volumeValue / 100; //update the volume
     },
     _handleLoaded: function() {
       //The HTMLMediaElement.readyState property indicates the readiness state of the media.
@@ -269,7 +283,7 @@ export default {
     volumeBarReleased: function() {
       this.updateVolume();
       this.isVolumeBarPressed = false;
-    },
+    }
   },
   mounted: function() {
     this.audio = this.getAudio();
@@ -350,5 +364,5 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-  @import "./slider.scss";
+@import "./slider.scss";
 </style>
