@@ -2,18 +2,18 @@
   <v-dialog fullscreen v-model="dialog">
     <!--Slot to activate the popup it will be shown in the drawer-->
     <template v-slot:activator="{ on }">
-      <v-btn
-        color="white"
-        fab
-        x-small
-        v-on="on"
-        v-on:keyup.esc="close"
-        style="border-radius: 0px; margin-right: 7%"
-        id="openPopup"
-      >
-        <v-icon color="black">mdi-plus</v-icon>
-      </v-btn>
-      <p v-on="on" class="pt-4" v-show="$vuetify.breakpoint.lgAndUp">Create Playlist</p>
+      <v-list-item class="temp" v-on:keyup.esc="close" v-on="on" inactive>
+        <v-btn
+          fab
+          x-small
+          color="white"
+          id="openPopup"
+          style="border-radius: 0px; margin-right: 7%"
+        >
+          <v-icon color="black">mdi-plus</v-icon>
+        </v-btn>
+        <v-list-item-title v-show="$vuetify.breakpoint.lgAndUp">Create Playlist</v-list-item-title>
+      </v-list-item>
     </template>
 
     <v-card
@@ -69,6 +69,12 @@
 </template>
 
 <script>
+import getDeviceSize from "../mixins/getDeviceSize";
+
+/**
+ * @displayName Create Playlist
+ * @example [none]
+ */
 export default {
   data: function() {
     return {
@@ -76,22 +82,32 @@ export default {
       name: ""
     };
   },
+
   methods: {
+    /**
+     * Gets called when the user clicks on the create button or press enter
+     * @public This is a public method
+     * @param {none}
+     */
     create: function() {
       //if the input was empty the playlist name will be "New Playlist" (it allows duplicats)
       if (this.name == "") this.name = "New Playlist";
-
       this.$store.dispatch("playlist/createPlaylist", this.name);
       //Reset the input data and close the popup
       this.name = "";
       this.dialog = false;
     },
-
+    /**
+     * Gets called when the user clicks on the cancel button or the close icon or press esc
+     * @public This is a public method
+     * @param {none}
+     */
     close: function() {
       this.name = "";
       this.dialog = false;
     }
-  }
+  },
+  mixins: [getDeviceSize]
 };
 </script>
 
@@ -152,5 +168,15 @@ export default {
   padding-top: 20px;
   text-align: start;
   padding-left: 50px;
+}
+
+.temp {
+  opacity: 0.6;
+}
+
+.temp:hover {
+  opacity: 1;
+  cursor: pointer;
+  background-color: transparent;
 }
 </style>

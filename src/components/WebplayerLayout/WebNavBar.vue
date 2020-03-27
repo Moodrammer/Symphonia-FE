@@ -1,6 +1,7 @@
 <template>
-  <v-app-bar color="#1a1a1a" class="bar" app flat>
-    <!--To angle brackets to navigate with-->
+  <!--The navigation bar of the webplayer-->
+  <v-app-bar class="bar" app flat :color="handleTransparency()">
+    <!--Two angle brackets to navigate with-->
     <v-btn
       fab
       x-small
@@ -23,6 +24,7 @@
       <v-icon color="grey darken-1" large>mdi-chevron-right</v-icon>
     </v-btn>
 
+    <!--input field for serach -->
     <v-text-field
       hide-details
       prepend-inner-icon="mdi-magnify"
@@ -32,8 +34,13 @@
       class="tf ml-3 py-0"
       v-show="showSearch"
     ></v-text-field>
-
-    <div class="mx-3" style="min-width:220px" v-show="showCollection">
+    <!--The tabs of the the library-->
+    <div
+      class="mx-3"
+      style="min-width:220px"
+      v-show="showCollection"
+      v-if="isLoggedIn()"
+    >
       <v-btn text color="white" class="mx-2" :to="{ name: 'Playlists' }">
         <span class="text-capitalize white--text">Playlists</span>
       </v-btn>
@@ -93,12 +100,14 @@
       class="upgarde white--text px-8 py-2 hidden-sm-and-down"
       id="upgarde"
       v-show="showUpgrade"
+      v-if="isLoggedIn()"
+      to="/premium/?checkout=false"
     >
       UPGRADE
     </v-btn>
 
     <!--A menu of account, upgarde to premium ,logout -->
-    <v-menu offset-y>
+    <v-menu offset-y v-if="isLoggedIn()">
       <template v-slot:activator="{ on }">
         <!--Button to activate the menu-->
         <v-btn
@@ -109,7 +118,9 @@
           id="dropMenu"
         >
           <v-btn fab x-small color="rgb(0,0,0,0.7)" class="ml-1">
-            <v-icon color="white" class="mx-2">mdi-account-outline</v-icon>
+            <v-icon color="white" class="mx-2">
+              mdi-account-outline
+            </v-icon>
           </v-btn>
 
           <span class="hidden-md-and-down">UserName</span>
@@ -132,19 +143,46 @@
           class="hidden-md-and-up"
           id="upgardepremium"
           v-show="showUpgrade"
+          to="/premium/?checkout=false"
         >
           <v-list-item-title>Upgarde to premium</v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item id="logout">
+        <v-list-item
+          id="logout"
+          @click="logOutAndRerender()"
+          to="/webhome"
+          exact
+        >
           <v-list-item-title>Log out</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
+
+    <!--The next two buttons will be shown if the user hasen't logged in yet -->
+    <v-btn v-if="!isLoggedIn()" outlined color="white" id="signUp" to="/signup">
+      SIGN UP
+    </v-btn>
+
+    <v-btn
+      v-if="!isLoggedIn()"
+      color="white"
+      id="logIn"
+      class="mx-5"
+      rounded
+      to="/login"
+    >
+      LOG IN
+    </v-btn>
   </v-app-bar>
 </template>
 
 <script>
+import isLoggedIn from "../../mixins/userService";
+/**
+ * @displayName Webplayer Navigation Bar
+ * @example [none]
+ */
 export default {
   data: function() {
     return {
@@ -154,7 +192,9 @@ export default {
       showUpgrade: false,
       showMenu: false,
       selectedItem: "More..",
-      moreMenu: ["More..", "Artists", "Albums"]
+      moreMenu: ["More..", "Artists", "Albums"],
+      scrollPosition: null,
+      scrolled: null
     };
   },
   created() {
@@ -169,14 +209,28 @@ export default {
   },
   methods: {
     //Some validations are needed
+    /**
+     * Gets called when the user clicks on the left chevron icon to go backward
+     * @public This is a public method
+     * @param {none}
+     */
     prev: function() {
       //the way to go backward             todo :Add the validation and change the buttons to disabled..
       this.$router.go(-1);
     },
+    /**
+     * Gets called when the user clicks on the right chevron icon to go forward
+     * @public This is a public method
+     * @param {none}
+     */
     next: function() {
-      //the way to go forward
       this.$router.go(1);
     },
+    /**
+     * Handle which tabs will be displayed according to the route
+     * @public This is a public method
+     * @param {string} item route name
+     */
     handleTabs: function(item) {
       if (item === "search") {
         this.showSearch = true;
@@ -196,6 +250,11 @@ export default {
         this.showUpgrade = true;
       }
     },
+    /**
+     * Handle the menu list items according to the rout names
+     * @public This is a public method
+     * @param {string} item route name
+     */
     itemChosen(item) {
       if (item == "Artists") {
         this.selectedItem = "Artists";
@@ -207,8 +266,48 @@ export default {
         this.selectedItem = "More..";
         this.moreMenu = ["Artists", "Albums"];
       }
+    },
+    /**
+     * Calculate the scrolled amount in the page to handle the transparency of the navigation bar
+     * @public This is a public method
+     * @param {none}
+     */
+    updateScroll() {
+      var winScroll = window.scrollY;
+      var height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      this.scrolled = winScroll / height;
+    },
+    /**
+     * Changing the opacity of the navigation bar according to the scrolled amount
+     * @public This is a public method
+     * @param {none}
+     */
+    handleTransparency() {
+      var opactiy = this.scrolled * 3;
+      return "rgb(26, 26, 26," + opactiy + ")";
+    },
+    /**
+     * Gets called when the user logs out
+     * @public This is a public method
+     * @param {none}
+     */
+    logOutAndRerender() {
+      this.logOut();
+      this.$forceUpdate();
+      this.$root.$emit("updateContent"); //like this
     }
-  }
+  },
+  mounted() {
+    window.addEventListener("scroll", this.updateScroll);
+    this.handleTransparency();
+  },
+  //Remove the listerner when the component is destroied
+  destroy() {
+    window.removeEventListener("scroll", this.updateScroll);
+  },
+  mixins: [isLoggedIn]
 };
 </script>
 
@@ -229,9 +328,30 @@ export default {
   font-size: 10px;
 }
 
+.bar {
+  color: blue;
+}
+
 .tf {
   border-radius: 500px;
   margin-left: 5px;
   text-overflow: ellipsis;
+}
+
+#signUp {
+  border-width: 0;
+}
+#signUp:hover,
+#logIn:hover {
+  transform: scale(1.1, 1.1);
+}
+.v-btn:before {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+#logIn {
+  border-radius: 500px;
+  padding-left: 35px;
+  padding-right: 35px;
 }
 </style>
