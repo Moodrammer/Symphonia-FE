@@ -4,7 +4,7 @@
     <audio ref="audiofile" :src="file" style="display:none;"></audio>
     <!-- song info -->
     <v-row>
-      <v-col cols="3">
+      <v-col cols="4">
         <v-toolbar flat color="rgba(0,0,0,0)">
           <v-avatar tile size="56">
             <img src="http://localhost:8080/profile.jpg" alt="profile pic" />
@@ -27,7 +27,7 @@
         </v-toolbar>
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="5">
         <div class="audio-controls">
           <a @click="shuffle()" title="shuffle" style="margin-right: 20px;">
             <v-icon small class="icons">
