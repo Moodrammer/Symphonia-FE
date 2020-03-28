@@ -1,4 +1,6 @@
 import { Server, Model, Response, JSONAPISerializer } from "miragejs";
+import albumsJSON from "./api/mock/data/album.json"
+
 
 //The makeserver function to be used to enable Mirage to intercept your requests
 export function makeServer({ environment = "development" } = {}) {
@@ -8,6 +10,7 @@ export function makeServer({ environment = "development" } = {}) {
     models: {
       user: Model,
       track: Model,
+      album: Model,
       bestsong: Model
     },
 
@@ -58,7 +61,10 @@ export function makeServer({ environment = "development" } = {}) {
         }
       });
 
-  
+
+      albumsJSON.items.forEach(element => {
+        server.create("album", element);
+      });
 
       server.create("bestsong", 
       {
@@ -136,6 +142,11 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/me/tracks", (schema) => {
         console.log(schema.users.all())
         return schema.tracks.all().models
+      });
+
+      this.get("/v1/me/albums", (schema) => {
+        console.log(schema.users.all())
+        return schema.albums.all().models
       });
 
       // this.urlPrefix = 'http://localhost:8080';

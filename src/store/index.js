@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import user from "./modules/user";
 import playlist from "./modules/playlist";
 import track from "./modules/track";
+import album from "./modules/album"
 
 Vue.use(Vuex);
 
@@ -11,6 +12,7 @@ export default new Vuex.Store({
   modules: {
     playlist,
     user,
-    track
+    track,
+    album
   }
 });
