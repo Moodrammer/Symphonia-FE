@@ -182,6 +182,7 @@ export default {
       this.audio.volume = this.volumeValue / 100;
       if (this.volumeValue / 100 > 0) {
         if (this.isMuted) {
+          this.previousVolumeValue = this.volumeValue;
           this.mute();
         }
       } else if (this.volumeValue / 100 === 0) {
