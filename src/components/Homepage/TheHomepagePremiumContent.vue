@@ -98,7 +98,7 @@
     <v-content>
       <v-card class="mx-auto my-12" max-width="374">
         <v-card-title style="font-size 32px; color: black;"
-          >Spotify Premium</v-card-title
+          >Symphonia Premium</v-card-title
         >
 
         <v-card-text>

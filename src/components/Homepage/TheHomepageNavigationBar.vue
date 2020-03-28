@@ -223,7 +223,7 @@
       </ul>
       <router-link
         to="/"
-        class="small-spotify-icon"
+        class="small-symphonia-icon"
         style="text-decoration: none;"
       >
         <v-img
@@ -351,7 +351,7 @@ export default {
   padding: 38px;
 }
 
-.small-spotify-icon {
+.small-symphonia-icon {
   position: absolute;
   bottom: 50px;
 }

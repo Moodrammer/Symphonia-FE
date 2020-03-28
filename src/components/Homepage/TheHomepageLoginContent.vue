@@ -52,7 +52,7 @@
       </v-row>
       <v-row justify="center">
         <router-link to="/" class="listen-button">
-          Listen on Spotify
+          Listen on Symphonia
         </router-link>
       </v-row>
 

@@ -40,7 +40,7 @@
           class="links-column-1"
           v-bind:class="{
             'links-column-1-medium': isMd(),
-            'small-spotify-logo': isSm() || isXs(),
+            'small-symphonia-logo': isSm() || isXs(),
             'links-column-1-small': isSm()
           }"
         >
@@ -131,7 +131,7 @@ export default {
 </script>
 
 <style scoped>
-.small-spotify-logo {
+.small-symphonia-logo {
   clear: left;
 }
 

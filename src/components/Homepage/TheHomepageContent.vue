@@ -19,7 +19,7 @@
         </h4>
 
         <router-link to="/download" class="download-button-large">
-          get spotify free
+          get symphonia free
         </router-link>
       </v-container>
     </v-container>
