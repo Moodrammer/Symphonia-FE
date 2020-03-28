@@ -46,8 +46,9 @@ const actions = {
           email: payload.email,
           emailconfirm: payload.emailToMatch,
           password: payload.password,
-          DateOfBirth: state.userDOB, //hardcoding the date for testing purposes
-          gender: payload.gender
+          DateOfBirth: state.userDOB, 
+          gender: payload.gender,
+          type: payload.type
         })
         .then(response => {
           //console.log(response.data)
@@ -55,6 +56,12 @@ const actions = {
           //Store the current user token in the local storage
           //Maybe later I might need to parse the returned response to JSON before dealing with it
           localStorage.setItem("userToken", response.data.token);
+          //Store the frequently needed user data in the localStorage
+          localStorage.setItem("username", response.data.user.name);
+          localStorage.setItem("email" , response.data.user.email);
+          localStorage.setItem("userID" , response.data.user._id);
+          localStorage.setItem("type" , response.data.user.type);
+
           //Resolve to direct the user to the application
           resolve(true);
         })
@@ -84,12 +91,24 @@ const actions = {
             // let userData = JSON.stringify(response.data)
             //REMEMBER ME LOGIC
             //If the user choses to remember him store his data in the local storage
-            if(payload.rm == true)
-              window.localStorage.setItem("userToken", response.data.token);
+            if(payload.rm == true) {
+              localStorage.setItem("userToken", response.data.token);
+              //store the frequently used user data 
+              localStorage.setItem("username", response.data.user.name);
+              localStorage.setItem("email" , response.data.user.email);
+              localStorage.setItem("userID" , response.data.user._id);
+              localStorage.setItem("type" , response.data.user.type);
+            }
             //If the user choses not to remember him store his data in the session Storage
-            else
-              window.sessionStorage.setItem("userToken" , response.data.token);
-            resolve(true);
+            else {
+              sessionStorage.setItem("userToken" , response.data.token);
+              //store the frequently used user data 
+              sessionStorage.setItem("username", response.data.user.name);
+              sessionStorage.setItem("email" , response.data.user.email);
+              sessionStorage.setItem("userID" , response.data.user._id);
+              sessionStorage.setItem("type" , response.data.user.type);
+            }
+              resolve(true);
           }
         })
         .catch(error => {
