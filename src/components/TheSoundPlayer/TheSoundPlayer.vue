@@ -362,16 +362,14 @@ export default {
 }
 </style>
 
-
 <style lang="scss" scoped>
 //for sliders
 @import "./slider.scss";
 
 .volume-slider {
   max-width: 84px;
-  width: -webkit-fill-available; 
+  width: -webkit-fill-available;
   width: -moz-available;
   margin-right: 0px;
 }
-
 </style>
