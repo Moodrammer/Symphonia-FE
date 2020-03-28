@@ -1,20 +1,37 @@
 <template>
   <v-app>
-    <nav-drawer></nav-drawer>
+    <!--Sending a prop to the drawer to be updated after logout-->
+    <nav-drawer :loggedIn="isLoggedIn()"></nav-drawer>
     <nav-bar></nav-bar>
-
-    <router-view></router-view>
+    <router-view :loggedIn="isLoggedIn()"></router-view>
+    <sound-player :loggedIn="isLoggedIn()" file="http://localhost:8080/example.mp3" />
   </v-app>
 </template>
 
 <script>
-import NavDrawer from "../components/WebNavDrawer";
-import NavBar from "../components/WebNavBar";
+import NavDrawer from "../components/WebplayerLayout/WebNavDrawer";
+import NavBar from "../components/WebplayerLayout/WebNavBar";
+import isLoggedIn from "../mixins/userService";
+import SoundPlayer from "../components/TheSoundPlayer/TheSoundPlayer.vue"
+/**
+ * The webplayer view it contains (the side bar - the navigation bar - the sound player)
+ * @displayName Webplayer Home
+ * @example [none]
+ */
 export default {
   components: {
     NavDrawer,
-    NavBar
-  }
+    NavBar,
+    SoundPlayer
+  },
+  mounted: function() {
+    //Handle the updateContent event by force the component to update
+    this.$root.$on("updateContent", () => {
+      console.log("Force Update");
+      this.$forceUpdate();
+    });
+  },
+  mixins: [isLoggedIn]
 };
 </script>
 

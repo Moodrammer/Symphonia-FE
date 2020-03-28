@@ -30,7 +30,7 @@ export default {
   },
 
   mounted: function() {
-    this.$root.$on('forceUpdateContent', () => {
+    this.$root.$on("forceUpdateContent", () => {
       // your code goes here
       this.$forceUpdate();
     });

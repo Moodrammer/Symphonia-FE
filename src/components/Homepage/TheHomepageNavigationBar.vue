@@ -215,6 +215,12 @@
             class="toolbar-link-1 small-toolbar-btn-1 small-toolbar-btn-2"
             >Sign up</router-link
           >
+          <router-link
+            v-if="isLoggedIn()"
+            to="/account"
+            class="toolbar-link-1 small-toolbar-btn-1 small-toolbar-btn-2"
+            >Account</router-link
+          >
         </li>
         <li>
           <router-link
@@ -222,6 +228,12 @@
             to="/login"
             class="toolbar-link-1 small-toolbar-btn-1 small-toolbar-btn-2"
             >Sign in</router-link
+          >
+          <a
+            v-if="isLoggedIn()"
+            v-on:click="logOutAndRerender()"
+            class="toolbar-link-1 small-toolbar-btn-1 small-toolbar-btn-2"
+            >Log Out</a
           >
         </li>
       </ul>
@@ -265,9 +277,9 @@ export default {
 
   methods: {
     /**
-     * Gets called when the user logs out 
+     * Gets called when the user logs out
      *
-     * @public 
+     * @public
      */
     logOutAndRerender() {
       this.logOut();

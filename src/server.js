@@ -7,18 +7,74 @@ export function makeServer({ environment = "development" } = {}) {
 
     models: {
       user: Model,
+      track: Model,
       bestsong: Model
     },
-
+    
     seeds(server) {
-      //creating some users to test login page
+      //creating a user for testing purposes
       server.create("user", {
         name: "Bobuser",
         email: "Bob@gmail.com",
         password: "12345678",
         DateOfBirth: "12-12-1980",
-        gender: "male"
+        gender: "male",
+        type: "user"
       });
+      //creating an artist for testing purposes
+      server.create("user", {
+        name: "artistic",
+        email: "artist@gmail.com",
+        password: "12345678",
+        DateOfBirth: "18-12-1995",
+        gender: "male",
+        type: "artist"
+      });
+      
+      //This part is just to fake mirage in order to persist the data of only one user
+       if(sessionStorage.getItem("SignedUpUser") != null){
+        //The signed up user should remain in the localstorage so that when mirage loads each time it loads his data 
+        server.create("user" , JSON.parse(sessionStorage.getItem("SignedUpUser")))
+         localStorage.removeItem("SignedUpUser")
+       }
+
+      server.create("track", {
+        artists:
+        {
+          href: "https://api.spotify.com/v1/artists/6sFIWsNpZYqfjUpaCguejur",
+          id: "6sFIWsNpZYqfjUpaCguejuf",
+          name: "Carly Rae Jepsenq",
+        },
+        duration_ms: 20795,
+        name: "Cutqq",
+        id: "11dFghVXANMlKmJXsNCbNlq",
+        href: "https://api.symphonia.com/v1/tracks/11dFghVXANMlKmJXsNCbNlw",
+        album:
+        {
+          id: "0tGPJ0bkWOUmH7MEOR77qcs",
+          name: "Heaven22"
+        }
+      });
+
+      server.create("track", {
+        artists:
+        {
+          href: "https://api.spotify.com/v1/artists/6sFIWsNpZYqfjUpaCgueju",
+          id: "6sFIWsNpZYqfjUpaCgueju",
+          name: "Carly Rae Jepsen",
+        },
+        duration_ms: 207959,
+        name: "Cut To The Feeling",
+        id: "11dFghVXANMlKmJXsNCbNl",
+        href: "https://api.symphonia.com/v1/tracks/11dFghVXANMlKmJXsNCbNl",
+        album:
+        {
+          id: "0tGPJ0bkWOUmH7MEOR77qc",
+          name: "Heaven"
+        }
+      });
+
+  
 
       server.create("bestsong", 
       {
@@ -92,6 +148,12 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/me/player/tracks/history", schema => {
         return schema.db.playlist;
       });
+
+      this.get("/v1/me/tracks", (schema) => {
+        console.log(schema.users.all())
+        return schema.tracks.all().models
+      });
+
       // this.urlPrefix = 'http://localhost:8080';
 
       //this.get("/search", schema => {
@@ -100,9 +162,10 @@ export function makeServer({ environment = "development" } = {}) {
 
       //})
 
-      this.get("/v1/bestsongs"), schema => {
-        return schema.bestsongs.bestSixSongs;
-      }
+      this.get("/v1/bestsongs"),
+        schema => {
+          return schema.bestsongs.bestSixSongs;
+        };
       //Intercepting Login post requests
       this.post("/v1/users/login", (schema, request) => {
         //turn attributes to json to be able to access the data of the request
@@ -121,9 +184,10 @@ export function makeServer({ environment = "development" } = {}) {
                   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MzQ2MiwiZXhwIjoxNTgzNTc3MDYyfQ.P_nm8thbkOzKBnbpqkBL1_SuRzZxt5eFFFN0aZ6AbBQ",
 
                 user: {
-                  _id: "5e6363431afd690fe0698560",
+                  _id: schema.users.find(i).id,
                   email: attrs.email,
-                  name: schema.users.find(i).name
+                  name: schema.users.find(i).name,
+                  type: schema.users.find(i).type
                 }
               }
             );
@@ -138,13 +202,17 @@ export function makeServer({ environment = "development" } = {}) {
           let attrs = JSON.parse(request.requestBody);
           //create a new user with the given data
           schema.create("user", {
-            username: attrs.name,
+            name: attrs.name,
             email: attrs.email,
             password: attrs.password,
             DateOfBirth: attrs.DateOfBirth,
-            gender: attrs.gender
+            gender: attrs.gender,
+            type: attrs.type
           });
 
+          //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
+          sessionStorage.setItem("SignedUpUser", JSON.stringify(schema.users.find(3)))
+          console.log(schema.users.all().length)        
           //return a request for now that the operation of creating the user was a success
           return new Response(
             201,
@@ -153,9 +221,10 @@ export function makeServer({ environment = "development" } = {}) {
               token:
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
               user: {
-                _id: "5e6363431afd690fe0698560",
+                _id: schema.users.find(schema.users.all().length).id,
                 email: attrs.email,
                 name: attrs.name,
+                type: attrs.type,
                 __v: 0
               }
             }
