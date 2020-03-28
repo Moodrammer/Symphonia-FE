@@ -75,7 +75,6 @@
             v-bind:max="totalDuration"
             @mousedown="progressBarPressed"
             @mouseup="progressBarReleased"
-            class="rangeslider"
             v-model="currentTimeInSec"
           />
 
@@ -87,7 +86,7 @@
       </v-col>
 
       <v-spacer></v-spacer>
-      <v-col cols="2">
+      <v-col cols="2" style="background: rgba(0, 0, 0, 0);">
         <!-- mute or change the volume-->
         <div style="padding-top: 20px;">
           <a
@@ -115,11 +114,10 @@
             type="range"
             min="0"
             max="100"
-            class="rangeslider"
+            class="volume-slider"
             v-model="volumeValue"
             v-on:mousdown="volumeBarPressed"
             v-on:mouseup="volumeBarReleased"
-            style="width: 100px; margin-right: 0px;"
           />
         </div>
       </v-col>
@@ -364,6 +362,16 @@ export default {
 }
 </style>
 
+
 <style lang="scss" scoped>
+//for sliders
 @import "./slider.scss";
+
+.volume-slider {
+  max-width: 84px;
+  width: -webkit-fill-available; 
+  width: -moz-available;
+  margin-right: 0px;
+}
+
 </style>
