@@ -212,7 +212,6 @@ export function makeServer({ environment = "development" } = {}) {
 
           //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
           sessionStorage.setItem("SignedUpUser", JSON.stringify(schema.users.find(3)))
-          console.log(schema.users.all().length)        
           //return a request for now that the operation of creating the user was a success
           return new Response(
             201,

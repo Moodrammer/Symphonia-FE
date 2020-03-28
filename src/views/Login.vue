@@ -121,7 +121,7 @@
         <v-row>
           <v-col cols="12">
             <v-row justify="center">
-              <router-link to="/">Forgot your password?</router-link>
+              <router-link to="/password-reset">Forgot your password?</router-link>
             </v-row>
           </v-col>
         </v-row>
@@ -194,7 +194,7 @@ export default {
       errorState: false,
       //validation rules for input data
       emailRules: [
-        v => !!v || "Please enter your Symphonia username or email address.",
+        v => !!v || "Please enter your Symphonia email address.",
         v => /.+@.+\..+/.test(v) || "E-mail must be valid"
       ],
       passwordRules: [v => !!v || "Please enter your password."]
