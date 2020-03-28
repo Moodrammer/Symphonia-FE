@@ -143,7 +143,7 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
-
+              <!-- Gender radio group -->
               <v-row justify-left>
                 <v-radio-group
                   row
@@ -154,6 +154,23 @@
                 >
                   <v-radio label="Male" value="male" id="male-select"></v-radio>
                   <v-radio label="Female" value="female" id="female-select"></v-radio>
+                </v-radio-group>
+              </v-row>
+              <v-divider/>
+              <v-row justify="center" class="mt-2">
+                <h2>How do you like to use Symphonia ?</h2>
+              </v-row>
+              <!-- type radio group -->
+              <v-row justify="center">
+                <v-radio-group
+                  row
+                  class="pl-2"
+                  :rules="typeRules"
+                  v-model="userData.type"
+                  id="type"
+                >
+                  <v-radio label="Listener" value="user" color="green" id="listener-select"></v-radio>
+                  <v-radio label="Artist" value="artist" color="red" id="artist-select"></v-radio>
                 </v-radio-group>
               </v-row>
               <!-- Sign up button -->
@@ -205,7 +222,8 @@ export default {
         daySelected: "",
         monthSelected: "",
         yearSelected: "",
-        gender: ""
+        gender: "",
+        type: ""
       },
       //Set of rules for validation
       emailRules: [
@@ -227,6 +245,7 @@ export default {
       monthRules: [v => !!v || "Please enter your birth month"],
       usernameRules: [v => !!v || "What should we call you?"],
       genderRules: [v => !!v || "Please indicate your gender"],
+      typeRules: [v => !!v || "Do you wish to sign up as a listener or an artist"],
 
       //items and data
       item: [
@@ -331,4 +350,5 @@ export default {
   max-width: 500px;
   margin: auto;
 }
+
 </style>
