@@ -11,13 +11,23 @@ export function makeServer({ environment = "development" } = {}) {
     },
     
     seeds(server) {
-      //creating some users to test login page
+      //creating a user for testing purposes
       server.create("user", {
         name: "Bobuser",
         email: "Bob@gmail.com",
         password: "12345678",
         DateOfBirth: "12-12-1980",
-        gender: "male"
+        gender: "male",
+        type: "user"
+      });
+      //creating an artist for testing purposes
+      server.create("user", {
+        name: "artistic",
+        email: "artist@gmail.com",
+        password: "12345678",
+        DateOfBirth: "18-12-1995",
+        gender: "male",
+        type: "artist"
       });
       
       //This part is just to fake mirage in order to persist the data of only one user
@@ -128,9 +138,10 @@ export function makeServer({ environment = "development" } = {}) {
                   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MzQ2MiwiZXhwIjoxNTgzNTc3MDYyfQ.P_nm8thbkOzKBnbpqkBL1_SuRzZxt5eFFFN0aZ6AbBQ",
 
                 user: {
-                  _id: "5e6363431afd690fe0698560",
+                  _id: schema.users.find(i).id,
                   email: attrs.email,
-                  name: schema.users.find(i).name
+                  name: schema.users.find(i).name,
+                  type: schema.users.find(i).type
                 }
               }
             );
@@ -145,15 +156,17 @@ export function makeServer({ environment = "development" } = {}) {
           let attrs = JSON.parse(request.requestBody);
           //create a new user with the given data
           schema.create("user", {
-            username: attrs.name,
+            name: attrs.name,
             email: attrs.email,
             password: attrs.password,
             DateOfBirth: attrs.DateOfBirth,
-            gender: attrs.gender
+            gender: attrs.gender,
+            type: attrs.type
           });
 
-          sessionStorage.setItem("SignedUpUser", JSON.stringify(schema.users.find(2)))
-          console.log(schema.users.all())
+          //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
+          sessionStorage.setItem("SignedUpUser", JSON.stringify(schema.users.find(3)))
+          console.log(schema.users.all().length)        
           //return a request for now that the operation of creating the user was a success
           return new Response(
             201,
@@ -162,9 +175,10 @@ export function makeServer({ environment = "development" } = {}) {
               token:
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
               user: {
-                _id: "5e6363431afd690fe0698560",
+                _id: schema.users.find(schema.users.all().length).id,
                 email: attrs.email,
                 name: attrs.name,
+                type: attrs.type,
                 __v: 0
               }
             }
