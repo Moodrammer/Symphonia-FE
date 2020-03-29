@@ -3,16 +3,25 @@
         <v-content style="max-width: 600px; margin: auto;">
             <v-row justify="center" class="mt-9" cols="12">
                 <v-col>
-                    <!-- Password Change title -->
-                    <v-row justify="center" class="my-8">
+                    <!-- Password Change title Reset Password-->
+                    <v-row justify="center" class="my-8" v-if="notSubmitted">
                         <h1 
                         class="display-2" 
                         style="font-weight: bold;">
                         Reset Password
                         </h1>
                     </v-row>
+                    <!-- Password Change title Password updated-->
+                    <v-row justify="center" class="my-8" v-if="!notSubmitted">
+                        <h1 
+                        class="display-2" 
+                        style="font-weight: bold;">
+                        Password updated
+                        </h1>
+                    </v-row>
+
                     <!-- Change Password form -->
-                    <v-form ref="passChangeForm">
+                    <v-form ref="passChangeForm" v-if="notSubmitted">
                         <!-- New password label -->
                         <v-row justify="center">
                             <v-col class="pa-0 pl-2" cols="10">
@@ -80,7 +89,16 @@
                             </v-col>
                             </v-row>
                     </v-form>
-                    
+                    <!-- Successfully updated message -->
+                    <v-row justify="center">
+                        <p 
+                        style="text-align: center"
+                        v-if="!notSubmitted"
+                        >
+                            Sweet! Your new password has now been set and you are logged in.
+                        </p>
+                        <router-link to="/account" v-if="!notSubmitted">Go to account</router-link>
+                    </v-row>
                 </v-col>
             </v-row>
         </v-content>
@@ -91,8 +109,14 @@
     export default {
         data() {
             return {
+                //check if the user has submitted the form or not
+                notSubmitted: true,
+                //formData
                 newPass: "",
                 newPassConf: "",
+                //The resettoken is provided by the back server for user authentication
+                //It is aquired from the Path parameters of the url sent to the user by email
+                resettoken: "",
                 //rules for validation of password
                 passRules: [
                     v => !!v || "Please enter a new password.",
@@ -104,7 +128,8 @@
             }
         },
         created() {
-            console.log(this.$route.params)
+            //take the reset token from the route parameters and add it to the local state of the component
+            this.resettoken = this.$route.params.resettoken
         },
         methods: {
             /**
@@ -127,7 +152,7 @@
              */
             updatePass() {
                 if(this.$refs.passChangeForm.validate())
-                    console.log("I am valid")
+                    this.notSubmitted = false
             }
         }
     }
@@ -135,5 +160,8 @@
 </script>
 
 <style scoped>
-
+    .v-application a{
+        text-decoration: none !important;
+        color: green !important;
+     }
 </style>
