@@ -112,7 +112,7 @@ const routes = [
         component: () => import("../components/User Settings/notification.vue")
       }
     ]
-  },
+  }
 ];
 
 const router = new VueRouter({
