@@ -45,7 +45,7 @@ export default {
 
 <style scoped>
 .hero-home-sm-cover {
-  background: url(http://localhost:8080/hero-burst-mobile.svg) no-repeat scroll;
+  background: url(/hero-burst-mobile.svg) no-repeat scroll;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   line-height: 1.5;
   -webkit-box-direction: normal;
@@ -61,7 +61,7 @@ export default {
 }
 
 .hero-home-bg-cover {
-  background: url(http://localhost:8080/hero-burst.svg) no-repeat;
+  background: url(/hero-burst.svg) no-repeat;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   line-height: 1.5;
   -webkit-box-direction: normal;

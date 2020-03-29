@@ -20,7 +20,7 @@
       >
         <router-link to="/" style="text-decoration: none;">
           <v-img
-            src="s11.png"
+            src="/s11.png"
             max-width="50px"
             style="float: left;"
           ></v-img>
@@ -81,7 +81,7 @@
               >
                 <v-avatar width="40" height="40">
                   <img
-                    src="http://localhost:8080/profile.jpg"
+                    src="/profile.jpg"
                     alt="profile pic"
                   />
                 </v-avatar>
@@ -123,7 +123,7 @@
           <v-col>
             <router-link to="/" style="text-decoration: none;">
               <v-img
-                src="s11.png"
+                src="/s11.png"
                 aspect-ratio="1"
                 width="40"
                 height="40"
@@ -141,7 +141,7 @@
             <router-link to="/account">
               <v-avatar v-if="isLoggedIn()" width="34" height="34">
                 <img
-                  src="http://localhost:8080/profile.jpg"
+                  src="/profile.jpg"
                   alt="profile pic"
                 />
               </v-avatar>
@@ -227,7 +227,7 @@
         style="text-decoration: none;"
       >
         <v-img
-          src="s11.png"
+          src="/s11.png"
           max-width="50px"
           style="float: left;"
         >

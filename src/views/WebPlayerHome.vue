@@ -13,7 +13,7 @@
     ></router-view>
     <sound-player
       :loggedIn="isLoggedIn()"
-      file="http://localhost:8080/example.mp3"
+      file="/example.mp3"
     />
   </v-app>
 </template>
