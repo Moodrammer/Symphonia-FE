@@ -287,7 +287,18 @@ export default {
       for (monthnumber = 1; monthnumber < this.item.length; monthnumber++) {
         if (this.item[monthnumber - 1] == this.userData.monthSelected) break;
       }
-      return `${this.userData.daySelected}-${monthnumber}-${this.userData.yearSelected}`;
+      if(monthnumber >= 1 && monthnumber <= 9) {
+        if(this.userData.daySelected >= 1 && this.userData.daySelected <= 9)
+          return `${this.userData.yearSelected}-0${monthnumber}-0${this.userData.daySelected}`;
+        else
+          return `${this.userData.yearSelected}-0${monthnumber}-${this.userData.daySelected}`;
+      }      
+      else {
+        if(this.userData.daySelected >= 1 && this.userData.daySelected <= 9)
+          return `${this.userData.yearSelected}-${monthnumber}-0${this.userData.daySelected}`;
+        else
+          return `${this.userData.yearSelected}-${monthnumber}-${this.userData.daySelected}`;  
+      }
     }
   },
   mixins: [isLoggedIn],

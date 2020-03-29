@@ -184,10 +184,14 @@ export function makeServer({ environment = "development" } = {}) {
                   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MzQ2MiwiZXhwIjoxNTgzNTc3MDYyfQ.P_nm8thbkOzKBnbpqkBL1_SuRzZxt5eFFFN0aZ6AbBQ",
 
                 user: {
-                  _id: schema.users.find(i).id,
-                  email: attrs.email,
-                  name: schema.users.find(i).name,
-                  type: schema.users.find(i).type
+                  _id: "5e80b341b19a24084cb9b7e7",
+                  email: "test29@test.com",
+                  name: "etsh",
+                  dateOfbirth: "1999-12-31T00:00:00.000Z",
+                  gender: "male", 
+                  type: "artist",
+                  last_login: "2020-03-29T20:25:09.284Z",
+                  passwordChangedAt: "2020-03-29T16:53:43.598Z"
                 }
               }
             );
@@ -205,7 +209,7 @@ export function makeServer({ environment = "development" } = {}) {
             name: attrs.name,
             email: attrs.email,
             password: attrs.password,
-            DateOfBirth: attrs.DateOfBirth,
+            DateOfBirth: attrs.dateOfBirth,
             gender: attrs.gender,
             type: attrs.type
           });

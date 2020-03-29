@@ -44,14 +44,15 @@ const actions = {
         .post("/v1/users/signup", {
           name: payload.username,
           email: payload.email,
-          emailconfirm: payload.emailToMatch,
+          emailConfirm: payload.emailToMatch,
           password: payload.password,
-          DateOfBirth: state.userDOB, 
+          dateOfBirth: state.userDOB, 
           gender: payload.gender,
           type: payload.type
         })
         .then(response => {
-          //console.log(response.data)
+          console.log(response.data)
+          console.log(response)
           //if a response returned
           //Store the current user token in the local storage
           //Maybe later I might need to parse the returned response to JSON before dealing with it
@@ -77,9 +78,13 @@ const actions = {
     //console.log(payload)
     return new Promise((resolve, reject) => {
       axios
-        .post("/v1/users/login", payload)
+        .post("/v1/users/login", {
+          email: payload.email,
+          password: payload.password
+        })
         .then(response => {
-          //console.log(response)
+          console.log(response.data)
+          console.log(response)
           //if the status code shows a successful request
           if (response.status == 200) {
             //parse the recieved response as a JSON object
