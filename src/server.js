@@ -1,7 +1,7 @@
 import { Server, Model, Response, JSONAPISerializer } from "miragejs";
 import playlistJson from "./api/mock/data/playlist.json";
 import trackJSON from "./api/mock/data/track.json";
-
+import artistJSON from "./api/mock/data/artist.json"
 
 //The makeserver function to be used to enable Mirage to intercept your requests
 export function makeServer({ environment = "development" } = {}) {
@@ -12,7 +12,8 @@ export function makeServer({ environment = "development" } = {}) {
       user: Model,
       track: Model,
       bestsong: Model,
-      playlist: Model
+      playlist: Model,
+      artist: Model
     },
     
     seeds(server) {
@@ -90,6 +91,10 @@ export function makeServer({ environment = "development" } = {}) {
       trackJSON.forEach(element => {
         server.create("track",element);
       });
+
+      artistJSON.items.forEach(element => {
+        server.create("artist",element);
+      })
     },
 
     //Define serializers to format the responses
@@ -137,7 +142,13 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/me/popularPlaylists",(schema) => {
         return schema.playlists.where({popularity: 90}).models;
       })
-
+///////////////////////////////////////////////////////////////////////////////////
+//Get a List of Popular Artists
+///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/popularArtists",(schema) => {
+        return schema.artists.where({popularity : 90}).models;
+      })
+///////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';
 
       //this.get("/search", schema => {

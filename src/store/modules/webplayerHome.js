@@ -10,6 +10,9 @@ const state = {
 const mutations = {
   load_popularPlaylists(state,payload) {
     state.popularPlaylists=payload;
+  },
+  load_popularArtists(state,payload) {
+    state.popularArtists=payload;
   }
 };
 
@@ -25,6 +28,18 @@ const actions = {
         console.log("axios caught an error");
         console.log(error);
       });
+  },
+  getPopularArtists({commit}) {
+    axios
+    .get("/v1/me/popularArtists")
+    .then(response => {
+      let artists=response.data;
+      commit("load_popularArtists",artists);
+    })
+    .catch(error => {
+      console.log("axios caught an error");
+      console.log(error);
+    })
   }
 };
 

@@ -3,12 +3,14 @@
     <v-container class="ma-5">
       <h1 v-for="(playlist,i) in playlists" :key="i">{{playlist}}</h1>
       <h1 v-for="(playlist,i) in popularPlaylists" :key="i">{{playlist}}</h1>
+      <h1 v-for="(artist,i) in popularArtists" :key="i">{{artist}}</h1>
 
       <category v-for="section in sections" :key="section.categoryName"
         :name="section.categoryName"
         :subtitle="section.categorySubtitle"
         :seeAll="section.showSeeAll"
         :griditems ="section.list"
+        :gridStyle ="section.style"
       ></category>
     </v-container>
   </v-content>
@@ -37,7 +39,8 @@ export default {
           showMenu: false,
           hoveredCardIndex: null,
           items: []
-          }
+          },
+          style: null
         },
         {
          categoryName: "Your heavy rotation",
@@ -49,7 +52,8 @@ export default {
           // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered item visable
           hoveredCardIndex: null,
           items: []
-          }
+          },
+          style: null
         },
         {
          categoryName: "Your playlists",
@@ -63,7 +67,8 @@ export default {
           // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered item visable
           hoveredCardIndex: null,
           items: []
-          }
+          },
+          style: null
         },
         {
          categoryName: "Popular playlists",
@@ -77,7 +82,8 @@ export default {
           // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered item visable
           hoveredCardIndex: null,
           items: []
-          }
+          },
+          style: null
         },
         {
          categoryName: "Popular Artists",
@@ -91,7 +97,8 @@ export default {
           // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered item visable
           hoveredCardIndex: null,
           items: []
-          }
+          },
+          style: "artist"
         }
       ],
       artistMenu: [
@@ -114,18 +121,20 @@ export default {
   },
   methods: {
     ...mapActions("playlist", ["getPlaylists"]),
-    ...mapActions("webplayerHome",["getPopularPlaylists"])
+    ...mapActions("webplayerHome",["getPopularPlaylists"]),
+    ...mapActions("webplayerHome",["getPopularArtists"])
+
   },
   mounted() {
     this.getPlaylists();
     this.getPopularPlaylists();
+    this.getPopularArtists();
   },
   computed: mapState({
     //the playlists from the get request
     playlists: function(state){
       var statePlaylists = state.playlist.likedPlaylists
       var play = []
-            console.log(this.sections[0]);
       statePlaylists.forEach(element => {
         var k = {
           name: element.name,
@@ -142,9 +151,6 @@ export default {
 
             this.sections[2].list.items  = play;
       this.sections[2].list.menuList= this.playlistMenu;
-
-                  this.sections[4].list.items  = play;
-      this.sections[4].list.menuList= this.playlistMenu;
     },
     popularPlaylists: function(state){
       var statePlaylists = state.webplayerHome.popularPlaylists;
@@ -161,6 +167,20 @@ export default {
       });         
       this.sections[3].list.items  = play;
       this.sections[3].list.menuList= this.playlistMenu;
+    },
+    popularArtists: function(state){
+      var artists = state.webplayerHome.popularArtists;
+      var artistsList = []
+      artists.forEach(element => {
+        var k = {
+          name: element.name,
+          image: element.images[0].url,
+          description: element.description
+        }
+        artistsList.push(k);
+      });         
+      this.sections[4].list.items  = artistsList;
+      this.sections[4].list.menuList= this.artistMenu;
     }
   }),
 };

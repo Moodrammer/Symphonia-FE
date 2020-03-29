@@ -48,8 +48,8 @@
             },
             "artists": [
               {
-                "href": "https://api.symphonia.com/v1/artists/2wY79sveU1sp5g7SokKOiI",
-                "id": "2wY79sveU1sp5g7SokKOiI",
+                "href": "https://api.symphonia.com/v1/artists/1",
+                "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               }
@@ -114,8 +114,8 @@
             },
         "artists": [
               {
-            "href": "https://api.symphonia.com/v1/artists/2wY79sveU1mp5g7SokKOiI",
-            "id": "2wY79sveU1mp5g7SokKOiI",
+            "href": "https://api.symphonia.com/v1/artists/2",
+            "id": "2",
             "name": "Nasser Al-Qatami",
             "type": "artist"
               }
@@ -181,8 +181,8 @@
             },
         "artists": [
               {
-            "href": "https://api.symphonia.com/v1/artists/2wY79sveU1mp5g7SokKOiI",
-            "id": "2wY79sveU1mp5g7SokKOiI",
+            "href": "https://api.symphonia.com/v1/artists/2",
+            "id": "2",
             "name": "Nasser Al-Qatami",
             "type": "artist"
               }
@@ -248,8 +248,8 @@
             },
             "artists": [
               {
-                "href": "https://api.symphonia.com/v1/artists/2wY79sveU1sp5g7SokKOiI",
-                "id": "2wY79sveU1sp5g7SokKOiI",
+                "href": "https://api.symphonia.com/v1/artists/1",
+                "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               }
@@ -315,8 +315,8 @@
             },
             "artists": [
               {
-                "href": "https://api.symphonia.com/v1/artists/2wY79sveU1sp5g7SokKOiI",
-                "id": "2wY79sveU1sp5g7SokKOiI",
+                "href": "https://api.symphonia.com/v1/artists/1",
+                "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               }
@@ -382,8 +382,8 @@
             },
             "artists": [
               {
-                "href": "https://api.symphonia.com/v1/artists/2wY79sveU1sp5g7SokKOiI",
-                "id": "2wY79sveU1sp5g7SokKOiI",
+                "href": "https://api.symphonia.com/v1/artists/1",
+                "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               }

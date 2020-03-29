@@ -7,7 +7,7 @@
   </v-row>
   <h5 :style="{opacity:0.6}">{{ subtitle }}</h5>
  
-  <CardGrid :cardItems="griditems" />
+  <CardGrid :cardItems="griditems" :cardStyle="gridStyle"/>
 </v-container>
 </template>
 
@@ -21,7 +21,8 @@ export default {
     name: String,
     subtitle: String,
     seeAll: Boolean,
-    griditems: Object
+    griditems: Object,
+    gridStyle: String
   },
 }
 </script>
