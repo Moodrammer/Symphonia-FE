@@ -287,7 +287,7 @@ export default {
       for (monthnumber = 1; monthnumber < this.item.length; monthnumber++) {
         if (this.item[monthnumber - 1] == this.userData.monthSelected) break;
       }
-      return `${this.userData.daySelected}-${monthnumber}-${this.userData.yearSelected}`;
+      return `${this.userData.yearSelected}-${monthnumber}-${this.userData.daySelected}`;
     }
   },
   mixins: [isLoggedIn],

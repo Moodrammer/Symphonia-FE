@@ -44,9 +44,9 @@ const actions = {
         .post("/v1/users/signup", {
           name: payload.username,
           email: payload.email,
-          emailconfirm: payload.emailToMatch,
+          emailConfirm: payload.emailToMatch,
           password: payload.password,
-          DateOfBirth: state.userDOB, 
+          dateOfBirth: state.userDOB, 
           gender: payload.gender,
           type: payload.type
         })
@@ -77,7 +77,10 @@ const actions = {
     //console.log(payload)
     return new Promise((resolve, reject) => {
       axios
-        .post("/v1/users/login", payload)
+        .post("/v1/users/login", {
+          email: payload.email,
+          password: payload.password
+        })
         .then(response => {
           //console.log(response)
           //if the status code shows a successful request
