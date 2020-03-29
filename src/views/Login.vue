@@ -232,7 +232,8 @@ export default {
           .then(() => {
             this.$router.push("/webhome/home");
           })
-          .catch(() => {
+          .catch((err) => {
+            console.log(err)
             this.errorState = true;
           });
       }

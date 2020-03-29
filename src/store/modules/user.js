@@ -51,7 +51,8 @@ const actions = {
           type: payload.type
         })
         .then(response => {
-          //console.log(response.data)
+          console.log(response.data)
+          console.log(response)
           //if a response returned
           //Store the current user token in the local storage
           //Maybe later I might need to parse the returned response to JSON before dealing with it
@@ -82,7 +83,8 @@ const actions = {
           password: payload.password
         })
         .then(response => {
-          //console.log(response)
+          console.log(response.data)
+          console.log(response)
           //if the status code shows a successful request
           if (response.status == 200) {
             //parse the recieved response as a JSON object
