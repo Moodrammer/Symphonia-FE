@@ -18,7 +18,7 @@
                   >
                 </td>
                 <td class="info-cell">
-                  <p class="info-value">{{ user.email }}</p>
+                  <p class="info-value">{{ user.userEmail }}</p>
                 </td>
               </tr>
               <tr class="info-row">
@@ -28,7 +28,7 @@
                   >
                 </td>
                 <td class="info-cell">
-                  <p class="info-value">{{ user.date }}</p>
+                  <p class="info-value">{{ user.userDOB }}</p>
                 </td>
               </tr>
               <tr class="info-row">
@@ -38,7 +38,7 @@
                   >
                 </td>
                 <td class="info-cell">
-                  <p class="info-value">{{ user.country }}</p>
+                  <p class="info-value">{{ user.userCountry }}</p>
                 </td>
               </tr>
             </tbody>
@@ -98,18 +98,40 @@
 
 <script>
 import bottomContent from "./bottomContent.vue";
+import getuserID from "@/mixins/userService";
+import getusername from "@/mixins/userService";
+import getemail from "@/mixins/userService";
+
 export default {
   data() {
     return {
-      user: {
-        email: "example@temp.com",
-        date: "19/12/98",
-        country: "EG"
-      }
+      user: {}
     };
   },
   components: {
     bottomContent: bottomContent
+  },
+  computed: {
+    // eslint-disable-next-line vue/return-in-computed-property
+    userData: function() {
+      // eslint-disable-next-line vue/no-async-in-computed-properties
+      return this.$store
+        .dispatch("userData", this.getuserID())
+        .then(() => {
+          console.log(this.$store.state);
+          this.user = this.$store.state.user;
+          console.log("Out of there ya basha");
+          console.log(this.user);
+        })
+        .catch(err => console.log(err));
+    }
+  },
+  mixins:[getuserID,getusername,getemail],
+  created(){
+    console.log(this.getuserID());
+    console.log(this.getusername());
+    console.log(this.getemail());
+    console.log(this.userData);
   }
 };
 </script>

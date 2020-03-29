@@ -60,60 +60,60 @@ const routes = [{
                         component: Tracks
                     }
                 ]
-            },
-            {
-                path: "/premium/",
-                name: "HomePremium",
-                component: HomepagePremium
-            },
-            {
-                path: "/signup",
-                name: "signup",
-                // route level code-splitting
-                // this generates a separate chunk (about.[hash].js) for this route
-                // which is lazy-loaded when the route is visited.
+            }
+        ]
+    },
+    {
+        path: "/premium/",
+        name: "HomePremium",
+        component: HomepagePremium
+    },
+    {
+        path: "/signup",
+        name: "signup",
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import ( /* webpackChunkName: "about" */ "../views/SignUp.vue")
+    },
+    {
+        path: "/login",
+        name: "login",
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import ( /* webpackChunkName: "about" */ "../views/Login.vue")
+    },
+    {
+        path: "/account/",
+        name: "Acccount Setting",
+        component: User_Settings,
+        children: [{
+                path: "",
                 component: () =>
-                    import ( /* webpackChunkName: "about" */ "../views/SignUp.vue")
+                    import ("../components/User Settings/overview.vue")
             },
             {
-                path: "/login",
-                name: "login",
-                // route level code-splitting
-                // this generates a separate chunk (about.[hash].js) for this route
-                // which is lazy-loaded when the route is visited.
+                path: "edit",
                 component: () =>
-                    import ( /* webpackChunkName: "about" */ "../views/Login.vue")
+                    import ("../components/User Settings/editProfile.vue")
             },
             {
-                path: "/account/",
-                name: "Acccount Setting",
-                component: User_Settings,
-                children: [{
-                        path: "",
-                        component: () =>
-                            import ("../components/User Settings/overview.vue")
-                    },
-                    {
-                        path: "edit",
-                        component: () =>
-                            import ("../components/User Settings/editProfile.vue")
-                    },
-                    {
-                        path: "recover-playlists",
-                        component: () =>
-                            import ("../components/User Settings/recoverPlaylist.vue")
-                    },
-                    {
-                        path: "notifications",
-                        component: () =>
-                            import ("../components/User Settings/notification.vue")
-                    },
-                    {
-                        path: "changePassword",
-                        component: () =>
-                            import ("../components/User Settings/changePass.vue")
-                    }
-                ]
+                path: "recover-playlists",
+                component: () =>
+                    import ("../components/User Settings/recoverPlaylist.vue")
+            },
+            {
+                path: "notifications",
+                component: () =>
+                    import ("../components/User Settings/notification.vue")
+            },
+            {
+                path: "changePassword",
+                component: () =>
+                    import ("../components/User Settings/changePass.vue")
             }
         ]
     }
