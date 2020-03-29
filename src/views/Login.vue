@@ -121,7 +121,7 @@
         <v-row>
           <v-col cols="12">
             <v-row justify="center">
-              <router-link to="/password-reset">Forgot your password?</router-link>
+              <router-link to="/password-reset/reset">Forgot your password?</router-link>
             </v-row>
           </v-col>
         </v-row>
