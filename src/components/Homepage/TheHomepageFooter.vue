@@ -16,7 +16,7 @@
       >
         <router-link v-if="isLg() || isMd()" to="/" class="links-column-1">
           <v-img
-            src="http://localhost:8080/s11.png"
+            src="s11.png"
             max-width="50px"
             style="float: left;"
           ></v-img>
@@ -27,7 +27,7 @@
 
         <router-link class="links-column-1" to="/" v-if="isSm() || isXs()">
           <v-img
-            src="http://localhost:8080/s11.png"
+            src="s11.png"
             max-width="50px"
             style="float: left;"
           ></v-img>

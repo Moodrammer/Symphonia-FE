@@ -20,7 +20,7 @@
       >
         <router-link to="/" style="text-decoration: none;">
           <v-img
-            src="http://localhost:8080/s11.png"
+            src="s11.png"
             max-width="50px"
             style="float: left;"
           ></v-img>
@@ -123,7 +123,7 @@
           <v-col>
             <router-link to="/" style="text-decoration: none;">
               <v-img
-                src="http://localhost:8080/s11.png"
+                src="s11.png"
                 aspect-ratio="1"
                 width="40"
                 height="40"
@@ -227,7 +227,7 @@
         style="text-decoration: none;"
       >
         <v-img
-          src="http://localhost:8080/s11.png"
+          src="s11.png"
           max-width="50px"
           style="float: left;"
         >
