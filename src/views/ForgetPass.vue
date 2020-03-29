@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-container fluid>
+        <v-container fluid @keyup="checkEnterKey">
             <v-app-bar app absolute color="black" flat></v-app-bar>
             <v-content style="max-width:600px; margin:auto;">
                 <v-row justify="center" cols="12" class="mt-9" >
@@ -33,6 +33,8 @@
                                     style="height: 40px;"
                                     maxlength="200"
                                     :rules="emailRules"
+                                    :error-messages="serverErrorMess"
+                                     v-on:keydown.enter.prevent
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -61,6 +63,7 @@
 </template>
 
 <script>
+    import axios from "axios"
     import Footer from "../components/Homepage/TheHomepageFooter";
 
     export default {
@@ -68,11 +71,13 @@
             return {
                 resetemail: '',
                 emailRules: [
-                    v => !!v || "Please enter your Symphonia username or email address.",
+                    v => !!v || "Please enter your Symphonia email address.",
                     v => /.+@.+\..+/.test(v) || "E-mail must be valid"
                 ],
                 //To change the content when the form is submitted
-                NotSubmitted: true
+                NotSubmitted: true,
+                //The error message returned from the server
+                serverErrorMess: ''
             }
         },
         components: {
@@ -80,9 +85,34 @@
             
         },
         methods: {
+            /**
+            * This method checks on any keyup event if the user has pressed the Enter key to submit the Login form
+            * @public
+            */
+            checkEnterKey(e) {
+            if(e.keyCode == '13')
+                this.resetPass()
+            },
+            /**
+             * Sending a request to the backend api to ask for an email to change the user password
+             * @public
+             */
             resetPass() {
-                if(this.$refs.resetForm.validate())
-                    this.NotSubmitted = false;
+                //reset the server error message
+                this.serverErrorMess = ''
+                if(this.$refs.resetForm.validate()) {
+                    //send a request to the database to check if the email exists if not and an 
+                    //error message returned and should be displayed to the textbox
+                    axios.
+                         post("/v1/users/forgotpassword", {
+                             email: this.resetemail
+                         })
+                         .then((res) => {
+                             if(res.status == 200) this.NotSubmitted = false })
+                         .catch(() => {
+                             this.serverErrorMess = "The email provided is not linked to an existing Symphonia account"
+                         })    
+                }
             }
         }
     }

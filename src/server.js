@@ -228,7 +228,20 @@ export function makeServer({ environment = "development" } = {}) {
               }
             }
           );
-        });
+        }),
+        //Handling the Forget password request(asking for changing password email)
+        this.post("/v1/users/forgotpassword" , (schema, request) => {
+          let attrs = JSON.parse(request.requestBody)
+          //loop on all users to check if the user email sent exists in the server current database
+          for(let i = 1 ; i <= schema.users.all().length ; i++) {
+            //if the email exists return a success response
+            if(attrs.email == schema.users.find(i).email) {
+              return new Response(200, {} , {})
+            }
+          }
+
+          return new Response(400 , {} , {})
+        })
     }
   });
 
