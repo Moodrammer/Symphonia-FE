@@ -100,6 +100,11 @@ export function makeServer({ environment = "development" } = {}) {
     routes() {
       //namespace will be prepended to any route (it acts like the server base address)
       this.namespace = "/api";
+
+/////////////////////////////////////////////////////////////////////////////////
+// Create Playlist Request
+/////////////////////////////////////////////////////////////////////////////////
+//TODO : 1- Write the correct url   2-Return the correct playlist object
       this.post("/playlists", (schema, request) => {
         let newPlaylist = JSON.parse(request.requestBody).data;
         schema.create("playlist", {
@@ -114,14 +119,24 @@ export function makeServer({ environment = "development" } = {}) {
            id: schema.playlists.find(schema.playlists.all().length).id
           });
       });
-
-      this.get("/playlists", schema => {
+///////////////////////////////////////////////////////////////////////////////////
+//Get a List of Current User's Playlists
+///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/playlists", schema => {
         return schema.playlists.where({liked: true}).models;
       });
-
+///////////////////////////////////////////////////////////////////////////////////
+//Get a User's Saved Tracks                "Liked Songs"
+///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/tracks", (schema) => {
-        return schema.tracks.where({liked: true}).models
+        return schema.tracks.where({liked: true}).models;
       });
+///////////////////////////////////////////////////////////////////////////////////
+//Get a List of Popular Playlists
+///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/popularPlaylists",(schema) => {
+        return schema.playlists.where({popularity: 90}).models;
+      })
 
       // this.urlPrefix = 'http://localhost:8080';
 

@@ -11,6 +11,7 @@ import Search from "../components/WebplayerContent/Search.vue";
 import HomeContent from "../components/WebplayerContent/HomeContentRouter.vue";
 import Tracks from "../views/LikedSongs.vue";
 import HomepagePremium from "../views/PremiumOffer.vue";
+import PlaylistView from "../components/general/PlaylistView.vue";
 
 Vue.use(VueRouter);
 
@@ -63,6 +64,11 @@ const routes = [
             component: Tracks
           }
         ]
+      },
+      {
+        name: "playlist/:id",
+        path: "/playlist/:id",
+        component: PlaylistView
       }
     ]
   },

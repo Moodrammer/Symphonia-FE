@@ -8,7 +8,6 @@
     /* TODO: style this scrollbar */
     overflow-x: hidden;
     overflow-y: scroll;
-    height: 50px;
     "
       :loggedIn="isLoggedIn()"
     ></router-view>

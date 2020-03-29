@@ -1,22 +1,24 @@
 import axios from "axios";
 
 const state = {
-  playlists: []
+  likedPlaylists: []
 };
 
 const mutations = {
   add_playlist(state, { id, name }) {
-    state.playlists.push({
+    state.likedPlaylists.push({
       id: id,
       name: name
     });
 
     console.log("Playlist was added");
   },
-  load_playlists(state, list) {
-    state.playlists = list;
+  load_likedPlaylists(state, list) {
+    state.likedPlaylists = list;
   }
 };
+
+const token = localStorage.getItem("userToken");
 
 const actions = {
   createPlaylist({ commit }, playlistName) {
@@ -37,11 +39,15 @@ const actions = {
   },
   getPlaylists({ commit }) {
     axios
-      .get("/playlists")
+      .get("/v1/me/playlists", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then(response => {
         let list = response.data;
-        console.log(list);
-        commit("load_playlists", list);
+        console.log(response);
+        commit("load_likedPlaylists", list);
       })
       .catch(error => {
         console.log("axios caught an error");

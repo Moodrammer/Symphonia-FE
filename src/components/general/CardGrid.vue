@@ -20,7 +20,7 @@
             sm="6"
             class="my-4"
             v-for="(item, index) in cardItems.items"
-            :key="index"
+            :key="item.id"
           >
             <!-- adding the cards -->
             <div class="card">
@@ -29,7 +29,7 @@
                 width="200"
                 height="270"
                 color="#282828"
-                @mouseover="cardHover(index)"
+                @mouseover="cardHover(index,item.id)"
                 @mouseleave="cardItems.hoveredCardIndex = null"
                 dark
               >
@@ -87,7 +87,7 @@
     </template>
     <!-- setting the items of the custom context menu -->
     <v-list>
-      <v-list-item v-for="(item, index) in cardItems.menuList" :key="index">
+      <v-list-item v-for="(item, index) in cardItems.menuList" :key="index" @click="$emit('order', item.title, lastHoveredCard)">
         <v-list-item-title>{{ item.title }}</v-list-item-title>
       </v-list-item>
     </v-list>
@@ -100,14 +100,16 @@ export default {
   props: ["cardItems", "cardStyle"],
   data() {
     return {
+      lastHoveredCard:null,
       disableMenu: false
     };
   },
   created() {},
   methods: {
     // cardHover: called when card is hover to save its index, and close other context menus
-    cardHover(index) {
+    cardHover(index, id) {
       this.$props.cardItems.hoveredCardIndex = index;
+      this.lastHoveredCard = id;
       this.disableMenu = false;
       this.$props.cardItems.showMenu = false;
     }

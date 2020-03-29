@@ -94,7 +94,7 @@ export default {
   },
   computed: mapState({
     //the playlists from the get request
-    playlists: state => state.playlist.playlists
+    playlists: state => state.playlist.likedPlaylists
   }),
   data: function() {
     return {

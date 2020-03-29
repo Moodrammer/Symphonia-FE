@@ -2,6 +2,8 @@
   <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
     <v-container class="ma-5">
       <h1 v-for="(playlist,i) in playlists" :key="i">{{playlist}}</h1>
+      <h1 v-for="(playlist,i) in popularPlaylists" :key="i">{{playlist}}</h1>
+
       <category v-for="section in sections" :key="section.categoryName"
         :name="section.categoryName"
         :subtitle="section.categorySubtitle"
@@ -31,11 +33,8 @@ export default {
          categorySubtitle:"",
          showSeeAll: false,
          list: {
-          // Custom context menu data section
-          // menuList: items of the menu - disabledMenu: flag to disable menu on outside card click - showMenu: menu v-model
           menuList: [],
           showMenu: false,
-          // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered item visable
           hoveredCardIndex: null,
           items: []
           }
@@ -45,8 +44,6 @@ export default {
          categorySubtitle:"",
          showSeeAll: false,
          list: {
-          // Custom context menu data section
-          // menuList: items of the menu - disabledMenu: flag to disable menu on outside card click - showMenu: menu v-model
           menuList: [],
           showMenu: false,
           // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered item visable
@@ -116,15 +113,17 @@ export default {
     };
   },
   methods: {
-    ...mapActions("playlist", ["getPlaylists"])
+    ...mapActions("playlist", ["getPlaylists"]),
+    ...mapActions("webplayerHome",["getPopularPlaylists"])
   },
   mounted() {
     this.getPlaylists();
+    this.getPopularPlaylists();
   },
   computed: mapState({
     //the playlists from the get request
     playlists: function(state){
-      var statePlaylists = state.playlist.playlists
+      var statePlaylists = state.playlist.likedPlaylists
       var play = []
             console.log(this.sections[0]);
       statePlaylists.forEach(element => {
@@ -134,8 +133,7 @@ export default {
           description: element.description
         }
         play.push(k);
-      });      
-      
+      });         
       this.sections[0].list.items  = play;
       this.sections[0].list.menuList= this.playlistMenu;
 
@@ -145,11 +143,24 @@ export default {
             this.sections[2].list.items  = play;
       this.sections[2].list.menuList= this.playlistMenu;
 
-                  this.sections[3].list.items  = play;
-      this.sections[3].list.menuList= this.playlistMenu;
-
                   this.sections[4].list.items  = play;
       this.sections[4].list.menuList= this.playlistMenu;
+    },
+    popularPlaylists: function(state){
+      var statePlaylists = state.webplayerHome.popularPlaylists;
+      console.log("state playlists")
+      console.log(statePlaylists);
+      var play = []
+      statePlaylists.forEach(element => {
+        var k = {
+          name: element.name,
+          image: element.images[0].url,
+          description: element.description
+        }
+        play.push(k);
+      });         
+      this.sections[3].list.items  = play;
+      this.sections[3].list.menuList= this.playlistMenu;
     }
   }),
 };
