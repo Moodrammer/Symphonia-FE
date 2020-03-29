@@ -328,10 +328,6 @@ export default {
   font-size: 10px;
 }
 
-.bar {
-  color: blue;
-}
-
 .tf {
   border-radius: 500px;
   margin-left: 5px;
@@ -344,9 +340,6 @@ export default {
 #signUp:hover,
 #logIn:hover {
   transform: scale(1.1, 1.1);
-}
-.v-btn:before {
-  background-color: rgba(0, 0, 0, 0);
 }
 
 #logIn {

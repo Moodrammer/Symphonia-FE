@@ -22,7 +22,7 @@ const actions = {
   createPlaylist({ commit }, playlistName) {
     axios
       .post("/playlists", {
-        data: playlistName
+        data:{name: playlistName}
       })
       .then(response => {
         console.log(response);

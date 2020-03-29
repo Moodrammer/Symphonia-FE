@@ -46,6 +46,7 @@
         active-class="active"
         tag="p"
         v-if="loggedIn"
+        id="likedItem"
       >
         <v-btn class="liked" fab x-small id="liked">
           <v-icon color="white">mdi-cards-heart</v-icon>
@@ -141,5 +142,8 @@ a {
 }
 .active {
   opacity: 1;
+}
+.likedItem:before {
+  background-color: rgba(0, 0, 0, 0);
 }
 </style>

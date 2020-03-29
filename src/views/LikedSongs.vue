@@ -82,9 +82,10 @@
             v-for="track in tracks"
             :key="track.name"
             :songName="track.name"
-            :artistName="track.artists.name"
+            :artistName="track.artists[0].name"
             :albumName="track.album.name"
             :duration="track.duration_ms"
+            :id="track.id"
           />
         </v-list>
       </v-col>

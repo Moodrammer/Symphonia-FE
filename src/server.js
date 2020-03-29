@@ -1,4 +1,7 @@
 import { Server, Model, Response, JSONAPISerializer } from "miragejs";
+import playlistJson from "./api/mock/data/playlist.json";
+import trackJSON from "./api/mock/data/track.json";
+
 
 //The makeserver function to be used to enable Mirage to intercept your requests
 export function makeServer({ environment = "development" } = {}) {
@@ -8,7 +11,8 @@ export function makeServer({ environment = "development" } = {}) {
     models: {
       user: Model,
       track: Model,
-      bestsong: Model
+      bestsong: Model,
+      playlist: Model
     },
     
     seeds(server) {
@@ -37,45 +41,6 @@ export function makeServer({ environment = "development" } = {}) {
         server.create("user" , JSON.parse(sessionStorage.getItem("SignedUpUser")))
          localStorage.removeItem("SignedUpUser")
        }
-
-      server.create("track", {
-        artists:
-        {
-          href: "https://api.spotify.com/v1/artists/6sFIWsNpZYqfjUpaCguejur",
-          id: "6sFIWsNpZYqfjUpaCguejuf",
-          name: "Carly Rae Jepsenq",
-        },
-        duration_ms: 20795,
-        name: "Cutqq",
-        id: "11dFghVXANMlKmJXsNCbNlq",
-        href: "https://api.symphonia.com/v1/tracks/11dFghVXANMlKmJXsNCbNlw",
-        album:
-        {
-          id: "0tGPJ0bkWOUmH7MEOR77qcs",
-          name: "Heaven22"
-        }
-      });
-
-      server.create("track", {
-        artists:
-        {
-          href: "https://api.spotify.com/v1/artists/6sFIWsNpZYqfjUpaCgueju",
-          id: "6sFIWsNpZYqfjUpaCgueju",
-          name: "Carly Rae Jepsen",
-        },
-        duration_ms: 207959,
-        name: "Cut To The Feeling",
-        id: "11dFghVXANMlKmJXsNCbNl",
-        href: "https://api.symphonia.com/v1/tracks/11dFghVXANMlKmJXsNCbNl",
-        album:
-        {
-          id: "0tGPJ0bkWOUmH7MEOR77qc",
-          name: "Heaven"
-        }
-      });
-
-  
-
       server.create("bestsong", 
       {
         songs: [
@@ -117,12 +82,13 @@ export function makeServer({ environment = "development" } = {}) {
           }
         ]
       });
-      server.db.loadData({
-        playlist: [
-          {
-            name: "playlist1"
-          }
-        ]
+
+      playlistJson.items.forEach(element => {
+        server.create("playlist", element);
+      });
+
+      trackJSON.forEach(element => {
+        server.create("track",element);
       });
     },
 
@@ -136,22 +102,25 @@ export function makeServer({ environment = "development" } = {}) {
       this.namespace = "/api";
       this.post("/playlists", (schema, request) => {
         let newPlaylist = JSON.parse(request.requestBody).data;
-        return schema.db.playlist.insert({
-          name: newPlaylist
+        schema.create("playlist", {
+          name: newPlaylist.name,
+          liked: true
         });
+        return new Response(
+          200,
+          {},
+          {
+           name: newPlaylist.name,
+           id: schema.playlists.find(schema.playlists.all().length).id
+          });
       });
 
       this.get("/playlists", schema => {
-        return schema.db.playlist;
-      });
-
-      this.get("/v1/me/player/tracks/history", schema => {
-        return schema.db.playlist;
+        return schema.playlists.where({liked: true}).models;
       });
 
       this.get("/v1/me/tracks", (schema) => {
-        console.log(schema.users.all())
-        return schema.tracks.all().models
+        return schema.tracks.where({liked: true}).models
       });
 
       // this.urlPrefix = 'http://localhost:8080';

@@ -55,7 +55,8 @@ export default {
     songName: String,
     artistName: String,
     albumName: String,
-    duration: Number
+    duration: Number,
+    id: String
   },
   data: function() {
     return {
