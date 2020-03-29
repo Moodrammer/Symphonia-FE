@@ -7,6 +7,16 @@ const state = {
 const mutations = {
     load_albums(state, list) {
       state.albums = list;
+    },
+    delete_albums(state,list) {
+      list.forEach(x => {
+        for(var i = state.albums.length - 1; i >= 0; i--) {
+          if(state.albums[i].album.id === x) {
+            state.albums.splice(i, 1);
+            break;
+          }
+        }  
+      });
     }
   };
   
@@ -30,7 +40,25 @@ const actions = {
         console.log("axios caught an error");
         console.log(error);
       });
+  },
+
+
+
+  deleteAlbums({commit},albums){
+    
+    axios.delete('/v1/me/albums', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: albums
+    }).then(
+      commit("delete_albums", albums)
+    )
+    .catch(error => console.log(error))
+    
   }
+
+
 };
 
 export default {

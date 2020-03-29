@@ -64,6 +64,7 @@ export function makeServer({ environment = "development" } = {}) {
 
       albumsJSON.items.forEach(element => {
         server.create("album", element);
+        console.log(element)
       });
 
       server.create("bestsong", 
@@ -149,13 +150,15 @@ export function makeServer({ environment = "development" } = {}) {
         return schema.albums.all().models
       });
 
-      // this.urlPrefix = 'http://localhost:8080';
+      this.delete("/v1/me/albums", (schema, request) => {
+        
+        var x = '';
 
-      //this.get("/search", schema => {
+        for(var i = 2; i < request.requestBody.length - 2 ; i++)
+          x += request.requestBody[i];
 
-      //return schema.users.all()
-
-      //})
+        return schema.albums.findBy(album => album.album.id === x).destroy();
+      });
 
       this.get("/v1/bestsongs"), schema => {
         return schema.bestsongs.bestSixSongs;

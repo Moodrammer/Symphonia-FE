@@ -3,7 +3,7 @@
     <h1 v-for="(album,i) in albums" :key="i">{{album}}</h1>
 
     <h1>Albums</h1>
-    <CardGrid :cardItems="cardItems" />
+    <CardGrid :cardItems="cardItems" v-on:order="menuOrder" />
   </v-content>
 </template>
 
@@ -18,6 +18,8 @@ export default {
   },
   data() {
     return {
+      contextMenuChoice: null,
+      contextMenuCardIndex: null,
       cardItems: {
         // Custom context menu data section
         // menuList: items of the menu - disabledMenu: flag to disable menu on outside card click - showMenu: menu v-model
@@ -29,45 +31,20 @@ export default {
         ],
         showMenu: false,
         // Albums Cards data section
-        // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
+        // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - items: album details
         hoveredCardIndex: null,
-        items: [
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist"
-          },
-        ]
+        items: null
       }
     };
   },
   methods:{
-    ...mapActions("album", ["getAlbums"])
+    ...mapActions("album", ["getAlbums"]),
+    ...mapActions("album", ["deleteAlbums"]),
+    menuOrder(menuItem, cardIndex){
+      this.contextMenuChoice = menuItem;
+      this.contextMenuCardIndex = cardIndex;
+
+    }
   },
   mounted(){
     this.getAlbums();
@@ -77,24 +54,32 @@ export default {
     albums: function(state){
       var stateAlbums = state.album.albums
       var albums = []
-      
+
       stateAlbums.forEach(element => {
         var k = {
           name: element.album.name,
           image: element.album.images[0].url,
-          description: element.album.artists[0].name
+          description: element.album.artists[0].name,
+          id: element.album.id
         }
         albums.push(k);
-        console.log(k);
       });      
 
       this.cardItems.items  = albums;
     }
   }),
   watch: {
-    "cardItems.showMenu": function() {
-      if (this.cardItems.showMenu) console.log(this.cardItems.hoveredCardIndex);
-    }
+    contextMenuChoice: function() {
+      if (this.contextMenuChoice === null)
+        return;
+      console.log(this.contextMenuChoice);
+      console.log(this.contextMenuCardIndex);
+      if(this.contextMenuChoice === "Remove from your Library")
+      {
+          this.deleteAlbums([this.contextMenuCardIndex]);
+      }
+      this.contextMenuChoice = null
+      }
   },
   created(){
   }
