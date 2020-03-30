@@ -294,7 +294,8 @@ export default {
     },
     _handlePause: function() {
       this.paused = true; //the song is paused flag
-
+    },
+    _handleEndedSong: function() {
       if (this.isRepeatOnceEnabled) 
       {
         this.play();
@@ -307,7 +308,7 @@ export default {
       this.audio.addEventListener("loadeddata", this._handleLoaded);
       this.audio.addEventListener("pause", this._handlePause);
       //this.audio.addEventListener("play", this._handlePlay); //for future features
-      //this.audio.addEventListener("ended", this._handleEndedSong); //for future features
+      this.audio.addEventListener("ended", this._handleEndedSong); //for future features
         
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
@@ -339,6 +340,7 @@ export default {
     this.audio.removeEventListener("timeupdate", this._handlePlayingUI);
     this.audio.removeEventListener("loadeddata", this._handleLoaded);
     this.audio.removeEventListener("pause", this._handlePause);
+    this.audio.removeEventListener("ended", this._handleEndedSong); //for future features
   }
 };
 </script>
