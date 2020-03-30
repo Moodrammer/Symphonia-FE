@@ -240,7 +240,7 @@ export default {
       yearRules: [
         v => v >= 1900 || "Please enter a valid year",
         v =>
-          v <= 2000 || "Sorry, but you don't meet Symphonia's age requirements"
+          v < 2000 || "Sorry, but you don't meet Symphonia's age requirements"
       ],
       monthRules: [v => !!v || "Please enter your birth month"],
       usernameRules: [v => !!v || "What should we call you?"],
