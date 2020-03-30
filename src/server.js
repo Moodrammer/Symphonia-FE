@@ -212,7 +212,6 @@ export function makeServer({ environment = "development" } = {}) {
 
           //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
           sessionStorage.setItem("SignedUpUser", JSON.stringify(schema.users.find(3)))
-          console.log(schema.users.all().length)        
           //return a request for now that the operation of creating the user was a success
           return new Response(
             201,
@@ -229,7 +228,40 @@ export function makeServer({ environment = "development" } = {}) {
               }
             }
           );
-        });
+        }),
+        //Handling the Forget password request(asking for changing password email)
+        this.post("/v1/users/forgotpassword" , (schema, request) => {
+          let attrs = JSON.parse(request.requestBody)
+          //loop on all users to check if the user email sent exists in the server current database
+          for(let i = 1 ; i <= schema.users.all().length ; i++) {
+            //if the email exists return a success response
+            if(attrs.email == schema.users.find(i).email) {
+              return new Response(200, {} , {})
+            }
+          }
+
+          return new Response(400 , {} , {})
+        }),
+        //Handling the changing password request(patch request for the new password)
+        this.patch("/v1/users/resetpassword/:resettoken", (schema,request) => {
+          let attrs = JSON.parse(request.requestBody)
+          //for the sake of mocking only , treat the reset token as the user id
+          let resettoken = parseInt(request.params.resettoken)
+          console.log(request.params)
+          //change the password of the first user for testing only
+          schema.users.find(resettoken).update('password', attrs.password)
+          console.log(schema.users.find(resettoken))
+          console.log(attrs.password)
+          return new Response(200 , {} , {
+            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
+            user: {
+              _id: schema.users.find(resettoken).id,
+              email: schema.users.find(resettoken).email,
+              name: schema.users.find(resettoken).name,
+              type: schema.users.find(resettoken).type
+            }
+          })
+        })
     }
   });
 
