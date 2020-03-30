@@ -56,9 +56,36 @@
             </v-icon>
           </a>
 
-          <a @click="repeat()" title="repeat" style="margin-left: 20px;">
+          <a
+            @click="enableRepeat()"
+            v-if="!isRepeatEnabled && !isRepeatOnceEnabled"
+            title="Enable repeat"
+            style="margin-left: 20px;"
+          >
             <v-icon small class="icons">
               mdi-repeat
+            </v-icon>
+          </a>
+
+          <a
+            @click="enableRepeatOnce()"
+            v-if="isRepeatEnabled && !isRepeatOnceEnabled"
+            title="Enable repeat once"
+            style="margin-left: 20px;"
+          >
+            <v-icon small class="icons" color="green">
+              mdi-repeat
+            </v-icon>
+          </a>
+
+          <a
+            @click="disableRepeatOnce()"
+            v-if="!isRepeatEnabled && isRepeatOnceEnabled"
+            title="Disable repeat once"
+            style="margin-left: 20px;"
+          >
+            <v-icon small class="icons" color="green">
+              mdi-repeat-once
             </v-icon>
           </a>
         </div>
@@ -162,7 +189,6 @@ export default {
     return {
       isMuted: false,
       loaded: false,
-      playing: false,
       paused: true,
       currentTime: "00:00",
       innerLoop: undefined,
@@ -172,7 +198,9 @@ export default {
       previousVolumeValue: 50,
       currentTimeInSec: 0,
       isProgressBarPressed: false,
-      isVolumePressed: false
+      isVolumePressed: false,
+      isRepeatEnabled: false,
+      isRepeatOnceEnabled: false
     };
   },
   methods: {
@@ -195,7 +223,7 @@ export default {
       }
     },
     play: function() {
-      if (this.playing && !this.paused) return;
+      if (!this.paused) return;
       this.paused = false;
       this.audio.play();
       this.playing = true;
@@ -213,8 +241,18 @@ export default {
     shuffle: function() {
       //stub
     },
-    repeat: function() {
-      //stub
+    enableRepeat: function() {
+      this.isRepeatEnabled = true;
+      /* send a request to save the option on backend */
+    },
+    enableRepeatOnce: function() {
+      this.isRepeatEnabled = false;
+      this.isRepeatOnceEnabled = true;
+      /* send a request to save the option on backend */
+    },
+    disableRepeatOnce: function() {
+      this.isRepeatOnceEnabled = false;
+      /* send a request to save the option on backend */
     },
     queue: function() {
       //stub
@@ -254,9 +292,12 @@ export default {
 
       this.currentTime = convertTimeHHMMSS(currTime);
     },
-    _handlePlayPause: function(e) {
-      if (e.type === "pause" && this.playing === false) {
-        this.paused = true;
+    _handlePause: function() {
+      this.paused = true; //the song is paused flag
+
+      if (this.isRepeatOnceEnabled) 
+      {
+        this.play();
       }
     },
     init: function() {
@@ -264,8 +305,10 @@ export default {
       //The loadeddata event is fired when the frame at the current playback
       //position of the media has finished loading; often the first frame.
       this.audio.addEventListener("loadeddata", this._handleLoaded);
-      this.audio.addEventListener("pause", this._handlePlayPause);
-      this.audio.addEventListener("play", this._handlePlayPause);
+      this.audio.addEventListener("pause", this._handlePause);
+      //this.audio.addEventListener("play", this._handlePlay); //for future features
+      //this.audio.addEventListener("ended", this._handleEndedSong); //for future features
+        
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
     },
@@ -295,8 +338,7 @@ export default {
   beforeDestroy: function() {
     this.audio.removeEventListener("timeupdate", this._handlePlayingUI);
     this.audio.removeEventListener("loadeddata", this._handleLoaded);
-    this.audio.removeEventListener("pause", this._handlePlayPause);
-    this.audio.removeEventListener("play", this._handlePlayPause);
+    this.audio.removeEventListener("pause", this._handlePause);
   }
 };
 </script>
