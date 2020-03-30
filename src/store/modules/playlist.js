@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const state = {
-  playlists: []
+  playlists: [],
+  audio: undefined,
+  paused: true
 };
 
 const mutations = {
@@ -13,8 +15,29 @@ const mutations = {
 
     console.log("Playlist was added");
   },
+
+  //for Pause and Play
   load_playlists(state, list) {
     state.playlists = list;
+  },
+  setAudio(state, audio) {
+    state.audio = audio;
+  },
+  setPaused(state, paused) {
+    state.paused = paused;
+  },
+  pauseAndPlay(state) {
+    state.paused = !state.paused;
+    state.paused ? state.audio.pause() : state.audio.play();
+  }
+};
+
+const getters = {
+  audio(state) {
+    return state.audio;
+  },
+  paused(state) {
+    return state.paused;
   }
 };
 
@@ -47,6 +70,9 @@ const actions = {
         console.log("axios caught an error");
         console.log(error);
       });
+  },
+  pauseAndPlay(context) {
+    context.commit("pauseAndPlay");
   }
 };
 
@@ -54,5 +80,6 @@ export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
 };
