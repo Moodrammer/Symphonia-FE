@@ -7,23 +7,29 @@
       <v-col cols="4">
         <v-toolbar flat color="rgba(0,0,0,0)">
           <v-avatar tile size="56">
-            <img src="/profile.jpg" alt="profile pic" />
+            <img :src="artistPicture" alt="profile pic" />
           </v-avatar>
           <div
             style="padding-left: 14px; padding-top: 14px; margin-right: 14px;"
           >
             <router-link to="/" class="song-name">
-              Song Name
+              {{ songName }}
             </router-link>
             <router-link to="/" class="singer-name">
-              hi
+              {{ artistName }}
             </router-link>
           </div>
-          <a @click="saveToLikedSongs()">
+          <a @click="saveToLikedSongs()" v-if="!isSongIsLiked">
             <v-icon small title="save your liked songs" class="icons">
               mdi-heart-outline
             </v-icon>
           </a>
+          <a @click="saveToLikedSongs()" v-if="isSongIsLiked">
+            <v-icon small title="save your liked songs" class="icons">
+              mdi-heart
+            </v-icon>
+          </a>
+
         </v-toolbar>
       </v-col>
 
@@ -126,10 +132,15 @@
           <a
             @click="queue()"
             title="queue"
-            style="margin-right: 20px; float: left;"
+            style="margin-right: 10px; float: left;"
           >
             <v-icon small class="icons">
               mdi-format-list-numbered-rtl
+            </v-icon>
+          </a>
+          <a title="devices" style="margin-right: 10px; float: left;">
+            <v-icon small class="icons">
+              mdi-devices
             </v-icon>
           </a>
           <a
@@ -173,7 +184,7 @@ export const convertTimeHHMMSS = val => {
 
 export default {
   name: "vue-audio",
- 
+
   computed: {
     duration: function() {
       return this.audio ? convertTimeHHMMSS(this.totalDuration) : "";
@@ -181,28 +192,43 @@ export default {
   },
   data() {
     return {
-      //file: "", //It's initialized in the init
+      //Audio info:
+      //file: "", //TODO: make it like this; it's initialized in the init
       file: "/example.mp3",
-      isMuted: false,
-      loaded: false,
-      paused: true,
       currentTime: "00:00",
       audio: undefined,
       totalDuration: 0,
       volumeValue: 50,
       previousVolumeValue: 50,
       currentTimeInSec: 0,
+
+      //Flags:
+      isMuted: false,
+      loaded: false,
+      paused: true,
       isProgressBarPressed: false,
       isVolumePressed: false,
       isRepeatEnabled: false,
       isRepeatOnceEnabled: false,
       isNextPressed: false,
-      isPreviousPressed: false
+      isPreviousPressed: false,
+      isSongIsLiked: false,
+
+      //The song's info:
+      artistPicture: "/profile.jpg",
+      songName: "Changes",
+      artistName: "2PAC",
+      songId: "007"
     };
   },
   methods: {
     saveToLikedSongs: function() {
-      //stub
+      if (!this.isSongIsLiked) {
+        //make a request to set the current song to the like ones.
+      } else {
+        //make a request to remove the current song from the like ones.
+      }
+      this.isSongIsLiked = !this.isSongIsLiked;
     },
     updateVolume: function() {
       this.audio.volume = this.volumeValue / 100;
@@ -237,13 +263,14 @@ export default {
       //TODO: is it the current song is the last one in the playlist ?
 
       var temp = this;
-      //this timeout to simulate the server delay
-      //TODO: remove this after delay before deployment
-      setTimeout(function(){
+      //this timeout is for simulating the server delay
+      //TODO: remove this delay before deployment
+      setTimeout(function() {
         //call updateSongInfo()
         //TODO: change this to a url coming from a request.
-        temp.file = "https://www.bensound.com/bensound-music/bensound-summer.mp3";
-      }, 1000)
+        temp.file =
+          "https://www.bensound.com/bensound-music/bensound-summer.mp3";
+      }, 1000);
     },
     //this method will be invoked after changing the song
     //it will change the song info: song name, artist, picture.
@@ -260,14 +287,15 @@ export default {
       var temp = this;
       //this timeout to simulate the server delay
       //TODO: remove this after delay before deployment
-      setTimeout(function(){
-        //call updateSongInfo()  
+      setTimeout(function() {
+        //call updateSongInfo()
         //TODO: change this to a url coming from a request.
         temp.file = "/example.mp3";
-      }, 1000)
+      }, 1000);
     },
     shuffle: function() {
-      //stub
+      //make a request to get a shuffled song
+      /* send a request to save the option on backend */
     },
     enableRepeat: function() {
       this.isRepeatEnabled = true;
@@ -304,9 +332,7 @@ export default {
         if (this.isNextPressed) {
           this.play();
           this.isNextPressed = false;
-        }
-        else if (this.isPreviousPressed)
-        {
+        } else if (this.isPreviousPressed) {
           this.play();
           this.isPreviousPressed = false;
         }
@@ -335,6 +361,10 @@ export default {
     _handleEndedSong: function() {
       if (this.isRepeatOnceEnabled) {
         this.play();
+      } else if (this.isRepeatEnabled) {
+        //if (is the current song is the last song in the playlist)?
+        //change "file" to the link of the first song of the playlist,
+        //then after loading in the loaded handler: invoke play()
       }
     },
     _handlerWaiting: function() {
@@ -351,7 +381,7 @@ export default {
       this.audio.addEventListener("loadeddata", this._handleLoaded);
       this.audio.addEventListener("pause", this._handlePause);
       this.audio.addEventListener("ended", this._handleEndedSong); //the song is ended
-      
+
       this.audio.addEventListener("waiting", this._handlerWaiting); //the song is stopped due to buffering
       this.audio.addEventListener("playing", this._handlePlayingAfterBuffering);
 
@@ -388,10 +418,13 @@ export default {
     this.audio.removeEventListener("timeupdate", this._handlePlayingUI);
     this.audio.removeEventListener("loadeddata", this._handleLoaded);
     this.audio.removeEventListener("pause", this._handlePause);
-    this.audio.removeEventListener("ended", this._handleEndedSong); 
+    this.audio.removeEventListener("ended", this._handleEndedSong);
 
-    this.audio.removeEventListener("waiting", this._handlerWaiting); 
-    this.audio.removeEventListener("playing", this._handlePlayingAfterBuffering);
+    this.audio.removeEventListener("waiting", this._handlerWaiting);
+    this.audio.removeEventListener(
+      "playing",
+      this._handlePlayingAfterBuffering
+    );
   }
 };
 </script>
