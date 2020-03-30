@@ -1,5 +1,6 @@
 import { Server, Model, Response, JSONAPISerializer } from "miragejs";
 import albumsJSON from "./api/mock/data/album.json"
+import artistsJSON from "./api/mock/data/artist.json"
 
 
 //The makeserver function to be used to enable Mirage to intercept your requests
@@ -11,6 +12,7 @@ export function makeServer({ environment = "development" } = {}) {
       user: Model,
       track: Model,
       album: Model,
+      artist: Model,
       bestsong: Model
     },
 
@@ -62,10 +64,17 @@ export function makeServer({ environment = "development" } = {}) {
       });
 
 
-      albumsJSON.items.forEach(element => {
-        server.create("album", element);
-        console.log(element)
-      });
+      albumsJSON.items.forEach(element => 
+        server.create("album", element)
+      );
+
+      artistsJSON.artists.items.forEach(element => 
+        {
+          server.create("artist", element)
+          console.log(element)
+        }
+      );
+
 
       server.create("bestsong", 
       {
@@ -146,7 +155,6 @@ export function makeServer({ environment = "development" } = {}) {
       });
 
       this.get("/v1/me/albums", (schema) => {
-        console.log(schema.users.all())
         return schema.albums.all().models
       });
 
@@ -159,6 +167,27 @@ export function makeServer({ environment = "development" } = {}) {
 
         return schema.albums.findBy(album => album.album.id === x).destroy();
       });
+
+
+      this.get("/v1/me/following", (schema,request) => {
+        if(request.queryParams.type === 'artist')
+          return schema.artists.all().models
+      });
+
+      this.delete("/v1/me/following", (schema, request) => {
+        
+        if(request.queryParams.type === 'artist')
+        {
+          var x = '';
+          for(var i = 2; i < request.requestBody.length - 2 ; i++)
+            x += request.requestBody[i];
+
+          return schema.artists.findBy(artist => artist.id === x).destroy();
+        }
+      });
+
+
+
 
       this.get("/v1/bestsongs"), schema => {
         return schema.bestsongs.bestSixSongs;
