@@ -382,6 +382,7 @@ export default {
     _handleSpaceUp: function(e) {
       if (e.code === "Space") 
       {
+        if (!this.loaded) return;
         this.pause();
       }
     },
