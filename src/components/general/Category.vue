@@ -6,7 +6,6 @@
     <p v-if="seeAll" id="seeAll">SEE ALL</p>
   </v-row>
   <h5 :style="{opacity:0.6}">{{ subtitle }}</h5>
- 
   <CardGrid :cardItems="griditems" :cardStyle="gridStyle"/>
 </v-container>
 </template>

@@ -110,7 +110,7 @@ export function makeServer({ environment = "development" } = {}) {
 // Create Playlist Request
 /////////////////////////////////////////////////////////////////////////////////
 //TODO : 1- Write the correct url   2-Return the correct playlist object
-      this.post("/playlists", (schema, request) => {
+      this.post("/v1/users/:user_id/playlists", (schema, request) => {
         let newPlaylist = JSON.parse(request.requestBody).data;
         schema.create("playlist", {
           name: newPlaylist.name,
@@ -147,6 +147,15 @@ export function makeServer({ environment = "development" } = {}) {
 ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/popularArtists",(schema) => {
         return schema.artists.where({popularity : 90}).models;
+      })
+///////////////////////////////////////////////////////////////////////////////////
+//Get a List of Genre Playlists
+///////////////////////////////////////////////////////////////////////////////////
+      this.get('v1/browse/categories/:category_id/playlists',(schema , request) => {
+        let id= request.params.category_id;
+        console.log("mirage");
+        console.log(id);
+        return schema.playlists.where({genre: id}).models;
       })
 ///////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';

@@ -3,6 +3,8 @@
   "items": [ {
     "description": "playlist A",
     "popularity": 90,
+    "recent": true,
+    "genre": "folk",
     "followers": {
       "href": null,
       "total": 143350
@@ -69,6 +71,8 @@
   },
   {
     "description": "playlist B",
+    "recent": false,
+    "genre": "jazz",
     "followers": {
     "href": null,
     "total": 14335
@@ -86,7 +90,7 @@
     "type": "user"
     },
   "public": true,
-  "liked": true,
+  "liked": false,
   "tracks": {
     "href": "https://api.symphonia.com/v1/users/symphonia/playlists/59ZbFPES4DQwEjBpWHzrtC/tracks",
     "items": [
@@ -136,6 +140,8 @@
   {
     "description": "Playlist D",
     "popularity": 90,
+    "genre": "rock",
+    "recent": true,
     "followers": {
     "href": null,
     "total": 1435
@@ -203,6 +209,8 @@
   {
     "description": "Playlist C",
     "popularity": 90,
+    "genre": "pop",
+    "recent": false,
     "followers": {
       "href": null,
       "total": 143350
@@ -270,6 +278,8 @@
   {
     "description": "Playlist E",
     "popularity": 90,
+    "genre": "folk",
+    "recent": true,
     "followers": {
       "href": null,
       "total": 143350
@@ -337,6 +347,8 @@
   {
     "description": "Playlist G",
     "popularity": 90,
+    "genre": "jazz",
+    "recent": false,
     "followers": {
       "href": null,
       "total": 143350
@@ -355,6 +367,351 @@
     },
     "public": true,
     "liked": true,
+    "tracks": {
+      "href": "https://api.symphonia.com/v1/users/symphonia/playlists/59ZbFPES4DQwEjBpWHzrtC/tracks",
+      "items": [
+        {
+          "added_at": "2014-09-01T04:21:28Z",
+          "added_by": {
+            "href": "https://api.symphonia.com/v1/users/symphonia",
+            "id": "symphonia",
+            "type": "user"
+          },
+          "track": {
+            "album": {
+              "album_type": "single",
+              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
+              "id": "5GWoXPsTQylMuaZ84PC563",
+              "images": [
+                {
+                  "height": 640,
+                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
+                  "width": 640
+                }
+              ],
+              "name": "Quran ALbum1",
+              "type": "album"
+            },
+            "artists": [
+              {
+                "href": "https://api.symphonia.com/v1/artists/1",
+                "id": "1",
+                "name": "Yasser Al-Dosari",
+                "type": "artist"
+              }
+            ],
+            "duration_ms": 2131000,
+            "explicit": false,
+            "href": "https://server11.mp3quran.net/yasser/012.mp3",
+            "id": "4i9sYtSIlR80bxje5B3rUb",
+            "name": "Surah Yossef",
+            "popularity": 45,
+            "track_number": 1,
+            "type": "track"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "description": "Playlist X",
+    "popularity": 50,
+    "recent": true,
+    "genre": "pop",
+    "followers": {
+      "href": null,
+      "total": 143350
+    },
+    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
+    "images": [
+      {
+        "url": "http://source.unsplash.com/wf0c0d-h2fE"
+      }
+    ],
+    "name": "New Playlist3",
+    "owner": {
+      "href": "https://api.symphonia.com/v1/users/symphonia",
+      "id": "symphonia",
+      "type": "user"
+    },
+    "public": true,
+    "liked": true,
+    "tracks": {
+      "href": "https://api.symphonia.com/v1/users/symphonia/playlists/59ZbFPES4DQwEjBpWHzrtC/tracks",
+      "items": [
+        {
+          "added_at": "2014-09-01T04:21:28Z",
+          "added_by": {
+            "href": "https://api.symphonia.com/v1/users/symphonia",
+            "id": "symphonia",
+            "type": "user"
+          },
+          "track": {
+            "album": {
+              "album_type": "single",
+              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
+              "id": "5GWoXPsTQylMuaZ84PC563",
+              "images": [
+                {
+                  "height": 640,
+                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
+                  "width": 640
+                }
+              ],
+              "name": "Quran ALbum1",
+              "type": "album"
+            },
+            "artists": [
+              {
+                "href": "https://api.symphonia.com/v1/artists/1",
+                "id": "1",
+                "name": "Yasser Al-Dosari",
+                "type": "artist"
+              }
+            ],
+            "duration_ms": 2131000,
+            "explicit": false,
+            "href": "https://server11.mp3quran.net/yasser/012.mp3",
+            "id": "4i9sYtSIlR80bxje5B3rUb",
+            "name": "Surah Yossef",
+            "popularity": 45,
+            "track_number": 1,
+            "type": "track"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "description": "Playlist N",
+    "popularity": 50,
+    "recent": true,
+    "genre": "rock",
+    "followers": {
+      "href": null,
+      "total": 143350
+    },
+    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
+    "images": [
+      {
+        "url": "http://source.unsplash.com/cZWZjymwI9o"
+      }
+    ],
+    "name": "New Playlist4",
+    "owner": {
+      "href": "https://api.symphonia.com/v1/users/symphonia",
+      "id": "symphonia",
+      "type": "user"
+    },
+    "public": true,
+    "liked": false,
+    "tracks": {
+      "href": "https://api.symphonia.com/v1/users/symphonia/playlists/59ZbFPES4DQwEjBpWHzrtC/tracks",
+      "items": [
+        {
+          "added_at": "2014-09-01T04:21:28Z",
+          "added_by": {
+            "href": "https://api.symphonia.com/v1/users/symphonia",
+            "id": "symphonia",
+            "type": "user"
+          },
+          "track": {
+            "album": {
+              "album_type": "single",
+              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
+              "id": "5GWoXPsTQylMuaZ84PC563",
+              "images": [
+                {
+                  "height": 640,
+                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
+                  "width": 640
+                }
+              ],
+              "name": "Quran ALbum1",
+              "type": "album"
+            },
+            "artists": [
+              {
+                "href": "https://api.symphonia.com/v1/artists/1",
+                "id": "1",
+                "name": "Yasser Al-Dosari",
+                "type": "artist"
+              }
+            ],
+            "duration_ms": 2131000,
+            "explicit": false,
+            "href": "https://server11.mp3quran.net/yasser/012.mp3",
+            "id": "4i9sYtSIlR80bxje5B3rUb",
+            "name": "Surah Yossef",
+            "popularity": 45,
+            "track_number": 1,
+            "type": "track"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "description": "Playlist M",
+    "popularity": 50,
+    "recent": true,
+    "genre": "folk",
+    "followers": {
+      "href": null,
+      "total": 143350
+    },
+    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
+    "images": [
+      {
+        "url": "http://source.unsplash.com/SBIak0pKUIE"
+      }
+    ],
+    "name": "New Playlist4",
+    "owner": {
+      "href": "https://api.symphonia.com/v1/users/symphonia",
+      "id": "symphonia",
+      "type": "user"
+    },
+    "public": true,
+    "liked": false,
+    "tracks": {
+      "href": "https://api.symphonia.com/v1/users/symphonia/playlists/59ZbFPES4DQwEjBpWHzrtC/tracks",
+      "items": [
+        {
+          "added_at": "2014-09-01T04:21:28Z",
+          "added_by": {
+            "href": "https://api.symphonia.com/v1/users/symphonia",
+            "id": "symphonia",
+            "type": "user"
+          },
+          "track": {
+            "album": {
+              "album_type": "single",
+              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
+              "id": "5GWoXPsTQylMuaZ84PC563",
+              "images": [
+                {
+                  "height": 640,
+                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
+                  "width": 640
+                }
+              ],
+              "name": "Quran ALbum1",
+              "type": "album"
+            },
+            "artists": [
+              {
+                "href": "https://api.symphonia.com/v1/artists/1",
+                "id": "1",
+                "name": "Yasser Al-Dosari",
+                "type": "artist"
+              }
+            ],
+            "duration_ms": 2131000,
+            "explicit": false,
+            "href": "https://server11.mp3quran.net/yasser/012.mp3",
+            "id": "4i9sYtSIlR80bxje5B3rUb",
+            "name": "Surah Yossef",
+            "popularity": 45,
+            "track_number": 1,
+            "type": "track"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "description": "Playlist K",
+    "popularity": 50,
+    "recent": true,
+    "genre": "pop",
+    "followers": {
+      "href": null,
+      "total": 143350
+    },
+    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
+    "images": [
+      {
+        "url": "http://source.unsplash.com/vISNAATFXlE"
+      }
+    ],
+    "name": "New Playlist5",
+    "owner": {
+      "href": "https://api.symphonia.com/v1/users/symphonia",
+      "id": "symphonia",
+      "type": "user"
+    },
+    "public": true,
+    "liked": false,
+    "tracks": {
+      "href": "https://api.symphonia.com/v1/users/symphonia/playlists/59ZbFPES4DQwEjBpWHzrtC/tracks",
+      "items": [
+        {
+          "added_at": "2014-09-01T04:21:28Z",
+          "added_by": {
+            "href": "https://api.symphonia.com/v1/users/symphonia",
+            "id": "symphonia",
+            "type": "user"
+          },
+          "track": {
+            "album": {
+              "album_type": "single",
+              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
+              "id": "5GWoXPsTQylMuaZ84PC563",
+              "images": [
+                {
+                  "height": 640,
+                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
+                  "width": 640
+                }
+              ],
+              "name": "Quran ALbum1",
+              "type": "album"
+            },
+            "artists": [
+              {
+                "href": "https://api.symphonia.com/v1/artists/1",
+                "id": "1",
+                "name": "Yasser Al-Dosari",
+                "type": "artist"
+              }
+            ],
+            "duration_ms": 2131000,
+            "explicit": false,
+            "href": "https://server11.mp3quran.net/yasser/012.mp3",
+            "id": "4i9sYtSIlR80bxje5B3rUb",
+            "name": "Surah Yossef",
+            "popularity": 45,
+            "track_number": 1,
+            "type": "track"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "description": "Playlist L",
+    "popularity": 50,
+    "recent": true,
+    "genre": "jazz",
+    "followers": {
+      "href": null,
+      "total": 143350
+    },
+    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
+    "images": [
+      {
+        "url": "http://source.unsplash.com/NCNzK2vVnpI"
+      }
+    ],
+    "name": "NewPlaylist2",
+    "owner": {
+      "href": "https://api.symphonia.com/v1/users/symphonia",
+      "id": "symphonia",
+      "type": "user"
+    },
+    "public": true,
+    "liked": false,
     "tracks": {
       "href": "https://api.symphonia.com/v1/users/symphonia/playlists/59ZbFPES4DQwEjBpWHzrtC/tracks",
       "items": [

@@ -19,15 +19,15 @@ const mutations = {
 };
 
 const token = localStorage.getItem("userToken");
+const user_id=localStorage.getItem("userID");
 
 const actions = {
   createPlaylist({ commit }, playlistName) {
     axios
-      .post("/playlists", {
+      .post("/v1/users/"+user_id+"/playlists", {
         data:{name: playlistName}
       })
       .then(response => {
-        console.log(response);
         var id = response.data.id;
         var name = response.data.name;
         commit("add_playlist", { id, name });
@@ -46,7 +46,6 @@ const actions = {
       })
       .then(response => {
         let list = response.data;
-        console.log(response);
         commit("load_likedPlaylists", list);
       })
       .catch(error => {
