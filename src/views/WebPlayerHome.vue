@@ -11,10 +11,7 @@
     "
       :loggedIn="isLoggedIn()"
     ></router-view>
-    <sound-player
-      :loggedIn="isLoggedIn()"
-      file="/example.mp3"
-    />
+    <sound-player v-if="isLoggedIn()" />
   </v-app>
 </template>
 

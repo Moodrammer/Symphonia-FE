@@ -34,14 +34,14 @@
               mdi-shuffle-variant
             </v-icon>
           </a>
-          <!-- Next -->
-          <a @click="next()" title="Previous" style="margin-right: 10px;">
+          <!-- Previous -->
+          <a @click="previous()" title="Previous" style="margin-right: 10px;">
             <v-icon medium class="icons">
               mdi-skip-previous
             </v-icon>
           </a>
           <!-- Start and Pause -->
-          <a @click="pause()">
+          <a @click="pause()" v-if="loaded" style="width: 36px; height: 36px;">
             <v-icon v-if="paused" large class="icons" title="play">
               mdi-play-circle-outline
             </v-icon>
@@ -49,8 +49,15 @@
               mdi-pause-circle-outline
             </v-icon>
           </a>
-          <!-- Previous -->
-          <a @click="previous()" title="Next" style="margin-left: 10px;">
+
+          <img
+            v-if="!loaded"
+            style="width: 36px; height: 36px; vertical-align: middle;"
+            src="/loadingPlay.gif"
+          />
+
+          <!-- Next -->
+          <a @click="next()" title="Next" style="margin-left: 10px;">
             <v-icon medium class="icons">
               mdi-skip-next
             </v-icon>
@@ -171,14 +178,6 @@ export default {
       type: Boolean,
       default: false
     },
-    file: {
-      type: String,
-      default: ""
-    },
-    loop: {
-      type: Boolean,
-      default: false
-    }
   },
   computed: {
     duration: function() {
@@ -187,11 +186,12 @@ export default {
   },
   data() {
     return {
+      //file: "", //It's initialized in the init
+      file: "/example.mp3",
       isMuted: false,
       loaded: false,
       paused: true,
       currentTime: "00:00",
-      innerLoop: undefined,
       audio: undefined,
       totalDuration: 0,
       volumeValue: 50,
@@ -200,7 +200,8 @@ export default {
       isProgressBarPressed: false,
       isVolumePressed: false,
       isRepeatEnabled: false,
-      isRepeatOnceEnabled: false
+      isRepeatOnceEnabled: false,
+      isNextPressed: false
     };
   },
   methods: {
@@ -233,6 +234,23 @@ export default {
       this.paused ? this.audio.pause() : this.audio.play();
     },
     next: function() {
+      this.isNextPressed = true;
+      this.loaded = false;
+      this.paused = true; //the sound will be paused upon changing the soruce
+
+      //TODO: is it the last song in the playlist ?
+
+      var temp = this;
+      //this timeout to simulate the server delay
+      //TODO: remove this after delay before deployment
+      setTimeout(function(){ 
+        //TODO: change this to a url coming from a request.
+        temp.file = "https://www.bensound.com/bensound-music/bensound-summer.mp3";
+      }, 1000)
+    },
+    //this method will be invoked after changing the song
+    //it will change the song info: song name, artist, picture.
+    updateSongInfo: function() {
       //stub
     },
     previous: function() {
@@ -273,9 +291,13 @@ export default {
       //The HTMLMediaElement.readyState property indicates the readiness state of the media.
       // (this.audio.readyState >= 2) Data is available
       if (this.audio.readyState >= 2) {
-        if (this.autoPlay) this.play();
+        if (this.autoPlay || this.isNextPressed) {
+          this.play();
+          this.isNextPressed = false;
+        }
 
-        this.loaded = true;
+        this.loaded = true; //finished loading the next song.
+
         this.totalDuration = parseInt(this.audio.duration);
       } else {
         throw new Error("Failed to load sound file");
@@ -296,22 +318,34 @@ export default {
       this.paused = true; //the song is paused flag
     },
     _handleEndedSong: function() {
-      if (this.isRepeatOnceEnabled) 
-      {
+      if (this.isRepeatOnceEnabled) {
         this.play();
       }
     },
+    _handlerWaiting: function() {
+      this.loaded = false;
+    },
+    _handlePlayingAfterBuffering: function() {
+      this.loaded = true;
+    },
     init: function() {
+      //set the listeners:
       this.audio.addEventListener("timeupdate", this._handlePlayingUI);
       //The loadeddata event is fired when the frame at the current playback
       //position of the media has finished loading; often the first frame.
       this.audio.addEventListener("loadeddata", this._handleLoaded);
       this.audio.addEventListener("pause", this._handlePause);
-      //this.audio.addEventListener("play", this._handlePlay); //for future features
-      this.audio.addEventListener("ended", this._handleEndedSong); //for future features
-        
+      this.audio.addEventListener("ended", this._handleEndedSong); //the song is ended
+      
+      this.audio.addEventListener("waiting", this._handlerWaiting); //the song is stopped due to buffering
+      this.audio.addEventListener("playing", this._handlePlayingAfterBuffering);
+
+      //configure the volume
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
+
+      //get the last song that user listened to and call updateSongInfo()
+      //this.file = "link came from a request"
     },
     getAudio: function() {
       return this.$el.querySelectorAll("audio")[0];
@@ -333,14 +367,16 @@ export default {
   },
   mounted: function() {
     this.audio = this.getAudio();
-    this.innerLoop = this.loop;
     this.init();
   },
   beforeDestroy: function() {
     this.audio.removeEventListener("timeupdate", this._handlePlayingUI);
     this.audio.removeEventListener("loadeddata", this._handleLoaded);
     this.audio.removeEventListener("pause", this._handlePause);
-    this.audio.removeEventListener("ended", this._handleEndedSong); //for future features
+    this.audio.removeEventListener("ended", this._handleEndedSong); 
+
+    this.audio.removeEventListener("waiting", this._handlerWaiting); 
+    this.audio.removeEventListener("playing", this._handlePlayingAfterBuffering);
   }
 };
 </script>
@@ -385,6 +421,7 @@ export default {
   display: block;
   text-align: center;
   margin-bottom: 10px;
+  height: 36px;
 }
 
 .icons {
