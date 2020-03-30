@@ -4,10 +4,10 @@
     <audio ref="audiofile" :src="file" style="display:none;"></audio>
     <!-- song info -->
     <v-row>
-      <v-col cols="3">
+      <v-col cols="4">
         <v-toolbar flat color="rgba(0,0,0,0)">
           <v-avatar tile size="56">
-            <img src="http://localhost:8080/profile.jpg" alt="profile pic" />
+            <img src="/profile.jpg" alt="profile pic" />
           </v-avatar>
           <div
             style="padding-left: 14px; padding-top: 14px; margin-right: 14px;"
@@ -27,7 +27,7 @@
         </v-toolbar>
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="5">
         <div class="audio-controls">
           <a @click="shuffle()" title="shuffle" style="margin-right: 20px;">
             <v-icon small class="icons">
@@ -75,7 +75,6 @@
             v-bind:max="totalDuration"
             @mousedown="progressBarPressed"
             @mouseup="progressBarReleased"
-            class="rangeslider"
             v-model="currentTimeInSec"
           />
 
@@ -87,7 +86,7 @@
       </v-col>
 
       <v-spacer></v-spacer>
-      <v-col cols="2">
+      <v-col cols="2" style="background: rgba(0, 0, 0, 0);">
         <!-- mute or change the volume-->
         <div style="padding-top: 20px;">
           <a
@@ -115,11 +114,10 @@
             type="range"
             min="0"
             max="100"
-            class="rangeslider"
+            class="volume-slider"
             v-model="volumeValue"
             v-on:mousdown="volumeBarPressed"
             v-on:mouseup="volumeBarReleased"
-            style="width: 100px; margin-right: 0px;"
           />
         </div>
       </v-col>
@@ -146,6 +144,10 @@ export default {
       type: Boolean,
       default: false
     },
+    file: {
+      type: String,
+      default: ""
+    },
     loop: {
       type: Boolean,
       default: false
@@ -158,7 +160,6 @@ export default {
   },
   data() {
     return {
-      file: "http://localhost:8080/example.mp3",
       isMuted: false,
       loaded: false,
       playing: false,
@@ -182,6 +183,7 @@ export default {
       this.audio.volume = this.volumeValue / 100;
       if (this.volumeValue / 100 > 0) {
         if (this.isMuted) {
+          this.previousVolumeValue = this.volumeValue;
           this.mute();
         }
       } else if (this.volumeValue / 100 === 0) {
@@ -364,5 +366,13 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+//for sliders
 @import "./slider.scss";
+
+.volume-slider {
+  max-width: 84px;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  margin-right: 0px;
+}
 </style>

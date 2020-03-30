@@ -29,7 +29,8 @@ export function makeServer({ environment = "development" } = {}) {
                 password: "12345678",
                 DateOfBirth: "18-12-1995",
                 gender: "male",
-                type: "artist"
+                type: "artist",
+                country: "EG"
             });
 
             //This part is just to fake mirage in order to persist the data of only one user
@@ -195,7 +196,7 @@ export function makeServer({ environment = "development" } = {}) {
                         name: attrs.name,
                         email: attrs.email,
                         password: attrs.password,
-                        DateOfBirth: attrs.DateOfBirth,
+                        DateOfBirth: attrs.dateOfBirth,
                         gender: attrs.gender,
                         type: attrs.type
                     });

@@ -9,6 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'npm install package.json'
+                sh 'sudo rm dist'
                 sh 'npm run build'
             }
         }

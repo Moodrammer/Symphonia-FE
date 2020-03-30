@@ -61,7 +61,7 @@
             <v-img
               aspect-ratio="1"
               v-bind:src="
-                'http://localhost:8080/benefits/benefit-' + n.no + '.png'
+                '/benefits/benefit-' + n.no + '.png'
               "
               style="
               display: block;
@@ -98,7 +98,7 @@
     <v-content>
       <v-card class="mx-auto my-12" max-width="374">
         <v-card-title style="font-size 32px; color: black;"
-          >Spotify Premium</v-card-title
+          >Symphonia Premium</v-card-title
         >
 
         <v-card-text>
@@ -215,7 +215,7 @@ export default {
 
 <style scoped>
 .hero-home-bg-cover {
-  background: url(http://localhost:8080/premium_hero.png) right bottom / 450px
+  background: url(/premium_hero.png) right bottom / 450px
     no-repeat rgb(80, 155, 245);
   min-height: 493px;
   background-position: right 3px top -27px;
@@ -224,7 +224,7 @@ export default {
 }
 
 .hero-home-md-cover {
-  background: url(http://localhost:8080/premium_hero.png) right bottom / 450px
+  background: url(/premium_hero.png) right bottom / 450px
     no-repeat rgb(80, 155, 245);
   min-height: 493px;
   background-position: right 3px top 40px;
