@@ -173,12 +173,7 @@ export const convertTimeHHMMSS = val => {
 
 export default {
   name: "vue-audio",
-  props: {
-    autoPlay: {
-      type: Boolean,
-      default: false
-    },
-  },
+ 
   computed: {
     duration: function() {
       return this.audio ? convertTimeHHMMSS(this.totalDuration) : "";
@@ -201,7 +196,8 @@ export default {
       isVolumePressed: false,
       isRepeatEnabled: false,
       isRepeatOnceEnabled: false,
-      isNextPressed: false
+      isNextPressed: false,
+      isPreviousPressed: false
     };
   },
   methods: {
@@ -238,12 +234,13 @@ export default {
       this.loaded = false;
       this.paused = true; //the sound will be paused upon changing the soruce
 
-      //TODO: is it the last song in the playlist ?
+      //TODO: is it the current song is the last one in the playlist ?
 
       var temp = this;
       //this timeout to simulate the server delay
       //TODO: remove this after delay before deployment
-      setTimeout(function(){ 
+      setTimeout(function(){
+        //call updateSongInfo()
         //TODO: change this to a url coming from a request.
         temp.file = "https://www.bensound.com/bensound-music/bensound-summer.mp3";
       }, 1000)
@@ -254,7 +251,20 @@ export default {
       //stub
     },
     previous: function() {
-      //stub
+      this.isPreviousPressed = true;
+      this.loaded = false;
+      this.paused = true; //the sound will be paused upon changing the soruce
+
+      //TODO: is it the current song is the first one in the playlist ?
+
+      var temp = this;
+      //this timeout to simulate the server delay
+      //TODO: remove this after delay before deployment
+      setTimeout(function(){
+        //call updateSongInfo()  
+        //TODO: change this to a url coming from a request.
+        temp.file = "/example.mp3";
+      }, 1000)
     },
     shuffle: function() {
       //stub
@@ -291,9 +301,14 @@ export default {
       //The HTMLMediaElement.readyState property indicates the readiness state of the media.
       // (this.audio.readyState >= 2) Data is available
       if (this.audio.readyState >= 2) {
-        if (this.autoPlay || this.isNextPressed) {
+        if (this.isNextPressed) {
           this.play();
           this.isNextPressed = false;
+        }
+        else if (this.isPreviousPressed)
+        {
+          this.play();
+          this.isPreviousPressed = false;
         }
 
         this.loaded = true; //finished loading the next song.
