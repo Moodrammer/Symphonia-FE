@@ -5,21 +5,30 @@ const state = {
 };
 
 const mutations = {
-    load_albums(state, list) {
-      state.albums = list;
-    },
-    delete_albums(state,list) {
-      list.forEach(x => {
-        for(var i = state.albums.length - 1; i >= 0; i--) {
-          if(state.albums[i].album.id === x) {
-            state.albums.splice(i, 1);
-            break;
-          }
-        }  
-      });
-    }
-  };
+    
+  load_albums: (state, list) => state.albums = list,
+  delete_albums:(state, list) => state.albums = state.albums.filter(album => !list.includes(album.album.id))
+
+};
   
+const getters = {
+  allAlbums: function(state){
+    var newValue = state.albums;
+    var albums = [];
+    newValue.forEach(element => {
+      var k = {
+        name: element.album.name,
+        image: element.album.images[0].url,
+        description: element.album.artists[0].name,
+        id: element.album.id
+      }
+      albums.push(k);
+    });
+    return albums;
+}
+}
+
+
 const token = localStorage.getItem("userToken");
 
 const actions = {
@@ -30,14 +39,9 @@ const actions = {
           Authorization: `Bearer ${token}`
         }
       })
-      .then(response => {
-        let list = response.data;
-        console.log(response);
-        console.log(list);
-        commit("load_albums", list);
-      })
+      .then(response => commit("load_albums", response.data))
       .catch(error => {
-        console.log("axios caught an error");
+        console.log("axios caught an error in getAlbums");
         console.log(error);
       });
   },
@@ -54,16 +58,16 @@ const actions = {
     }).then(
       commit("delete_albums", albums)
     )
-    .catch(error => console.log(error))
-    
+    .catch(error => {
+      console.log("axios caught an error in deleteAlbums");
+      console.log(error);
+    })
   }
-
-
 };
 
 export default {
-  namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
 };
