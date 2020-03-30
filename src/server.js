@@ -209,7 +209,7 @@ export function makeServer({ environment = "development" } = {}) {
             name: attrs.name,
             email: attrs.email,
             password: attrs.password,
-            DateOfBirth: attrs.DateOfBirth,
+            DateOfBirth: attrs.dateOfBirth,
             gender: attrs.gender,
             type: attrs.type
           });

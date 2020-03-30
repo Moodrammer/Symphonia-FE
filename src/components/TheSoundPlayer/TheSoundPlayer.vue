@@ -7,7 +7,7 @@
       <v-col cols="4">
         <v-toolbar flat color="rgba(0,0,0,0)">
           <v-avatar tile size="56">
-            <img src="http://localhost:8080/profile.jpg" alt="profile pic" />
+            <img src="/profile.jpg" alt="profile pic" />
           </v-avatar>
           <div
             style="padding-left: 14px; padding-top: 14px; margin-right: 14px;"
@@ -144,6 +144,10 @@ export default {
       type: Boolean,
       default: false
     },
+    file: {
+      type: String,
+      default: ""
+    },
     loop: {
       type: Boolean,
       default: false
@@ -156,7 +160,6 @@ export default {
   },
   data() {
     return {
-      file: "http://localhost:8080/example.mp3",
       isMuted: false,
       loaded: false,
       playing: false,

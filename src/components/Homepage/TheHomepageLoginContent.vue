@@ -206,7 +206,7 @@ export default {
 
 <style scoped>
 .hero-home-sm-cover {
-  background: url(http://localhost:8080/hero-hanging-man.png) no-repeat;
+  background: url(/hero-hanging-man.png) no-repeat;
   margin-right: auto;
   margin-left: auto;
   width: 1170px;
@@ -214,7 +214,7 @@ export default {
 }
 
 .hero-home-bg-cover {
-  background: url(http://localhost:8080/hero-hanging-man.png) no-repeat;
+  background: url(/hero-hanging-man.png) no-repeat;
   margin-right: auto;
   margin-left: auto;
   width: 1170px;
