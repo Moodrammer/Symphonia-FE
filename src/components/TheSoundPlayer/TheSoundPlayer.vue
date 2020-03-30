@@ -373,6 +373,18 @@ export default {
     _handlePlayingAfterBuffering: function() {
       this.loaded = true;
     },
+    _handleSpaceDown: function(e) {
+      if (e.code === "Space") 
+      {
+        e.preventDefault(); //this is just to prevent the space from scrolling        
+      }
+    },
+    _handleSpaceUp: function(e) {
+      if (e.code === "Space") 
+      {
+        this.pause();
+      }
+    },
     init: function() {
       //set the listeners:
       this.audio.addEventListener("timeupdate", this._handlePlayingUI);
@@ -384,6 +396,10 @@ export default {
 
       this.audio.addEventListener("waiting", this._handlerWaiting); //the song is stopped due to buffering
       this.audio.addEventListener("playing", this._handlePlayingAfterBuffering);
+
+      //space key to pause and play the song
+      document.addEventListener('keyup', this._handleSpaceUp);
+      document.addEventListener('keydown', this._handleSpaceDown);
 
       //configure the volume
       this.audio.volume = this.volumeValue / 100;
@@ -425,6 +441,9 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
+
+    document.removeEventListener('keyup', this._handleSpaceUp);
+    document.removeEventListener('keydown', this._handleSpaceDown);
   }
 };
 </script>
