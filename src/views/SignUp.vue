@@ -29,7 +29,7 @@
                     <v-btn
                     id="ggl-sign-btn"
                     rounded
-                    color="#007ec6"
+                    color="#dd4b39"
                     class="white--text"
                     style="font-size: 14px"
                     large
@@ -321,7 +321,7 @@ export default {
      * @public
      */
     submitForm() {
-      if (this.$refs.userDataForm.validate()) {
+      if (this.$refs.userDataForm.validate() && (this.userData.email == this.userData.emailToMatch)) {
         //Store the user's date of birth in the store
         this.$store.commit("setuserDOB", this.DateOfBirth);
         //This action returns a promise to show whether the user had sighned up successfully or not

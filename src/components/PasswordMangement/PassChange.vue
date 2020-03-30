@@ -1,5 +1,5 @@
 <template>
-    <div id="passwordChange">
+    <div id="passwordChange" @keydown="checkEnterKey">
         <v-content style="max-width: 600px; margin: auto;">
             <v-row justify="center" class="mt-9" cols="12">
                 <v-col>
@@ -153,7 +153,7 @@
              * @public
              */
             updatePass() {
-                if(this.$refs.passChangeForm.validate()) {
+                if(this.$refs.passChangeForm.validate() && (this.newPass == this.newPassConf)) {
                     //sending a Patch request to the server to update the password with the new password
                     axios
                         .patch(`/v1/users/resetpassword/${this.resettoken}`, {
@@ -176,7 +176,16 @@
                             console.log(err)
                         })
                 }
-            }
+            },
+            /**
+            * This method checks on any keyup event if the user has pressed the Enter key to submit the password change form
+            * @public
+            */
+            checkEnterKey(e) {
+            console.log(e)    
+            if(e.keyCode == '13')
+                this.updatePass()
+            },
         }
     }
     

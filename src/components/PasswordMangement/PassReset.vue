@@ -78,7 +78,7 @@
         },
         methods: {
             /**
-            * This method checks on any keyup event if the user has pressed the Enter key to submit the Login form
+            * This method checks on any keyup event if the user has pressed the Enter key to submit the password reset form
             * @public
             */
             checkEnterKey(e) {
