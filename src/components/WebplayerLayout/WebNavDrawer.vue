@@ -7,7 +7,7 @@
         <router-link to="/webhome/home">
           <v-row class="pa-3">
             <v-img src="../../assets/s11 .png" max-width="50px"></v-img>
-            <h2 display-4 class="white--text">
+            <h2 display-4 class="white--text" v-show="$vuetify.breakpoint.lgAndUp">
               Symphonia
             </h2>
           </v-row>
