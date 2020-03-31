@@ -12,6 +12,62 @@
       <v-container dark @contextmenu.prevent="on.click">
         <!-- adding the page content: -->
         <v-row>
+            <v-col
+              cols="12"
+              lg="4"
+              md="6"
+              sm="12"
+              class="my-4"
+              v-if="cardStyle === 'playlist' && cardItems.likedSongs.length > 0"
+            >
+              <!-- adding the liked songs card -->
+              <div class="card">
+                <v-card
+                  class="gradient-likedsongs-card"
+                  width="475"
+                  height="270"
+                  dark
+                  @mouseover="cardHover(-1)"
+                  @mouseleave="cardItems.hoveredCardIndex = null"
+                >
+                  <!-- card text :liked songs artist and titles -->
+                  <div class="card-text likedsongs-card-text">
+                    <v-card-text>
+                      <span v-for="(song, index) in cardItems.likedSongs" :key="index">
+                        {{ song.artist }}
+                        <span class="grey--text">{{ song.title }}.</span>
+                      </span>
+                    </v-card-text>
+                  </div>
+                  <div class="card-text">
+                    <v-card-title class="white--text my-2">
+                      <!-- card title and subtitle -->
+                      <h1>Liked Songs</h1>
+                    </v-card-title>
+                    <v-card-subtitle
+                      >{{ cardItems.likedSongs.length }} liked songs</v-card-subtitle
+                    >
+                  </div>
+
+                  <!-- card play button -->
+                  <v-card-actions class="pr-5 pt-3">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      v-show="cardItems.hoveredCardIndex === -1"
+                      fab
+                      color="success"
+                      small
+                      id="play"
+                    >
+                      <v-icon color="white">mdi-play</v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </div>
+            </v-col>
+
+
+
           <!-- setting grid columns system for cards -->
           <v-col
             cols="12"
@@ -122,6 +178,15 @@ export default {
         this.$props.cardItems.hoveredCardIndex === null
       )
         this.disableMenu = true;
+      
+      //set the suitable context menu data in case of playlist card
+
+      else if(this.$props.cardStyle === 'playlist'){
+        if(this.$props.cardItems.hoveredCardIndex === -1)
+          this.$props.cardItems.menuList = this.$props.cardItems.likedSongsMenu;
+        else
+          this.$props.cardItems.menuList = this.$props.cardItems.playlistsMenu;
+    }
     }
   }
 };
@@ -149,4 +214,20 @@ export default {
 .card-text-subtitle {
   height: 20px;
 }
+
+/* liked songs card styles section */
+
+.likedsongs-card-text {
+  height: 100px;
+}
+
+.gradient-likedsongs-card {
+  background: rgb(89, 0, 172);
+  background: linear-gradient(
+    152deg,
+    rgba(89, 0, 172, 1) 0%,
+    rgba(107, 107, 221, 1) 92%
+  );
+}
+
 </style>
