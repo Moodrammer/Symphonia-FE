@@ -35,7 +35,7 @@
         <!-- Google button -->
         <v-row>
           <v-col cols="12" class="pt-1">
-            <v-btn block large rounded color="#007ec6" class="white--text"
+            <v-btn block large rounded color="#dd4b39" class="white--text"
               >CONTINUE WITH GOOGLE</v-btn
             >
           </v-col>
@@ -121,7 +121,7 @@
         <v-row>
           <v-col cols="12">
             <v-row justify="center">
-              <router-link to="/">Forgot your password?</router-link>
+              <router-link to="/password-reset/reset">Forgot your password?</router-link>
             </v-row>
           </v-col>
         </v-row>
@@ -177,7 +177,9 @@
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
 import isLoggedIn from "@/mixins/userService"
 
+
 export default {
+  name: "login",
   components: {
     symphoniaHeader
   },
@@ -192,7 +194,7 @@ export default {
       errorState: false,
       //validation rules for input data
       emailRules: [
-        v => !!v || "Please enter your Symphonia username or email address.",
+        v => !!v || "Please enter your Symphonia email address.",
         v => /.+@.+\..+/.test(v) || "E-mail must be valid"
       ],
       passwordRules: [v => !!v || "Please enter your password."]
@@ -207,6 +209,7 @@ export default {
   methods: {
     /**
      * This method checks on any keyup event if the user has pressed the Enter key to submit the Login form
+     * @public
      */
     checkEnterKey(e) {
       if(e.keyCode == '13')
@@ -229,7 +232,8 @@ export default {
           .then(() => {
             this.$router.push("/webhome/home");
           })
-          .catch(() => {
+          .catch((err) => {
+            console.log(err)
             this.errorState = true;
           });
       }

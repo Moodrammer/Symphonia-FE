@@ -15,17 +15,33 @@ export function makeServer({ environment = "development" } = {}) {
       artist: Model,
       bestsong: Model
     },
-
+    
     seeds(server) {
-      //creating some users to test login page
+      //creating a user for testing purposes
       server.create("user", {
         name: "Bobuser",
         email: "Bob@gmail.com",
         password: "12345678",
         DateOfBirth: "12-12-1980",
         gender: "male",
-        id: 1
+        type: "user"
       });
+      //creating an artist for testing purposes
+      server.create("user", {
+        name: "artistic",
+        email: "artist@gmail.com",
+        password: "12345678",
+        DateOfBirth: "18-12-1995",
+        gender: "male",
+        type: "artist"
+      });
+      
+      //This part is just to fake mirage in order to persist the data of only one user
+       if(sessionStorage.getItem("SignedUpUser") != null){
+        //The signed up user should remain in the localstorage so that when mirage loads each time it loads his data 
+        server.create("user" , JSON.parse(sessionStorage.getItem("SignedUpUser")))
+         localStorage.removeItem("SignedUpUser")
+       }
 
       server.create("track", {
         artists:
@@ -189,9 +205,10 @@ export function makeServer({ environment = "development" } = {}) {
 
 
 
-      this.get("/v1/bestsongs"), schema => {
-        return schema.bestsongs.bestSixSongs;
-      }
+      this.get("/v1/bestsongs"),
+        schema => {
+          return schema.bestsongs.bestSixSongs;
+        };
       //Intercepting Login post requests
       this.post("/v1/users/login", (schema, request) => {
         //turn attributes to json to be able to access the data of the request
@@ -210,9 +227,10 @@ export function makeServer({ environment = "development" } = {}) {
                   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MzQ2MiwiZXhwIjoxNTgzNTc3MDYyfQ.P_nm8thbkOzKBnbpqkBL1_SuRzZxt5eFFFN0aZ6AbBQ",
 
                 user: {
-                  _id: "5e6363431afd690fe0698560",
+                  _id: schema.users.find(i).id,
                   email: attrs.email,
-                  name: schema.users.find(i).name
+                  name: schema.users.find(i).name,
+                  type: schema.users.find(i).type
                 }
               }
             );
@@ -227,13 +245,16 @@ export function makeServer({ environment = "development" } = {}) {
           let attrs = JSON.parse(request.requestBody);
           //create a new user with the given data
           schema.create("user", {
-            username: attrs.name,
+            name: attrs.name,
             email: attrs.email,
             password: attrs.password,
-            DateOfBirth: attrs.DateOfBirth,
-            gender: attrs.gender
+            DateOfBirth: attrs.dateOfBirth,
+            gender: attrs.gender,
+            type: attrs.type
           });
 
+          //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
+          sessionStorage.setItem("SignedUpUser", JSON.stringify(schema.users.find(3)))
           //return a request for now that the operation of creating the user was a success
           return new Response(
             201,
@@ -242,14 +263,48 @@ export function makeServer({ environment = "development" } = {}) {
               token:
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
               user: {
-                _id: "5e6363431afd690fe0698560",
+                _id: schema.users.find(schema.users.all().length).id,
                 email: attrs.email,
                 name: attrs.name,
+                type: attrs.type,
                 __v: 0
               }
             }
           );
-        });
+        }),
+        //Handling the Forget password request(asking for changing password email)
+        this.post("/v1/users/forgotpassword" , (schema, request) => {
+          let attrs = JSON.parse(request.requestBody)
+          //loop on all users to check if the user email sent exists in the server current database
+          for(let i = 1 ; i <= schema.users.all().length ; i++) {
+            //if the email exists return a success response
+            if(attrs.email == schema.users.find(i).email) {
+              return new Response(200, {} , {})
+            }
+          }
+
+          return new Response(400 , {} , {})
+        }),
+        //Handling the changing password request(patch request for the new password)
+        this.patch("/v1/users/resetpassword/:resettoken", (schema,request) => {
+          let attrs = JSON.parse(request.requestBody)
+          //for the sake of mocking only , treat the reset token as the user id
+          let resettoken = parseInt(request.params.resettoken)
+          console.log(request.params)
+          //change the password of the first user for testing only
+          schema.users.find(resettoken).update('password', attrs.password)
+          console.log(schema.users.find(resettoken))
+          console.log(attrs.password)
+          return new Response(200 , {} , {
+            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
+            user: {
+              _id: schema.users.find(resettoken).id,
+              email: schema.users.find(resettoken).email,
+              name: schema.users.find(resettoken).name,
+              type: schema.users.find(resettoken).type
+            }
+          })
+        })
     }
   });
 

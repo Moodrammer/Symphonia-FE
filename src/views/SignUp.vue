@@ -29,7 +29,7 @@
                     <v-btn
                     id="ggl-sign-btn"
                     rounded
-                    color="#007ec6"
+                    color="#dd4b39"
                     class="white--text"
                     style="font-size: 14px"
                     large
@@ -143,7 +143,7 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
-
+              <!-- Gender radio group -->
               <v-row justify-left>
                 <v-radio-group
                   row
@@ -154,6 +154,23 @@
                 >
                   <v-radio label="Male" value="male" id="male-select"></v-radio>
                   <v-radio label="Female" value="female" id="female-select"></v-radio>
+                </v-radio-group>
+              </v-row>
+              <v-divider/>
+              <v-row justify="center" class="mt-2">
+                <h2>How do you like to use Symphonia ?</h2>
+              </v-row>
+              <!-- type radio group -->
+              <v-row justify="center">
+                <v-radio-group
+                  row
+                  class="pl-2"
+                  :rules="typeRules"
+                  v-model="userData.type"
+                  id="type"
+                >
+                  <v-radio label="Listener" value="user" color="green" id="listener-select"></v-radio>
+                  <v-radio label="Artist" value="artist" color="red" id="artist-select"></v-radio>
                 </v-radio-group>
               </v-row>
               <!-- Sign up button -->
@@ -205,7 +222,8 @@ export default {
         daySelected: "",
         monthSelected: "",
         yearSelected: "",
-        gender: ""
+        gender: "",
+        type: ""
       },
       //Set of rules for validation
       emailRules: [
@@ -222,11 +240,12 @@ export default {
       yearRules: [
         v => v >= 1900 || "Please enter a valid year",
         v =>
-          v <= 2000 || "Sorry, but you don't meet Symphonia's age requirements"
+          v < 2000 || "Sorry, but you don't meet Symphonia's age requirements"
       ],
       monthRules: [v => !!v || "Please enter your birth month"],
       usernameRules: [v => !!v || "What should we call you?"],
       genderRules: [v => !!v || "Please indicate your gender"],
+      typeRules: [v => !!v || "Do you wish to sign up as a listener or an artist"],
 
       //items and data
       item: [
@@ -268,7 +287,18 @@ export default {
       for (monthnumber = 1; monthnumber < this.item.length; monthnumber++) {
         if (this.item[monthnumber - 1] == this.userData.monthSelected) break;
       }
-      return `${this.userData.daySelected}-${monthnumber}-${this.userData.yearSelected}`;
+      if(monthnumber >= 1 && monthnumber <= 9) {
+        if(this.userData.daySelected >= 1 && this.userData.daySelected <= 9)
+          return `${this.userData.yearSelected}-0${monthnumber}-0${this.userData.daySelected}`;
+        else
+          return `${this.userData.yearSelected}-0${monthnumber}-${this.userData.daySelected}`;
+      }      
+      else {
+        if(this.userData.daySelected >= 1 && this.userData.daySelected <= 9)
+          return `${this.userData.yearSelected}-${monthnumber}-0${this.userData.daySelected}`;
+        else
+          return `${this.userData.yearSelected}-${monthnumber}-${this.userData.daySelected}`;  
+      }
     }
   },
   mixins: [isLoggedIn],
@@ -302,7 +332,7 @@ export default {
      * @public
      */
     submitForm() {
-      if (this.$refs.userDataForm.validate()) {
+      if (this.$refs.userDataForm.validate() && (this.userData.email == this.userData.emailToMatch)) {
         //Store the user's date of birth in the store
         this.$store.commit("setuserDOB", this.DateOfBirth);
         //This action returns a promise to show whether the user had sighned up successfully or not
@@ -331,4 +361,5 @@ export default {
   max-width: 500px;
   margin: auto;
 }
+
 </style>
