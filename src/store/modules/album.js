@@ -21,7 +21,7 @@ const getters = {
         image: element.album.images[0].url,
         description: element.album.artists[0].name,
         id: element.album.id,
-        url: element.album.external_urls
+        url: "url to be added"
       }
       albums.push(k);
     });
