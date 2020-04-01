@@ -31,6 +31,9 @@ const actions = {
         console.log(error);
       });
   },
+
+  // getPlayslist works for (Get a List of Current User's Playlists) when nothing send in the parameter 'user'
+  // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
   getPlaylists({ commit }) {
     axios
       .get("/v1/me/playlists", {
@@ -48,6 +51,9 @@ const actions = {
         console.log(error);
       });
   }
+
+
+
 };
 
 const getters = {

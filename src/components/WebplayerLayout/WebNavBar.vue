@@ -342,9 +342,6 @@ export default {
 #logIn:hover {
   transform: scale(1.1, 1.1);
 }
-.v-btn:before {
-  background-color: rgba(0, 0, 0, 0);
-}
 #logIn {
   border-radius: 500px;
   padding-left: 35px;

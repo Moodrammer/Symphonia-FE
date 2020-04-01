@@ -6,7 +6,8 @@ import playlist from "./modules/playlist";
 import track from "./modules/track";
 import player from "./modules/player";
 import category from "./modules/category";
-import webplayerHome from "./modules/webplayerHome";
+import album from "./modules/album"
+import artist from "./modules/artist"
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     track,
     player,
     category,
-    webplayerHome
+    album,
+    artist
   }
 });

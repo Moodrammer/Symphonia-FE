@@ -12,6 +12,8 @@ import HomeContent from "../components/WebplayerContent/HomeContentRouter.vue";
 import Tracks from "../views/LikedSongs.vue";
 import HomepagePremium from "../views/PremiumOffer.vue";
 import PlaylistView from "../components/general/PlaylistView.vue";
+import PassReset from "../components/PasswordMangement/PassReset.vue";
+import PassChange from "../components/PasswordMangement/PassChange.vue";
 
 Vue.use(VueRouter);
 
@@ -116,6 +118,29 @@ const routes = [
       {
         path: "notifications",
         component: () => import("../components/User Settings/notification.vue")
+      }
+    ]
+  },
+
+  {
+    path: "/password-reset",
+    name: "forgetpassword",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/ForgetPass.vue"),
+    redirect:"/password-reset/reset" ,
+    children: [
+      {
+        path:"reset",
+        name:"reset",
+        component: PassReset
+      },
+      {
+        path:"change/:resettoken",
+        name:"change",
+        component: PassChange
       }
     ]
   }

@@ -1,76 +1,265 @@
 {
-  "items": [
-   {
-    "followers": {
-      "href": null,
-      "total": 306565
-    },
-    "genres": [],
-    "href": "https://api.symphonia.com/v1/artists/1",
-    "images": [
-      {
-        "height": 816,
-        "url": "http://source.unsplash.com/kcV7BxcVtU4",
-        "width": 1000
-      }
-    ],
-    "name": "Yasser Al-Dosari",
-    "popularity": 90,
-    "type": "artist"
-   } ,
-   {
-    "followers": {
-      "href": null,
-      "total": 306565
-    },
-    "genres": [],
-    "href": "https://api.symphonia.com/v1/artists/2",
-    "images": [
-      {
-        "height": 816,
-        "url": "http://source.unsplash.com/bG8U3kaZltE",
-        "width": 1000
-      }
-    ],
-    "name": "Nasser Al-Qatami",
-    "popularity": 90,
-    "type": "artist"
-   },
-   {
-    "followers": {
-      "href": null,
-      "total": 306565
-    },
-    "genres": [],
-    "href": "https://api.symphonia.com/v1/artists/3",
-    "images": [
-      {
-        "height": 816,
-        "url": "http://source.unsplash.com/b6fKcY3s8VE",
-        "width": 1000
-      }
-    ],
-    "name": "Wadeea Al-Yamani",
-    "popularity": 90,
-    "type": "artist"
-   },
-   {
-    "followers": {
-      "href": null,
-      "total": 306565
-    },
-    "genres": [],
-    "href": "https://api.symphonia.com/v1/artists/3",
-    "images": [
-      {
-        "height": 816,
-        "url": "http://source.unsplash.com/Y20JJ_ddy9M",
-        "width": 1000
-      }
-    ],
-    "name": "Maher Zain",
-    "popularity": 90,
-    "type": "artist"
-   }
-  ]
+    "artists": {
+        "items": [
+          {
+            "followers": {
+              "href": null,
+              "total": 306565
+            },
+            "genres": [],
+            "href": "https://api.symphonia.com/v1/artists/1",
+            "images": [
+              {
+                "height": 816,
+                "url": "http://source.unsplash.com/kcV7BxcVtU4",
+                "width": 1000
+              }
+            ],
+            "name": "Yasser Al-Dosari",
+            "popularity": 90,
+            "type": "artist"
+           } ,
+           {
+            "followers": {
+              "href": null,
+              "total": 306565
+            },
+            "genres": [],
+            "href": "https://api.symphonia.com/v1/artists/2",
+            "images": [
+              {
+                "height": 816,
+                "url": "http://source.unsplash.com/bG8U3kaZltE",
+                "width": 1000
+              }
+            ],
+            "name": "Nasser Al-Qatami",
+            "popularity": 90,
+            "type": "artist"
+           },
+           {
+            "followers": {
+              "href": null,
+              "total": 306565
+            },
+            "genres": [],
+            "href": "https://api.symphonia.com/v1/artists/3",
+            "images": [
+              {
+                "height": 816,
+                "url": "http://source.unsplash.com/b6fKcY3s8VE",
+                "width": 1000
+              }
+            ],
+            "name": "Wadeea Al-Yamani",
+            "popularity": 90,
+            "type": "artist"
+           },
+           {
+            "followers": {
+              "href": null,
+              "total": 306565
+            },
+            "genres": [],
+            "href": "https://api.symphonia.com/v1/artists/3",
+            "images": [
+              {
+                "height": 816,
+                "url": "http://source.unsplash.com/Y20JJ_ddy9M",
+                "width": 1000
+              }
+            ],
+            "name": "Maher Zain",
+            "popularity": 90,
+            "type": "artist"
+           },
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/1ZpCdBZ3rL0mXxMhzhOBvi"
+            },
+            "followers": {
+              "href": null,
+              "total": 9015
+            },
+            "genres": [],
+            "href": "https://api.spotify.com/v1/artists/1ZpCdBZ3rL0mXxMhzhOBvi",
+            "id": "1ZpCdBZ3rL0mXxMhzhOBvi",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/50cf866e9903b3ed98f3406a62d6122292a48ffb",
+                "width": 640
+              },
+              {
+                "height": 320,
+                "url": "https://i.scdn.co/image/1866ac0ab2e0d76bb27e9b745b0f8bef88e641c1",
+                "width": 320
+              },
+              {
+                "height": 160,
+                "url": "https://i.scdn.co/image/d670b04d8bb404fb0cf60b6491923e7238f7e181",
+                "width": 160
+              }
+            ],
+            "name": "Mohammed Saeed",
+            "popularity": 36,
+            "type": "artist",
+            "uri": "spotify:artist:1ZpCdBZ3rL0mXxMhzhOBvi"
+          },
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/41g2nSmocqVLuYnmndxefu"
+            },
+            "followers": {
+              "href": null,
+              "total": 82536
+            },
+            "genres": [
+              "egyptian pop"
+            ],
+            "href": "https://api.spotify.com/v1/artists/41g2nSmocqVLuYnmndxefu",
+            "id": "41g2nSmocqVLuYnmndxefu",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27393dc589eb443c59ef93fbfb8",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0293dc589eb443c59ef93fbfb8",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485193dc589eb443c59ef93fbfb8",
+                "width": 64
+              }
+            ],
+            "name": "Ahmed Kamel",
+            "popularity": 39,
+            "type": "artist",
+            "uri": "spotify:artist:41g2nSmocqVLuYnmndxefu"
+          },
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/4o6vIkdmHiEXZOesrJj3KO"
+            },
+            "followers": {
+              "href": null,
+              "total": 30549
+            },
+            "genres": [
+              "egyptian hip hop",
+              "egyptian pop"
+            ],
+            "href": "https://api.spotify.com/v1/artists/4o6vIkdmHiEXZOesrJj3KO",
+            "id": "4o6vIkdmHiEXZOesrJj3KO",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/4e2084132796c48fd88caaf215ab0e691bf631f3",
+                "width": 640
+              },
+              {
+                "height": 320,
+                "url": "https://i.scdn.co/image/b792412da65e330f8315c185fac23009b024e9dc",
+                "width": 320
+              },
+              {
+                "height": 160,
+                "url": "https://i.scdn.co/image/edf6bb6b22bc0e7a32b621a0afe62da968cdd19f",
+                "width": 160
+              }
+            ],
+            "name": "Abyusif",
+            "popularity": 46,
+            "type": "artist",
+            "uri": "spotify:artist:4o6vIkdmHiEXZOesrJj3KO"
+          },
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+            },
+            "followers": {
+              "href": null,
+              "total": 1483349
+            },
+            "genres": [
+              "arab pop",
+              "belly dance",
+              "egyptian pop",
+              "persian pop",
+              "rif"
+            ],
+            "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+            "id": "5abSRg0xN1NV3gLbuvX24M",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ee11ffb4c0f334e4c958ed051bbaf5f720751c9d",
+                "width": 640
+              },
+              {
+                "height": 320,
+                "url": "https://i.scdn.co/image/c4818b1f9d0c7a793d421b51c63d82c8c768795c",
+                "width": 320
+              },
+              {
+                "height": 160,
+                "url": "https://i.scdn.co/image/f3faab75ae00902f4cbb00e00a9876fbcba41a29",
+                "width": 160
+              }
+            ],
+            "name": "Amr Diab",
+            "popularity": 61,
+            "type": "artist",
+            "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+          },
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/6MQnUjIjnIOfHDFzqBJOAl"
+            },
+            "followers": {
+              "href": null,
+              "total": 341957
+            },
+            "genres": [
+              "arab pop",
+              "classic arab pop",
+              "syrian pop"
+            ],
+            "href": "https://api.spotify.com/v1/artists/6MQnUjIjnIOfHDFzqBJOAl",
+            "id": "6MQnUjIjnIOfHDFzqBJOAl",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b273f15b82248e74958c7ffcb1b2",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e02f15b82248e74958c7ffcb1b2",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d00004851f15b82248e74958c7ffcb1b2",
+                "width": 64
+              }
+            ],
+            "name": "Assala Nasri",
+            "popularity": 47,
+            "type": "artist",
+            "uri": "spotify:artist:6MQnUjIjnIOfHDFzqBJOAl"
+          }
+        ],
+        "next": null,
+        "total": 5,
+        "cursors": {
+          "after": null
+        },
+        "limit": 20,
+        "href": "https://api.spotify.com/v1/me/following?type=artist&limit=20"
+      }    
 }
