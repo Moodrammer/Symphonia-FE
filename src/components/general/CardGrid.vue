@@ -41,7 +41,7 @@
                   style="border-radius: 50%"
                   height="140px"
                   width="140px"
-                  :src="item.image"
+                  :src="item.images[0].url"
                 ></v-img>
 
                 <v-img
@@ -49,7 +49,7 @@
                   class="mx-auto elevation-6"
                   height="140px"
                   width="140px"
-                  :src="item.image"
+                  :src="item.images[0].url"
                 ></v-img>
 
                 <!-- card title -->

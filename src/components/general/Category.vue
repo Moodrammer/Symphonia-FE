@@ -5,7 +5,7 @@
     <v-spacer></v-spacer>
     <p v-if="seeAll" id="seeAll">SEE ALL</p>
   </v-row>
-  <h5 :style="{opacity:0.6}">{{ subtitle }}</h5>
+  <!-- <h5 :style="{opacity:0.6}">{{ subtitle }}</h5> -->
   <CardGrid :cardItems="griditems" :cardStyle="gridStyle"/>
 </v-container>
 </template>
@@ -18,7 +18,6 @@ export default {
   },
   props: {
     name: String,
-    subtitle: String,
     seeAll: Boolean,
     griditems: Object,
     gridStyle: String

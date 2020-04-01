@@ -5,6 +5,7 @@ import user from "./modules/user";
 import playlist from "./modules/playlist";
 import track from "./modules/track";
 import player from "./modules/player";
+import category from "./modules/category";
 import webplayerHome from "./modules/webplayerHome";
 
 Vue.use(Vuex);
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     user,
     track,
     player,
+    category,
     webplayerHome
   }
 });

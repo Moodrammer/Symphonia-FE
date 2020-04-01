@@ -5,13 +5,8 @@ const state = {
 };
 
 const mutations = {
-  add_playlist(state, { id, name }) {
-    state.likedPlaylists.push({
-      id: id,
-      name: name
-    });
-
-    console.log("Playlist was added");
+  add_playlist(state, payload) {
+    state.likedPlaylists.push(payload);
   },
   load_likedPlaylists(state, list) {
     state.likedPlaylists = list;
@@ -28,9 +23,8 @@ const actions = {
         data:{name: playlistName}
       })
       .then(response => {
-        var id = response.data.id;
-        var name = response.data.name;
-        commit("add_playlist", { id, name });
+        var newPlaylist = response.data
+        commit("add_playlist", newPlaylist);
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -46,6 +40,7 @@ const actions = {
       })
       .then(response => {
         let list = response.data;
+        console.log("Hi from playlist");
         commit("load_likedPlaylists", list);
       })
       .catch(error => {
@@ -55,9 +50,14 @@ const actions = {
   }
 };
 
+const getters = {
+  likedPlaylists: state => state.likedPlaylists
+};
+
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
 };

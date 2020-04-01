@@ -109,8 +109,8 @@ export function makeServer({ environment = "development" } = {}) {
 /////////////////////////////////////////////////////////////////////////////////
 // Create Playlist Request
 /////////////////////////////////////////////////////////////////////////////////
-//TODO : 1- Write the correct url   2-Return the correct playlist object
       this.post("/v1/users/:user_id/playlists", (schema, request) => {
+        let user_id=request.params.user_id;
         let newPlaylist = JSON.parse(request.requestBody).data;
         schema.create("playlist", {
           name: newPlaylist.name,
@@ -120,8 +120,33 @@ export function makeServer({ environment = "development" } = {}) {
           200,
           {},
           {
-           name: newPlaylist.name,
-           id: schema.playlists.find(schema.playlists.all().length).id
+            name: newPlaylist.name,
+            id: schema.playlists.find(schema.playlists.all().length).id,
+            description: null,
+            followers: {
+              href: null,
+              total: 0
+            },
+            href: "https://api.symphonia.com/v1/users/thelinmichael/playlists/"+schema.playlists.find(schema.playlists.all().length).id,
+            images: [{
+              url: "http://source.unsplash.com/mp_FNJYcjBM"
+            }],
+            owner: {
+              href: "https://api.symphonia.com/v1/users/"+user_id,
+              id: user_id,
+              type: "user"
+            },
+            public: false,
+            tracks: {
+              href: "https://api.symphonia.com/v1/users/thelinmichael/playlists/7d2D2S200NyUE5KYs80PwO/tracks",
+              items: [],
+              limit: 100,
+              next: null,
+              offset: 0,
+              previous: null,
+              total: 0
+            },
+            type: "playlist"
           });
       });
 ///////////////////////////////////////////////////////////////////////////////////
@@ -153,8 +178,6 @@ export function makeServer({ environment = "development" } = {}) {
 ///////////////////////////////////////////////////////////////////////////////////
       this.get('v1/browse/categories/:category_id/playlists',(schema , request) => {
         let id= request.params.category_id;
-        console.log("mirage");
-        console.log(id);
         return schema.playlists.where({genre: id}).models;
       })
 ///////////////////////////////////////////////////////////////////////////////////
