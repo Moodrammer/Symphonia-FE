@@ -10,10 +10,11 @@
         <v-list color="transparent">
           <!--Nesting the song component-->
           <song
+            :playing="true"
             songName="Changes"
             artistName="2PAC"
             albumName="from creed to grave"
-            :duration= "80000"
+            :duration="80000"
           />
         </v-list>
       </v-col>
@@ -30,6 +31,7 @@
           <song
             v-for="track in tracks"
             :key="track.name"
+            :disabled="true"
             :songName="track.name"
             :artistName="track.artists.name"
             :albumName="track.album.name"
@@ -38,13 +40,12 @@
         </v-list>
       </v-col>
     </v-row>
-
   </v-container>
 </template>
 
 <script>
 import Song from "../components/general/Song";
-import { mapState, mapActions, mapMutations, mapGetters} from "vuex";
+import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
 import getDeviceSize from "../mixins/getDeviceSize";
 /**
  * @displayName Liked Songs
@@ -78,7 +79,7 @@ export default {
   },
   beforeDestroy: function() {
     this.setIsQueueOpened(false);
-  },
+  }
 };
 </script>
 

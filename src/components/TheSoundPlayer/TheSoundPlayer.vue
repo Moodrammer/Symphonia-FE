@@ -34,8 +34,25 @@
 
       <v-col cols="5">
         <div class="audio-controls">
-          <a @click="shuffle()" title="shuffle" style="margin-right: 20px;">
+          <!-- shuffle -->
+          <a
+            @click="enableShuffle()"
+            v-if="!isShuffleEnabled"
+            title="shuffle"
+            style="margin-right: 20px;"
+          >
             <v-icon small class="icons">
+              mdi-shuffle-variant
+            </v-icon>
+          </a>
+
+          <a
+            @click="disableShuffle()"
+            v-if="isShuffleEnabled"
+            title="shuffle"
+            style="margin-right: 20px;"
+          >
+            <v-icon small color="green">
               mdi-shuffle-variant
             </v-icon>
           </a>
@@ -46,7 +63,11 @@
             </v-icon>
           </a>
           <!-- Start and Pause -->
-          <a @click="pauseAndPlay()" v-if="loaded" style="width: 36px; height: 36px;">
+          <a
+            @click="pauseAndPlay()"
+            v-if="loaded"
+            style="width: 36px; height: 36px;"
+          >
             <v-icon v-if="paused" large class="icons" title="play">
               mdi-play-circle-outline
             </v-icon>
@@ -129,12 +150,16 @@
         <!-- mute or change the volume-->
         <div style="padding-top: 20px;">
           <router-link
-            to = "/webhome/collection/queue"
+            to="/webhome/collection/queue"
             title="queue"
             style="margin-right: 10px; float: left; text-decoration: none;"
           >
-            <v-icon small 
-            v-bind:class="{'green-icon': isQueueOpened, icons: !isQueueOpened}"
+            <v-icon
+              small
+              v-bind:class="{
+                'green-icon': isQueueOpened,
+                icons: !isQueueOpened
+              }"
             >
               mdi-format-list-numbered-rtl
             </v-icon>
@@ -210,6 +235,7 @@ export default {
       isProgressBarPressed: false,
       isVolumePressed: false,
       isRepeatEnabled: false,
+      isShuffleEnabled: false,
       isRepeatOnceEnabled: false,
       isSongIsLiked: false,
       isFirstSong: true,
@@ -265,7 +291,8 @@ export default {
         //call updateSongInfo()
         //TODO: change this to a url coming from a request.
         temp.setSongLink(
-          "https://www.bensound.com/bensound-music/bensound-summer.mp3");
+          "https://www.bensound.com/bensound-music/bensound-summer.mp3"
+        );
       }, 1000);
     },
     previous: function() {
@@ -288,7 +315,13 @@ export default {
     updateSongInfo: function() {
       //stub
     },
-    shuffle: function() {
+    enableShuffle: function() {
+      this.isShuffleEnabled = true;
+      //make a request to get a shuffled song
+      /* send a request to save the option on backend */
+    },
+    disableShuffle: function() {
+      this.isShuffleEnabled = false;
       //make a request to get a shuffled song
       /* send a request to save the option on backend */
     },
