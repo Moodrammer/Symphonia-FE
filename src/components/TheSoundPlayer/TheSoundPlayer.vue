@@ -1,7 +1,7 @@
 <template>
   <v-footer app class="sound-player">
     <!-- audio tag -->
-    <audio ref="audiofile" :src="file" style="display:none;"></audio>
+    <audio ref="audiofile" :src="songLink" style="display:none;"></audio>
     <!-- song info -->
     <v-row>
       <v-col cols="4">
@@ -29,14 +29,30 @@
               mdi-heart
             </v-icon>
           </a>
-
         </v-toolbar>
       </v-col>
 
       <v-col cols="5">
         <div class="audio-controls">
-          <a @click="shuffle()" title="shuffle" style="margin-right: 20px;">
+          <!-- shuffle -->
+          <a
+            @click="enableShuffle()"
+            v-if="!isShuffleEnabled"
+            title="shuffle"
+            style="margin-right: 20px;"
+          >
             <v-icon small class="icons">
+              mdi-shuffle-variant
+            </v-icon>
+          </a>
+
+          <a
+            @click="disableShuffle()"
+            v-if="isShuffleEnabled"
+            title="shuffle"
+            style="margin-right: 20px;"
+          >
+            <v-icon small color="green">
               mdi-shuffle-variant
             </v-icon>
           </a>
@@ -47,7 +63,11 @@
             </v-icon>
           </a>
           <!-- Start and Pause -->
-          <a @click="pause()" v-if="loaded" style="width: 36px; height: 36px;">
+          <a
+            @click="pauseAndPlay()"
+            v-if="isBuffering"
+            style="width: 36px; height: 36px;"
+          >
             <v-icon v-if="paused" large class="icons" title="play">
               mdi-play-circle-outline
             </v-icon>
@@ -57,7 +77,7 @@
           </a>
 
           <img
-            v-if="!loaded"
+            v-if="!isBuffering"
             style="width: 36px; height: 36px; vertical-align: middle;"
             src="/loadingPlay.gif"
           />
@@ -129,15 +149,21 @@
       <v-col cols="2" style="background: rgba(0, 0, 0, 0);">
         <!-- mute or change the volume-->
         <div style="padding-top: 20px;">
-          <a
-            @click="queue()"
+          <router-link
+            to="/webhome/collection/queue"
             title="queue"
-            style="margin-right: 10px; float: left;"
+            style="margin-right: 10px; float: left; text-decoration: none;"
           >
-            <v-icon small class="icons">
+            <v-icon
+              small
+              v-bind:class="{
+                'green-icon': isQueueOpened,
+                icons: !isQueueOpened
+              }"
+            >
               mdi-format-list-numbered-rtl
             </v-icon>
-          </a>
+          </router-link>
           <a title="devices" style="margin-right: 10px; float: left;">
             <v-icon small class="icons">
               mdi-devices
@@ -171,6 +197,8 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters, mapActions } from "vuex";
+
 export const convertTimeHHMMSS = val => {
   //-val is the time passed from the start of the sound in integer seconds
   //-new Data(val * 1000) get a date from 1970 2:00:00 and advance it with milli seconds
@@ -186,6 +214,8 @@ export default {
   name: "vue-audio",
 
   computed: {
+    ...mapGetters("playlist", ["audio", "paused", "songLink", "isQueueOpened"]),
+
     duration: function() {
       return this.audio ? convertTimeHHMMSS(this.totalDuration) : "";
     }
@@ -193,10 +223,7 @@ export default {
   data() {
     return {
       //Audio info:
-      //file: "", //TODO: make it like this; it's initialized in the init
-      file: "/example.mp3",
       currentTime: "00:00",
-      audio: undefined,
       totalDuration: 0,
       volumeValue: 50,
       previousVolumeValue: 50,
@@ -204,15 +231,14 @@ export default {
 
       //Flags:
       isMuted: false,
-      loaded: false,
-      paused: true,
+      isBuffering: false,
       isProgressBarPressed: false,
       isVolumePressed: false,
       isRepeatEnabled: false,
+      isShuffleEnabled: false,
       isRepeatOnceEnabled: false,
-      isNextPressed: false,
-      isPreviousPressed: false,
       isSongIsLiked: false,
+      isFirstSong: true,
 
       //The song's info:
       artistPicture: "/profile.jpg",
@@ -222,6 +248,9 @@ export default {
     };
   },
   methods: {
+    ...mapMutations("playlist", ["setAudio", "setPaused", "setSongLink", "setIsSongLoaded"]),
+    ...mapActions("playlist", ["pauseAndPlay"]),
+
     saveToLikedSongs: function() {
       if (!this.isSongIsLiked) {
         //make a request to set the current song to the like ones.
@@ -247,40 +276,28 @@ export default {
     },
     play: function() {
       if (!this.paused) return;
-      this.paused = false;
+      this.setPaused(false);
       this.audio.play();
-      this.playing = true;
-    },
-    pause: function() {
-      this.paused = !this.paused;
-      this.paused ? this.audio.pause() : this.audio.play();
     },
     next: function() {
-      this.isNextPressed = true;
-      this.loaded = false;
-      this.paused = true; //the sound will be paused upon changing the soruce
+      this.isBuffering = false;
+      this.setPaused(true); //the sound will be paused upon changing the soruce
 
       //TODO: is it the current song is the last one in the playlist ?
-
       var temp = this;
       //this timeout is for simulating the server delay
       //TODO: remove this delay before deployment
       setTimeout(function() {
         //call updateSongInfo()
         //TODO: change this to a url coming from a request.
-        temp.file =
-          "https://www.bensound.com/bensound-music/bensound-summer.mp3";
+        temp.setSongLink(
+          "https://www.bensound.com/bensound-music/bensound-summer.mp3"
+        );
       }, 1000);
     },
-    //this method will be invoked after changing the song
-    //it will change the song info: song name, artist, picture.
-    updateSongInfo: function() {
-      //stub
-    },
     previous: function() {
-      this.isPreviousPressed = true;
-      this.loaded = false;
-      this.paused = true; //the sound will be paused upon changing the soruce
+      this.isBuffering = false;
+      this.setPaused(true); //the sound will be paused upon changing the soruce
 
       //TODO: is it the current song is the first one in the playlist ?
 
@@ -290,10 +307,21 @@ export default {
       setTimeout(function() {
         //call updateSongInfo()
         //TODO: change this to a url coming from a request.
-        temp.file = "/example.mp3";
+        temp.setSongLink("/example.mp3");
       }, 1000);
     },
-    shuffle: function() {
+    //this method will be invoked after changing the song
+    //it will change the song info: song name, artist, picture.
+    updateSongInfo: function() {
+      //stub
+    },
+    enableShuffle: function() {
+      this.isShuffleEnabled = true;
+      //make a request to get a shuffled song
+      /* send a request to save the option on backend */
+    },
+    disableShuffle: function() {
+      this.isShuffleEnabled = false;
       //make a request to get a shuffled song
       /* send a request to save the option on backend */
     },
@@ -309,9 +337,6 @@ export default {
     disableRepeatOnce: function() {
       this.isRepeatOnceEnabled = false;
       /* send a request to save the option on backend */
-    },
-    queue: function() {
-      //stub
     },
     mute: function() {
       this.isMuted = !this.isMuted;
@@ -329,15 +354,14 @@ export default {
       //The HTMLMediaElement.readyState property indicates the readiness state of the media.
       // (this.audio.readyState >= 2) Data is available
       if (this.audio.readyState >= 2) {
-        if (this.isNextPressed) {
+        if (!this.isFirstSong) {
           this.play();
-          this.isNextPressed = false;
-        } else if (this.isPreviousPressed) {
-          this.play();
-          this.isPreviousPressed = false;
+        } else {
+          this.isFirstSong = false;
         }
 
-        this.loaded = true; //finished loading the next song.
+        this.setIsSongLoaded(true);
+        this.isBuffering = true; //finished loading the next song.
 
         this.totalDuration = parseInt(this.audio.duration);
       } else {
@@ -356,7 +380,7 @@ export default {
       this.currentTime = convertTimeHHMMSS(currTime);
     },
     _handlePause: function() {
-      this.paused = true; //the song is paused flag
+      this.setPaused(true); //the song is paused flag
     },
     _handleEndedSong: function() {
       if (this.isRepeatOnceEnabled) {
@@ -368,25 +392,25 @@ export default {
       }
     },
     _handlerWaiting: function() {
-      this.loaded = false;
+      this.isBuffering = false;
     },
     _handlePlayingAfterBuffering: function() {
-      this.loaded = true;
+      this.isBuffering = true;
     },
     _handleSpaceDown: function(e) {
-      if (e.code === "Space") 
-      {
-        e.preventDefault(); //this is just to prevent the space from scrolling        
+      if (e.code === "Space") {
+        e.preventDefault(); //this is just to prevent the space from scrolling
       }
     },
     _handleSpaceUp: function(e) {
-      if (e.code === "Space") 
-      {
-        if (!this.loaded) return;
-        this.pause();
+      if (e.code === "Space") {
+        if (!this.isBuffering) return;
+        this.pauseAndPlay();
       }
     },
     init: function() {
+      this.isBuffering = true; //I don't want a loading icon upon the loading of the page.
+
       //set the listeners:
       this.audio.addEventListener("timeupdate", this._handlePlayingUI);
       //The loadeddata event is fired when the frame at the current playback
@@ -399,15 +423,16 @@ export default {
       this.audio.addEventListener("playing", this._handlePlayingAfterBuffering);
 
       //space key to pause and play the song
-      document.addEventListener('keyup', this._handleSpaceUp);
-      document.addEventListener('keydown', this._handleSpaceDown);
+      document.addEventListener("keyup", this._handleSpaceUp);
+      document.addEventListener("keydown", this._handleSpaceDown);
 
       //configure the volume
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
       //get the last song that user listened to and call updateSongInfo()
-      //this.file = "link came from a request"
+      //this.setSongLink("link came from a request");
+      this.setSongLink("/example.mp3");
     },
     getAudio: function() {
       return this.$el.querySelectorAll("audio")[0];
@@ -428,7 +453,7 @@ export default {
     }
   },
   mounted: function() {
-    this.audio = this.getAudio();
+    this.setAudio(this.getAudio());
     this.init();
   },
   beforeDestroy: function() {
@@ -443,8 +468,8 @@ export default {
       this._handlePlayingAfterBuffering
     );
 
-    document.removeEventListener('keyup', this._handleSpaceUp);
-    document.removeEventListener('keydown', this._handleSpaceDown);
+    document.removeEventListener("keyup", this._handleSpaceUp);
+    document.removeEventListener("keydown", this._handleSpaceDown);
   }
 };
 </script>
@@ -494,6 +519,14 @@ export default {
 
 .icons {
   color: #b3b3b3;
+}
+
+.green-icon {
+  color: green;
+}
+
+.green-icon:hover {
+  color: rgb(0, 211, 0);
 }
 
 .icons:hover {
