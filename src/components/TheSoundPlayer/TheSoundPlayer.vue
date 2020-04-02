@@ -7,23 +7,29 @@
       <v-col cols="4">
         <v-toolbar flat color="rgba(0,0,0,0)">
           <v-avatar tile size="56">
-            <img src="/profile.jpg" alt="profile pic" />
+            <img :src="artistPicture" alt="profile pic" />
           </v-avatar>
           <div
             style="padding-left: 14px; padding-top: 14px; margin-right: 14px;"
           >
             <router-link to="/" class="song-name">
-              Song Name
+              {{ songName }}
             </router-link>
             <router-link to="/" class="singer-name">
-              hi
+              {{ artistName }}
             </router-link>
           </div>
-          <a @click="saveToLikedSongs()">
+          <a @click="saveToLikedSongs()" v-if="!isSongIsLiked">
             <v-icon small title="save your liked songs" class="icons">
               mdi-heart-outline
             </v-icon>
           </a>
+          <a @click="saveToLikedSongs()" v-if="isSongIsLiked">
+            <v-icon small title="save your liked songs" class="icons">
+              mdi-heart
+            </v-icon>
+          </a>
+
         </v-toolbar>
       </v-col>
 
@@ -34,14 +40,14 @@
               mdi-shuffle-variant
             </v-icon>
           </a>
-          <!-- Next -->
-          <a @click="next()" title="Previous" style="margin-right: 10px;">
+          <!-- Previous -->
+          <a @click="previous()" title="Previous" style="margin-right: 10px;">
             <v-icon medium class="icons">
               mdi-skip-previous
             </v-icon>
           </a>
           <!-- Start and Pause -->
-          <a @click="pause()">
+          <a @click="pause()" v-if="loaded" style="width: 36px; height: 36px;">
             <v-icon v-if="paused" large class="icons" title="play">
               mdi-play-circle-outline
             </v-icon>
@@ -49,16 +55,50 @@
               mdi-pause-circle-outline
             </v-icon>
           </a>
-          <!-- Previous -->
-          <a @click="previous()" title="Next" style="margin-left: 10px;">
+
+          <img
+            v-if="!loaded"
+            style="width: 36px; height: 36px; vertical-align: middle;"
+            src="/loadingPlay.gif"
+          />
+
+          <!-- Next -->
+          <a @click="next()" title="Next" style="margin-left: 10px;">
             <v-icon medium class="icons">
               mdi-skip-next
             </v-icon>
           </a>
 
-          <a @click="repeat()" title="repeat" style="margin-left: 20px;">
+          <a
+            @click="enableRepeat()"
+            v-if="!isRepeatEnabled && !isRepeatOnceEnabled"
+            title="Enable repeat"
+            style="margin-left: 20px;"
+          >
             <v-icon small class="icons">
               mdi-repeat
+            </v-icon>
+          </a>
+
+          <a
+            @click="enableRepeatOnce()"
+            v-if="isRepeatEnabled && !isRepeatOnceEnabled"
+            title="Enable repeat once"
+            style="margin-left: 20px;"
+          >
+            <v-icon small class="icons" color="green">
+              mdi-repeat
+            </v-icon>
+          </a>
+
+          <a
+            @click="disableRepeatOnce()"
+            v-if="!isRepeatEnabled && isRepeatOnceEnabled"
+            title="Disable repeat once"
+            style="margin-left: 20px;"
+          >
+            <v-icon small class="icons" color="green">
+              mdi-repeat-once
             </v-icon>
           </a>
         </div>
@@ -92,10 +132,15 @@
           <a
             @click="queue()"
             title="queue"
-            style="margin-right: 20px; float: left;"
+            style="margin-right: 10px; float: left;"
           >
             <v-icon small class="icons">
               mdi-format-list-numbered-rtl
+            </v-icon>
+          </a>
+          <a title="devices" style="margin-right: 10px; float: left;">
+            <v-icon small class="icons">
+              mdi-devices
             </v-icon>
           </a>
           <a
@@ -139,20 +184,7 @@ export const convertTimeHHMMSS = val => {
 
 export default {
   name: "vue-audio",
-  props: {
-    autoPlay: {
-      type: Boolean,
-      default: false
-    },
-    file: {
-      type: String,
-      default: ""
-    },
-    loop: {
-      type: Boolean,
-      default: false
-    }
-  },
+
   computed: {
     duration: function() {
       return this.audio ? convertTimeHHMMSS(this.totalDuration) : "";
@@ -160,24 +192,43 @@ export default {
   },
   data() {
     return {
-      isMuted: false,
-      loaded: false,
-      playing: false,
-      paused: true,
+      //Audio info:
+      //file: "", //TODO: make it like this; it's initialized in the init
+      file: "/example.mp3",
       currentTime: "00:00",
-      innerLoop: undefined,
       audio: undefined,
       totalDuration: 0,
       volumeValue: 50,
       previousVolumeValue: 50,
       currentTimeInSec: 0,
+
+      //Flags:
+      isMuted: false,
+      loaded: false,
+      paused: true,
       isProgressBarPressed: false,
-      isVolumePressed: false
+      isVolumePressed: false,
+      isRepeatEnabled: false,
+      isRepeatOnceEnabled: false,
+      isNextPressed: false,
+      isPreviousPressed: false,
+      isSongIsLiked: false,
+
+      //The song's info:
+      artistPicture: "/profile.jpg",
+      songName: "Changes",
+      artistName: "2PAC",
+      songId: "007"
     };
   },
   methods: {
     saveToLikedSongs: function() {
-      //stub
+      if (!this.isSongIsLiked) {
+        //make a request to set the current song to the like ones.
+      } else {
+        //make a request to remove the current song from the like ones.
+      }
+      this.isSongIsLiked = !this.isSongIsLiked;
     },
     updateVolume: function() {
       this.audio.volume = this.volumeValue / 100;
@@ -195,7 +246,7 @@ export default {
       }
     },
     play: function() {
-      if (this.playing && !this.paused) return;
+      if (!this.paused) return;
       this.paused = false;
       this.audio.play();
       this.playing = true;
@@ -205,16 +256,59 @@ export default {
       this.paused ? this.audio.pause() : this.audio.play();
     },
     next: function() {
+      this.isNextPressed = true;
+      this.loaded = false;
+      this.paused = true; //the sound will be paused upon changing the soruce
+
+      //TODO: is it the current song is the last one in the playlist ?
+
+      var temp = this;
+      //this timeout is for simulating the server delay
+      //TODO: remove this delay before deployment
+      setTimeout(function() {
+        //call updateSongInfo()
+        //TODO: change this to a url coming from a request.
+        temp.file =
+          "https://www.bensound.com/bensound-music/bensound-summer.mp3";
+      }, 1000);
+    },
+    //this method will be invoked after changing the song
+    //it will change the song info: song name, artist, picture.
+    updateSongInfo: function() {
       //stub
     },
     previous: function() {
-      //stub
+      this.isPreviousPressed = true;
+      this.loaded = false;
+      this.paused = true; //the sound will be paused upon changing the soruce
+
+      //TODO: is it the current song is the first one in the playlist ?
+
+      var temp = this;
+      //this timeout to simulate the server delay
+      //TODO: remove this after delay before deployment
+      setTimeout(function() {
+        //call updateSongInfo()
+        //TODO: change this to a url coming from a request.
+        temp.file = "/example.mp3";
+      }, 1000);
     },
     shuffle: function() {
-      //stub
+      //make a request to get a shuffled song
+      /* send a request to save the option on backend */
     },
-    repeat: function() {
-      //stub
+    enableRepeat: function() {
+      this.isRepeatEnabled = true;
+      /* send a request to save the option on backend */
+    },
+    enableRepeatOnce: function() {
+      this.isRepeatEnabled = false;
+      this.isRepeatOnceEnabled = true;
+      /* send a request to save the option on backend */
+    },
+    disableRepeatOnce: function() {
+      this.isRepeatOnceEnabled = false;
+      /* send a request to save the option on backend */
     },
     queue: function() {
       //stub
@@ -235,9 +329,16 @@ export default {
       //The HTMLMediaElement.readyState property indicates the readiness state of the media.
       // (this.audio.readyState >= 2) Data is available
       if (this.audio.readyState >= 2) {
-        if (this.autoPlay) this.play();
+        if (this.isNextPressed) {
+          this.play();
+          this.isNextPressed = false;
+        } else if (this.isPreviousPressed) {
+          this.play();
+          this.isPreviousPressed = false;
+        }
 
-        this.loaded = true;
+        this.loaded = true; //finished loading the next song.
+
         this.totalDuration = parseInt(this.audio.duration);
       } else {
         throw new Error("Failed to load sound file");
@@ -254,20 +355,59 @@ export default {
 
       this.currentTime = convertTimeHHMMSS(currTime);
     },
-    _handlePlayPause: function(e) {
-      if (e.type === "pause" && this.playing === false) {
-        this.paused = true;
+    _handlePause: function() {
+      this.paused = true; //the song is paused flag
+    },
+    _handleEndedSong: function() {
+      if (this.isRepeatOnceEnabled) {
+        this.play();
+      } else if (this.isRepeatEnabled) {
+        //if (is the current song is the last song in the playlist)?
+        //change "file" to the link of the first song of the playlist,
+        //then after loading in the loaded handler: invoke play()
+      }
+    },
+    _handlerWaiting: function() {
+      this.loaded = false;
+    },
+    _handlePlayingAfterBuffering: function() {
+      this.loaded = true;
+    },
+    _handleSpaceDown: function(e) {
+      if (e.code === "Space") 
+      {
+        e.preventDefault(); //this is just to prevent the space from scrolling        
+      }
+    },
+    _handleSpaceUp: function(e) {
+      if (e.code === "Space") 
+      {
+        if (!this.loaded) return;
+        this.pause();
       }
     },
     init: function() {
+      //set the listeners:
       this.audio.addEventListener("timeupdate", this._handlePlayingUI);
       //The loadeddata event is fired when the frame at the current playback
       //position of the media has finished loading; often the first frame.
       this.audio.addEventListener("loadeddata", this._handleLoaded);
-      this.audio.addEventListener("pause", this._handlePlayPause);
-      this.audio.addEventListener("play", this._handlePlayPause);
+      this.audio.addEventListener("pause", this._handlePause);
+      this.audio.addEventListener("ended", this._handleEndedSong); //the song is ended
+
+      this.audio.addEventListener("waiting", this._handlerWaiting); //the song is stopped due to buffering
+      this.audio.addEventListener("playing", this._handlePlayingAfterBuffering);
+
+      //space key to pause and play the song
+      document.addEventListener('keyup', this._handleSpaceUp);
+      document.addEventListener('keydown', this._handleSpaceDown);
+
+      //configure the volume
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
+
+      //get the last song that user listened to and call updateSongInfo()
+      //this.file = "link came from a request"
     },
     getAudio: function() {
       return this.$el.querySelectorAll("audio")[0];
@@ -289,14 +429,22 @@ export default {
   },
   mounted: function() {
     this.audio = this.getAudio();
-    this.innerLoop = this.loop;
     this.init();
   },
   beforeDestroy: function() {
     this.audio.removeEventListener("timeupdate", this._handlePlayingUI);
     this.audio.removeEventListener("loadeddata", this._handleLoaded);
-    this.audio.removeEventListener("pause", this._handlePlayPause);
-    this.audio.removeEventListener("play", this._handlePlayPause);
+    this.audio.removeEventListener("pause", this._handlePause);
+    this.audio.removeEventListener("ended", this._handleEndedSong);
+
+    this.audio.removeEventListener("waiting", this._handlerWaiting);
+    this.audio.removeEventListener(
+      "playing",
+      this._handlePlayingAfterBuffering
+    );
+
+    document.removeEventListener('keyup', this._handleSpaceUp);
+    document.removeEventListener('keydown', this._handleSpaceDown);
   }
 };
 </script>
@@ -341,6 +489,7 @@ export default {
   display: block;
   text-align: center;
   margin-bottom: 10px;
+  height: 36px;
 }
 
 .icons {

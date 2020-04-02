@@ -29,7 +29,19 @@ input:hover::-webkit-slider-thumb {
   background: white;
 }
 
+input:hover::-moz-range-thumb {
+  background: white;
+}
+
 input:hover::-webkit-slider-runnable-track {
+  background: rgb(29, 185, 84);
+}
+
+input:hover::-moz-range-progress {
+  background: rgb(29, 185, 84);
+}
+
+input:hover::-ms-fill-lower {
   background: rgb(29, 185, 84);
 }
 
@@ -67,6 +79,7 @@ input {
   }
 
   &::-moz-range-track {
+    background-color: $background-slider;
     width: $slider-width;
     height: $slider-height;
   }
@@ -75,7 +88,7 @@ input {
     @include size($thumb-width, $thumb-height);
 
     background: $thumb-background;
-    border-radius: $thumb-radius;
+    border-color: rgba(0, 0, 0, 0);
     position: relative;
   }
 

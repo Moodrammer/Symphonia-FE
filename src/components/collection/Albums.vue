@@ -1,12 +1,14 @@
 <template>
   <v-content class="pa-0 mr-5">
     <h1>Albums</h1>
-    <CardGrid :cardItems="cardItems" />
+    <CardGrid :cardItems="cardItems" v-on:order="menuOrder" />
   </v-content>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import CardGrid from "../general/CardGrid";
+
 export default {
   name: "Albums",
   components: {
@@ -14,6 +16,8 @@ export default {
   },
   data() {
     return {
+      contextMenuChoice: null,
+      contextMenuCardIndex: null,
       cardItems: {
         // Custom context menu data section
         // menuList: items of the menu - disabledMenu: flag to disable menu on outside card click - showMenu: menu v-model
@@ -25,47 +29,40 @@ export default {
         ],
         showMenu: false,
         // Albums Cards data section
-        // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
+        // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - items: album details
         hoveredCardIndex: null,
-        items: [
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist"
-          },
-        ]
+        items: null
       }
     };
   },
+  methods:{
+    ...mapActions(["getAlbums", "deleteAlbums"]),
+    menuOrder(menuItem, cardIndex){
+      this.contextMenuChoice = menuItem;
+      this.contextMenuCardIndex = cardIndex;
+    },
+  },
+  created(){
+    this.getAlbums();
+  },
+
+  computed: mapGetters(['allAlbums']),
+
   watch: {
-    "cardItems.showMenu": function() {
-      if (this.cardItems.showMenu) console.log(this.cardItems.hoveredCardIndex);
-    }
-  }
+    contextMenuChoice: function() {
+      if (this.contextMenuChoice === null)
+        return;
+      console.log(this.contextMenuChoice);
+      console.log(this.contextMenuCardIndex);
+      if(this.contextMenuChoice === "Remove from your Library")
+      {
+          this.deleteAlbums([this.contextMenuCardIndex]);
+      }
+      this.contextMenuChoice = null
+      },
+      allAlbums(newValue){
+        this.cardItems.items = newValue
+      }
+  },
 };
 </script>

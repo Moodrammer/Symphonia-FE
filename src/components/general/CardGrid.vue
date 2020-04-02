@@ -12,6 +12,62 @@
       <v-container dark @contextmenu.prevent="on.click">
         <!-- adding the page content: -->
         <v-row>
+            <v-col
+              cols="12"
+              lg="4"
+              md="6"
+              sm="12"
+              class="my-4"
+              v-if="cardStyle === 'playlist' && cardItems.likedSongs.length > 0"
+            >
+              <!-- adding the liked songs card -->
+              <div class="card">
+                <v-card
+                  class="gradient-likedsongs-card"
+                  width="475"
+                  height="270"
+                  dark
+                  @mouseover="cardHover(-1)"
+                  @mouseleave="cardItems.hoveredCardIndex = null"
+                >
+                  <!-- card text :liked songs artist and titles -->
+                  <div class="card-text likedsongs-card-text">
+                    <v-card-text>
+                      <span v-for="(song, index) in cardItems.likedSongs" :key="index">
+                        {{ song.artist }}
+                        <span class="grey--text">{{ song.title }}.</span>
+                      </span>
+                    </v-card-text>
+                  </div>
+                  <div class="card-text">
+                    <v-card-title class="white--text my-2">
+                      <!-- card title and subtitle -->
+                      <h1>Liked Songs</h1>
+                    </v-card-title>
+                    <v-card-subtitle
+                      >{{ cardItems.likedSongs.length }} liked songs</v-card-subtitle
+                    >
+                  </div>
+
+                  <!-- card play button -->
+                  <v-card-actions class="pr-5 pt-3">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      v-show="cardItems.hoveredCardIndex === -1"
+                      fab
+                      color="success"
+                      small
+                      id="play"
+                    >
+                      <v-icon color="white">mdi-play</v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </div>
+            </v-col>
+
+
+
           <!-- setting grid columns system for cards -->
           <v-col
             cols="12"
@@ -20,7 +76,7 @@
             sm="6"
             class="my-4"
             v-for="(item, index) in cardItems.items"
-            :key="index"
+            :key="item.id"
           >
             <!-- adding the cards -->
             <div class="card">
@@ -29,7 +85,7 @@
                 width="200"
                 height="270"
                 color="#282828"
-                @mouseover="cardHover(index)"
+                @mouseover="cardHover(index, item.id)"
                 @mouseleave="cardItems.hoveredCardIndex = null"
                 dark
               >
@@ -87,7 +143,7 @@
     </template>
     <!-- setting the items of the custom context menu -->
     <v-list>
-      <v-list-item v-for="(item, index) in cardItems.menuList" :key="index">
+      <v-list-item v-for="(item, index) in cardItems.menuList" :key="index" @click="contextMenuClick(item,index === cardItems.menuList.length -1)">
         <v-list-item-title>{{ item.title }}</v-list-item-title>
       </v-list-item>
     </v-list>
@@ -100,16 +156,41 @@ export default {
   props: ["cardItems", "cardStyle"],
   data() {
     return {
+      lastHoveredCard:null,
       disableMenu: false
     };
   },
   created() {},
   methods: {
     // cardHover: called when card is hover to save its index, and close other context menus
-    cardHover(index) {
+    cardHover(index, id) {
       this.$props.cardItems.hoveredCardIndex = index;
+      this.lastHoveredCard = id;
       this.disableMenu = false;
       this.$props.cardItems.showMenu = false;
+    },
+    contextMenuClick(item, copyToClipboard){
+      this.$emit('order', item.title, this.lastHoveredCard);
+      console.log(copyToClipboard)
+      if(copyToClipboard){
+        var url = this.$props.cardItems.items.find(item => item.id === this.lastHoveredCard); 
+        url = url.url;
+        var el = document.createElement("textarea");
+        // Set value (string to be copied)
+        el.value = url;
+        console.log("url",url);
+        // Set non-editable to avoid focus and move outside of view
+        el.setAttribute("readonly", "");
+        el.style = { position: "absolute", left: "-9999px" };
+        document.body.appendChild(el);
+        // Select text inside element
+        el.select();
+        // Copy text to clipboard
+        document.execCommand("copy");
+        // Remove temporary element
+        document.body.removeChild(el);
+
+      }
     }
   },
   watch: {
@@ -120,6 +201,15 @@ export default {
         this.$props.cardItems.hoveredCardIndex === null
       )
         this.disableMenu = true;
+      
+      //set the suitable context menu data in case of playlist card
+
+      else if(this.$props.cardStyle === 'playlist' && this.$props.cardItems.hoveredCardIndex !== null){
+        if(this.$props.cardItems.hoveredCardIndex === -1)
+          this.$props.cardItems.menuList = this.$props.cardItems.likedSongsMenu;
+        else
+          this.$props.cardItems.menuList = this.$props.cardItems.playlistsMenu;
+    }
     }
   }
 };
@@ -147,4 +237,20 @@ export default {
 .card-text-subtitle {
   height: 20px;
 }
+
+/* liked songs card styles section */
+
+.likedsongs-card-text {
+  height: 100px;
+}
+
+.gradient-likedsongs-card {
+  background: rgb(89, 0, 172);
+  background: linear-gradient(
+    152deg,
+    rgba(89, 0, 172, 1) 0%,
+    rgba(107, 107, 221, 1) 92%
+  );
+}
+
 </style>

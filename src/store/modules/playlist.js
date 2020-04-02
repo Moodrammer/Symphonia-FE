@@ -18,6 +18,8 @@ const mutations = {
   }
 };
 
+//const token = localStorage.getItem("userToken");
+
 const actions = {
   createPlaylist({ commit }, playlistName) {
     axios
@@ -35,7 +37,30 @@ const actions = {
         console.log(error);
       });
   },
+
+  // getPlayslist works for (Get a List of Current User's Playlists) when nothing send in the parameter 'user'
+  // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
   getPlaylists({ commit }) {
+
+    // var request = user ? 'users/' + user : 'me';
+    // request = '/v1/' + request + '/playlists';
+
+    // axios
+    //   .get(request, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`
+    //     }
+    //   })
+    //   .then(response => {
+    //     let list = response.data;
+    //     console.log(list);
+    //     commit("load_playlists", list);
+    //   })
+    //   .catch(error => {
+    //     console.log("axios caught an error");
+    //     console.log(error);
+    //   });
+
     axios
       .get("/playlists")
       .then(response => {
@@ -48,6 +73,9 @@ const actions = {
         console.log(error);
       });
   }
+
+
+
 };
 
 export default {
