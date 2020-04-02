@@ -112,13 +112,19 @@ export default {
     };
   },
   methods: {
-    ...mapActions("track", ["getTracks"])
+    ...mapActions("category", ["getTracks"])
+  },
+  created: function(){
+     this.$store.dispatch("track/getTrack",1);
+     this.$store.dispatch("track/checkSaved",[4]);
+     this.$store.dispatch("track/removeSavedTrack",[1]);
+     this.$store.dispatch("track/saveTrack",[5]);
   },
   mounted() {
     this.getTracks();
   },
   computed: mapState({
-    tracks: state => state.track.tracks
+    tracks: state => state.category.tracks
   }),
   mixins: [getDeviceSize]
 };

@@ -193,6 +193,36 @@ export function makeServer({ environment = "development" } = {}) {
         }
       );
       ///////////////////////////////////////////////////////////////////////////////////
+      //Get track
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/users/track/:track_id", (schema, request) => {
+        let trackId=request.params.track_id;
+        return schema.tracks.where({ id: trackId}).models;
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Check user's saved tracks
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/tracks/contains", (schema , request) => {
+        let trackId=request.queryParams.ids;
+        return schema.tracks.where({ id: trackId}).models[0].liked;
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Remove User's Saved Tracks
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.delete("/v1/me/tracks", (schema, request) => {
+        let trackId=request.requestBody[1];
+        schema.tracks.where({id: trackId}).update({liked: false});
+        return new Response (200, {}, {});
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Save Tracks for User
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.put("/v1/me/tracks", (schema, request) => {
+        let trackId= JSON.parse(request.requestBody).data[0];
+        schema.tracks.where({id: trackId}).update({liked: true});
+        return new Response (200 , {} , {});
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';
 
       this.get("/v1/me/albums", (schema) => {
