@@ -1,7 +1,7 @@
 <template>
   <v-footer app class="sound-player">
     <!-- audio tag -->
-    <audio ref="audiofile" :src="file" style="display:none;"></audio>
+    <audio ref="audiofile" :src="songLink" style="display:none;"></audio>
     <!-- song info -->
     <v-row>
       <v-col cols="4">
@@ -128,15 +128,17 @@
       <v-col cols="2" style="background: rgba(0, 0, 0, 0);">
         <!-- mute or change the volume-->
         <div style="padding-top: 20px;">
-          <a
-            @click="queue()"
+          <router-link
+            to = "/webhome/collection/queue"
             title="queue"
-            style="margin-right: 10px; float: left;"
+            style="margin-right: 10px; float: left; text-decoration: none;"
           >
-            <v-icon small class="icons">
+            <v-icon small 
+            v-bind:class="{'green-icon': isQueueOpened, icons: !isQueueOpened}"
+            >
               mdi-format-list-numbered-rtl
             </v-icon>
-          </a>
+          </router-link>
           <a title="devices" style="margin-right: 10px; float: left;">
             <v-icon small class="icons">
               mdi-devices
@@ -187,7 +189,7 @@ export default {
   name: "vue-audio",
 
   computed: {
-    ...mapGetters("playlist", ["audio", "paused"]),
+    ...mapGetters("playlist", ["audio", "paused", "songLink", "isQueueOpened"]),
 
     duration: function() {
       return this.audio ? convertTimeHHMMSS(this.totalDuration) : "";
@@ -196,8 +198,6 @@ export default {
   data() {
     return {
       //Audio info:
-      //file: "", //TODO: make it like this; it's initialized in the init
-      file: "/example.mp3",
       currentTime: "00:00",
       totalDuration: 0,
       volumeValue: 50,
@@ -222,7 +222,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations("playlist", ["setAudio", "setPaused"]),
+    ...mapMutations("playlist", ["setAudio", "setPaused", "setSongLink"]),
     ...mapActions("playlist", ["pauseAndPlay"]),
 
     saveToLikedSongs: function() {
@@ -264,8 +264,8 @@ export default {
       setTimeout(function() {
         //call updateSongInfo()
         //TODO: change this to a url coming from a request.
-        temp.file =
-          "https://www.bensound.com/bensound-music/bensound-summer.mp3";
+        temp.setSongLink(
+          "https://www.bensound.com/bensound-music/bensound-summer.mp3");
       }, 1000);
     },
     previous: function() {
@@ -280,7 +280,7 @@ export default {
       setTimeout(function() {
         //call updateSongInfo()
         //TODO: change this to a url coming from a request.
-        temp.file = "/example.mp3";
+        temp.setSongLink("/example.mp3");
       }, 1000);
     },
     //this method will be invoked after changing the song
@@ -304,9 +304,6 @@ export default {
     disableRepeatOnce: function() {
       this.isRepeatOnceEnabled = false;
       /* send a request to save the option on backend */
-    },
-    queue: function() {
-      //stub
     },
     mute: function() {
       this.isMuted = !this.isMuted;
@@ -400,7 +397,8 @@ export default {
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
       //get the last song that user listened to and call updateSongInfo()
-      //this.file = "link came from a request"
+      //this.setSongLink("link came from a request");
+      this.setSongLink("/example.mp3");
     },
     getAudio: function() {
       return this.$el.querySelectorAll("audio")[0];
@@ -487,6 +485,14 @@ export default {
 
 .icons {
   color: #b3b3b3;
+}
+
+.green-icon {
+  color: green;
+}
+
+.green-icon:hover {
+  color: rgb(0, 211, 0);
 }
 
 .icons:hover {

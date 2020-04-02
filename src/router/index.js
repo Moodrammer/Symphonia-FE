@@ -11,6 +11,7 @@ import Search from "../components/WebplayerContent/Search.vue";
 import HomeContent from "../components/WebplayerContent/HomeContentRouter.vue";
 import Tracks from "../views/LikedSongs.vue";
 import HomepagePremium from "../views/PremiumOffer.vue";
+import Queue from "../views/TheQueue.vue";
 
 Vue.use(VueRouter);
 
@@ -61,9 +62,14 @@ const routes = [
             name: "tracks",
             path: "tracks",
             component: Tracks
+          },
+          {
+            name: "queue",
+            path: "queue",
+            component: Queue
           }
         ]
-      }
+      },
     ]
   },
   {

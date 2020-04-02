@@ -3,7 +3,9 @@ import axios from "axios";
 const state = {
   playlists: [],
   audio: undefined,
-  paused: true
+  paused: true,
+  songLink: "",
+  isQueueOpened: false,
 };
 
 const mutations = {
@@ -29,6 +31,12 @@ const mutations = {
   pauseAndPlay(state) {
     state.paused = !state.paused;
     state.paused ? state.audio.pause() : state.audio.play();
+  },
+  setSongLink(state, songLink) {
+    state.songLink = songLink;
+  },
+  setIsQueueOpened(state, isQueueOpened) {
+    state.isQueueOpened = isQueueOpened;
   }
 };
 
@@ -38,6 +46,12 @@ const getters = {
   },
   paused(state) {
     return state.paused;
+  },
+  songLink(state) {
+    return state.songLink;
+  },
+  isQueueOpened(state) {
+    return state.isQueueOpened;
   }
 };
 
