@@ -1,7 +1,7 @@
 <template>
   <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
     <v-container class="ma-5">
-    <category
+      <category
         v-for="category in categories"
         :key="category.categoryName"
         :name="category.categoryName"
@@ -24,14 +24,14 @@ export default {
   components: {
     Category
   },
-  created: function(){
+  created: function() {
     this.$store.dispatch("category/loadUserSections");
     this.$store.dispatch("category/getPopularPlaylists");
     this.$store.dispatch("category/getPopularArtists");
     this.$store.dispatch("category/loadGenres");
   },
   computed: mapGetters({
-    categories: 'category/categoriesGetter'
+    categories: "category/categoriesGetter"
   })
 };
 </script>

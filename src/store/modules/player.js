@@ -18,7 +18,8 @@ const actions = {
       .get("/v1/me/player/tracks/history", {
         headers: {
           Authorization: `Bearer ${token}`
-        }})
+        }
+      })
       .then(response => {
         let tracks = response.data;
         commit("load_recentTracks", tracks);

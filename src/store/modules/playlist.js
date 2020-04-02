@@ -14,16 +14,16 @@ const mutations = {
 };
 
 const token = localStorage.getItem("userToken");
-const user_id=localStorage.getItem("userID");
+const user_id = localStorage.getItem("userID");
 
 const actions = {
   createPlaylist({ commit }, playlistName) {
     axios
-      .post("/v1/users/"+user_id+"/playlists", {
-        data:{name: playlistName}
+      .post("/v1/users/" + user_id + "/playlists", {
+        data: { name: playlistName }
       })
       .then(response => {
-        var newPlaylist = response.data
+        var newPlaylist = response.data;
         commit("add_playlist", newPlaylist);
       })
       .catch(error => {
@@ -34,26 +34,26 @@ const actions = {
 
   // getPlayslist works for (Get a List of Current User's Playlists) when nothing send in the parameter 'user'
   // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
-async  getPlaylists({ commit }) {
-    await  axios
-     .get("/v1/me/playlists", {
+  async getPlaylists({ commit }) {
+    await axios
+      .get("/v1/me/playlists", {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
       .then(response => {
         let list = response.data;
-        let newList=[]
+        let newList = [];
         list.forEach(element => {
           var k = {
-                    name: element.name,
-                    image: element.images[0].url,
-                    description: element.description,
-                    id: element.id,
-                    url: "url to be added"
-                  }
-                  newList.push(k);
-        })
+            name: element.name,
+            image: element.images[0].url,
+            description: element.description,
+            id: element.id,
+            url: "url to be added"
+          };
+          newList.push(k);
+        });
         commit("load_likedPlaylists", newList);
       })
       .catch(error => {
@@ -61,9 +61,6 @@ async  getPlaylists({ commit }) {
         console.log(error);
       });
   }
-
-
-
 };
 
 const getters = {

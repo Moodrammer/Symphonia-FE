@@ -1,6 +1,6 @@
 // this module to handle the array of objects to be rendered in the home page of the webplayer
 import axios from "axios";
-import playlistModule from './playlist.js';
+import playlistModule from "./playlist.js";
 
 const state = {
   recentlyPlayed: {
@@ -162,32 +162,32 @@ const mutations = {
     state.categories = [];
   },
   load_popularPlaylists(state, payload) {
-    let newList=[]
+    let newList = [];
     payload.forEach(element => {
       var k = {
-                name: element.name,
-                image: element.images[0].url,
-                description: element.description,
-                id: element.id,
-                url: "url to be added"
-              }
-              newList.push(k);
-    })
+        name: element.name,
+        image: element.images[0].url,
+        description: element.description,
+        id: element.id,
+        url: "url to be added"
+      };
+      newList.push(k);
+    });
     state.popularPlaylists.list.items = newList;
     state.categories.push(state.popularPlaylists);
   },
   load_popularArtists(state, payload) {
-    let newList=[]
+    let newList = [];
     payload.forEach(element => {
       var k = {
-                name: element.name,
-                image: element.images[0].url,
-                description: element.description,
-                id: element.id,
-                url: "url to be added"
-              }
-              newList.push(k);
-    })
+        name: element.name,
+        image: element.images[0].url,
+        description: element.description,
+        id: element.id,
+        url: "url to be added"
+      };
+      newList.push(k);
+    });
     state.popularArtists.list.items = newList;
     state.categories.push(state.popularArtists);
   },
@@ -199,7 +199,6 @@ const mutations = {
     state.likedPlaylists.list.items = playlistModule.state.likedPlaylists;
     state.categories.push(state.likedPlaylists);
   }
-
 };
 
 const actions = {
@@ -226,7 +225,7 @@ const actions = {
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
-      })
+      });
   },
   getGenrePlaylists({ commit }, category_id) {
     commit("emptyArray");
@@ -234,31 +233,26 @@ const actions = {
       .get("v1/browse/categories/" + category_id + "/playlists")
       .then(response => {
         let genreList = response.data;
-        let newList=[]
+        let newList = [];
         genreList.forEach(element => {
           var k = {
-                    name: element.name,
-                    image: element.images[0].url,
-                    description: element.description,
-                    id: element.id,
-                    url: "url to be added"
-                  }
-                  newList.push(k);
-        })
-        if (category_id == "pop")
-          commit("load_popPlaylists", newList);
-        else if (category_id == "folk")
-          commit("load_folkPlaylists", newList);
-        else if (category_id == "rock")
-          commit("load_rockPlaylists", newList);
-        else
-          commit("load_jazzPlaylists", newList);
-
+            name: element.name,
+            image: element.images[0].url,
+            description: element.description,
+            id: element.id,
+            url: "url to be added"
+          };
+          newList.push(k);
+        });
+        if (category_id == "pop") commit("load_popPlaylists", newList);
+        else if (category_id == "folk") commit("load_folkPlaylists", newList);
+        else if (category_id == "rock") commit("load_rockPlaylists", newList);
+        else commit("load_jazzPlaylists", newList);
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
-      })
+      });
   },
   loadGenres({ dispatch }) {
     let genres_ids = ["pop", "folk", "rock", "jazz"];
@@ -273,31 +267,10 @@ const actions = {
 };
 
 const getters = {
-  categoriesGetter: function (state) {
-    // state.categories.forEach(element =>{
-    //   console.log(state.categories);
-    //   var newList=[];  
-    //   console.log(element);
-    //   element.list.items.forEach(item =>{
-    //     {
-    //       console.log(item);
-    //       var k = {
-    //         name: item.name,
-    //         image: item.images[0].url,
-    //         description: item.description,
-    //         id: item.id,
-    //         url: "url to be added"
-    //       }
-    //       newList.push(k);
-    //     }
-    //     element.list.items=newList;
-    //   })
-    // });
-    // console.log("Cagdks")
-    // console.log(state.categories)
+  categoriesGetter: function(state) {
     return state.categories;
   }
-}
+};
 export default {
   namespaced: true,
   state,

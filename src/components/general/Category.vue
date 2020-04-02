@@ -1,17 +1,16 @@
 <template>
-<v-container>
-  <v-row>
-    <h1>{{ name }}</h1>
-    <v-spacer></v-spacer>
-    <p v-if="seeAll" id="seeAll">SEE ALL</p>
-  </v-row>
-  <!-- <h5 :style="{opacity:0.6}">{{ subtitle }}</h5> -->
-  <CardGrid :cardItems="griditems" :cardStyle="gridStyle"/>
-</v-container>
+  <v-container>
+    <v-row>
+      <h1>{{ name }}</h1>
+      <v-spacer></v-spacer>
+      <p v-if="seeAll" id="seeAll">SEE ALL</p>
+    </v-row>
+    <CardGrid :cardItems="griditems" :cardStyle="gridStyle" />
+  </v-container>
 </template>
 
 <script>
-import CardGrid from "./CardGrid"
+import CardGrid from "./CardGrid";
 export default {
   components: {
     CardGrid
@@ -21,8 +20,8 @@ export default {
     seeAll: Boolean,
     griditems: Object,
     gridStyle: String
-  },
-}
+  }
+};
 </script>
 
 <style scoped>

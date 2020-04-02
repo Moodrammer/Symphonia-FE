@@ -1,18 +1,16 @@
 import axios from "axios";
 
 const state = {
-    followedArtists: []
+  followedArtists: []
 };
 
 const mutations = {
-    
   load_followed_artists: (state, list) => state.followedArtists = list,
-  unfollow_artists:(state, list) => state.followedArtists = state.followedArtists.filter(artist => !list.includes(artist.id))
-
+  unfollow_artists: (state, list) => state.followedArtists = state.followedArtists.filter(artist => !list.includes(artist.id))
 };
-  
+
 const getters = {
-  allFollowedArtists: function(state){
+  allFollowedArtists: function (state) {
     var newValue = state.followedArtists;
     var artists = [];
     newValue.forEach(element => {
@@ -26,7 +24,7 @@ const getters = {
       artists.push(k);
     });
     return artists;
-}
+  }
 }
 
 
@@ -37,9 +35,9 @@ const actions = {
     axios
       .get("/v1/me/following", {
         headers: {
-         Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         },
-         params: { type: 'artist' }
+        params: { type: 'artist' }
       })
       .then(response => commit("load_followed_artists", response.data))
       .catch(error => {
@@ -50,8 +48,8 @@ const actions = {
 
 
 
-  unfollowArtist({commit},artists){
-    
+  unfollowArtist({ commit }, artists) {
+
     axios.delete('/v1/me/following', {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -61,10 +59,10 @@ const actions = {
     }).then(
       commit("unfollow_artists", artists)
     )
-    .catch(error => {
-      console.log("axios caught an error in unfollowArtist");
-      console.log(error);
-    })
+      .catch(error => {
+        console.log("axios caught an error in unfollowArtist");
+        console.log(error);
+      })
   }
 };
 

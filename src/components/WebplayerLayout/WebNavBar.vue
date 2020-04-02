@@ -123,7 +123,7 @@
             </v-icon>
           </v-btn>
 
-          <span class="hidden-md-and-down"> {{getusername()}}</span>
+          <span class="hidden-md-and-down"> {{ getusername() }}</span>
           <!--This to handle the icon changes when the menu is opened and closed-->
           <v-icon color="white" class="hidden-md-and-down" v-if="on">
             mdi-menu-down
@@ -201,7 +201,6 @@ export default {
   created() {
     this.itemChosen(this.$route.name);
     this.handleTabs(this.$route.name);
-    
   },
   watch: {
     $route: function() {
@@ -309,7 +308,7 @@ export default {
   destroy() {
     window.removeEventListener("scroll", this.updateScroll);
   },
-  mixins: [ isLoggedIn , getusername ]
+  mixins: [isLoggedIn, getusername]
 };
 </script>
 

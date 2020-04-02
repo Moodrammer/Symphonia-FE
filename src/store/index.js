@@ -6,8 +6,8 @@ import playlist from "./modules/playlist";
 import track from "./modules/track";
 import player from "./modules/player";
 import category from "./modules/category";
-import album from "./modules/album"
-import artist from "./modules/artist"
+import album from "./modules/album";
+import artist from "./modules/artist";
 
 Vue.use(Vuex);
 

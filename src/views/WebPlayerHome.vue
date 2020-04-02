@@ -34,7 +34,6 @@ export default {
   mounted: function() {
     //Handle the updateContent event by force the component to update
     this.$root.$on("updateContent", () => {
-      console.log("Force Update");
       this.$forceUpdate();
     });
 

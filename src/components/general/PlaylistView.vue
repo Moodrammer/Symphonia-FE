@@ -1,5 +1,5 @@
 <template>
-  <!--The Liked Songs view wil be modified-->
+  <!--The Playlist view wil be used later-->
   <v-container class="pt-0">
     <v-row justify="center">
       <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">
@@ -61,7 +61,7 @@
 
             <v-col lg="12" md="8" sm="7" xs="1" cols="12">
               <v-row justify-lg="center">
-                <h1 class="mt-5">Liked Songs</h1>
+                <h1 class="mt-5">Playlist Name</h1>
               </v-row>
               <v-row justify-lg="center">
                 <v-btn rounded class="white--text px-8" id="playBtn">
