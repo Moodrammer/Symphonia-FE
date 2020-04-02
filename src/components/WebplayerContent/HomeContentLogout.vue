@@ -17,7 +17,7 @@
 
 <script>
 import Category from "../general/Category";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 /**
  * The webplayer home content if the user hasn't logged in yet
  * @example [none]
@@ -29,8 +29,8 @@ export default {
   created: function(){
     this.$store.dispatch("category/loadGenres");
   },
-  computed: mapState({
-    categories: state => state.category.categories
+  computed: mapGetters({
+    categories: 'category/categoriesGetter'
   })
 };
 </script>
