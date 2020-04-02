@@ -14,13 +14,16 @@ const mutations = {
 };
 
 const token = localStorage.getItem("userToken");
-const user_id = localStorage.getItem("userID");
+//const user_id = localStorage.getItem("userID");
 
 const actions = {
-  createPlaylist({ commit }, playlistName) {
+  createPlaylist({ commit }, payload) {
     axios
-      .post("/v1/users/" + user_id + "/playlists", {
-        data: { name: playlistName }
+      .post("/v1/users/" + payload.id + "/playlists", {
+        headers: {
+          Authorization: `Bearer ${payload.token}`
+        },
+        data: { name: payload.name }
       })
       .then(response => {
         var newPlaylist = response.data;

@@ -2,7 +2,10 @@
 import axios from "axios";
 import playlistModule from "./playlist.js";
 
+const token = localStorage.getItem("userToken");
+
 const state = {
+  tracks: [],
   recentlyPlayed: {
     categoryName: "Recently Played",
     showSeeAll: false,
@@ -198,6 +201,9 @@ const mutations = {
     state.categories.push(state.heavyRoatation);
     state.likedPlaylists.list.items = playlistModule.state.likedPlaylists;
     state.categories.push(state.likedPlaylists);
+  },
+  load_tracks(state, list) {
+    state.tracks = list;
   }
 };
 
@@ -263,6 +269,22 @@ const actions = {
   async loadUserSections({ dispatch, commit }) {
     await dispatch("playlist/getPlaylists", null, { root: true });
     commit("load_personalSections");
+  },
+  getTracks({ commit }) {
+    axios
+      .get("/v1/me/tracks", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        let list = response.data;
+        commit("load_tracks", list);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
   }
 };
 
