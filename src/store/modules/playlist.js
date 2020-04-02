@@ -6,6 +6,7 @@ const state = {
   paused: true,
   songLink: "",
   isQueueOpened: false,
+  isSongLoaded: false,
 };
 
 const mutations = {
@@ -37,6 +38,9 @@ const mutations = {
   },
   setIsQueueOpened(state, isQueueOpened) {
     state.isQueueOpened = isQueueOpened;
+  },
+  setIsSongLoaded(state, isSongLoaded) {
+    state.isSongLoaded = isSongLoaded;
   }
 };
 
@@ -52,6 +56,9 @@ const getters = {
   },
   isQueueOpened(state) {
     return state.isQueueOpened;
+  },
+  isSongLoaded(state) {
+    return state.isSongLoaded;
   }
 };
 

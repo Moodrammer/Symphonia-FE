@@ -65,7 +65,7 @@
           <!-- Start and Pause -->
           <a
             @click="pauseAndPlay()"
-            v-if="loaded"
+            v-if="isBuffering"
             style="width: 36px; height: 36px;"
           >
             <v-icon v-if="paused" large class="icons" title="play">
@@ -77,7 +77,7 @@
           </a>
 
           <img
-            v-if="!loaded"
+            v-if="!isBuffering"
             style="width: 36px; height: 36px; vertical-align: middle;"
             src="/loadingPlay.gif"
           />
@@ -231,7 +231,7 @@ export default {
 
       //Flags:
       isMuted: false,
-      loaded: false,
+      isBuffering: false,
       isProgressBarPressed: false,
       isVolumePressed: false,
       isRepeatEnabled: false,
@@ -248,7 +248,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations("playlist", ["setAudio", "setPaused", "setSongLink"]),
+    ...mapMutations("playlist", ["setAudio", "setPaused", "setSongLink", "setIsSongLoaded"]),
     ...mapActions("playlist", ["pauseAndPlay"]),
 
     saveToLikedSongs: function() {
@@ -280,7 +280,7 @@ export default {
       this.audio.play();
     },
     next: function() {
-      this.loaded = false;
+      this.isBuffering = false;
       this.setPaused(true); //the sound will be paused upon changing the soruce
 
       //TODO: is it the current song is the last one in the playlist ?
@@ -296,7 +296,7 @@ export default {
       }, 1000);
     },
     previous: function() {
-      this.loaded = false;
+      this.isBuffering = false;
       this.setPaused(true); //the sound will be paused upon changing the soruce
 
       //TODO: is it the current song is the first one in the playlist ?
@@ -360,7 +360,8 @@ export default {
           this.isFirstSong = false;
         }
 
-        this.loaded = true; //finished loading the next song.
+        this.setIsSongLoaded(true);
+        this.isBuffering = true; //finished loading the next song.
 
         this.totalDuration = parseInt(this.audio.duration);
       } else {
@@ -391,10 +392,10 @@ export default {
       }
     },
     _handlerWaiting: function() {
-      this.loaded = false;
+      this.isBuffering = false;
     },
     _handlePlayingAfterBuffering: function() {
-      this.loaded = true;
+      this.isBuffering = true;
     },
     _handleSpaceDown: function(e) {
       if (e.code === "Space") {
@@ -403,12 +404,12 @@ export default {
     },
     _handleSpaceUp: function(e) {
       if (e.code === "Space") {
-        if (!this.loaded) return;
+        if (!this.isBuffering) return;
         this.pauseAndPlay();
       }
     },
     init: function() {
-      this.loaded = true; //I don't want a loading icon upon the loading of the page.
+      this.isBuffering = true; //I don't want a loading icon upon the loading of the page.
 
       //set the listeners:
       this.audio.addEventListener("timeupdate", this._handlePlayingUI);
