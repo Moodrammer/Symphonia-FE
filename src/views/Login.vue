@@ -27,7 +27,13 @@
         <!-- Facebook button  -->
         <v-row>
           <v-col cols="12" class="py-0 pb-1">
-            <v-btn block large rounded color="#3B5998" class="white--text"
+            <v-btn 
+            block 
+            large 
+            rounded 
+            color="#3B5998" 
+            class="white--text"
+            id="fb-login"
               >CONTINUE WITH FACEBOOK</v-btn
             >
           </v-col>
@@ -35,7 +41,13 @@
         <!-- Google button -->
         <v-row>
           <v-col cols="12" class="pt-1">
-            <v-btn block large rounded color="#dd4b39" class="white--text"
+            <v-btn 
+            block 
+            large 
+            rounded 
+            color="#dd4b39" 
+            class="white--text"
+            id="ggl-login"
               >CONTINUE WITH GOOGLE</v-btn
             >
           </v-col>
