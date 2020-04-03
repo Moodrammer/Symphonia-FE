@@ -1,7 +1,13 @@
 import axios from "axios";
 
 const state = {
-  likedPlaylists: []
+  likedPlaylists: [],
+  playlists: [],
+  audio: undefined,
+  paused: true,
+  songLink: "",
+  isQueueOpened: false,
+  isSongLoaded: false,
 };
 
 const mutations = {
@@ -10,7 +16,49 @@ const mutations = {
   },
   load_likedPlaylists(state, list) {
     state.likedPlaylists = list;
+  },
+  //for Pause and Play
+  load_playlists(state, list) {
+    state.playlists = list;
+  },
+  setAudio(state, audio) {
+    state.audio = audio;
+  },
+  setPaused(state, paused) {
+    state.paused = paused;
+  },
+  pauseAndPlay(state) {
+    state.paused = !state.paused;
+    state.paused ? state.audio.pause() : state.audio.play();
+  },
+  setSongLink(state, songLink) {
+    state.songLink = songLink;
+  },
+  setIsQueueOpened(state, isQueueOpened) {
+    state.isQueueOpened = isQueueOpened;
+  },
+  setIsSongLoaded(state, isSongLoaded) {
+    state.isSongLoaded = isSongLoaded;
   }
+};
+
+const getters = {
+  audio(state) {
+    return state.audio;
+  },
+  paused(state) {
+    return state.paused;
+  },
+  songLink(state) {
+    return state.songLink;
+  },
+  isQueueOpened(state) {
+    return state.isQueueOpened;
+  },
+  isSongLoaded(state) {
+    return state.isSongLoaded;
+  },
+  likedPlaylists: state => state.likedPlaylists,
 };
 
 const token = localStorage.getItem("userToken");
@@ -63,11 +111,10 @@ const actions = {
         console.log("axios caught an error");
         console.log(error);
       });
+  },
+  pauseAndPlay(context) {
+    context.commit("pauseAndPlay");
   }
-};
-
-const getters = {
-  likedPlaylists: state => state.likedPlaylists
 };
 
 export default {

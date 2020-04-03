@@ -14,6 +14,7 @@ import HomepagePremium from "../views/PremiumOffer.vue";
 import PlaylistView from "../components/general/PlaylistView.vue";
 import PassReset from "../components/PasswordMangement/PassReset.vue";
 import PassChange from "../components/PasswordMangement/PassChange.vue";
+import Queue from "../views/TheQueue.vue";
 
 Vue.use(VueRouter);
 
@@ -64,6 +65,11 @@ const routes = [
             name: "tracks",
             path: "tracks",
             component: Tracks
+          },
+          {
+            name: "queue",
+            path: "queue",
+            component: Queue
           }
         ]
       },
