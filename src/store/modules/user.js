@@ -135,26 +135,41 @@ const actions = {
         });
     },
     async userData({ commit, state }, payload) {
-        console.log("Inside the userData in user next the payload");
-        console.log(payload);
         await axios
             .get("/v1/users/" + payload)
             .then(response => {
-                console.log("Here the response data");
-                console.log(response.data);
-                let user = {
-                    token: state.userToken,
-                    user: {
-                        _id: response.data.id,
-                        name: response.data.name,
-                        email: response.data.email
-                    }
-                };
-                commit("setUserData", user);
-                commit("setCountry", response.data.country);
-                commit("setGender", response.data.gender);
-                commit("setuserDOB", response.data.DateOfBirth);
-                console.log(this.state);
+                // console.log("Here the response data");
+                // console.log(response.data);
+                if (response.status == 200) {
+                    let user = {
+                        token: state.userToken,
+                        user: {
+                            _id: response.data.id,
+                            name: response.data.name,
+                            email: response.data.email
+                        }
+                    };
+                    commit("setUserData", user);
+                    commit("setCountry", response.data.country);
+                    commit("setGender", response.data.gender);
+                    commit("setuserDOB", response.data.DateOfBirth);
+                }
+                // console.log(this.state);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    },
+    // eslint-disable-next-line no-empty-pattern
+    async updatePass({}, payload) {
+        await axios
+            .patch("/v1/users/updatepassword", payload)
+            .then(response => {
+                if (response.status == 201) {
+                    return new Response(200, {}, {});
+                } else {
+                    return new Response(500, {}, {});
+                }
             })
             .catch(error => {
                 console.log(error);

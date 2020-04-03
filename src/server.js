@@ -1,7 +1,6 @@
 import { Server, Model, Response, JSONAPISerializer } from "miragejs";
-import albumsJSON from "./api/mock/data/album.json"
-import artistsJSON from "./api/mock/data/artist.json"
-
+import albumsJSON from "./api/mock/data/album.json";
+import artistsJSON from "./api/mock/data/artist.json";
 
 //The makeserver function to be used to enable Mirage to intercept your requests
 export function makeServer({ environment = "development" } = {}) {
@@ -24,7 +23,8 @@ export function makeServer({ environment = "development" } = {}) {
                 password: "12345678",
                 DateOfBirth: "12-12-1980",
                 gender: "male",
-                type: "user"
+                type: "user",
+                country: "EG"
             });
             //creating an artist for testing purposes
             server.create("user", {
@@ -33,21 +33,25 @@ export function makeServer({ environment = "development" } = {}) {
                 password: "12345678",
                 DateOfBirth: "18-12-1995",
                 gender: "male",
-                type: "artist"
+                type: "artist",
+                country: "EG"
             });
 
             //This part is just to fake mirage in order to persist the data of only one user
             if (sessionStorage.getItem("SignedUpUser") != null) {
-                //The signed up user should remain in the localstorage so that when mirage loads each time it loads his data 
-                server.create("user", JSON.parse(sessionStorage.getItem("SignedUpUser")))
-                localStorage.removeItem("SignedUpUser")
+                //The signed up user should remain in the localstorage so that when mirage loads each time it loads his data
+                server.create(
+                    "user",
+                    JSON.parse(sessionStorage.getItem("SignedUpUser"))
+                );
+                localStorage.removeItem("SignedUpUser");
             }
 
             server.create("track", {
                 artists: {
                     href: "https://api.spotify.com/v1/artists/6sFIWsNpZYqfjUpaCguejur",
                     id: "6sFIWsNpZYqfjUpaCguejuf",
-                    name: "Carly Rae Jepsenq",
+                    name: "Carly Rae Jepsenq"
                 },
                 duration_ms: 20795,
                 name: "Cutqq",
@@ -63,7 +67,7 @@ export function makeServer({ environment = "development" } = {}) {
                 artists: {
                     href: "https://api.spotify.com/v1/artists/6sFIWsNpZYqfjUpaCgueju",
                     id: "6sFIWsNpZYqfjUpaCgueju",
-                    name: "Carly Rae Jepsen",
+                    name: "Carly Rae Jepsen"
                 },
                 duration_ms: 207959,
                 name: "Cut To The Feeling",
@@ -75,16 +79,11 @@ export function makeServer({ environment = "development" } = {}) {
                 }
             });
 
-
-            albumsJSON.items.forEach(element =>
-                server.create("album", element)
-            );
+            albumsJSON.items.forEach(element => server.create("album", element));
 
             artistsJSON.artists.items.forEach(element => {
-                server.create("artist", element)
-                console.log(element)
+                server.create("artist", element);
             });
-
 
             server.create("bestsong", {
                 songs: [{
@@ -155,18 +154,17 @@ export function makeServer({ environment = "development" } = {}) {
                 return schema.db.playlist;
             });
 
-            this.get("/v1/me/tracks", (schema) => {
-                console.log(schema.users.all())
-                return schema.tracks.all().models
+            this.get("/v1/me/tracks", schema => {
+                console.log(schema.users.all());
+                return schema.tracks.all().models;
             });
 
-            this.get("/v1/me/albums", (schema) => {
-                return schema.albums.all().models
+            this.get("/v1/me/albums", schema => {
+                return schema.albums.all().models;
             });
 
             this.delete("/v1/me/albums", (schema, request) => {
-
-                var x = '';
+                var x = "";
 
                 for (var i = 2; i < request.requestBody.length - 2; i++)
                     x += request.requestBody[i];
@@ -174,16 +172,14 @@ export function makeServer({ environment = "development" } = {}) {
                 return schema.albums.findBy(album => album.album.id === x).destroy();
             });
 
-
             this.get("/v1/me/following", (schema, request) => {
-                if (request.queryParams.type === 'artist')
-                    return schema.artists.all().models
+                if (request.queryParams.type === "artist")
+                    return schema.artists.all().models;
             });
 
             this.delete("/v1/me/following", (schema, request) => {
-
-                if (request.queryParams.type === 'artist') {
-                    var x = '';
+                if (request.queryParams.type === "artist") {
+                    var x = "";
                     for (var i = 2; i < request.requestBody.length - 2; i++)
                         x += request.requestBody[i];
 
@@ -191,13 +187,25 @@ export function makeServer({ environment = "development" } = {}) {
                 }
             });
 
-
             this.get("/v1/users/:id", (schema, request) => {
-                console.log("I'm a request id")
-                console.log(request.params.id);
-                console.log("here the user")
-                console.log(schema.users.find(request.params.id).attrs);
-                return new Response(200, {}, schema.users.find(request.params.id).attrs);
+                // console.log("I'm a request id")
+                // console.log(request.params.id);
+                // console.log("here the user")
+                // console.log(schema.users.find(request.params.id).attrs);
+                return new Response(
+                    200, {},
+                    schema.users.find(request.params.id).attrs
+                );
+            });
+            this.patch("/v1/users/updatepassword", (schema, request) => {
+                let attr = JSON.parse(request.requestBody);
+                let currentUser = schema.users.find(attr.id);
+                if (currentUser.password == attr.passwordCurrent) {
+                    currentUser.update({ password: attr.password });
+                    return new Response(201, {}, {});
+                } else {
+                    return new Response(500, {}, {});;
+                }
             });
 
             this.get("/v1/bestsongs"),
@@ -246,8 +254,11 @@ export function makeServer({ environment = "development" } = {}) {
                     });
 
                     //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
-                    sessionStorage.setItem("SignedUpUser", JSON.stringify(schema.users.find(3)))
-                        //return a request for now that the operation of creating the user was a success
+                    sessionStorage.setItem(
+                        "SignedUpUser",
+                        JSON.stringify(schema.users.find(3))
+                    );
+                    //return a request for now that the operation of creating the user was a success
                     return new Response(
                         201, {}, {
                             token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
@@ -263,37 +274,39 @@ export function makeServer({ environment = "development" } = {}) {
                 }),
                 //Handling the Forget password request(asking for changing password email)
                 this.post("/v1/users/forgotpassword", (schema, request) => {
-                    let attrs = JSON.parse(request.requestBody)
-                        //loop on all users to check if the user email sent exists in the server current database
+                    let attrs = JSON.parse(request.requestBody);
+                    //loop on all users to check if the user email sent exists in the server current database
                     for (let i = 1; i <= schema.users.all().length; i++) {
                         //if the email exists return a success response
                         if (attrs.email == schema.users.find(i).email) {
-                            return new Response(200, {}, {})
+                            return new Response(200, {}, {});
                         }
                     }
 
-                    return new Response(400, {}, {})
+                    return new Response(400, {}, {});
                 }),
                 //Handling the changing password request(patch request for the new password)
                 this.patch("/v1/users/resetpassword/:resettoken", (schema, request) => {
-                    let attrs = JSON.parse(request.requestBody)
-                        //for the sake of mocking only , treat the reset token as the user id
-                    let resettoken = parseInt(request.params.resettoken)
-                    console.log(request.params)
-                        //change the password of the first user for testing only
-                    schema.users.find(resettoken).update('password', attrs.password)
-                    console.log(schema.users.find(resettoken))
-                    console.log(attrs.password)
-                    return new Response(200, {}, {
-                        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
-                        user: {
-                            _id: schema.users.find(resettoken).id,
-                            email: schema.users.find(resettoken).email,
-                            name: schema.users.find(resettoken).name,
-                            type: schema.users.find(resettoken).type
+                    let attrs = JSON.parse(request.requestBody);
+                    //for the sake of mocking only , treat the reset token as the user id
+                    let resettoken = parseInt(request.params.resettoken);
+                    console.log(request.params);
+                    //change the password of the first user for testing only
+                    schema.users.find(resettoken).update("password", attrs.password);
+                    console.log(schema.users.find(resettoken));
+                    console.log(attrs.password);
+                    return new Response(
+                        200, {}, {
+                            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
+                            user: {
+                                _id: schema.users.find(resettoken).id,
+                                email: schema.users.find(resettoken).email,
+                                name: schema.users.find(resettoken).name,
+                                type: schema.users.find(resettoken).type
+                            }
                         }
-                    })
-                })
+                    );
+                });
         }
     });
 

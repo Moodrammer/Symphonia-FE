@@ -1,3 +1,4 @@
+// Todo:: add the success or failure message
 <template>
   <div class="col-sm-9">
     <!-- the main contant of the page of Edit profile -->
@@ -41,17 +42,11 @@
 
 <script>
 import bottomContent from "./bottomContent.vue";
+import getuserID from "@/mixins/userService";
 export default {
   data() {
     return {
-      user: {
-        email: "example@temp.com",
-        date: "12 19 98",
-        country: "EG",
-        gender: "",
-        form: "facebook",
-        password: "123456"
-      },
+      user: {},
       currentPassword: "",
       newPassword: "",
       confirmPassword: "",
@@ -74,9 +69,45 @@ export default {
       this.error1 = false;
       this.error2 = false;
       this.error3 = false;
-      if (this.user.password != this.currentPassword) this.error1 = true;
-      else if (this.newPassword != this.confirmPassword) this.error2 = true;
+      //if (this.user.password != this.currentPassword) this.error1 = true;
+      if (this.newPassword != this.confirmPassword) this.error2 = true;
       // if there is no error send the posted data to the api here
+      if (!this.error2 || this.error3) {
+        this.updatePass();
+      }
+    },
+    //Todo::edit the errors come from the post request (incorrect password)
+    updatePass: function() {
+      // eslint-disable-next-line vue/no-async-in-computed-properties
+      return this.$store
+        .dispatch("updatePass", {
+          passwordCurrent: this.currentPassword,
+          password: this.newPassword,
+          passwordConfirm: this.confirmPassword,
+          id: this.getuserID()
+        })
+        .then(() => {
+          this.user = this.$store.state.user;
+          console.log(this.user);
+        })
+        .catch(err => {
+          console.log(err);
+          this.error1 = true;
+        });
+    }
+  },
+  mixins: [getuserID],
+  computed: {
+    // eslint-disable-next-line vue/return-in-computed-property
+    userData: function() {
+      // eslint-disable-next-line vue/no-async-in-computed-properties
+      return this.$store
+        .dispatch("userData", this.getuserID())
+        .then(() => {
+          this.user = this.$store.state.user;
+          console.log(this.user);
+        })
+        .catch(err => console.log(err));
     }
   }
 };
