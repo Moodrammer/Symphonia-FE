@@ -149,6 +149,10 @@ const actions = {
                             email: response.data.email
                         }
                     };
+                    //-------------------------------------------4/3/2020--------------------------------------------
+                    //Todo:: you can set the user Country and Gender in the SetuserData mutation instead of using two 
+                    //new setters , but leave setuserDOB as it is used in SignUp for another reason
+                    //-----------------------------------------------------------------------------------------------
                     commit("setUserData", user);
                     commit("setCountry", response.data.country);
                     commit("setGender", response.data.gender);

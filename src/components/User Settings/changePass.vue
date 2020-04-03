@@ -77,6 +77,13 @@ export default {
       }
     },
     //Todo::edit the errors come from the post request (incorrect password)
+    //--------------- 4/3/2020---------------------------------------------------------------------------
+    // - No need to return data in this method only dispatch the action and execute .then to set the userToken
+    //or catch the error state (See the method in login or SignUp)
+    // - Send the user token current token in the authorization header
+    // - replace the stored token either in the local or sessin Storage with the one returned in the response(i 
+    // will provide you a setuserToken mixin from the userSevice for the sake of that replacement)
+    // ------------------------------------------------------------------------------------------------  
     updatePass: function() {
       // eslint-disable-next-line vue/no-async-in-computed-properties
       return this.$store
@@ -97,6 +104,9 @@ export default {
     }
   },
   mixins: [getuserID],
+  //--------------------------------------------4/3/2020-------------------
+  //Do you need to get the userData in that view??
+  //-----------------------------------------------------------------------
   computed: {
     // eslint-disable-next-line vue/return-in-computed-property
     userData: function() {

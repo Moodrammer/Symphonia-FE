@@ -109,6 +109,12 @@ export default {
   components: {
     bottomContent: bottomContent
   },
+  //---------------------------------------------------------------------------------------------
+  //todo: 4/3/2020
+  // - add the username above email in the overview vue
+  // - Remove the request from computed as there is no need to return the data here without using it 
+  // - Put it in created or mounted only to set the user object in local state without returning 
+  //--------------------------------------------------------------------------------------------- 
   computed: {
     // eslint-disable-next-line vue/return-in-computed-property
     userData: function() {
