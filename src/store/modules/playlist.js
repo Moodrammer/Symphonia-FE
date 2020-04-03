@@ -1,36 +1,79 @@
 import axios from "axios";
 
 const state = {
-  playlists: []
+  likedPlaylists: [],
+  playlists: [],
+  audio: undefined,
+  paused: true,
+  songLink: "",
+  isQueueOpened: false,
+  isSongLoaded: false,
 };
 
 const mutations = {
-  add_playlist(state, { id, name }) {
-    state.playlists.push({
-      id: id,
-      name: name
-    });
-
-    console.log("Playlist was added");
+  add_playlist(state, payload) {
+    state.likedPlaylists.push(payload);
   },
+  load_likedPlaylists(state, list) {
+    state.likedPlaylists = list;
+  },
+  //for Pause and Play
   load_playlists(state, list) {
     state.playlists = list;
+  },
+  setAudio(state, audio) {
+    state.audio = audio;
+  },
+  setPaused(state, paused) {
+    state.paused = paused;
+  },
+  pauseAndPlay(state) {
+    state.paused = !state.paused;
+    state.paused ? state.audio.pause() : state.audio.play();
+  },
+  setSongLink(state, songLink) {
+    state.songLink = songLink;
+  },
+  setIsQueueOpened(state, isQueueOpened) {
+    state.isQueueOpened = isQueueOpened;
+  },
+  setIsSongLoaded(state, isSongLoaded) {
+    state.isSongLoaded = isSongLoaded;
   }
 };
 
-//const token = localStorage.getItem("userToken");
+const getters = {
+  audio(state) {
+    return state.audio;
+  },
+  paused(state) {
+    return state.paused;
+  },
+  songLink(state) {
+    return state.songLink;
+  },
+  isQueueOpened(state) {
+    return state.isQueueOpened;
+  },
+  isSongLoaded(state) {
+    return state.isSongLoaded;
+  },
+  likedPlaylists: state => state.likedPlaylists,
+};
+
+const token = localStorage.getItem("userToken");
+//const user_id = localStorage.getItem("userID");
 
 const actions = {
-  createPlaylist({ commit }, playlistName) {
+  createPlaylist({ commit }, payload) {
     axios
-      .post("/playlists", {
-        data: playlistName
-      })
+      .post("/v1/users/" + payload.id + "/playlists",{name: payload.name}, {
+        headers: {
+          Authorization: `Bearer ${payload.token}`
+        }})
       .then(response => {
-        console.log(response);
-        var id = response.data.id;
-        var name = response.data.name;
-        commit("add_playlist", { id, name });
+        var newPlaylist = response.data;
+        commit("add_playlist", newPlaylist);
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -40,47 +83,42 @@ const actions = {
 
   // getPlayslist works for (Get a List of Current User's Playlists) when nothing send in the parameter 'user'
   // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
-  getPlaylists({ commit }) {
-
-    // var request = user ? 'users/' + user : 'me';
-    // request = '/v1/' + request + '/playlists';
-
-    // axios
-    //   .get(request, {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`
-    //     }
-    //   })
-    //   .then(response => {
-    //     let list = response.data;
-    //     console.log(list);
-    //     commit("load_playlists", list);
-    //   })
-    //   .catch(error => {
-    //     console.log("axios caught an error");
-    //     console.log(error);
-    //   });
-
-    axios
-      .get("/playlists")
+  async getPlaylists({ commit }) {
+    await axios
+      .get("/v1/me/playlists", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then(response => {
         let list = response.data;
-        console.log(list);
-        commit("load_playlists", list);
+        let newList = [];
+        list.forEach(element => {
+          var k = {
+            name: element.name,
+            image: element.images[0].url,
+            description: element.description,
+            id: element.id,
+            url: "url to be added"
+          };
+          newList.push(k);
+        });
+        commit("load_likedPlaylists", newList);
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
+  },
+  pauseAndPlay(context) {
+    context.commit("pauseAndPlay");
   }
-
-
-
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
 };

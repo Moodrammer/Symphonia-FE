@@ -2,6 +2,78 @@
     "artists": {
         "items": [
           {
+            "followers": {
+              "href": null,
+              "total": 306565
+            },
+            "genres": [],
+            "href": "https://api.symphonia.com/v1/artists/1",
+            "images": [
+              {
+                "height": 816,
+                "url": "http://source.unsplash.com/kcV7BxcVtU4",
+                "width": 1000
+              }
+            ],
+            "name": "Yasser Al-Dosari",
+            "popularity": 90,
+            "type": "artist"
+           } ,
+           {
+            "followers": {
+              "href": null,
+              "total": 306565
+            },
+            "genres": [],
+            "href": "https://api.symphonia.com/v1/artists/2",
+            "images": [
+              {
+                "height": 816,
+                "url": "http://source.unsplash.com/bG8U3kaZltE",
+                "width": 1000
+              }
+            ],
+            "name": "Nasser Al-Qatami",
+            "popularity": 90,
+            "type": "artist"
+           },
+           {
+            "followers": {
+              "href": null,
+              "total": 306565
+            },
+            "genres": [],
+            "href": "https://api.symphonia.com/v1/artists/3",
+            "images": [
+              {
+                "height": 816,
+                "url": "http://source.unsplash.com/b6fKcY3s8VE",
+                "width": 1000
+              }
+            ],
+            "name": "Wadeea Al-Yamani",
+            "popularity": 90,
+            "type": "artist"
+           },
+           {
+            "followers": {
+              "href": null,
+              "total": 306565
+            },
+            "genres": [],
+            "href": "https://api.symphonia.com/v1/artists/3",
+            "images": [
+              {
+                "height": 816,
+                "url": "http://source.unsplash.com/Y20JJ_ddy9M",
+                "width": 1000
+              }
+            ],
+            "name": "Maher Zain",
+            "popularity": 90,
+            "type": "artist"
+           },
+          {
             "external_urls": {
               "spotify": "https://open.spotify.com/artist/1ZpCdBZ3rL0mXxMhzhOBvi"
             },

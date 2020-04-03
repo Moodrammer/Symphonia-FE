@@ -1,5 +1,5 @@
 <template>
-  <!--The Liked Songs view wil be modified-->
+  <!--The Playlist view wil be used later-->
   <v-container class="pt-0">
     <v-row justify="center">
       <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">
@@ -61,7 +61,7 @@
 
             <v-col lg="12" md="8" sm="7" xs="1" cols="12">
               <v-row justify-lg="center">
-                <h1 class="mt-5">Liked Songs</h1>
+                <h1 class="mt-5">Playlist Name</h1>
               </v-row>
               <v-row justify-lg="center">
                 <v-btn rounded class="white--text px-8" id="playBtn">
@@ -94,9 +94,8 @@
 </template>
 
 <script>
-import Song from "../components/general/Song";
+import Song from "./Song";
 import { mapState, mapActions } from "vuex";
-import getDeviceSize from "../mixins/getDeviceSize";
 /**
  * @displayName Liked Songs
  * @example [none]
@@ -112,21 +111,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions("category", ["getTracks"])
-  },
-  created: function(){
-     this.$store.dispatch("track/getTrack",1);
-     this.$store.dispatch("track/checkSaved",[4]);
-     this.$store.dispatch("track/removeSavedTrack",[1]);
-     this.$store.dispatch("track/saveTrack",[5]);
+    ...mapActions("track", ["getTracks"])
   },
   mounted() {
     this.getTracks();
   },
   computed: mapState({
-    tracks: state => state.category.tracks
-  }),
-  mixins: [getDeviceSize]
+    tracks: state => state.track.tracks
+  })
 };
 </script>
 

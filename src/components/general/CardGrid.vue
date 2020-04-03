@@ -261,33 +261,26 @@ export default {
 
 <style>
 /* card styles section */
-
 .card {
   height: 270;
   padding: 0;
   overflow: hidden;
   word-break: normal;
 }
-
 .card-text {
   overflow: hidden;
   word-break: normal;
 }
-
 .card-text-title {
   height: 30px;
 }
-
 .card-text-subtitle {
   height: 20px;
 }
-
 /* liked songs card styles section */
-
 .likedsongs-card-text {
   height: 100px;
 }
-
 .gradient-likedsongs-card {
   background: rgb(89, 0, 172);
   background: linear-gradient(

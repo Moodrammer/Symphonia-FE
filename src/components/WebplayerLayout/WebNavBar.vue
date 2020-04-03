@@ -123,7 +123,7 @@
             </v-icon>
           </v-btn>
 
-          <span class="hidden-md-and-down">UserName</span>
+          <span class="hidden-md-and-down"> {{ getusername() }}</span>
           <!--This to handle the icon changes when the menu is opened and closed-->
           <v-icon color="white" class="hidden-md-and-down" v-if="on">
             mdi-menu-down
@@ -179,6 +179,7 @@
 
 <script>
 import isLoggedIn from "../../mixins/userService";
+import getusername from "../../mixins/userService";
 /**
  * @displayName Webplayer Navigation Bar
  * @example [none]
@@ -307,7 +308,7 @@ export default {
   destroy() {
     window.removeEventListener("scroll", this.updateScroll);
   },
-  mixins: [isLoggedIn]
+  mixins: [isLoggedIn, getusername]
 };
 </script>
 
@@ -318,26 +319,21 @@ export default {
   border-radius: 500px;
   margin-right: 30px;
 }
-
 .upgarde:hover {
   transform: scale(1.1, 1.1);
 }
-
 .profile {
   border-radius: 23px;
   font-size: 10px;
 }
-
 .bar {
   color: blue;
 }
-
 .tf {
   border-radius: 500px;
   margin-left: 5px;
   text-overflow: ellipsis;
 }
-
 #signUp {
   border-width: 0;
 }
@@ -345,7 +341,6 @@ export default {
 #logIn:hover {
   transform: scale(1.1, 1.1);
 }
-
 #logIn {
   border-radius: 500px;
   padding-left: 35px;

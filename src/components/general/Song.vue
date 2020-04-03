@@ -4,18 +4,42 @@
     @mouseover="hover = true"
     @mouseleave="hover = false"
   >
-    <v-icon class="mr-2 pb-9" color="white" v-if="hover">mdi-play</v-icon>
-    <v-icon class="mr-2 pb-9" color="white" v-else>
+    <v-icon
+      class="mr-2 pb-9"
+      v-if="hover && !disabled"
+      v-bind:class="{ enabled: !playing, 'playing': playing }"
+      >mdi-play</v-icon
+    >
+    <v-icon
+      class="mr-2 pb-9"
+      v-bind:class="{
+        'disabled-1': disabled,
+        enabled: !disabled && !playing,
+        'playing': playing
+      }"
+      v-else
+    >
       mdi-music-note-eighth
     </v-icon>
-    <v-list-item-title class="draweritem white--text">
+    <v-list-item-title
+      class="draweritem"
+      v-bind:class="{
+        'disabled-1': disabled,
+        'white--text': !disabled && !playing,
+        'playing': playing
+      }"
+    >
       {{ songName }}
       <v-list-item-subtitle class="mt-3 pl-3 white--text">
         <!--Display the artist and the album/playlist name-->
         <v-row>
-          <p class="subtitle mr-2">{{ artistName }}</p>
+          <p class="subtitle mr-2" v-bind:class="{ 'disabled-2': disabled }">
+            {{ artistName }}
+          </p>
           <p>.</p>
-          <p class="subtitle ml-2">{{ albumName }}</p>
+          <p v-bind:class="{ 'disabled-2': disabled }" class="subtitle ml-2">
+            {{ albumName }}
+          </p>
         </v-row>
       </v-list-item-subtitle>
       <!--To make the next elements start from the end-->
@@ -55,7 +79,16 @@ export default {
     songName: String,
     artistName: String,
     albumName: String,
-    duration: Number
+    duration: Number,
+    id: String,
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    playing: {
+      type: Boolean,
+      default: false
+    }
   },
   data: function() {
     return {
@@ -102,5 +135,22 @@ export default {
 
 .songItem:hover {
   background-color: #282828;
+}
+
+.enabled {
+  color: white !important;
+}
+
+.disabled-1 {
+  color: #b3b3b3 !important;
+}
+
+.disabled-2 {
+  color: #b3b3b3 !important;
+  opacity: 0.6;
+}
+
+.playing {
+  color: green !important;
 }
 </style>
