@@ -117,7 +117,7 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////
       this.post("/v1/users/:user_id/playlists", (schema, request) => {
         let user_id = request.params.user_id;
-        let newPlaylist = JSON.parse(request.requestBody).data;
+        let newPlaylist = JSON.parse(request.requestBody);
         schema.create("playlist", {
           name: newPlaylist.name,
           liked: true

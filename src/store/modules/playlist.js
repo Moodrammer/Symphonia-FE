@@ -67,12 +67,10 @@ const token = localStorage.getItem("userToken");
 const actions = {
   createPlaylist({ commit }, payload) {
     axios
-      .post("/v1/users/" + payload.id + "/playlists", {
+      .post("/v1/users/" + payload.id + "/playlists",{name: payload.name}, {
         headers: {
           Authorization: `Bearer ${payload.token}`
-        },
-        data: { name: payload.name }
-      })
+        }})
       .then(response => {
         var newPlaylist = response.data;
         commit("add_playlist", newPlaylist);
