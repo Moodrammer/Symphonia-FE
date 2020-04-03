@@ -15,8 +15,8 @@
             <router-link to="/" class="song-name">
               {{ songName }}
             </router-link>
-            <router-link to="/" class="singer-name">
-              {{ artistName }}
+            <router-link v-for="(artist, index) in artists" :key="index" :to="artist.href" class="singer-name">
+              {{ artist.name }}
             </router-link>
           </div>
           <a @click="saveToLikedSongs()" v-if="!isSongIsLiked">
@@ -278,9 +278,9 @@ export default {
 
       //The song's info:
       artistPicture: "/profile.jpg",
-      songName: "Changes",
-      artistName: "2PAC",
-      songId: "007",
+      songName: undefined,
+      artists: undefined,
+      songId: undefined,
 
       devices: undefined,
       currentDeviceId: undefined
@@ -477,6 +477,21 @@ export default {
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
+      var thisThen = this;
+
+      axios({
+        method: "get",
+        url: "/v1/me/player/tracks/recently-played",
+      }).then(response => {
+        var lastSong = response.data.items;
+        lastSong = lastSong[lastSong.length - 1].track;
+
+        thisThen.setSongLink(lastSong.href);
+        thisThen.songName = lastSong.name;
+        thisThen.artists = lastSong.artists; 
+        thisThen.songId = lastSong.id;
+      })
+
       //get the last song that user listened to and call updateSongInfo()
       //this.setSongLink("link came from a request");
       this.setSongLink("/example.mp3");
@@ -484,7 +499,6 @@ export default {
       //save the browser
 
       //get the browsers.
-      var thisThen = this;
       axios({
         method: "patch",
         url: "/v1/me/player/devices",
@@ -596,6 +610,8 @@ export default {
   letter-spacing: 0.015em;
   position: relative;
   color: #b3b3b3;
+
+  padding-right: 10px;
 }
 
 .singer-name:hover {

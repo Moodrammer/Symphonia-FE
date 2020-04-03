@@ -359,6 +359,54 @@ export function makeServer({ environment = "development" } = {}) {
               ]
             }
           );
+        }),
+
+        this.get("/v1/me/player/tracks/recently-played", () => {
+          return new Response(
+            200,
+            {},
+            {
+              "items": [
+                {
+                  "track": {
+                    "artists": [
+                      {
+                        "href": "/v1/artists/6sFIWsNpZYqfjUpaCgueju",
+                        "id": "6sFIWsNpZYqfjUpaCgueju",
+                        "name": "2PAC",
+                        "type": "artist"
+                      },
+                      {
+                        "href": "/v1/artists/6sFIWsNpZYqfjUpaCgueju",
+                        "id": "6sFIWsNpZYqfjUpaCgueju",
+                        "name": "snoop dog",
+                        "type": "artist"
+                      }
+                    ],
+                    "available_markets": [
+                      "CA",
+                      "MX",
+                      "US"
+                    ],
+                    "duration_ms": 467586,
+                    "explicit": false,
+                    "href": "/example.mp3",
+                    "id": "11dFghVXANMlKmJXsNCbNl",
+                    "name": "thug life",
+                    "type": "track"
+                  },
+                  "played_at": "2016-12-13T20:44:04.589Z"
+                }
+              ],
+              "next": "https://api.symphonia.com/v1/me/player/recently-played?before=1481661737016&limit=2",
+              "cursors": {
+                "after": "1481661844589",
+                "before": "1481661737016"
+              },
+              "limit": 2,
+              "href": "https://api.symphonia.com/v1/me/player/recently-played?limit=2"
+            }
+          );
         });
     }
   });
