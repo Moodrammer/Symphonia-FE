@@ -407,6 +407,15 @@ export function makeServer({ environment = "development" } = {}) {
               "href": "https://api.symphonia.com/v1/me/player/recently-played?limit=2"
             }
           );
+        }),
+        this.get("/v1/me/tracks/contains", () => {
+          return new Response(
+            200,
+            {},
+            [
+              true
+            ]
+          );
         });
     }
   });

@@ -492,9 +492,15 @@ export default {
         thisThen.songId = lastSong.id;
       })
 
-      //get the last song that user listened to and call updateSongInfo()
-      //this.setSongLink("link came from a request");
-      this.setSongLink("/example.mp3");
+      axios({
+        method: "get",
+        url: "/v1/me/tracks/contains",
+        params: {
+          ID: [thisThen.songId]
+        },
+      }).then(response => {
+        this.isSongIsLiked = response.data[0]
+      })
 
       //save the browser
 
