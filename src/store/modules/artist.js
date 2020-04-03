@@ -41,7 +41,7 @@ const actions = {
         },
          params: { type: 'artist' }
       })
-      .then(response => commit("load_followed_artists", response.data))
+      .then(response => { console.log("Saad art",response); commit("load_followed_artists", response.data);} )
       .catch(error => {
         console.log("axios caught an error in getFollowedArtists");
         console.log(error);

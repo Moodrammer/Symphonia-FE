@@ -13,6 +13,7 @@ import Tracks from "../views/LikedSongs.vue";
 import HomepagePremium from "../views/PremiumOffer.vue";
 import PassReset from "../components/PasswordMangement/PassReset.vue";
 import PassChange from "../components/PasswordMangement/PassChange.vue";
+import ArtistUI from '../components/ArtistUI';
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,12 @@ const routes = [
     path: "/",
     name: "Home",
     component: Homepage
+  },
+  {
+    path: "/ArtistUI",
+    name: "ArtistUI",
+    component: ArtistUI
+
   },
   {
     path: "/webhome",

@@ -10,12 +10,12 @@ Vue.config.productionTip = false;
 
 //Enabling the mock server to intercept your requests when in development mode
 //The NODE_ENV can be either development | test | Production according to the vue-cli-service used to run the application
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "production") {
   makeServer();
 }
 
 //configure axios base url
-axios.defaults.baseURL = "/api";
+axios.defaults.baseURL = "http://ec2-52-21-160-186.compute-1.amazonaws.com/api";
 
 new Vue({
   router,
