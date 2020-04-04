@@ -477,8 +477,6 @@ export default {
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
-      var thisThen = this;
-
       axios({
         method: "get",
         url: "/v1/me/player/tracks/recently-played",
@@ -486,20 +484,33 @@ export default {
         var lastSong = response.data.items;
         lastSong = lastSong[lastSong.length - 1].track;
 
-        thisThen.setSongLink(lastSong.href);
-        thisThen.songName = lastSong.name;
-        thisThen.artists = lastSong.artists; 
-        thisThen.songId = lastSong.id;
-      })
-
+        this.songName = lastSong.name;
+        this.artists = lastSong.artists; 
+        this.songId = lastSong.id;
+      
       axios({
         method: "get",
         url: "/v1/me/tracks/contains",
         params: {
-          ID: [thisThen.songId]
+          ID: [this.songId]
         },
       }).then(response => {
         this.isSongIsLiked = response.data[0]
+      })
+
+      //request the song mp3 file
+      axios({
+        method: "post",
+        url: "/v1/me/player/tracks/" + this.songId,
+        data: {
+          contextId: "1212", //Get the context Id->Id in the URL
+          context_type: "album", //get it
+          context_url: "url", //browser URL
+          device: this.currentDeviceId
+        }
+      }).then(                              //STUB because there's no songs now
+        this.setSongLink("/example.mp3") //must be the song link "/v1/me/player/tracks/" + this.songId
+      )
       })
 
       //save the browser
@@ -512,9 +523,9 @@ export default {
           device: "Chrome" //TODO: get the browser name
         }
       }).then(response => {
-        thisThen.devices = response.data.devices;
-        thisThen.currentDeviceId =
-          thisThen.devices[thisThen.devices.length - 1]._id;
+        this.devices = response.data.devices;
+        this.currentDeviceId =
+          this.devices[this.devices.length - 1]._id;
       });
 
       //Stub:

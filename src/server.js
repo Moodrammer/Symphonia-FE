@@ -391,7 +391,7 @@ export function makeServer({ environment = "development" } = {}) {
                     "duration_ms": 467586,
                     "explicit": false,
                     "href": "/example.mp3",
-                    "id": "11dFghVXANMlKmJXsNCbNl",
+                    "id": "1",
                     "name": "thug life",
                     "type": "track"
                   },
@@ -416,6 +416,13 @@ export function makeServer({ environment = "development" } = {}) {
               true
             ]
           );
+        }),
+        this.post("/v1/me/player/tracks/1", () => {
+          return new Response(
+            200,
+            {},
+            {}
+            )
         });
     }
   });
