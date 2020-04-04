@@ -61,22 +61,24 @@ export default {
       iconClick: false
     };
   },
+  
   methods: {
     ...mapMutations("playlist", ["setIsQueueOpened"]),
-    ...mapActions("track", ["getTracks"])
+    ...mapActions("category", ["getTracks"])
   },
-  computed: mapState({
-    ...mapGetters("playlist", ["isQueueOpened"]),
-
-    tracks: state => state.track.tracks
-  }),
-
-  mixins: [getDeviceSize],
-
   mounted: function() {
     this.getTracks();
     this.setIsQueueOpened(true);
   },
+  computed: mapState({
+    ...mapGetters("playlist", ["isQueueOpened"]),
+
+    tracks: state => state.category.tracks
+  }),
+
+  mixins: [getDeviceSize],
+
+  
   beforeDestroy: function() {
     this.setIsQueueOpened(false);
   }
