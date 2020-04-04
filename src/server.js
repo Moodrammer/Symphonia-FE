@@ -117,7 +117,7 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////
       this.post("/v1/users/:user_id/playlists", (schema, request) => {
         let user_id = request.params.user_id;
-        let newPlaylist = JSON.parse(request.requestBody).data;
+        let newPlaylist = JSON.parse(request.requestBody);
         schema.create("playlist", {
           name: newPlaylist.name,
           liked: true
@@ -125,7 +125,7 @@ export function makeServer({ environment = "development" } = {}) {
         return new Response(
           200,
           {},
-          {
+          {playlist:{
             name: newPlaylist.name,
             id: schema.playlists.find(schema.playlists.all().length).id,
             description: null,
@@ -158,6 +158,7 @@ export function makeServer({ environment = "development" } = {}) {
               total: 0
             },
             type: "playlist"
+          }
           });
       });
       ///////////////////////////////////////////////////////////////////////////////////
