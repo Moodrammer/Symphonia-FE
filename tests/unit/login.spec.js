@@ -8,10 +8,10 @@ import login from "@/views/Login.vue"
 
 //const localVue = createLocalVue();
 
-describe("Login.vue" , () => {
+describe("login" , () => {
     let wrapper;
     let vuetify
-
+    
     beforeEach(() => {
         const router = new VueRouter()
         vuetify = new Vuetify()
@@ -22,7 +22,7 @@ describe("Login.vue" , () => {
         wrapper = mount(login , {
             router, 
             vuetify,
-    })
+         })
         //console.log(wrapper)
     })
 
@@ -118,10 +118,36 @@ describe("Login.vue" , () => {
         //check if the local state is updated due to binding using v-model
         expect(wrapper.vm.formData.password).toBe("12345678");
    })
+
+   //check if the data in the model changes on using the checkbox
+   it("changes the value of rememberme to true on checking the checkbox" , () => {
+       const rm_wrp = wrapper.find("#rm-chkbx")
+       //simulate checking the box by the user
+       //rm_wrp.element.checked = false
+       rm_wrp.trigger("change")
+       //check if the data in the local state changed
+       expect(wrapper.vm.formData.rememberMe).toBe(true)
+   })
     
    //check if validation error message appears on empty input 
 
-   //form submission tests
+//    //form submission tests
+//    it("submits the form and stores the data in the localStorage" , () => {
+//        const email_wrp = wrapper.find("#login-username");
+//         //simulate entering the data by the user
+//         email_wrp.element.value = "Bob@gmail.com"
+//         email_wrp.trigger("input")
+//        const pass_wrp = wrapper.find("#login-password");
+//         //simulate entering the data by the user
+//         pass_wrp.element.value = "12345678"
+//         pass_wrp.trigger("input")
+//         //simulate clicking the login key
+//         const btn_wrp = wrapper.find("#login-button")
+//         btn_wrp.trigger("click")
+
+//         //expect the userToken to be stored in the sessionStorage
+//         expect(actions.loginuser).toHaveBeenCalled()
+//  })
 
    //routing tests (check only the route without routing as the interaction between components doesn't lie under unit testing)
 })

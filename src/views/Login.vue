@@ -112,6 +112,7 @@
                 label="Remember me"
                 v-model="formData.rememberMe"
                 color="green"
+                id="rm-chkbx"
               ></v-checkbox>
             </v-col>
             <!-- Log in button -->
