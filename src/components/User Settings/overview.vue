@@ -1,6 +1,7 @@
 <template>
   <div class="col-sm-9">
     <div class="content">
+      <!-- account overview view content -->
       <h1>Account overview</h1>
       <article class="section">
         <h3>Profile</h3>
@@ -11,6 +12,18 @@
               <col class="info-col" />
             </colgroup>
             <tbody>
+              <!-- The Username section -->
+              <tr class="info-row">
+                <td class="info-cell">
+                  <label for="username"
+                    ><span class="info-content">Username</span></label
+                  >
+                </td>
+                <td class="info-cell">
+                  <p class="info-value">{{ user.username }}</p>
+                </td>
+              </tr>
+              <!-- The Email sction -->
               <tr class="info-row">
                 <td class="info-cell">
                   <label for="email"
@@ -21,6 +34,7 @@
                   <p class="info-value">{{ user.userEmail }}</p>
                 </td>
               </tr>
+              <!-- The Date of birth scetion -->
               <tr class="info-row">
                 <td class="info-cell">
                   <label for="date"
@@ -31,6 +45,7 @@
                   <p class="info-value">{{ user.userDOB }}</p>
                 </td>
               </tr>
+              <!-- The User's country section -->
               <tr class="info-row">
                 <td class="info-cell">
                   <label for="country"
@@ -44,6 +59,7 @@
             </tbody>
           </table>
         </section>
+        <!-- Button to change the user's data -->
         <a class="btn-class" href="#">Edit profile</a>
       </article>
       <article class="section">
@@ -52,6 +68,8 @@
           <div class="card">
             <div class="card-header">
               <div class="card-title">
+                //Todo:: change the plan with the dynamic user's data
+                <!-- The user's plan -->
                 <span class="card-span-title">Symphonia Free</span>
               </div>
             </div>
@@ -65,12 +83,14 @@
                   </div>
                 </div>
                 <div>
+                  <!-- The user's plan -->
                   <h3>Free</h3>
                 </div>
               </div>
             </div>
           </div>
         </section>
+        <!-- If the user is free -->
         <a class="btn-class" href="#">Join Premium</a>
       </article>
       <article class="section">
@@ -103,33 +123,30 @@ import getuserID from "@/mixins/userService";
 export default {
   data() {
     return {
+      // The current user's data got from the created request
       user: {}
     };
   },
   components: {
+    // The review section
     bottomContent: bottomContent
   },
   //---------------------------------------------------------------------------------------------
   //todo: 4/3/2020
-  // - add the username above email in the overview vue
-  // - Remove the request from computed as there is no need to return the data here without using it 
-  // - Put it in created or mounted only to set the user object in local state without returning 
-  //--------------------------------------------------------------------------------------------- 
-  computed: {
-    // eslint-disable-next-line vue/return-in-computed-property
-    userData: function() {
-      // eslint-disable-next-line vue/no-async-in-computed-properties
-      return this.$store
-        .dispatch("userData", this.getuserID())
-        .then(() => {
-          this.user = this.$store.state.user;
-        })
-        .catch(err => console.log(err));
-    }
-  },
-  mixins:[getuserID],
-  created(){
-    console.log(this.userData);
+  // - add the username above email in the overview vue(Done)
+  // - Remove the request from computed as there is no need to return the data here without using it (Done)
+  // - Put it in created or mounted only to set the user object in local state without returning (Done)
+  //---------------------------------------------------------------------------------------------
+  mixins: [getuserID],
+  created() {
+    // Request to get the current user's data
+    this.$store
+      .dispatch("userData", this.getuserID())
+      .then(() => {
+        // If we got it set it into the data to display the user's info
+        this.user = this.$store.state.user;
+      })
+      .catch(err => console.log(err));
   }
 };
 </script>

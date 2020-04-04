@@ -19,26 +19,64 @@
             />
             <p v-show="facebook">{{ user.email }}</p>
           </div>
+          <!-- The password content -->
+          <div class="form-group" v-show="!facebook">
+            <label for="email">Current password</label>
+            <input
+              type="password"
+              class="text"
+              v-model="user.password"
+              v-show="!facebook"
+              :disabled="password"
+            />
+          </div>
           <!-- The gender content -->
           <div class="form-group">
             <label for="gender">Gender</label>
-            <input
-              type="text"
-              class="text"
-              v-model="user.gender"
-              v-show="!facebook"
-            />
+            <select name="gender" id="gender" required>
+              <option value="male" :selected="gender">Male</option>
+              <option value="female" :selected="!gender">Female</option>
+            </select>
             <p v-show="facebook">{{ user.gender }}</p>
           </div>
           <!-- The date of birth content -->
           <div class="form-group">
             <label for="bod">Date of birth</label>
-            <input
-              type="date"
-              class="text"
-              v-model="user.date"
-              v-show="!facebook"
-            />
+            <div class="row">
+              <div class="col-4" v-show="!facebook">
+                <select name="month" id="month" class="date">
+                  <option
+                    v-for="month in months"
+                    :key="month.value"
+                    :selected="month.selected"
+                    :value="month.value"
+                    >{{ month.value }}</option
+                  >
+                </select>
+              </div>
+              <div class="col-4" v-show="!facebook">
+                <select name="day" id="day" class="date">
+                  <option
+                    v-for="day in days"
+                    :key="day.value"
+                    :selected="day.selected"
+                    :value="day.value"
+                    >{{ day.value }}</option
+                  >
+                </select>
+              </div>
+              <div class="col-4" v-show="!facebook">
+                <select name="year" id="year" class="date">
+                  <option
+                    v-for="year in years"
+                    :key="year.value"
+                    :selected="year.selected"
+                    :value="year.value"
+                    >{{ year.value }}</option
+                  >
+                </select>
+              </div>
+            </div>
             <p v-show="facebook">{{ user.date }}</p>
           </div>
           <!-- The country content -->
@@ -52,18 +90,6 @@
           <div class="form-group">
             <label for="mobile">Mobile phone number</label>
             <input type="text" class="text" required v-model="user.mobile" />
-          </div>
-          <!-- One more option to check -->
-          <div class="form-group">
-            <label for="text" class="checkbox">
-              <v-checkbox
-                class="checkbox-input"
-                v-model="share"
-                color="green"
-                label="Share my registration data with Symphonia's content providers for
-              marketing purposes."
-              ></v-checkbox>
-            </label>
           </div>
           <div class="button-col">
             <!-- get the changes or cancel it -->
@@ -87,10 +113,17 @@ export default {
         date: "12 19 98",
         country: "EG",
         gender: "",
-        form: "facebook"
+        form: "normal"
       },
       facebook: false,
-      share: false
+      share: false,
+      //if the gender Male is true , Female is false
+      gender: true,
+      //if the email is same we don't need the password to access any change so it's true(disabled)
+      password: true,
+      days: [],
+      months: [],
+      years: []
     };
   },
   components: {
@@ -99,6 +132,31 @@ export default {
   created() {
     if (this.user.form === "facebook") {
       this.facebook = true;
+    }
+    let daySelect = 3;
+    let counter = {};
+    for (let i = 0; i < 31; i++) {
+       counter = {
+        value: i + 1,
+        selected: i + 1 == daySelect ? true : false
+      };
+      this.days.push(counter);
+    }
+    let monthSelect = 5;
+    for (let i = 0; i < 12; i++) {
+      counter = {
+        value: i + 1,
+        selected: i + 1 == monthSelect ? true : false
+      };
+      this.months.push(counter);
+    }
+    let yearSelect = 2005;
+    for (let i = 1990; i <= 2020; i++) {
+      counter = {
+        value: i,
+        selected: i == yearSelect ? true : false
+      };
+      this.years.push(counter);
     }
   }
 };
@@ -378,5 +436,96 @@ button {
   user-select: none;
   text-decoration: none;
   background-color: transparent;
+}
+#gender {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("https://img.icons8.com/ios/90/000000/expand-arrow--v2.png");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  color: #222326;
+  padding-right: 48px;
+  text-indent: 0.01px;
+  text-overflow: "";
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-transition: border-color ease-in-out 0.15s,
+    box-shadow ease-in-out 0.15s;
+  -webkit-transition: border-color ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 12px;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #fff;
+  border: 1px solid #d9dadc;
+  border-radius: 0;
+  text-transform: none;
+  margin: 0;
+}
+#gender::placeholder {
+  transition: color 0.15s ease-in-out;
+  color: #c1c3c6;
+  opacity: 1;
+}
+#gender:focus {
+  border-color: #919496;
+  outline: 0;
+  box-shadow: none;
+}
+input[disabled] {
+  color: #c1c3c6;
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: #fafafa;
+  opacity: 1;
+}
+.date {
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  color: #222326;
+  padding-right: 48px;
+  text-indent: 0.01px;
+  text-overflow: "";
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  background-image: url("https://img.icons8.com/ios/90/000000/expand-arrow--v2.png");
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition: border-color ease-in-out 0.15s,
+    box-shadow ease-in-out 0.15s;
+  -webkit-transition: border-color ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 12px;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #fff;
+  border: 1px solid #d9dadc;
+  border-radius: 0;
+  margin: 0;
 }
 </style>

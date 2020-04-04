@@ -1,4 +1,3 @@
-// Todo:: add the success or failure message
 <template>
   <div class="col-sm-9">
     <!-- the main contant of the page of Edit profile -->
@@ -7,25 +6,34 @@
         <h1>Change your password</h1>
       </div>
       <div class="form-container">
+        <div class="alert-success" v-show="Done">Password updated</div>
         <!-- here we take the changes for both users facebook & normal ones to change the profile -->
         <form action="#">
           <!-- The Current password content -->
           <div class="form-group">
             <label for="Current-password">Current password</label>
             <input type="password" class="text" v-model="currentPassword" />
-            <p v-show="error1" class="alert">Sorry,wrong password</p>
+            <p v-show="errorWrongPass" class="alert">
+              Sorry,wrong password or old one
+            </p>
           </div>
           <!-- The gender content -->
           <div class="form-group">
             <label for="New-password">New password</label>
             <input type="password" class="text" v-model="newPassword" />
+            <p v-show="errorEmptyNew" class="alert">
+              Enter a password to continue.
+            </p>
           </div>
           <!-- The date of birth content -->
           <div class="form-group">
             <label for="Confirm">Repeat new password</label>
             <input type="password" class="text" v-model="confirmPassword" />
-            <p v-show="error2" class="alert">
-              The password doesn't match, check it again
+            <p v-show="errorWrongMatch" class="alert">
+              Please verify your password
+            </p>
+            <p v-show="errorEmptyConfirm" class="alert">
+              Please verify your password.
             </p>
           </div>
           <div class="button-col">
@@ -46,47 +54,69 @@ import getuserID from "@/mixins/userService";
 export default {
   data() {
     return {
-      user: {},
+      // the variable used for current user's password
       currentPassword: "",
+      // the new password variable
       newPassword: "",
+      // the confirm that they match the new password variable
       confirmPassword: "",
-      error1: false,
-      error2: false,
-      error3: false
+      // Prints the wrong password message if it's true
+      errorWrongPass: false,
+      // Prints the wrong match of the new & confirmed passwords
+      errorWrongMatch: false,
+      // Print error if the input text box of the new password is empty
+      errorEmptyNew: false,
+      // print error if the input text box of the Confirm password is empty
+      errorEmptyConfirm: false,
+      // Print the success message that the password is changed
+      Done: false
     };
   },
   components: {
+    // The review content
     bottomContent: bottomContent
   },
-  created() {
-    if (this.user.form === "facebook") {
-      this.facebook = true;
-    }
-  },
   methods: {
-    // eslint-disable-next-line vue/return-in-computed-property
     check: function() {
-      this.error1 = false;
-      this.error2 = false;
-      this.error3 = false;
-      //if (this.user.password != this.currentPassword) this.error1 = true;
-      if (this.newPassword != this.confirmPassword) this.error2 = true;
-      // if there is no error send the posted data to the api here
-      if (!this.error2 || this.error3) {
+      // Frist reset all errors
+      this.errorWrongPass = false;
+      this.errorWrongMatch = false;
+      this.errorEmptyNew = false;
+      this.errorEmptyConfirm = false;
+      // Second check if the fields not empty
+      if (this.currentPassword === "") {
+        this.errorWrongPass = true;
+      }
+      if (this.newPassword === "") {
+        this.errorEmptyNew = true;
+      }
+      if (this.confirmPassword === "") {
+        this.errorEmptyConfirm = true;
+      }
+      //Third check the New & Confirm are varified
+      if (this.confirmPassword !== this.newPassword) {
+        this.errorWrongMatch = true;
+      }
+      //Fourth send the data if there is no error
+      if (
+        !this.errorWrongMatch &&
+        !this.errorWrongPass &&
+        !this.errorEmptyNew &&
+        !this.errorEmptyConfirm
+      ) {
         this.updatePass();
       }
     },
     //Todo::edit the errors come from the post request (incorrect password)
     //--------------- 4/3/2020---------------------------------------------------------------------------
     // - No need to return data in this method only dispatch the action and execute .then to set the userToken
-    //or catch the error state (See the method in login or SignUp)
+    //   or catch the error state (See the method in login or SignUp)(Done)
     // - Send the user token current token in the authorization header
-    // - replace the stored token either in the local or sessin Storage with the one returned in the response(i 
+    // - replace the stored token either in the local or sessin Storage with the one returned in the response(i
     // will provide you a setuserToken mixin from the userSevice for the sake of that replacement)
-    // ------------------------------------------------------------------------------------------------  
+    // ------------------------------------------------------------------------------------------------
     updatePass: function() {
-      // eslint-disable-next-line vue/no-async-in-computed-properties
-      return this.$store
+      this.$store
         .dispatch("updatePass", {
           passwordCurrent: this.currentPassword,
           password: this.newPassword,
@@ -94,32 +124,15 @@ export default {
           id: this.getuserID()
         })
         .then(() => {
-          this.user = this.$store.state.user;
-          console.log(this.user);
+          this.Done = true;
         })
         .catch(err => {
           console.log(err);
-          this.error1 = true;
+          this.errorWrongPass = true;
         });
     }
   },
-  mixins: [getuserID],
-  //--------------------------------------------4/3/2020-------------------
-  //Do you need to get the userData in that view??
-  //-----------------------------------------------------------------------
-  computed: {
-    // eslint-disable-next-line vue/return-in-computed-property
-    userData: function() {
-      // eslint-disable-next-line vue/no-async-in-computed-properties
-      return this.$store
-        .dispatch("userData", this.getuserID())
-        .then(() => {
-          this.user = this.$store.state.user;
-          console.log(this.user);
-        })
-        .catch(err => console.log(err));
-    }
-  }
+  mixins: [getuserID]
 };
 </script>
 
@@ -400,5 +413,22 @@ button {
 }
 .alert {
   color: rgb(236, 58, 58);
+}
+.alert-success {
+  border-width: 0;
+  font-size: 12px;
+  padding: 14px 14px 12px 14px;
+  font-weight: 400;
+  background-color: #1ed760;
+  border-color: #1ed760;
+  color: #fff;
+  margin-bottom: 24px;
+  border-style: solid;
+  border-image-outset: 0;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1;
+  border-radius: 0;
 }
 </style>

@@ -134,50 +134,52 @@ const actions = {
                 });
         });
     },
-    async userData({ commit, state }, payload) {
-        await axios
-            .get("/v1/users/" + payload)
-            .then(response => {
-                // console.log("Here the response data");
-                // console.log(response.data);
-                if (response.status == 200) {
-                    let user = {
-                        token: state.userToken,
-                        user: {
-                            _id: response.data.id,
-                            name: response.data.name,
-                            email: response.data.email
-                        }
-                    };
-                    //-------------------------------------------4/3/2020--------------------------------------------
-                    //Todo:: you can set the user Country and Gender in the SetuserData mutation instead of using two 
-                    //new setters , but leave setuserDOB as it is used in SignUp for another reason
-                    //-----------------------------------------------------------------------------------------------
-                    commit("setUserData", user);
-                    commit("setCountry", response.data.country);
-                    commit("setGender", response.data.gender);
-                    commit("setuserDOB", response.data.DateOfBirth);
-                }
-                // console.log(this.state);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+    // Send the current user's data to the views
+    userData({ commit, state }, payload) {
+        return new Promise((resolve, reject) => {
+            axios
+                .get("/v1/users/" + payload)
+                .then(response => {
+                    // the user is exist then put his data in the status to make the view take the required data
+                    if (response.status == 200) {
+                        let user = {
+                            token: state.userToken,
+                            user: {
+                                _id: response.data.id,
+                                name: response.data.name,
+                                email: response.data.email
+                            }
+                        };
+                        // set the data to the status that came from the response
+                        commit("setUserData", user);
+                        commit("setCountry", response.data.country);
+                        commit("setGender", response.data.gender);
+                        commit("setuserDOB", response.data.DateOfBirth);
+                        resolve(true);
+                    }
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
     },
+    // Update the current user's password 
     // eslint-disable-next-line no-empty-pattern
-    async updatePass({}, payload) {
-        await axios
-            .patch("/v1/users/updatepassword", payload)
-            .then(response => {
-                if (response.status == 201) {
-                    return new Response(200, {}, {});
-                } else {
-                    return new Response(500, {}, {});
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
+    updatePass({}, payload) {
+        return new Promise((resolve, reject) => {
+            axios
+                .patch("/v1/users/updatepassword", payload)
+                .then(response => {
+                    // check that the changes are done to make success alert
+                    if (response.status == 201) {
+                        resolve(true);
+                    }
+                })
+                .catch(error => {
+                    // check if there is error to send danger alert
+                    reject(error);
+                });
+        });
     }
 };
 

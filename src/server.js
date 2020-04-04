@@ -186,25 +186,32 @@ export function makeServer({ environment = "development" } = {}) {
                     return schema.artists.findBy(artist => artist.id === x).destroy();
                 }
             });
-
+            // Get the current user's data to the account overview(User's Settings)
             this.get("/v1/users/:id", (schema, request) => {
-                // console.log("I'm a request id")
-                // console.log(request.params.id);
-                // console.log("here the user")
-                // console.log(schema.users.find(request.params.id).attrs);
-                return new Response(
-                    200, {},
-                    schema.users.find(request.params.id).attrs
-                );
+                // get the user's data from seed if exist
+                if (schema.users.find(request.params.id).attrs) {
+                    // return the user's data if exist in response
+                    return new Response(
+                        200, {},
+                        schema.users.find(request.params.id).attrs
+                    );
+                } else {
+                    // if the data isn't valid so return error status(400)
+                    return new Response(400, {}, {});
+                }
             });
+            // patch the user's password =>(change the current user's password)
             this.patch("/v1/users/updatepassword", (schema, request) => {
                 let attr = JSON.parse(request.requestBody);
                 let currentUser = schema.users.find(attr.id);
+                // check if the current user's entered password is equal that in the seed
                 if (currentUser.password == attr.passwordCurrent) {
+                    // if it's right change it with the new one
                     currentUser.update({ password: attr.password });
                     return new Response(201, {}, {});
                 } else {
-                    return new Response(500, {}, {});;
+                    // if not return error to the view to display wrong password
+                    return new Response(401, {}, {});;
                 }
             });
 
