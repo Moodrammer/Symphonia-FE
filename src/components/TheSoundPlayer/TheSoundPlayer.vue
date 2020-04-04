@@ -15,8 +15,8 @@
             <router-link to="/" class="song-name">
               {{ songName }}
             </router-link>
-            <router-link to="/" class="singer-name">
-              {{ artistName }}
+            <router-link v-for="(artist, index) in artists" :key="index" :to="artist.href" class="singer-name">
+              {{ artist.name }}
             </router-link>
           </div>
           <a @click="saveToLikedSongs()" v-if="!isSongIsLiked">
@@ -164,11 +164,45 @@
               mdi-format-list-numbered-rtl
             </v-icon>
           </router-link>
-          <a title="devices" style="margin-right: 10px; float: left;">
-            <v-icon small class="icons">
-              mdi-devices
-            </v-icon>
-          </a>
+
+          <!-- devices -->
+
+          <v-menu
+            offset-y
+            top
+            transition="slide-y-transition"
+            style="clear: left;"
+          >
+            <template v-slot:activator="{ on }">
+              <v-btn
+                :ripple="false"
+                id="no-background-hover"
+                text
+                v-on="on"
+                class="devices-icon"
+              >
+                <span class="mdi mdi-18px mdi-devices icons"></span>
+              </v-btn>
+            </template>
+
+            <v-list style="background-color: #282828 !important">
+              <v-list-item
+                v-for="(device, index) in devices"
+                :key="index"
+                v-on:click="chooseDevice(device._id)"
+              >
+                <v-list-item-title
+                  style="color: white;"
+                  v-bind:class="{
+                    'green-icon-w-hover': device._id == currentDeviceId
+                  }"
+                  >{{ index + 1 }} {{ device.device }}</v-list-item-title
+                >
+              </v-list-item>
+            </v-list>
+          </v-menu>
+
+          <!-- mute -->
           <a
             @click="mute()"
             title="Mute"
@@ -198,6 +232,8 @@
 
 <script>
 import { mapMutations, mapGetters, mapActions } from "vuex";
+import axios from "axios";
+//import io from 'socket.io-client';
 
 export const convertTimeHHMMSS = val => {
   //-val is the time passed from the start of the sound in integer seconds
@@ -242,15 +278,26 @@ export default {
 
       //The song's info:
       artistPicture: "/profile.jpg",
-      songName: "Changes",
-      artistName: "2PAC",
-      songId: "007"
+      songName: undefined,
+      artists: undefined,
+      songId: undefined,
+
+      devices: undefined,
+      currentDeviceId: undefined
     };
   },
   methods: {
-    ...mapMutations("playlist", ["setAudio", "setPaused", "setSongLink", "setIsSongLoaded"]),
+    ...mapMutations("playlist", [
+      "setAudio",
+      "setPaused",
+      "setSongLink",
+      "setIsSongLoaded"
+    ]),
     ...mapActions("playlist", ["pauseAndPlay"]),
 
+    chooseDevice: function(id) {
+      alert(id);
+    },
     saveToLikedSongs: function() {
       if (!this.isSongIsLiked) {
         //make a request to set the current song to the like ones.
@@ -430,9 +477,73 @@ export default {
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
-      //get the last song that user listened to and call updateSongInfo()
-      //this.setSongLink("link came from a request");
-      this.setSongLink("/example.mp3");
+      axios({
+        method: "get",
+        url: "/v1/me/player/tracks/recently-played",
+      }).then(response => {
+        var lastSong = response.data.items;
+        lastSong = lastSong[lastSong.length - 1].track;
+
+        this.songName = lastSong.name;
+        this.artists = lastSong.artists; 
+        this.songId = lastSong.id;
+      
+      axios({
+        method: "get",
+        url: "/v1/me/tracks/contains",
+        params: {
+          ID: [this.songId]
+        },
+      }).then(response => {
+        this.isSongIsLiked = response.data[0]
+      })
+
+      //request the song mp3 file
+      axios({
+        method: "post",
+        url: "/v1/me/player/tracks/" + this.songId,
+        data: {
+          contextId: "1212", //Get the context Id->Id in the URL
+          context_type: "album", //get it
+          context_url: "url", //browser URL
+          device: this.currentDeviceId
+        }
+      }).then(                              //STUB because there's no songs now
+        this.setSongLink("/example.mp3") //must be the song link "/v1/me/player/tracks/" + this.songId
+      )
+      })
+
+      //save the browser
+
+      //get the browsers.
+      axios({
+        method: "patch",
+        url: "/v1/me/player/devices",
+        data: {
+          device: "Chrome" //TODO: get the browser name
+        }
+      }).then(response => {
+        this.devices = response.data.devices;
+        this.currentDeviceId =
+          this.devices[this.devices.length - 1]._id;
+      });
+
+      //Stub:
+      /*
+      var socket = io.connect(axios.defaults.baseURL);
+
+      socket.on("welcome", function() {
+        socket.emit("disconnect", {
+          id: this.currentDeviceId,
+          volumeValue: this.volumeValue,
+          currentTimeInSec: this.currentTimeInSec,
+          isRepeatEnabled: this.isRepeatEnabled,
+          isShuffleEnabled: this.isShuffleEnabled,
+          isRepeatOnceEnabled: this.isRepeatOnceEnabled,
+          seek: this.seek
+        });
+      });
+      */
     },
     getAudio: function() {
       return this.$el.querySelectorAll("audio")[0];
@@ -470,6 +581,18 @@ export default {
 
     document.removeEventListener("keyup", this._handleSpaceUp);
     document.removeEventListener("keydown", this._handleSpaceDown);
+
+    // STUB
+    /*
+    var thisTemp = this;
+    axios({
+      method: "delete",
+      url: "/api/v1/me/player/devices",
+      data: {
+        deviceId: thisTemp.currentDeviceId
+      }
+    });
+    */
   }
 };
 </script>
@@ -504,6 +627,8 @@ export default {
   letter-spacing: 0.015em;
   position: relative;
   color: #b3b3b3;
+
+  padding-right: 10px;
 }
 
 .singer-name:hover {
@@ -519,6 +644,10 @@ export default {
 
 .icons {
   color: #b3b3b3;
+}
+
+.green-icon-w-hover {
+  color: green !important;
 }
 
 .green-icon {
@@ -544,6 +673,18 @@ export default {
   letter-spacing: 0.015em;
   min-width: 40px;
   text-align: center;
+}
+
+#no-background-hover::before {
+  background-color: transparent !important;
+}
+
+.devices-icon {
+  padding: 0px !important;
+  margin-right: 10px !important;
+  padding-bottom: 8px !important;
+  min-width: auto !important;
+  float: left;
 }
 </style>
 

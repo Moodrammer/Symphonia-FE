@@ -15,7 +15,8 @@ export function makeServer({ environment = "development" } = {}) {
       bestsong: Model,
       playlist: Model,
       album: Model,
-      artist: Model
+      artist: Model,
+      soundplayer: Model
     },
 
     seeds(server) {
@@ -41,50 +42,52 @@ export function makeServer({ environment = "development" } = {}) {
       //This part is just to fake mirage in order to persist the data of only one user
       if (sessionStorage.getItem("SignedUpUser") != null) {
         //The signed up user should remain in the localstorage so that when mirage loads each time it loads his data
-        server.create("user", JSON.parse(sessionStorage.getItem("SignedUpUser")))
+        server.create(
+          "user",
+          JSON.parse(sessionStorage.getItem("SignedUpUser"))
+        );
         localStorage.removeItem("SignedUpUser");
       }
-      server.create("bestsong",
-        {
-          songs: [
-            {
-              singerName: "Eminim",
-              songName: "changes1",
-              imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-              songLink: "/songlink"
-            },
-            {
-              singerName: "2Pac",
-              songName: "changes2",
-              imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-              songLink: "/songlink"
-            },
-            {
-              singerName: "2Pac",
-              songName: "changes3",
-              imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-              songLink: "/songlink"
-            },
-            {
-              singerName: "2Pac",
-              songName: "changes4",
-              imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-              songLink: "/songlink"
-            },
-            {
-              singerName: "2Pac",
-              songName: "changes5",
-              imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-              songLink: "/songlink"
-            },
-            {
-              singerName: "2Pac",
-              songName: "changes6",
-              imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-              songLink: "/songlink"
-            }
-          ]
-        });
+      server.create("bestsong", {
+        songs: [
+          {
+            singerName: "Eminim",
+            songName: "changes1",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          },
+          {
+            singerName: "2Pac",
+            songName: "changes2",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          },
+          {
+            singerName: "2Pac",
+            songName: "changes3",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          },
+          {
+            singerName: "2Pac",
+            songName: "changes4",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          },
+          {
+            singerName: "2Pac",
+            songName: "changes5",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          },
+          {
+            singerName: "2Pac",
+            songName: "changes6",
+            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            songLink: "/songlink"
+          }
+        ]
+      });
 
       playlistJson.items.forEach(element => {
         server.create("playlist", element);
@@ -98,9 +101,7 @@ export function makeServer({ environment = "development" } = {}) {
         server.create("artist", element);
       });
 
-      albumsJSON.items.forEach(element =>
-        server.create("album", element)
-      );
+      albumsJSON.items.forEach(element => server.create("album", element));
     },
 
     //Define serializers to format the responses
@@ -147,9 +148,9 @@ export function makeServer({ environment = "development" } = {}) {
               type: "user"
             },
             public: false,
-            tracks:
-            {
-              href: "https://api.symphonia.com/v1/users/thelinmichael/playlists/7d2D2S200NyUE5KYs80PwO/tracks",
+            tracks: {
+              href:
+                "https://api.symphonia.com/v1/users/thelinmichael/playlists/7d2D2S200NyUE5KYs80PwO/tracks",
               items: [],
               limit: 100,
               next: null,
@@ -158,7 +159,8 @@ export function makeServer({ environment = "development" } = {}) {
               total: 0
             },
             type: "playlist"
-          });
+          }
+        );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Current User's Playlists
@@ -187,7 +189,9 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Genre Playlists
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get('v1/browse/categories/:category_id/playlists', (schema, request) => {
+      this.get(
+        "v1/browse/categories/:category_id/playlists",
+        (schema, request) => {
           let id = request.params.category_id;
           return schema.playlists.where({ genre: id }).models;
         }
@@ -225,13 +229,12 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';
 
-      this.get("/v1/me/albums", (schema) => {
-        return schema.albums.all().models
+      this.get("/v1/me/albums", schema => {
+        return schema.albums.all().models;
       });
 
       this.delete("/v1/me/albums", (schema, request) => {
-
-        var x = '';
+        var x = "";
 
         for (var i = 2; i < request.requestBody.length - 2; i++)
           x += request.requestBody[i];
@@ -239,16 +242,14 @@ export function makeServer({ environment = "development" } = {}) {
         return schema.albums.findBy(album => album.album.id === x).destroy();
       });
 
-
       this.get("/v1/me/following", (schema, request) => {
-        if (request.queryParams.type === 'artist')
-          return schema.artists.all().models
+        if (request.queryParams.type === "artist")
+          return schema.artists.all().models;
       });
 
       this.delete("/v1/me/following", (schema, request) => {
-
-        if (request.queryParams.type === 'artist') {
-          var x = '';
+        if (request.queryParams.type === "artist") {
+          var x = "";
           for (var i = 2; i < request.requestBody.length - 2; i++)
             x += request.requestBody[i];
 
@@ -304,7 +305,10 @@ export function makeServer({ environment = "development" } = {}) {
           });
 
           //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
-          sessionStorage.setItem("SignedUpUser", JSON.stringify(schema.users.find(3)))
+          sessionStorage.setItem(
+            "SignedUpUser",
+            JSON.stringify(schema.users.find(3))
+          );
           //return a request for now that the operation of creating the user was a success
           return new Response(
             201,
@@ -342,11 +346,15 @@ export function makeServer({ environment = "development" } = {}) {
           let resettoken = parseInt(request.params.resettoken);
           console.log(request.params);
           //change the password of the first user for testing only
-          schema.users.find(resettoken).update('password', attrs.password)
+          schema.users.find(resettoken).update("password", attrs.password);
           console.log(schema.users.find(resettoken));
           console.log(attrs.password);
-          return new Response(200, {}, {
-            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
+          return new Response(
+            200,
+            {},
+            {
+              token:
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
               user: {
                 _id: schema.users.find(resettoken).id,
                 email: schema.users.find(resettoken).email,
@@ -355,9 +363,101 @@ export function makeServer({ environment = "development" } = {}) {
               }
             }
           );
+        }),
+        this.patch("/v1/me/player/devices", () => {
+          return new Response(
+            200,
+            {},
+            {
+              devices: [
+                {
+                  _id: "1",
+                  device: "Chrome"
+                },
+                {
+                  _id: "2",
+                  device: "Chrome"
+                },
+                {
+                  _id: "3",
+                  device: "Firefox"
+                },
+                {
+                  _id: "4",
+                  device: "Chrome"
+                },
+              ]
+            }
+          );
+        }),
+
+        this.get("/v1/me/player/tracks/recently-played", () => {
+          return new Response(
+            200,
+            {},
+            {
+              "items": [
+                {
+                  "track": {
+                    "artists": [
+                      {
+                        "href": "/v1/artists/6sFIWsNpZYqfjUpaCgueju",
+                        "id": "6sFIWsNpZYqfjUpaCgueju",
+                        "name": "2PAC",
+                        "type": "artist"
+                      },
+                      {
+                        "href": "/v1/artists/6sFIWsNpZYqfjUpaCgueju",
+                        "id": "6sFIWsNpZYqfjUpaCgueju",
+                        "name": "snoop dog",
+                        "type": "artist"
+                      }
+                    ],
+                    "available_markets": [
+                      "CA",
+                      "MX",
+                      "US"
+                    ],
+                    "duration_ms": 467586,
+                    "explicit": false,
+                    "href": "/example.mp3",
+                    "id": "1",
+                    "name": "thug life",
+                    "type": "track"
+                  },
+                  "played_at": "2016-12-13T20:44:04.589Z"
+                }
+              ],
+              "next": "https://api.symphonia.com/v1/me/player/recently-played?before=1481661737016&limit=2",
+              "cursors": {
+                "after": "1481661844589",
+                "before": "1481661737016"
+              },
+              "limit": 2,
+              "href": "https://api.symphonia.com/v1/me/player/recently-played?limit=2"
+            }
+          );
+        }),
+        this.get("/v1/me/tracks/contains", () => {
+          return new Response(
+            200,
+            {},
+            [
+              true
+            ]
+          );
+        }),
+        this.post("/v1/me/player/tracks/1", () => {
+          return new Response(
+            200,
+            {},
+            {}
+            )
         });
     }
   });
+
+  //server.shutdown();
 
   return server;
 }

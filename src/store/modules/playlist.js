@@ -7,7 +7,7 @@ const state = {
   paused: true,
   songLink: "",
   isQueueOpened: false,
-  isSongLoaded: false,
+  isSongLoaded: false
 };
 
 const mutations = {
@@ -58,7 +58,7 @@ const getters = {
   isSongLoaded(state) {
     return state.isSongLoaded;
   },
-  likedPlaylists: state => state.likedPlaylists,
+  likedPlaylists: state => state.likedPlaylists
 };
 
 const token = localStorage.getItem("userToken");
