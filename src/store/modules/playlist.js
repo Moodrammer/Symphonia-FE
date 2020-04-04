@@ -5,9 +5,8 @@ const state = {
   playlists: [],
   audio: undefined,
   paused: true,
-  songLink: "",
   isQueueOpened: false,
-  isSongLoaded: false,
+  isSongLoaded: false
 };
 
 const mutations = {
@@ -31,9 +30,6 @@ const mutations = {
     state.paused = !state.paused;
     state.paused ? state.audio.pause() : state.audio.play();
   },
-  setSongLink(state, songLink) {
-    state.songLink = songLink;
-  },
   setIsQueueOpened(state, isQueueOpened) {
     state.isQueueOpened = isQueueOpened;
   },
@@ -49,16 +45,13 @@ const getters = {
   paused(state) {
     return state.paused;
   },
-  songLink(state) {
-    return state.songLink;
-  },
   isQueueOpened(state) {
     return state.isQueueOpened;
   },
   isSongLoaded(state) {
     return state.isSongLoaded;
   },
-  likedPlaylists: state => state.likedPlaylists,
+  likedPlaylists: state => state.likedPlaylists
 };
 
 const token = localStorage.getItem("userToken");
@@ -67,11 +60,10 @@ const token = localStorage.getItem("userToken");
 const actions = {
   createPlaylist({ commit }, payload) {
     axios
-    .post("/v1/users/" + payload.id + "/playlists",{name: payload.name}, {
+      .post("/v1/users/" + payload.id + "/playlists",{name: payload.name}, {
         headers: {
           Authorization: `Bearer ${payload.token}`
-        }
-      })
+        }})
       .then(response => {
         var newPlaylist = response.data.playlist;
         console.log(response);
