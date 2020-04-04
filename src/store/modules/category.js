@@ -2,8 +2,6 @@
 import axios from "axios";
 import playlistModule from "./playlist.js";
 
-const token = localStorage.getItem("userToken");
-
 const state = {
   tracks: [],
   recentlyPlayed: {
@@ -172,7 +170,7 @@ const mutations = {
         image: element.images[0].url,
         description: element.description,
         id: element.id,
-        url: "url to be added"
+        url: element.href
       };
       newList.push(k);
     });
@@ -187,7 +185,7 @@ const mutations = {
         image: element.images[0].url,
         description: element.description,
         id: element.id,
-        url: "url to be added"
+        url: element.href
       };
       newList.push(k);
     });
@@ -246,7 +244,7 @@ const actions = {
             image: element.images[0].url,
             description: element.description,
             id: element.id,
-            url: "url to be added"
+            url: element.href
           };
           newList.push(k);
         });
@@ -266,15 +264,15 @@ const actions = {
       dispatch("getGenrePlaylists", element);
     });
   },
-  async loadUserSections({ dispatch, commit }) {
-    await dispatch("playlist/getPlaylists", null, { root: true });
+  async loadUserSections({ dispatch, commit } , payload) {
+    await dispatch("playlist/getPlaylists", payload, { root: true });
     commit("load_personalSections");
   },
-  getTracks({ commit }) {
+  getTracks({ commit } , payload) {
     axios
       .get("/v1/me/tracks", {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${payload}`
         }
       })
       .then(response => {

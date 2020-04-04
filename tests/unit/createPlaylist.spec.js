@@ -9,11 +9,12 @@ import CreatePlaylist from "@/components/CreatePlaylist.vue";
 
 describe("CreatePlaylist", () => {
   let wrapper;
-  let vuetify;
+  let vuetify
 
   beforeEach(()=>{
     vuetify = new Vuetify()
-    Vue.use(vuetify);
+    Vue.use(Vuetify);
+
     wrapper = mount(CreatePlaylist, {
       vuetify
     });

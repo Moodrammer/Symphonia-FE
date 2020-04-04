@@ -54,8 +54,6 @@ const getters = {
   likedPlaylists: state => state.likedPlaylists
 };
 
-const token = localStorage.getItem("userToken");
-//const user_id = localStorage.getItem("userID");
 
 const actions = {
   createPlaylist({ commit }, payload) {
@@ -66,7 +64,6 @@ const actions = {
         }})
       .then(response => {
         var newPlaylist = response.data.playlist;
-        console.log(response);
         commit("add_playlist", newPlaylist);
       })
       .catch(error => {
@@ -77,11 +74,11 @@ const actions = {
 
   // getPlayslist works for (Get a List of Current User's Playlists) when nothing send in the parameter 'user'
   // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
-  async getPlaylists({ commit }) {
+  async getPlaylists({ commit } , payload) {
     await axios
-      .get("/v1/me/playlists", {
+      .get("/v1/me/playlists",{
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${payload}`
         }
       })
       .then(response => {
@@ -93,7 +90,7 @@ const actions = {
             image: element.images[0].url,
             description: element.description,
             id: element.id,
-            url: "url to be added"
+            url: element.href
           };
           newList.push(k);
         });

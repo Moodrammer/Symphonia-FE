@@ -51,12 +51,11 @@ const actions = {
         console.log(error);
       });
   },
-  checkSaved({ commit }, id) {
-
+  checkSaved({ commit }, payload) {
     axios
-      .get("/v1/me/tracks/contains?ids="+id, {
+      .get("/v1/me/tracks/contains?ids="+ payload.id, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${payload.token}`
         }
       })
       .then(response => {
@@ -68,13 +67,13 @@ const actions = {
         console.log(error);
       });
   },
-  removeSavedTrack({commit}, id) {
+  removeSavedTrack({commit}, payload) {
     axios
     .delete("/v1/me/tracks",{
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${payload.token}`
       },
-      data: id
+      data: payload.id
     })
     .then(() => {
    //   if(id[0]==state.trackId)           //comment it for now
@@ -85,13 +84,12 @@ const actions = {
       console.log(error);
     })
   },
-  saveTrack({ commit } ,id) {
+  saveTrack({ commit } ,payload) {
     axios
-      .put("/v1/me/tracks",{
+      .put("/v1/me/tracks",{data: payload.id},{
         headers: {
-          Authorization: `Bearer ${token}`
-        },
-        data: id
+          Authorization: `Bearer ${payload.token}`
+        }
       })
       .then(() => {
         //if(id[0]==state.trackId)

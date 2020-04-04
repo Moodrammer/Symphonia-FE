@@ -19,7 +19,7 @@ const getters = {
         image: element.images[0].url,
         description: element.type,
         id: element.id,
-        url: "url to be added"
+        url: element.href
       }
       artists.push(k);
     });
