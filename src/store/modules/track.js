@@ -28,6 +28,9 @@ const mutations = {
   },
   likeTrack( state ) {
     state.liked=true;
+  },
+  setTrackUrl(state, trackUrl) {
+    state.trackUrl = trackUrl;
   }
 };
 

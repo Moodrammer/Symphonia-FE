@@ -1,7 +1,7 @@
 <template>
   <v-footer app class="sound-player">
     <!-- audio tag -->
-    <audio ref="audiofile" :src="songLink" style="display:none;"></audio>
+    <audio ref="audiofile" :src="trackUrl" style="display:none;"></audio>
     <!-- song info -->
     <v-row>
       <v-col cols="4">
@@ -15,7 +15,12 @@
             <router-link to="/" class="song-name">
               {{ songName }}
             </router-link>
-            <router-link v-for="(artist, index) in artists" :key="index" :to="artist.href" class="singer-name">
+            <router-link
+              v-for="(artist, index) in artists"
+              :key="index"
+              :to="artist.href"
+              class="singer-name"
+            >
               {{ artist.name }}
             </router-link>
           </div>
@@ -25,7 +30,12 @@
             </v-icon>
           </a>
           <a @click="saveToLikedSongs()" v-if="isSongIsLiked">
-            <v-icon small title="save your liked songs" class="icons">
+            <v-icon
+              small
+              title="save your liked songs"
+              class="icons"
+              color="green"
+            >
               mdi-heart
             </v-icon>
           </a>
@@ -231,7 +241,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters, mapActions } from "vuex";
+import { mapMutations, mapGetters, mapActions, mapState } from "vuex";
 import axios from "axios";
 //import io from 'socket.io-client';
 
@@ -250,11 +260,18 @@ export default {
   name: "vue-audio",
 
   computed: {
-    ...mapGetters("playlist", ["audio", "paused", "songLink", "isQueueOpened"]),
+    ...mapGetters("playlist", ["audio", "paused", "isQueueOpened"]),
 
     duration: function() {
       return this.audio ? convertTimeHHMMSS(this.totalDuration) : "";
-    }
+    },
+
+    ...mapState({
+      isSongIsLiked: state => state.track.liked,
+      trackUrl: state => state.track.trackUrl,
+      songName: state => state.track.trackName,
+      artists: state => state.track.trackArtists
+    })
   },
   data() {
     return {
@@ -273,13 +290,11 @@ export default {
       isRepeatEnabled: false,
       isShuffleEnabled: false,
       isRepeatOnceEnabled: false,
-      isSongIsLiked: false,
+      //isSongIsLiked: false,
       isFirstSong: true,
 
       //The song's info:
       artistPicture: "/profile.jpg",
-      songName: undefined,
-      artists: undefined,
       songId: undefined,
 
       devices: undefined,
@@ -287,12 +302,8 @@ export default {
     };
   },
   methods: {
-    ...mapMutations("playlist", [
-      "setAudio",
-      "setPaused",
-      "setSongLink",
-      "setIsSongLoaded"
-    ]),
+    ...mapMutations("playlist", ["setAudio", "setPaused", "setIsSongLoaded"]),
+    ...mapMutations("track", ["setLiked", "setTrackData", "setTrackUrl"]),
     ...mapActions("playlist", ["pauseAndPlay"]),
 
     chooseDevice: function(id) {
@@ -300,11 +311,12 @@ export default {
     },
     saveToLikedSongs: function() {
       if (!this.isSongIsLiked) {
+        this.setLiked(true);
         //make a request to set the current song to the like ones.
       } else {
+        this.setLiked(false);
         //make a request to remove the current song from the like ones.
       }
-      this.isSongIsLiked = !this.isSongIsLiked;
     },
     updateVolume: function() {
       this.audio.volume = this.volumeValue / 100;
@@ -337,7 +349,7 @@ export default {
       setTimeout(function() {
         //call updateSongInfo()
         //TODO: change this to a url coming from a request.
-        temp.setSongLink(
+        temp.setTrackUrl(
           "https://www.bensound.com/bensound-music/bensound-summer.mp3"
         );
       }, 1000);
@@ -354,7 +366,7 @@ export default {
       setTimeout(function() {
         //call updateSongInfo()
         //TODO: change this to a url coming from a request.
-        temp.setSongLink("/example.mp3");
+        temp.setTrackUrl("/example.mp3");
       }, 1000);
     },
     //this method will be invoked after changing the song
@@ -479,39 +491,48 @@ export default {
 
       axios({
         method: "get",
-        url: "/v1/me/player/tracks/recently-played",
+        url: "/v1/me/player/tracks/recently-played"
       }).then(response => {
         var lastSong = response.data.items;
         lastSong = lastSong[lastSong.length - 1].track;
 
-        this.songName = lastSong.name;
-        this.artists = lastSong.artists; 
+        var payload = {
+          name: lastSong.name,
+          href: "",
+          artists: lastSong.artists,
+          album: {
+            images: [{ url: "lalala" }],
+            id: "1"
+          }
+        };
+        this.setTrackData(payload);
         this.songId = lastSong.id;
-      
-      axios({
-        method: "get",
-        url: "/v1/me/tracks/contains",
-        params: {
-          ID: [this.songId]
-        },
-      }).then(response => {
-        this.isSongIsLiked = response.data[0]
-      })
 
-      //request the song mp3 file
-      axios({
-        method: "post",
-        url: "/v1/me/player/tracks/" + this.songId,
-        data: {
-          contextId: "1212", //Get the context Id->Id in the URL
-          context_type: "album", //get it
-          context_url: "url", //browser URL
-          device: this.currentDeviceId
-        }
-      }).then(                              //STUB because there's no songs now
-        this.setSongLink("/example.mp3") //must be the song link "/v1/me/player/tracks/" + this.songId
-      )
-      })
+        axios({
+          method: "get",
+          url: "/v1/me/tracks/contains",
+          params: {
+            ID: [this.songId]
+          }
+        }).then(response => {
+          this.setLiked(response.data[0]);
+        });
+
+        //request the song mp3 file
+        axios({
+          method: "post",
+          url: "/v1/me/player/tracks/" + this.songId,
+          data: {
+            contextId: "1212", //Get the context Id->Id in the URL
+            context_type: "album", //get it
+            context_url: "url", //browser URL
+            device: this.currentDeviceId
+          }
+        }).then(
+          //STUB because there's no songs now
+          this.setTrackUrl("/example.mp3") //must be the song link "/v1/me/player/tracks/" + this.songId
+        );
+      });
 
       //save the browser
 
@@ -524,8 +545,7 @@ export default {
         }
       }).then(response => {
         this.devices = response.data.devices;
-        this.currentDeviceId =
-          this.devices[this.devices.length - 1]._id;
+        this.currentDeviceId = this.devices[this.devices.length - 1]._id;
       });
 
       //Stub:
