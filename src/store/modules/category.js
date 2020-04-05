@@ -139,7 +139,8 @@ const state = {
     },
     style: null
   },
-  categories: []
+  categories: [],
+  singleCategoryPlaylists: []
 };
 
 const mutations = {
@@ -202,6 +203,9 @@ const mutations = {
   },
   load_tracks(state, list) {
     state.tracks = list;
+  },
+  load_genrePlaylists(state, payload) {
+    state.singleCategoryPlaylists = payload;
   }
 };
 
@@ -252,6 +256,8 @@ const actions = {
         else if (category_id == "folk") commit("load_folkPlaylists", newList);
         else if (category_id == "rock") commit("load_rockPlaylists", newList);
         else commit("load_jazzPlaylists", newList);
+
+        commit("load_genrePlaylists", newList);
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -264,11 +270,11 @@ const actions = {
       dispatch("getGenrePlaylists", element);
     });
   },
-  async loadUserSections({ dispatch, commit } , payload) {
+  async loadUserSections({ dispatch, commit }, payload) {
     await dispatch("playlist/getPlaylists", payload, { root: true });
     commit("load_personalSections");
   },
-  getTracks({ commit } , payload) {
+  getTracks({ commit }, payload) {
     axios
       .get("/v1/me/tracks", {
         headers: {

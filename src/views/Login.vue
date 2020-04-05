@@ -121,7 +121,9 @@
         <v-row>
           <v-col cols="12">
             <v-row justify="center">
-              <router-link to="/password-reset/reset">Forgot your password?</router-link>
+              <router-link to="/password-reset/reset"
+                >Forgot your password?</router-link
+              >
             </v-row>
           </v-col>
         </v-row>
@@ -175,8 +177,7 @@
 
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
-import isLoggedIn from "@/mixins/userService"
-
+import isLoggedIn from "@/mixins/userService";
 
 export default {
   name: "login",
@@ -203,8 +204,7 @@ export default {
   mixins: [isLoggedIn],
   created() {
     //check if the user is already logged in
-    if(this.isLoggedIn() == true)
-      this.$router.push("/webhome/home")
+    if (this.isLoggedIn() == true) this.$router.push("/webhome/home");
   },
   methods: {
     /**
@@ -212,8 +212,7 @@ export default {
      * @public
      */
     checkEnterKey(e) {
-      if(e.keyCode == '13')
-        this.login()
+      if (e.keyCode == "13") this.login();
     },
     /**
      * This is the login method to validate and submit the user credentials to the server then redirect the user to
@@ -232,8 +231,8 @@ export default {
           .then(() => {
             this.$router.push("/webhome/home");
           })
-          .catch((err) => {
-            console.log(err)
+          .catch(err => {
+            console.log(err);
             this.errorState = true;
           });
       }

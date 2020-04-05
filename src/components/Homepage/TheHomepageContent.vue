@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import getDeviceSize from "../../mixins/getDeviceSize"
+import getDeviceSize from "../../mixins/getDeviceSize";
 
 /**
  * The Home page body content before logging in.

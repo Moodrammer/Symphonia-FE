@@ -172,7 +172,7 @@
 </template>
 
 <script>
-import getDeviceSize from "../../mixins/getDeviceSize"
+import getDeviceSize from "../../mixins/getDeviceSize";
 import axios from "axios";
 
 /**

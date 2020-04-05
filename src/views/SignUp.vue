@@ -22,11 +22,12 @@
                     style="font-size: 14px"
                     large
                     block
-                    >Sign up with Facebook</v-btn>
+                    >Sign up with Facebook</v-btn
+                  >
                 </v-row>
                 <!-- Google button -->
                 <v-row justify="center" class="my-0">
-                    <v-btn
+                  <v-btn
                     id="ggl-sign-btn"
                     rounded
                     color="#dd4b39"
@@ -34,7 +35,8 @@
                     style="font-size: 14px"
                     large
                     block
-                    ><div class="px-2"> Sign up with Google </div></v-btn>
+                    ><div class="px-2">Sign up with Google</div></v-btn
+                  >
                 </v-row>
               </v-col>
             </v-row>
@@ -153,10 +155,14 @@
                   id="gender"
                 >
                   <v-radio label="Male" value="male" id="male-select"></v-radio>
-                  <v-radio label="Female" value="female" id="female-select"></v-radio>
+                  <v-radio
+                    label="Female"
+                    value="female"
+                    id="female-select"
+                  ></v-radio>
                 </v-radio-group>
               </v-row>
-              <v-divider/>
+              <v-divider />
               <v-row justify="center" class="mt-2">
                 <h2>How do you like to use Symphonia ?</h2>
               </v-row>
@@ -169,8 +175,18 @@
                   v-model="userData.type"
                   id="type"
                 >
-                  <v-radio label="Listener" value="user" color="green" id="listener-select"></v-radio>
-                  <v-radio label="Artist" value="artist" color="red" id="artist-select"></v-radio>
+                  <v-radio
+                    label="Listener"
+                    value="user"
+                    color="green"
+                    id="listener-select"
+                  ></v-radio>
+                  <v-radio
+                    label="Artist"
+                    value="artist"
+                    color="red"
+                    id="artist-select"
+                  ></v-radio>
                 </v-radio-group>
               </v-row>
               <!-- Sign up button -->
@@ -184,14 +200,17 @@
                     block
                     large
                     @click="submitForm"
-                  >Sign up</v-btn>
+                    >Sign up</v-btn
+                  >
                 </v-col>
               </v-row>
               <!-- link to the Login page -->
               <v-row justify="center">
                 <span class="text--center">
                   Already Have an account?
-                  <router-link to="/Login" class="green--text">Log in</router-link>
+                  <router-link to="/Login" class="green--text"
+                    >Log in</router-link
+                  >
                 </span>
               </v-row>
             </v-form>
@@ -204,7 +223,7 @@
 
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
-import isLoggedIn from "@/mixins/userService"
+import isLoggedIn from "@/mixins/userService";
 
 export default {
   components: {
@@ -245,7 +264,9 @@ export default {
       monthRules: [v => !!v || "Please enter your birth month"],
       usernameRules: [v => !!v || "What should we call you?"],
       genderRules: [v => !!v || "Please indicate your gender"],
-      typeRules: [v => !!v || "Do you wish to sign up as a listener or an artist"],
+      typeRules: [
+        v => !!v || "Do you wish to sign up as a listener or an artist"
+      ],
 
       //items and data
       item: [
@@ -287,25 +308,24 @@ export default {
       for (monthnumber = 1; monthnumber < this.item.length; monthnumber++) {
         if (this.item[monthnumber - 1] == this.userData.monthSelected) break;
       }
-      if(monthnumber >= 1 && monthnumber <= 9) {
-        if(this.userData.daySelected >= 1 && this.userData.daySelected <= 9)
+      if (monthnumber >= 1 && monthnumber <= 9) {
+        if (this.userData.daySelected >= 1 && this.userData.daySelected <= 9)
           return `${this.userData.yearSelected}-0${monthnumber}-0${this.userData.daySelected}`;
         else
           return `${this.userData.yearSelected}-0${monthnumber}-${this.userData.daySelected}`;
-      }      
-      else {
-        if(this.userData.daySelected >= 1 && this.userData.daySelected <= 9)
+      } else {
+        if (this.userData.daySelected >= 1 && this.userData.daySelected <= 9)
           return `${this.userData.yearSelected}-${monthnumber}-0${this.userData.daySelected}`;
         else
-          return `${this.userData.yearSelected}-${monthnumber}-${this.userData.daySelected}`;  
+          return `${this.userData.yearSelected}-${monthnumber}-${this.userData.daySelected}`;
       }
     }
   },
   mixins: [isLoggedIn],
   created() {
     //check if the user is logged in
-    if(this.isLoggedIn() == true){
-      this.$router.push("/")
+    if (this.isLoggedIn() == true) {
+      this.$router.push("/");
     }
   },
   methods: {
@@ -332,7 +352,10 @@ export default {
      * @public
      */
     submitForm() {
-      if (this.$refs.userDataForm.validate() && (this.userData.email == this.userData.emailToMatch)) {
+      if (
+        this.$refs.userDataForm.validate() &&
+        this.userData.email == this.userData.emailToMatch
+      ) {
         //Store the user's date of birth in the store
         this.$store.commit("setuserDOB", this.DateOfBirth);
         //This action returns a promise to show whether the user had sighned up successfully or not
@@ -361,5 +384,4 @@ export default {
   max-width: 500px;
   margin: auto;
 }
-
 </style>

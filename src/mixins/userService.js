@@ -6,10 +6,12 @@ export default {
      * The function returns false if there is no token stored in neither the localStoage nor the sessionStorage
      */
     isLoggedIn() {
-      if ((localStorage.getItem("userToken") == null) && (sessionStorage.getItem("userToken") == null)) {
+      if (
+        localStorage.getItem("userToken") == null &&
+        sessionStorage.getItem("userToken") == null
+      ) {
         return false;
-      }
-      else {
+      } else {
         return true;
       }
     },
@@ -23,8 +25,7 @@ export default {
         localStorage.removeItem("email");
         localStorage.removeItem("userID");
         localStorage.removeItem("type");
-      }
-      else {
+      } else {
         sessionStorage.removeItem("userToken");
         sessionStorage.removeItem("username");
         sessionStorage.removeItem("email");
@@ -103,6 +104,6 @@ export default {
       else if (sessionStorage.getItem("userToken") != null) {
         return sessionStorage.getItem("email");
       }
-    },
+    }
   }
 };

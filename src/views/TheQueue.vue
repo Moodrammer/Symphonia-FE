@@ -61,7 +61,7 @@ export default {
       iconClick: false
     };
   },
-  
+
   methods: {
     ...mapMutations("playlist", ["setIsQueueOpened"]),
     ...mapActions("category", ["getTracks"])
@@ -78,7 +78,6 @@ export default {
 
   mixins: [getDeviceSize],
 
-  
   beforeDestroy: function() {
     this.setIsQueueOpened(false);
   }

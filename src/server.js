@@ -126,41 +126,43 @@ export function makeServer({ environment = "development" } = {}) {
         return new Response(
           200,
           {},
-          {playlist:{
-            name: newPlaylist.name,
-            id: schema.playlists.find(schema.playlists.all().length).id,
-            description: null,
-            followers: {
-              href: null,
-              total: 0
-            },
-            href:
-              "https://api.symphonia.com/v1/users/thelinmichael/playlists/" +
-              schema.playlists.find(schema.playlists.all().length).id,
-            images: [
-              {
-                url: "http://source.unsplash.com/mp_FNJYcjBM"
-              }
-            ],
-            owner: {
-              href: "https://api.symphonia.com/v1/users/" + user_id,
-              id: user_id,
-              type: "user"
-            },
-            public: false,
-            tracks: {
+          {
+            playlist: {
+              name: newPlaylist.name,
+              id: schema.playlists.find(schema.playlists.all().length).id,
+              description: null,
+              followers: {
+                href: null,
+                total: 0
+              },
               href:
-                "https://api.symphonia.com/v1/users/thelinmichael/playlists/7d2D2S200NyUE5KYs80PwO/tracks",
-              items: [],
-              limit: 100,
-              next: null,
-              offset: 0,
-              previous: null,
-              total: 0
-            },
-            type: "playlist"
+                "https://api.symphonia.com/v1/users/thelinmichael/playlists/" +
+                schema.playlists.find(schema.playlists.all().length).id,
+              images: [
+                {
+                  url: "http://source.unsplash.com/mp_FNJYcjBM"
+                }
+              ],
+              owner: {
+                href: "https://api.symphonia.com/v1/users/" + user_id,
+                id: user_id,
+                type: "user"
+              },
+              public: false,
+              tracks: {
+                href:
+                  "https://api.symphonia.com/v1/users/thelinmichael/playlists/7d2D2S200NyUE5KYs80PwO/tracks",
+                items: [],
+                limit: 100,
+                next: null,
+                offset: 0,
+                previous: null,
+                total: 0
+              },
+              type: "playlist"
+            }
           }
-          });
+        );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Current User's Playlists
@@ -200,31 +202,31 @@ export function makeServer({ environment = "development" } = {}) {
       //Get track
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/users/track/:track_id", (schema, request) => {
-        let trackId=request.params.track_id;
-        return schema.tracks.where({ id: trackId}).models;
+        let trackId = request.params.track_id;
+        return schema.tracks.where({ id: trackId }).models;
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Check user's saved tracks
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/tracks/contains", (schema , request) => {
-        let trackId=request.queryParams.ids;
-        return schema.tracks.where({ id: trackId}).models[0].liked;
+      this.get("/v1/me/tracks/contains", (schema, request) => {
+        let trackId = request.queryParams.ids;
+        return schema.tracks.where({ id: trackId }).models[0].liked;
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Remove User's Saved Tracks
       ///////////////////////////////////////////////////////////////////////////////////
       this.delete("/v1/me/tracks", (schema, request) => {
-        let trackId=request.requestBody[1];
-        schema.tracks.where({id: trackId}).update({liked: false});
-        return new Response (200, {}, {});
+        let trackId = request.requestBody[1];
+        schema.tracks.where({ id: trackId }).update({ liked: false });
+        return new Response(200, {}, {});
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Save Tracks for User
       ///////////////////////////////////////////////////////////////////////////////////
       this.put("/v1/me/tracks", (schema, request) => {
-        let trackId= JSON.parse(request.requestBody).data[0];
-        schema.tracks.where({id: trackId}).update({liked: true});
-        return new Response (200 , {} , {});
+        let trackId = JSON.parse(request.requestBody).data[0];
+        schema.tracks.where({ id: trackId }).update({ liked: true });
+        return new Response(200, {}, {});
       });
       ///////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';
@@ -385,74 +387,61 @@ export function makeServer({ environment = "development" } = {}) {
                 {
                   _id: "4",
                   device: "Chrome"
-                },
+                }
               ]
             }
           );
         }),
-
         this.get("/v1/me/player/tracks/recently-played", () => {
           return new Response(
             200,
             {},
             {
-              "items": [
+              items: [
                 {
-                  "track": {
-                    "artists": [
+                  track: {
+                    artists: [
                       {
-                        "href": "/v1/artists/6sFIWsNpZYqfjUpaCgueju",
-                        "id": "6sFIWsNpZYqfjUpaCgueju",
-                        "name": "2PAC",
-                        "type": "artist"
+                        href: "/v1/artists/6sFIWsNpZYqfjUpaCgueju",
+                        id: "6sFIWsNpZYqfjUpaCgueju",
+                        name: "2PAC",
+                        type: "artist"
                       },
                       {
-                        "href": "/v1/artists/6sFIWsNpZYqfjUpaCgueju",
-                        "id": "6sFIWsNpZYqfjUpaCgueju",
-                        "name": "snoop dog",
-                        "type": "artist"
+                        href: "/v1/artists/6sFIWsNpZYqfjUpaCgueju",
+                        id: "6sFIWsNpZYqfjUpaCgueju",
+                        name: "snoop dog",
+                        type: "artist"
                       }
                     ],
-                    "available_markets": [
-                      "CA",
-                      "MX",
-                      "US"
-                    ],
-                    "duration_ms": 467586,
-                    "explicit": false,
-                    "href": "/example.mp3",
-                    "id": "1",
-                    "name": "thug life",
-                    "type": "track"
+                    available_markets: ["CA", "MX", "US"],
+                    duration_ms: 467586,
+                    explicit: false,
+                    href: "/example.mp3",
+                    id: "1",
+                    name: "thug life",
+                    type: "track"
                   },
-                  "played_at": "2016-12-13T20:44:04.589Z"
+                  played_at: "2016-12-13T20:44:04.589Z"
                 }
               ],
-              "next": "https://api.symphonia.com/v1/me/player/recently-played?before=1481661737016&limit=2",
-              "cursors": {
-                "after": "1481661844589",
-                "before": "1481661737016"
+              next:
+                "https://api.symphonia.com/v1/me/player/recently-played?before=1481661737016&limit=2",
+              cursors: {
+                after: "1481661844589",
+                before: "1481661737016"
               },
-              "limit": 2,
-              "href": "https://api.symphonia.com/v1/me/player/recently-played?limit=2"
+              limit: 2,
+              href:
+                "https://api.symphonia.com/v1/me/player/recently-played?limit=2"
             }
           );
         }),
         this.get("/v1/me/tracks/contains", () => {
-          return new Response(
-            200,
-            {},
-            [
-              true
-            ]
-          );
+          return new Response(200, {}, [true]);
         }),
         this.post("/v1/me/player/tracks/1", () => {
-          return new Response(
-            200,
-            {},
-            {}
-            )
+          return new Response(200, {}, {});
         });
     }
   });

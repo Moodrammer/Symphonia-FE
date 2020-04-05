@@ -7,7 +7,7 @@
     <v-icon
       class="mr-2 pb-9"
       v-if="hover && !disabled"
-      v-bind:class="{ enabled: !playing, 'playing': playing }"
+      v-bind:class="{ enabled: !playing, playing: playing }"
       >mdi-play</v-icon
     >
     <v-icon
@@ -15,7 +15,7 @@
       v-bind:class="{
         'disabled-1': disabled,
         enabled: !disabled && !playing,
-        'playing': playing
+        playing: playing
       }"
       v-else
     >
@@ -26,7 +26,7 @@
       v-bind:class="{
         'disabled-1': disabled,
         'white--text': !disabled && !playing,
-        'playing': playing
+        playing: playing
       }"
     >
       {{ songName }}

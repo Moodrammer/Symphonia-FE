@@ -54,14 +54,18 @@ const getters = {
   likedPlaylists: state => state.likedPlaylists
 };
 
-
 const actions = {
   createPlaylist({ commit }, payload) {
     axios
-      .post("/v1/users/" + payload.id + "/playlists",{name: payload.name}, {
-        headers: {
-          Authorization: `Bearer ${payload.token}`
-        }})
+      .post(
+        "/v1/users/" + payload.id + "/playlists",
+        { name: payload.name },
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`
+          }
+        }
+      )
       .then(response => {
         var newPlaylist = response.data.playlist;
         commit("add_playlist", newPlaylist);
@@ -74,9 +78,9 @@ const actions = {
 
   // getPlayslist works for (Get a List of Current User's Playlists) when nothing send in the parameter 'user'
   // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
-  async getPlaylists({ commit } , payload) {
+  async getPlaylists({ commit }, payload) {
     await axios
-      .get("/v1/me/playlists",{
+      .get("/v1/me/playlists", {
         headers: {
           Authorization: `Bearer ${payload}`
         }

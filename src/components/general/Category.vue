@@ -3,7 +3,9 @@
     <v-row>
       <h1>{{ name }}</h1>
       <v-spacer></v-spacer>
-      <p v-if="seeAll" id="seeAll">SEE ALL</p>
+      <router-view>
+        <p v-if="seeAll" id="seeAll">SEE ALL</p>
+      </router-view>
     </v-row>
     <CardGrid :cardItems="griditems" :cardStyle="gridStyle" />
   </v-container>
