@@ -290,7 +290,6 @@ export default {
       isRepeatEnabled: false,
       isShuffleEnabled: false,
       isRepeatOnceEnabled: false,
-      //isSongIsLiked: false,
       isFirstSong: true,
 
       //The song's info:
@@ -298,7 +297,9 @@ export default {
       songId: undefined,
 
       devices: undefined,
-      currentDeviceId: undefined
+      currentDeviceId: undefined,
+
+      token: "Bearer " + window.sessionStorage.userToken
     };
   },
   methods: {
@@ -307,8 +308,9 @@ export default {
     ...mapActions("playlist", ["pauseAndPlay"]),
 
     chooseDevice: function(id) {
-      alert(id);
+      this.currentDeviceId = id;
     },
+
     saveToLikedSongs: function() {
       if (!this.isSongIsLiked) {
         this.setLiked(true);
@@ -491,7 +493,10 @@ export default {
 
       axios({
         method: "get",
-        url: "/v1/me/player/tracks/recently-played"
+        url: "/v1/me/player/tracks/recently-played",
+        headers: {
+          Authorization: this.token
+        }
       }).then(response => {
         var lastSong = response.data.items;
         lastSong = lastSong[lastSong.length - 1].track;
@@ -513,6 +518,9 @@ export default {
           url: "/v1/me/tracks/contains",
           params: {
             ID: [this.songId]
+          },
+          headers: {
+            Authorization: this.token
           }
         }).then(response => {
           this.setLiked(response.data[0]);
@@ -527,6 +535,9 @@ export default {
             context_type: "album", //get it
             context_url: "url", //browser URL
             device: this.currentDeviceId
+          },
+          headers: {
+            Authorization: this.token
           }
         }).then(
           //STUB because there's no songs now
@@ -542,6 +553,9 @@ export default {
         url: "/v1/me/player/devices",
         data: {
           device: "Chrome" //TODO: get the browser name
+        },
+        headers: {
+          Authorization: this.token
         }
       }).then(response => {
         this.devices = response.data.devices;
@@ -617,95 +631,8 @@ export default {
 };
 </script>
 
-<style scoped>
-.sound-player {
-  height: 90px;
-  background-color: #282828 !important;
-  padding: 0px 16px 0px 16px;
-}
-
-.song-name {
-  text-decoration: none;
-  font-family: Helvetica, Arial, sans-serif;
-  white-space: nowrap;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.015em;
-  text-align: left;
-  user-select: none;
-  color: #fff;
-  position: relative;
-  text-transform: uppercase;
-  display: block;
-}
-
-.singer-name {
-  text-decoration: none;
-  white-space: nowrap;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0.015em;
-  position: relative;
-  color: #b3b3b3;
-
-  padding-right: 10px;
-}
-
-.singer-name:hover {
-  color: white;
-}
-
-.audio-controls {
-  display: block;
-  text-align: center;
-  margin-bottom: 10px;
-  height: 36px;
-}
-
-.icons {
-  color: #b3b3b3;
-}
-
-.green-icon-w-hover {
-  color: green !important;
-}
-
-.green-icon {
-  color: green;
-}
-
-.green-icon:hover {
-  color: rgb(0, 211, 0);
-}
-
-.icons:hover {
-  color: white;
-}
-
-.time {
-  margin-top: 20px;
-  color: #b3b3b3;
-  text-transform: none;
-  font-family: Helvetica, Arial, sans-serif;
-  vertical-align: baseline;
-  font-size: 11px;
-  line-height: 16px;
-  letter-spacing: 0.015em;
-  min-width: 40px;
-  text-align: center;
-}
-
-#no-background-hover::before {
-  background-color: transparent !important;
-}
-
-.devices-icon {
-  padding: 0px !important;
-  margin-right: 10px !important;
-  padding-bottom: 8px !important;
-  min-width: auto !important;
-  float: left;
-}
+<style lang="scss" scoped>
+@import "./style.scss";
 </style>
 
 <style lang="scss" scoped>

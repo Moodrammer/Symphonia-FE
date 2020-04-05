@@ -1,0 +1,88 @@
+.sound-player {
+  height: 90px;
+  background-color: #282828 !important;
+  padding: 0px 16px 0px 16px;
+}
+
+.song-name {
+  text-decoration: none;
+  font-family: Helvetica, Arial, sans-serif;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.015em;
+  text-align: left;
+  user-select: none;
+  color: #fff;
+  position: relative;
+  text-transform: uppercase;
+  display: block;
+}
+
+.singer-name {
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.015em;
+  position: relative;
+  color: #b3b3b3;
+
+  padding-right: 10px;
+}
+
+.singer-name:hover {
+  color: white;
+}
+
+.audio-controls {
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+  height: 36px;
+}
+
+.icons {
+  color: #b3b3b3;
+}
+
+.green-icon-w-hover {
+  color: green !important;
+}
+
+.green-icon {
+  color: green;
+}
+
+.green-icon:hover {
+  color: rgb(0, 211, 0);
+}
+
+.icons:hover {
+  color: white;
+}
+
+.time {
+  margin-top: 20px;
+  color: #b3b3b3;
+  text-transform: none;
+  font-family: Helvetica, Arial, sans-serif;
+  vertical-align: baseline;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.015em;
+  min-width: 40px;
+  text-align: center;
+}
+
+#no-background-hover::before {
+  background-color: transparent !important;
+}
+
+.devices-icon {
+  padding: 0px !important;
+  margin-right: 10px !important;
+  padding-bottom: 8px !important;
+  min-width: auto !important;
+  float: left;
+}
