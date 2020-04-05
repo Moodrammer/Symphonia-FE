@@ -57,7 +57,7 @@ export default {
             image:
               "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
             description: "1 new playlist"
-          },
+          }
         ]
       }
     };

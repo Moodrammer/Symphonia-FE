@@ -60,9 +60,7 @@
           <v-card class="mx-auto" max-width="400" flat>
             <v-img
               aspect-ratio="1"
-              v-bind:src="
-                '/benefits/benefit-' + n.no + '.png'
-              "
+              v-bind:src="'/benefits/benefit-' + n.no + '.png'"
               style="
               display: block;
               margin-left: auto;
@@ -131,7 +129,7 @@
 </template>
 
 <script>
-import getDeviceSize from "../../mixins/getDeviceSize"
+import getDeviceSize from "../../mixins/getDeviceSize";
 
 /**
  * The homepage content when pressing premium tab.
@@ -215,8 +213,8 @@ export default {
 
 <style scoped>
 .hero-home-bg-cover {
-  background: url(/premium_hero.png) right bottom / 450px
-    no-repeat rgb(80, 155, 245);
+  background: url(/premium_hero.png) right bottom / 450px no-repeat
+    rgb(80, 155, 245);
   min-height: 493px;
   background-position: right 3px top -27px;
   padding: 0px;
@@ -224,8 +222,8 @@ export default {
 }
 
 .hero-home-md-cover {
-  background: url(/premium_hero.png) right bottom / 450px
-    no-repeat rgb(80, 155, 245);
+  background: url(/premium_hero.png) right bottom / 450px no-repeat
+    rgb(80, 155, 245);
   min-height: 493px;
   background-position: right 3px top 40px;
   padding: 0px;

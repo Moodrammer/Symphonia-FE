@@ -29,7 +29,6 @@
               mdi-heart
             </v-icon>
           </a>
-
         </v-toolbar>
       </v-col>
 
@@ -374,14 +373,12 @@ export default {
       this.loaded = true;
     },
     _handleSpaceDown: function(e) {
-      if (e.code === "Space") 
-      {
-        e.preventDefault(); //this is just to prevent the space from scrolling        
+      if (e.code === "Space") {
+        e.preventDefault(); //this is just to prevent the space from scrolling
       }
     },
     _handleSpaceUp: function(e) {
-      if (e.code === "Space") 
-      {
+      if (e.code === "Space") {
         if (!this.loaded) return;
         this.pause();
       }
@@ -399,8 +396,8 @@ export default {
       this.audio.addEventListener("playing", this._handlePlayingAfterBuffering);
 
       //space key to pause and play the song
-      document.addEventListener('keyup', this._handleSpaceUp);
-      document.addEventListener('keydown', this._handleSpaceDown);
+      document.addEventListener("keyup", this._handleSpaceUp);
+      document.addEventListener("keydown", this._handleSpaceDown);
 
       //configure the volume
       this.audio.volume = this.volumeValue / 100;
@@ -443,8 +440,8 @@ export default {
       this._handlePlayingAfterBuffering
     );
 
-    document.removeEventListener('keyup', this._handleSpaceUp);
-    document.removeEventListener('keydown', this._handleSpaceDown);
+    document.removeEventListener("keyup", this._handleSpaceUp);
+    document.removeEventListener("keydown", this._handleSpaceDown);
   }
 };
 </script>

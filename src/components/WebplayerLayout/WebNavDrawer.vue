@@ -1,6 +1,14 @@
 <template>
   <!--the webplayer navigation drawer-->
-  <v-navigation-drawer app dark color="black" :mini-variant="$vuetify.breakpoint.mdAndDown" left fixed permanent>
+  <v-navigation-drawer
+    app
+    dark
+    color="black"
+    :mini-variant="$vuetify.breakpoint.mdAndDown"
+    left
+    fixed
+    permanent
+  >
     <v-list color="black" nav class="list">
       <!--logo and organization name-->
       <v-list-item>
@@ -32,7 +40,11 @@
       </v-list-item>
 
       <!--This will be showed only if the user is logged in -->
-      <v-list-item-subtitle class="ml-2" v-if="loggedIn" v-show="$vuetify.breakpoint.lgAndUp">
+      <v-list-item-subtitle
+        class="ml-2"
+        v-if="loggedIn"
+        v-show="$vuetify.breakpoint.lgAndUp"
+      >
         PLAYLISTS
       </v-list-item-subtitle>
 
@@ -50,7 +62,9 @@
         <v-btn class="liked" fab x-small id="liked">
           <v-icon color="white">mdi-cards-heart</v-icon>
         </v-btn>
-        <v-list-item-title v-show="$vuetify.breakpoint.lgAndUp">Liked Songs</v-list-item-title>
+        <v-list-item-title v-show="$vuetify.breakpoint.lgAndUp"
+          >Liked Songs</v-list-item-title
+        >
       </v-list-item>
 
       <v-divider v-if="loggedIn"></v-divider>
@@ -62,7 +76,10 @@
           :key="playlist.id"
           class="listItem"
         >
-          <v-list-item-title class="draweritem white--text" v-show="$vuetify.breakpoint.lgAndUp">
+          <v-list-item-title
+            class="draweritem white--text"
+            v-show="$vuetify.breakpoint.lgAndUp"
+          >
             {{ playlist.name }}
           </v-list-item-title>
         </v-list-item>

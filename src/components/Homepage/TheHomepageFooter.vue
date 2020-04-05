@@ -15,22 +15,14 @@
         style="position: relative;"
       >
         <router-link v-if="isLg() || isMd()" to="/" class="links-column-1">
-          <v-img
-            src="/s11.png"
-            max-width="50px"
-            style="float: left;"
-          ></v-img>
+          <v-img src="/s11.png" max-width="50px" style="float: left;"></v-img>
           <h2 style="display: inline;" display-4 class="white--text">
             Symphonia
           </h2>
         </router-link>
 
         <router-link class="links-column-1" to="/" v-if="isSm() || isXs()">
-          <v-img
-            src="/s11.png"
-            max-width="50px"
-            style="float: left;"
-          ></v-img>
+          <v-img src="/s11.png" max-width="50px" style="float: left;"></v-img>
           <h2 style="display: inline;" display-4 class="white--text">
             Symphonia
           </h2>
@@ -118,7 +110,7 @@
 </template>
 
 <script>
-import getDeviceSize from "../../mixins/getDeviceSize"
+import getDeviceSize from "../../mixins/getDeviceSize";
 
 /**
  * The homepage footer.

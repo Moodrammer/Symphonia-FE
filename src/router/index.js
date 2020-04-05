@@ -124,16 +124,16 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/ForgetPass.vue"),
-    redirect:"/password-reset/reset" ,
+    redirect: "/password-reset/reset",
     children: [
       {
-        path:"reset",
-        name:"reset",
+        path: "reset",
+        name: "reset",
         component: PassReset
       },
       {
-        path:"change/:resettoken",
-        name:"change",
+        path: "change/:resettoken",
+        name: "change",
         component: PassChange
       }
     ]

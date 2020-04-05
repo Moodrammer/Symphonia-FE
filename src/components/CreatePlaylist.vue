@@ -12,7 +12,9 @@
         >
           <v-icon color="black">mdi-plus</v-icon>
         </v-btn>
-        <v-list-item-title v-show="$vuetify.breakpoint.lgAndUp">Create Playlist</v-list-item-title>
+        <v-list-item-title v-show="$vuetify.breakpoint.lgAndUp"
+          >Create Playlist</v-list-item-title
+        >
       </v-list-item>
     </template>
 

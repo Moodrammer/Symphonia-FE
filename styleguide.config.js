@@ -5,22 +5,21 @@ module.exports = {
   // defaultExample: true,
   sections: [
     {
-      name: 'Views',
-      description: 'Documentation for the views',
-      components: ['src/views/**/*.vue']
+      name: "Views",
+      description: "Documentation for the views",
+      components: ["src/views/**/*.vue"]
     },
 
     {
-      name: 'Components',
-      description: 'Documentation for the components',
-      components: ['src/components/**/*.vue']
+      name: "Components",
+      description: "Documentation for the components",
+      components: ["src/components/**/*.vue"]
     }
   ],
   theme: {
     color: {
-      base: "black",
-    },
-     
+      base: "black"
+    }
   },
   // webpackConfig: {
   //   // custom config goes here

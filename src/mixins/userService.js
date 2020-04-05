@@ -1,37 +1,37 @@
-  export default {
+export default {
   methods: {
     /**
-     * This function is used to check if the user is logged in or not where: 
-     * The function returns true if there is a token stored either in the localStorage or in the sessionStorage 
-     * The function returns false if there is no token stored in neither the localStoage nor the sessionStorage  
+     * This function is used to check if the user is logged in or not where:
+     * The function returns true if there is a token stored either in the localStorage or in the sessionStorage
+     * The function returns false if there is no token stored in neither the localStoage nor the sessionStorage
      */
     isLoggedIn() {
-      if ((localStorage.getItem("userToken") == null) && (sessionStorage.getItem("userToken") == null)) {
+      if (
+        localStorage.getItem("userToken") == null &&
+        sessionStorage.getItem("userToken") == null
+      ) {
         return false;
-      }
-      else {
+      } else {
         return true;
       }
     },
     /**
-     * We clear both the localStorage and the sessionStorage using this function when the user logs out 
+     * We clear both the localStorage and the sessionStorage using this function when the user logs out
      */
     logOut() {
-      if(localStorage.getItem("userToken") != null){
+      if (localStorage.getItem("userToken") != null) {
         localStorage.removeItem("userToken");
         localStorage.removeItem("username");
         localStorage.removeItem("email");
         localStorage.removeItem("userID");
-        localStorage.removeItem("type" );
-      }
-      else{
+        localStorage.removeItem("type");
+      } else {
         sessionStorage.removeItem("userToken");
         sessionStorage.removeItem("username");
         sessionStorage.removeItem("email");
         sessionStorage.removeItem("userID");
-        sessionStorage.removeItem("type" );
+        sessionStorage.removeItem("type");
       }
-      
     },
     /**
      * This function returns the userToken whether from the localStorage or the sessionStorage to be used
@@ -40,12 +40,12 @@
      */
     getuserToken() {
       //If the user checks rememberMe his token will be found in the localStorage
-      if(localStorage.getItem("userToken") != null) {
-        return localStorage.getItem("userToken")
+      if (localStorage.getItem("userToken") != null) {
+        return localStorage.getItem("userToken");
       }
       //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
-      else if (sessionStorage.getItem("userToken") != null){
-        return sessionStorage.getItem("userToken")
+      else if (sessionStorage.getItem("userToken") != null) {
+        return sessionStorage.getItem("userToken");
       }
     },
     /**
@@ -54,12 +54,12 @@
      */
     getuserID() {
       //If the user checks rememberMe his token will be found in the localStorage
-      if(localStorage.getItem("userToken") != null) {
-        return localStorage.getItem("userID")
+      if (localStorage.getItem("userToken") != null) {
+        return localStorage.getItem("userID");
       }
       //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
-      else if (sessionStorage.getItem("userToken") != null){
-        return sessionStorage.getItem("userID")
+      else if (sessionStorage.getItem("userToken") != null) {
+        return sessionStorage.getItem("userID");
       }
     },
 
@@ -69,12 +69,12 @@
      */
     getusername() {
       //If the user checks rememberMe his token will be found in the localStorage
-      if(localStorage.getItem("userToken") != null) {
-        return localStorage.getItem("username")
+      if (localStorage.getItem("userToken") != null) {
+        return localStorage.getItem("username");
       }
       //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
-      else if (sessionStorage.getItem("userToken") != null){
-        return sessionStorage.getItem("username")
+      else if (sessionStorage.getItem("userToken") != null) {
+        return sessionStorage.getItem("username");
       }
     },
     /**
@@ -83,12 +83,12 @@
      */
     getuserType() {
       //If the user checks rememberMe his token will be found in the localStorage
-      if(localStorage.getItem("userToken") != null) {
-        return localStorage.getItem("type")
+      if (localStorage.getItem("userToken") != null) {
+        return localStorage.getItem("type");
       }
       //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
-      else if (sessionStorage.getItem("userToken") != null){
-        return sessionStorage.getItem("type")
+      else if (sessionStorage.getItem("userToken") != null) {
+        return sessionStorage.getItem("type");
       }
     },
     /**
@@ -97,13 +97,13 @@
      */
     getemail() {
       //If the user checks rememberMe his token will be found in the localStorage
-      if(localStorage.getItem("userToken") != null) {
-        return localStorage.getItem("email")
+      if (localStorage.getItem("userToken") != null) {
+        return localStorage.getItem("email");
       }
       //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
-      else if (sessionStorage.getItem("userToken") != null){
-        return sessionStorage.getItem("email")
+      else if (sessionStorage.getItem("userToken") != null) {
+        return sessionStorage.getItem("email");
       }
-    },
+    }
   }
-}
+};
