@@ -222,8 +222,12 @@ export function makeServer({ environment = "development" } = {}) {
       //Remove User's Saved Tracks
       ///////////////////////////////////////////////////////////////////////////////////
       this.delete("/v1/me/tracks", (schema, request) => {
-        let trackId = request.requestBody[1];
+        let trackId = JSON.parse(request.requestBody)[0];
+        console.log(schema.tracks.where({id: trackId}).models[0].liked);
+        console.log("from server");
+        console.log(trackId);
         schema.tracks.where({ id: trackId }).update({ liked: false });
+        console.log(schema.tracks.where({id: trackId}).models[0].liked);
         return new Response(200, {}, {});
       });
       ///////////////////////////////////////////////////////////////////////////////////

@@ -51,7 +51,7 @@ const state = {
   },
   popularPlaylists: {
     categoryName: "Popular playlists",
-    showSeeAll: true,
+    showSeeAll: false,
     list: {
       menuList: [
         { title: "Start Radio" },
@@ -66,7 +66,7 @@ const state = {
   },
   popularArtists: {
     categoryName: "Popular Artists",
-    showSeeAll: true,
+    showSeeAll: false,
     list: {
       menuList: [
         { title: "Start Radio" },
@@ -150,21 +150,6 @@ const mutations = {
   setName(state, payload) {
     state.categoryNameHolder = payload.name;
     state.categoryIDHolder = payload.id;
-    // console.log("from set name");
-    // console.log(state.singleCategory);
-  },
-  async setItems(state, payload) {
-    state.singleCategory.list.items = payload;
-    console.log("from set items");
-    console.log(state.singleCategory);
-    console.log(state.categories);
-    await state.categories.push(state.singleCategory);
-    console.log(state.categories);
-  },
-  emptyCategory(state) {
-    state.singleCategory.categoryName = "";
-    state.singleCategory.category_id = "";
-    state.singleCategory.list.items = [];
   },
   createCategory(state, payload) {
     let singleCategory = {
@@ -226,9 +211,7 @@ const actions = {
       .then(async response => {
         let genreList = response.data;
         let newList = [];
-        console.log(newList);
         for (let index = 0; index < genreList.length; index++) {
-          //  genreList.forEach(element => {
           var k = {
             name: genreList[index].name,
             image: genreList[index].images[0].url,
@@ -236,12 +219,8 @@ const actions = {
             id: genreList[index].id,
             url: genreList[index].href
           };
-          console.log(newList);
           newList.push(k);
-          console.log("from playlists");
-          console.log(newList);
         }
-        //     });
         await commit("createCategory", newList);
       })
       .catch(error => {
@@ -282,8 +261,6 @@ const actions = {
       .get("v1/browse/categories/" + category_id)
       .then(async response => {
         let category = response.data;
-        console.log("from get category");
-        console.log(category_id);
         commit("setName", category);
       })
       .catch(error => {
