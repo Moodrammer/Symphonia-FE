@@ -28,30 +28,30 @@ const routes = [
     component: Homepage
   },
   {
-    name: "ArtistUI",
-    path: "/artist/:id",
-    component: ArtistUI,
-    redirect: "artist/:id/overview",
-    children:[
-      {
-        name: "Overview",
-        path: "overview",
-        component: Overview,
-      },
-      {
-        name: "RelatedArtists",
-        path: "related-artists",
-        component: RelatedArtists,
-      }
-    ]
-
-  },
-  {
     path: "/webhome",
     name: "WebHome",
     component: WebPlayerHome,
     redirect: "webhome/home",
     children: [
+      {
+        name: "ArtistUI",
+        path: "artist/:id",
+        component: ArtistUI,
+        redirect: "artist/:id/overview",
+        children:[
+          {
+            name: "Overview",
+            path: "overview",
+            component: Overview,
+          },
+          {
+            name: "RelatedArtists",
+            path: "related-artists",
+            component: RelatedArtists,
+          }
+        ]
+    
+      },    
       {
         name: "home",
         path: "home",

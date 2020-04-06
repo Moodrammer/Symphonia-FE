@@ -16,7 +16,7 @@
       >
       <span class="display-2 white--text">...</span>
     </div>
-    <v-content style="background:#1a1a1a" fill-height>
+    <div style="background:#1a1a1a" class="pl-3" fill-height>
 
     <div class="pl-9 mb-10">
       <v-btn text color="white" class="mx-2" :to="{ name: 'Overview' }">
@@ -30,7 +30,7 @@
     </div>
 
       <router-view />
-    </v-content>
+    </div>
   </v-content>
 </template>
 
