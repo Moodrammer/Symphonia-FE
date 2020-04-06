@@ -8,6 +8,7 @@
 <script>
 import CardGrid from "../general/CardGrid";
 import { mapGetters, mapActions } from "vuex";
+import getuserToken from "../../mixins/userService";
 
 export default {
   name: "Artists",
@@ -41,23 +42,34 @@ export default {
       this.contextMenuChoice = menuItem;
       this.contextMenuCardIndex = cardIndex;
     },
+
   },
-  created(){
-    this.getFollowedArtists();
-    console.log("hello");
+  mixins: [getuserToken],
+  async created(){
+    try {
+        this.getFollowedArtists({token:await this.getuserToken()});
+    }
+    catch (error) {
+        console.log("error" + error);
+    }
   },
 
   computed: mapGetters(['allFollowedArtists']),
 
   watch: {
-    contextMenuChoice: function() {
+    contextMenuChoice: async function() {
       if (this.contextMenuChoice === null)
         return;
       console.log(this.contextMenuChoice);
       console.log(this.contextMenuCardIndex);
       if(this.contextMenuChoice === "Unfollow")
       {
-          this.unfollowArtist([this.contextMenuCardIndex]);
+        try{
+            this.unfollowArtist({artists:[this.contextMenuCardIndex],token: await this.getuserToken()});
+        }
+        catch (error) {
+        console.log("error" + error);
+        }
       }
       this.contextMenuChoice = null
       },

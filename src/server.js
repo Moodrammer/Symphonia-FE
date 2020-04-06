@@ -3,6 +3,8 @@ import playlistJson from "./api/mock/data/playlist.json";
 import trackJSON from "./api/mock/data/track.json";
 import artistJSON from "./api/mock/data/artist.json";
 import albumsJSON from "./api/mock/data/album.json";
+import artistAlbumsJSON from "./api/mock/data/artistAlbums.json";
+import artistTopTracksJSON from "./api/mock/data/artistTopTracks.json";
 
 //The makeserver function to be used to enable Mirage to intercept your requests
 export function makeServer({ environment = "development" } = {}) {
@@ -15,7 +17,9 @@ export function makeServer({ environment = "development" } = {}) {
       bestsong: Model,
       playlist: Model,
       album: Model,
-      artist: Model
+      artist: Model,
+      artistAlbum: Model,
+      artistTopTrack: Model
     },
 
     seeds(server) {
@@ -100,6 +104,15 @@ export function makeServer({ environment = "development" } = {}) {
 
       albumsJSON.items.forEach(element =>
         server.create("album", element)
+      );
+
+      artistAlbumsJSON.items.forEach(element =>
+        server.create("artistAlbum", element)
+      );
+      
+      console.log(artistTopTracksJSON)
+      artistTopTracksJSON.tracks.forEach(element =>
+        server.create("artistTopTrack", element)
       );
     },
 
@@ -228,6 +241,9 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/me/albums", (schema) => {
         return schema.albums.all().models
       });
+      this.get("/v1/artists/:id/albums", (schema) => {
+        return schema.artistAlbums.all().models
+      });
 
       this.delete("/v1/me/albums", (schema, request) => {
 
@@ -238,6 +254,10 @@ export function makeServer({ environment = "development" } = {}) {
 
         return schema.albums.findBy(album => album.album.id === x).destroy();
       });
+
+      this.get("/v1/artists/:id/top-tracks", (schema) => {
+        return schema.artistTopTracks.all().models
+    });
 
 
       this.get("/v1/me/following", (schema, request) => {

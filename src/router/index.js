@@ -26,7 +26,7 @@ const routes = [
     component: Homepage
   },
   {
-    path: "/ArtistUI",
+    path: "/ArtistUI/:id",
     name: "ArtistUI",
     component: ArtistUI
 
