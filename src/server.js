@@ -105,7 +105,7 @@ export function makeServer({ environment = "development" } = {}) {
 
       albumsJSON.items.forEach(element => server.create("album", element));
 
-      categoryJSON.items.forEach(element => {
+      categoryJSON.categories.items.forEach(element => {
         server.create("category", element);
       });
     },
@@ -248,6 +248,12 @@ export function makeServer({ environment = "development" } = {}) {
             href: schema.categories.where({ id: categoryID }).models[0].href
           }
         );
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get List of Categories
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("v1/browse/categories", () => {
+        return new Response(200, {}, categoryJSON);
       });
       ///////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';

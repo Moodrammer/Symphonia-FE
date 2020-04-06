@@ -64,7 +64,7 @@
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item v-if="!liked">
+        <v-list-item v-if="!liked" @click="likeSong">
           <v-list-item-title class="draweritem">
             Save to your Liked Songs
           </v-list-item-title>
@@ -157,10 +157,10 @@ export default {
       });
     },
     likeSong: function() {
-    this.$store.dispatch("track/saveTrack", {
-      id: [this.id],
-      token: this.getuserToken()
-    });
+      this.$store.dispatch("track/saveTrack", {
+        id: [this.id],
+        token: this.getuserToken()
+      });
     }
   },
   computed: mapState({

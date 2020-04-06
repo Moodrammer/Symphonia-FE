@@ -230,10 +230,24 @@ const actions = {
   },
   async loadGenres({ commit, dispatch }) {
     commit("emptyArray");
-    let genres_ids = ["pop", "folk", "rock", "jazz"];
-    for (let index = 0; index < genres_ids.length; index++) {
-      await dispatch("getGenrePlaylists", genres_ids[index]);
-    }
+    let genres_ids = [];
+    axios
+      .get("/v1/browse/categories")
+      .then(async response => {
+        let genres = response.data;
+        for (let i = 0; i < 4; i++) {
+          var id = genres.categories.items[i].id;
+          genres_ids.push(id);
+        }
+        for (let index = 0; index < genres_ids.length; index++) {
+          await dispatch("getGenrePlaylists", genres_ids[index]);
+        }
+      })
+      //let genres_ids = ["pop", "folk", "rock", "jazz"];
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
   },
   async loadUserSections({ dispatch, commit }, payload) {
     commit("emptyArray");
