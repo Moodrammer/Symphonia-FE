@@ -157,10 +157,10 @@ export default {
       });
     },
     likeSong: function() {
-    this.$store.dispatch("track/saveTrack", {
-      id: [this.id],
-      token: this.getuserToken()
-    });
+      this.$store.dispatch("track/saveTrack", {
+        id: [this.id],
+        token: this.getuserToken()
+      });
     }
   },
   computed: mapState({
