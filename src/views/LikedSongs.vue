@@ -117,20 +117,12 @@ export default {
     ...mapActions("category", ["getTracks"])
   },
   created: function() {
-    this.$store.dispatch("track/getTrack", 1);
+    //this.$store.dispatch("track/getTrack", 1);
     this.getTracks(this.getuserToken());
-    // this.$store.dispatch("track/removeSavedTrack", {
-    //   id: [1],
-    //   token: this.getuserToken()
-    // });
-    // this.$store.dispatch("track/saveTrack", {
-    //   id: [5],
-    //   token: this.getuserToken()
-    // });
   },
   mounted() {
     this.$root.$on("updateContent", () => {
-    this.getTracks(this.getuserToken());
+      this.getTracks(this.getuserToken());
     });
   },
   computed: mapState({

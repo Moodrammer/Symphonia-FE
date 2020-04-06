@@ -13,7 +13,6 @@
     ></router-view>
     <sound-player v-if="isLoggedIn()" />
     <sound-player-logout v-if="!isLoggedIn()" />
-
   </v-app>
 </template>
 

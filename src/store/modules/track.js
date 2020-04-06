@@ -22,25 +22,22 @@ const mutations = {
     state.trackAlbumId = payload.album.id;
   },
   setLiked(state, payload) {
-    if(payload.id == state.trackId)
-    state.liked = payload.status;
-    state.generalLiked=payload.status;
+    if (payload.id == state.trackId) state.liked = payload.status;
+    state.generalLiked = payload.status;
   },
-  unlikeTrack(state , id) {
-    if(id == state.trackId)
-    state.liked = false;
-    state.generalLiked=false;
+  unlikeTrack(state, id) {
+    if (id == state.trackId) state.liked = false;
+    state.generalLiked = false;
   },
-  likeTrack(state , id) {
-    if(id == state.trackId)
-    state.liked = true;
-    state.generalLiked=true;
+  likeTrack(state, id) {
+    if (id == state.trackId) state.liked = true;
+    state.generalLiked = true;
   },
   setTrackUrl(state, trackUrl) {
     state.trackUrl = trackUrl;
   },
-  setID(state,id) {
-    state.trackId=id;
+  setID(state, id) {
+    state.trackId = id;
   }
 };
 
@@ -71,7 +68,7 @@ const actions = {
       })
       .then(response => {
         let liked = response.data;
-        commit("setLiked", {status: liked , id: payload.id});
+        commit("setLiked", { status: liked, id: payload.id });
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -88,7 +85,7 @@ const actions = {
       })
       .then(() => {
         //   if(id[0]==state.trackId)           //comment it for now
-        commit("unlikeTrack" , payload.id);
+        commit("unlikeTrack", payload.id);
       })
       .catch(error => {
         console.log("axios caught an error");

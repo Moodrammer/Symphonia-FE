@@ -58,7 +58,6 @@
 
       <!--Menu list-->
       <v-list color="#282828" dark class="mt-3 white--text">
-
         <v-list-item>
           <v-list-item-title class="draweritem">
             Start Radio
@@ -132,7 +131,7 @@ export default {
   },
   created() {
     this.hover = false;
-    this.convert(this.$props.duration); 
+    this.convert(this.$props.duration);
   },
   methods: {
     /**
@@ -145,15 +144,21 @@ export default {
       this.sec = Math.floor((val / 1000) % 60);
     },
     deleteSong: function() {
-    this.$store.dispatch("track/removeSavedTrack", {
-      id: [this.id],
-      token: this.getuserToken()
-    });
-    this.$root.$emit("updateContent");
+      this.$store.dispatch("track/removeSavedTrack", {
+        id: [this.id],
+        token: this.getuserToken()
+      });
+      this.$root.$emit("updateContent");
     },
     checkLiked: function() {
-    this.$store.dispatch("track/checkSaved", {
-      id: this.id,
+      this.$store.dispatch("track/checkSaved", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+    },
+    likeSong: function() {
+    this.$store.dispatch("track/saveTrack", {
+      id: [this.id],
       token: this.getuserToken()
     });
     }

@@ -422,7 +422,7 @@ export default {
      * Disable the shuffle.
      * Invoked after pressing shuffle button
      * while it's enabled
-     * 
+     *
      * @public
      */
     disableShuffle: function() {
@@ -432,7 +432,7 @@ export default {
     },
     /**
      * enable repeat
-     * 
+     *
      * @public
      */
     enableRepeat: function() {
@@ -441,7 +441,7 @@ export default {
     },
     /**
      * enable repeat once
-     * 
+     *
      * @public
      */
     enableRepeatOnce: function() {
@@ -451,7 +451,7 @@ export default {
     },
     /**
      * disable repeat once
-     * 
+     *
      * @public
      */
     disableRepeatOnce: function() {
@@ -461,7 +461,7 @@ export default {
     /**
      * mute the sound. Invoked when the sound icon
      * is pressed or the volume slider went to 0 position.
-     * 
+     *
      * @public
      */
     mute: function() {
@@ -478,7 +478,7 @@ export default {
     },
     /**
      * This handler is invoked after track is loaded
-     * 
+     *
      * @public
      */
     _handleLoaded: function() {
@@ -502,7 +502,7 @@ export default {
     /**
      * This handler is invoked when the track
      * time is changed due to playing.
-     * 
+     *
      * @public
      */
     _handlePlayingUI: function() {
@@ -518,7 +518,7 @@ export default {
     },
     /**
      * This handler is invoked when the track is paused
-     * 
+     *
      * @public
      */
     _handlePause: function() {
@@ -526,7 +526,7 @@ export default {
     },
     /**
      * This handler is invoked when the track is finsihed
-     * 
+     *
      * @public
      */
     _handleEndedSong: function() {
@@ -541,7 +541,7 @@ export default {
     /**
      * This handler is invoked when the track started
      * buffering.
-     * 
+     *
      * @public
      */
     _handlerWaiting: function() {
@@ -549,16 +549,16 @@ export default {
     },
     /**
      * This handler is invoked when track insihed buffering
-     * 
+     *
      * @public
      */
     _handlePlayingAfterBuffering: function() {
       this.isBuffering = true;
     },
     /**
-     * This handler is invoked after 
+     * This handler is invoked after
      * pressing down the space key
-     * 
+     *
      * @public
      */
     _handleSpaceDown: function(e) {
@@ -567,9 +567,9 @@ export default {
       }
     },
     /**
-     * This handler is invoked after 
+     * This handler is invoked after
      * pressing up the space key
-     * 
+     *
      * @public
      */
     _handleSpaceUp: function(e) {
@@ -580,9 +580,9 @@ export default {
     },
     /**
      * This is the initialization function
-     * which is executed only after the 
+     * which is executed only after the
      * soundplayer is loaded/mounted
-     * 
+     *
      * @public
      */
     init: function() {
@@ -697,25 +697,25 @@ export default {
     },
     /**
      * returns the audio tag element.
-     * 
+     *
      * @public
      */
     getAudio: function() {
       return this.$el.querySelectorAll("audio")[0];
     },
     /**
-     * This handler is invoked after 
+     * This handler is invoked after
      * pressing down on the progress bar
-     * 
+     *
      * @public
      */
     progressBarPressed: function() {
       this.isProgressBarPressed = true;
     },
     /**
-     * This handler is invoked after 
+     * This handler is invoked after
      * pressing up on the progress bar
-     * 
+     *
      * @public
      */
     progressBarReleased: function() {
@@ -723,18 +723,18 @@ export default {
       this.isProgressBarPressed = false;
     },
     /**
-     * This handler is invoked after 
+     * This handler is invoked after
      * pressing down on the volume bar
-     * 
+     *
      * @public
      */
     volumeBarPressed: function() {
       this.isVolumeBarPressed = true;
     },
     /**
-     * This handler is invoked after 
+     * This handler is invoked after
      * pressing up on the volume bar
-     * 
+     *
      * @public
      */
     volumeBarReleased: function() {
