@@ -241,6 +241,11 @@
 </template>
 
 <script>
+/**
+ * The Sound player content after logging in.
+ * @version 1.0.0
+ */
+
 import { mapMutations, mapGetters, mapActions, mapState } from "vuex";
 import axios from "axios";
 //import io from 'socket.io-client';
@@ -257,7 +262,7 @@ export const convertTimeHHMMSS = val => {
 };
 
 export default {
-  name: "vue-audio",
+  name: "soundplayer",
 
   computed: {
     ...mapGetters("playlist", ["audio", "paused", "isQueueOpened"]),
@@ -307,10 +312,20 @@ export default {
     ...mapMutations("track", ["setLiked", "setTrackData", "setTrackUrl"]),
     ...mapActions("playlist", ["pauseAndPlay"]),
 
+    /**
+     * choose the device you want.
+     *
+     * @public
+     */
     chooseDevice: function(id) {
       this.currentDeviceId = id;
     },
 
+    /**
+     * change the liked state of the song
+     *
+     * @public
+     */
     saveToLikedSongs: function() {
       if (!this.isSongIsLiked) {
         this.setLiked(true);
@@ -320,6 +335,11 @@ export default {
         //make a request to remove the current song from the like ones.
       }
     },
+    /**
+     * Update the volume
+     *
+     * @public
+     */
     updateVolume: function() {
       this.audio.volume = this.volumeValue / 100;
       if (this.volumeValue / 100 > 0) {
@@ -335,11 +355,21 @@ export default {
         }
       }
     },
+    /**
+     * Play the current track
+     *
+     * @public
+     */
     play: function() {
       if (!this.paused) return;
       this.setPaused(false);
       this.audio.play();
     },
+    /**
+     * get the next song
+     *
+     * @public
+     */
     next: function() {
       this.isBuffering = false;
       this.setPaused(true); //the sound will be paused upon changing the soruce
@@ -356,6 +386,11 @@ export default {
         );
       }, 1000);
     },
+    /**
+     * get the previous song
+     *
+     * @public
+     */
     previous: function() {
       this.isBuffering = false;
       this.setPaused(true); //the sound will be paused upon changing the soruce
@@ -371,34 +406,64 @@ export default {
         temp.setTrackUrl("/example.mp3");
       }, 1000);
     },
-    //this method will be invoked after changing the song
-    //it will change the song info: song name, artist, picture.
-    updateSongInfo: function() {
-      //stub
-    },
+    /**
+     * Enable the shuffle.
+     * Invoked after pressing shuffle button
+     * while it's disabled
+     *
+     * @public
+     */
     enableShuffle: function() {
       this.isShuffleEnabled = true;
       //make a request to get a shuffled song
       /* send a request to save the option on backend */
     },
+    /**
+     * Disable the shuffle.
+     * Invoked after pressing shuffle button
+     * while it's enabled
+     * 
+     * @public
+     */
     disableShuffle: function() {
       this.isShuffleEnabled = false;
       //make a request to get a shuffled song
       /* send a request to save the option on backend */
     },
+    /**
+     * enable repeat
+     * 
+     * @public
+     */
     enableRepeat: function() {
       this.isRepeatEnabled = true;
       /* send a request to save the option on backend */
     },
+    /**
+     * enable repeat once
+     * 
+     * @public
+     */
     enableRepeatOnce: function() {
       this.isRepeatEnabled = false;
       this.isRepeatOnceEnabled = true;
       /* send a request to save the option on backend */
     },
+    /**
+     * disable repeat once
+     * 
+     * @public
+     */
     disableRepeatOnce: function() {
       this.isRepeatOnceEnabled = false;
       /* send a request to save the option on backend */
     },
+    /**
+     * mute the sound. Invoked when the sound icon
+     * is pressed or the volume slider went to 0 position.
+     * 
+     * @public
+     */
     mute: function() {
       this.isMuted = !this.isMuted;
       this.audio.muted = this.isMuted;
@@ -411,6 +476,11 @@ export default {
       this.volumeValue = this.isMuted ? 0 : this.previousVolumeValue;
       this.audio.volume = this.volumeValue / 100; //update the volume
     },
+    /**
+     * This handler is invoked after track is loaded
+     * 
+     * @public
+     */
     _handleLoaded: function() {
       //The HTMLMediaElement.readyState property indicates the readiness state of the media.
       // (this.audio.readyState >= 2) Data is available
@@ -429,6 +499,12 @@ export default {
         throw new Error("Failed to load sound file");
       }
     },
+    /**
+     * This handler is invoked when the track
+     * time is changed due to playing.
+     * 
+     * @public
+     */
     _handlePlayingUI: function() {
       //this.audio.currentTime gets the current time of the playing track
       //in terms of how many seconds have been passed.
@@ -440,9 +516,19 @@ export default {
 
       this.currentTime = convertTimeHHMMSS(currTime);
     },
+    /**
+     * This handler is invoked when the track is paused
+     * 
+     * @public
+     */
     _handlePause: function() {
       this.setPaused(true); //the song is paused flag
     },
+    /**
+     * This handler is invoked when the track is finsihed
+     * 
+     * @public
+     */
     _handleEndedSong: function() {
       if (this.isRepeatOnceEnabled) {
         this.play();
@@ -452,23 +538,53 @@ export default {
         //then after loading in the loaded handler: invoke play()
       }
     },
+    /**
+     * This handler is invoked when the track started
+     * buffering.
+     * 
+     * @public
+     */
     _handlerWaiting: function() {
       this.isBuffering = false;
     },
+    /**
+     * This handler is invoked when track insihed buffering
+     * 
+     * @public
+     */
     _handlePlayingAfterBuffering: function() {
       this.isBuffering = true;
     },
+    /**
+     * This handler is invoked after 
+     * pressing down the space key
+     * 
+     * @public
+     */
     _handleSpaceDown: function(e) {
       if (e.code === "Space") {
         e.preventDefault(); //this is just to prevent the space from scrolling
       }
     },
+    /**
+     * This handler is invoked after 
+     * pressing up the space key
+     * 
+     * @public
+     */
     _handleSpaceUp: function(e) {
       if (e.code === "Space") {
         if (!this.isBuffering) return;
         this.pauseAndPlay();
       }
     },
+    /**
+     * This is the initialization function
+     * which is executed only after the 
+     * soundplayer is loaded/mounted
+     * 
+     * @public
+     */
     init: function() {
       this.isBuffering = true; //I don't want a loading icon upon the loading of the page.
 
@@ -579,19 +695,48 @@ export default {
       });
       */
     },
+    /**
+     * returns the audio tag element.
+     * 
+     * @public
+     */
     getAudio: function() {
       return this.$el.querySelectorAll("audio")[0];
     },
+    /**
+     * This handler is invoked after 
+     * pressing down on the progress bar
+     * 
+     * @public
+     */
     progressBarPressed: function() {
       this.isProgressBarPressed = true;
     },
+    /**
+     * This handler is invoked after 
+     * pressing up on the progress bar
+     * 
+     * @public
+     */
     progressBarReleased: function() {
       this.audio.currentTime = this.currentTimeInSec;
       this.isProgressBarPressed = false;
     },
+    /**
+     * This handler is invoked after 
+     * pressing down on the volume bar
+     * 
+     * @public
+     */
     volumeBarPressed: function() {
       this.isVolumeBarPressed = true;
     },
+    /**
+     * This handler is invoked after 
+     * pressing up on the volume bar
+     * 
+     * @public
+     */
     volumeBarReleased: function() {
       this.updateVolume();
       this.isVolumeBarPressed = false;
