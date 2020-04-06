@@ -391,50 +391,15 @@ export function makeServer({ environment = "development" } = {}) {
           );
         }),
 
-        this.get("/v1/me/player/tracks/recently-played", () => {
+        this.get("/v1/me/player/currently-playing", () => {
           return new Response(
             200,
-            {},
+            {},         
             {
-              "items": [
-                {
-                  "track": {
-                    "artists": [
-                      {
-                        "href": "/v1/artists/6sFIWsNpZYqfjUpaCgueju",
-                        "id": "6sFIWsNpZYqfjUpaCgueju",
-                        "name": "2PAC",
-                        "type": "artist"
-                      },
-                      {
-                        "href": "/v1/artists/6sFIWsNpZYqfjUpaCgueju",
-                        "id": "6sFIWsNpZYqfjUpaCgueju",
-                        "name": "snoop dog",
-                        "type": "artist"
-                      }
-                    ],
-                    "available_markets": [
-                      "CA",
-                      "MX",
-                      "US"
-                    ],
-                    "duration_ms": 467586,
-                    "explicit": false,
-                    "href": "/example.mp3",
-                    "id": "1",
-                    "name": "thug life",
-                    "type": "track"
-                  },
-                  "played_at": "2016-12-13T20:44:04.589Z"
-                }
-              ],
-              "next": "https://api.symphonia.com/v1/me/player/recently-played?before=1481661737016&limit=2",
-              "cursors": {
-                "after": "1481661844589",
-                "before": "1481661737016"
-              },
-              "limit": 2,
-              "href": "https://api.symphonia.com/v1/me/player/recently-played?limit=2"
+              "data": {
+                "currentTrack": "/tracks/1",
+                "device": "5e88ef4d54142e3db4d01ee5"
+              }
             }
           );
         }),
@@ -447,7 +412,7 @@ export function makeServer({ environment = "development" } = {}) {
             ]
           );
         }),
-        this.post("/v1/me/player/tracks/1", () => {
+        this.get("/v1/me/player/tracks/:track_id", () => {
           return new Response(
             200,
             {},
@@ -457,7 +422,7 @@ export function makeServer({ environment = "development" } = {}) {
     }
   });
 
-  //server.shutdown();
+  server.shutdown();
 
   return server;
 }

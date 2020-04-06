@@ -1,13 +1,17 @@
 <template>
   <v-footer app class="sound-player">
     <!-- audio tag -->
-    <audio ref="audiofile" :src="trackUrl" style="display:none;"></audio>
+    <audio
+      ref="audiofile"
+      :src="trackUrl"
+      style="display:none;"
+    ></audio>
     <!-- song info -->
     <v-row>
       <v-col cols="4">
         <v-toolbar flat color="rgba(0,0,0,0)">
           <v-avatar tile size="56">
-            <img :src="artistPicture" alt="profile pic" />
+            <img :src="imageUrl" />
           </v-avatar>
           <div
             style="padding-left: 14px; padding-top: 14px; margin-right: 14px;"
@@ -168,7 +172,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened
+                icons: !isQueueOpened,
               }"
             >
               mdi-format-list-numbered-rtl
@@ -204,7 +208,7 @@
                 <v-list-item-title
                   style="color: white;"
                   v-bind:class="{
-                    'green-icon-w-hover': device._id == currentDeviceId
+                    'green-icon-w-hover': device._id == currentDeviceId,
                   }"
                   >{{ index + 1 }} {{ device.device }}</v-list-item-title
                 >
@@ -245,7 +249,7 @@ import { mapMutations, mapGetters, mapActions, mapState } from "vuex";
 import axios from "axios";
 //import io from 'socket.io-client';
 
-export const convertTimeHHMMSS = val => {
+export const convertTimeHHMMSS = (val) => {
   //-val is the time passed from the start of the sound in integer seconds
   //-new Data(val * 1000) get a date from 1970 2:00:00 and advance it with milli seconds
   //-convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
@@ -267,11 +271,12 @@ export default {
     },
 
     ...mapState({
-      isSongIsLiked: state => state.track.liked,
-      trackUrl: state => state.track.trackUrl,
-      songName: state => state.track.trackName,
-      artists: state => state.track.trackArtists
-    })
+      isSongIsLiked: (state) => state.track.liked,
+      trackUrl: (state) => state.track.trackUrl,
+      songName: (state) => state.track.trackName,
+      artists: (state) => state.track.trackArtists,
+      imageUrl: (state) => state.track.imageUrl,
+    }),
   },
   data() {
     return {
@@ -292,20 +297,18 @@ export default {
       isRepeatOnceEnabled: false,
       isFirstSong: true,
 
-      //The song's info:
-      artistPicture: "/profile.jpg",
-      songId: undefined,
-
       devices: undefined,
       currentDeviceId: undefined,
 
-      token: "Bearer " + window.sessionStorage.userToken
+      //token: "Bearer " + window.sessionStorage.userToken,
+      token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlODJhNDgwNTQ2NjA2NzJmZDY5OTg4MyIsImlhdCI6MTU4NjE3NTU1OCwiZXhwIjoxNzU4OTc1NTU4fQ.n90gQsVs6oibFYVVyGPkvsYFTublg7cLFQZBqRv4HW0"
     };
   },
   methods: {
     ...mapMutations("playlist", ["setAudio", "setPaused", "setIsSongLoaded"]),
     ...mapMutations("track", ["setLiked", "setTrackData", "setTrackUrl"]),
     ...mapActions("playlist", ["pauseAndPlay"]),
+    ...mapActions("track", ["getTrack"]),
 
     chooseDevice: function(id) {
       this.currentDeviceId = id;
@@ -491,75 +494,69 @@ export default {
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
-      axios({
-        method: "get",
-        url: "/v1/me/player/tracks/recently-played",
-        headers: {
-          Authorization: this.token
-        }
-      }).then(response => {
-        var lastSong = response.data.items;
-        lastSong = lastSong[lastSong.length - 1].track;
-
-        var payload = {
-          name: lastSong.name,
-          href: "",
-          artists: lastSong.artists,
-          album: {
-            images: [{ url: "lalala" }],
-            id: "1"
-          }
-        };
-        this.setTrackData(payload);
-        this.songId = lastSong.id;
-
-        axios({
-          method: "get",
-          url: "/v1/me/tracks/contains",
-          params: {
-            ID: [this.songId]
-          },
-          headers: {
-            Authorization: this.token
-          }
-        }).then(response => {
-          this.setLiked(response.data[0]);
-        });
-
-        //request the song mp3 file
-        axios({
-          method: "post",
-          url: "/v1/me/player/tracks/" + this.songId,
-          data: {
-            contextId: "1212", //Get the context Id->Id in the URL
-            context_type: "album", //get it
-            context_url: "url", //browser URL
-            device: this.currentDeviceId
-          },
-          headers: {
-            Authorization: this.token
-          }
-        }).then(
-          //STUB because there's no songs now
-          this.setTrackUrl("/example.mp3") //must be the song link "/v1/me/player/tracks/" + this.songId
-        );
-      });
-
-      //save the browser
-
-      //get the browsers.
+      //add the device
       axios({
         method: "patch",
         url: "/v1/me/player/devices",
         data: {
-          device: "Chrome" //TODO: get the browser name
+          device: "Chrome", //TODO: get the browser name
         },
         headers: {
-          Authorization: this.token
-        }
-      }).then(response => {
+          Authorization: this.token,
+        },
+      }).then((response) => {
         this.devices = response.data.devices;
         this.currentDeviceId = this.devices[this.devices.length - 1]._id;
+      });
+
+      //get the currently playing track
+      axios({
+        method: "get",
+        url: "/v1/me/player/currently-playing",
+        headers: {
+          "Authorization": this.token,
+        },
+      }).then((response) => {
+        //get the track url
+        var tempTrackUrl = response.data.data.currentTrack;
+
+        //get the track id
+        var songId = tempTrackUrl.slice(
+          tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+          tempTrackUrl.length
+        );
+
+        //request the track data
+        this.getTrack(songId);
+
+        //request the song mp3 file        
+        axios({
+          method: "get",
+          url: "/v1/me/player/tracks/" + songId,
+          data: {
+            device: this.currentDeviceId,
+          },
+          headers: {
+            Authorization: this.token,
+            "Content-Type": "audio/mpeg"
+          },
+          responseType: 'arraybuffer',
+        }).then(response => {
+          var blob = new Blob([response.data], {type : 'audio/mpeg'});
+          var objectUrl = URL.createObjectURL(blob);
+          this.setTrackUrl(objectUrl);
+        })
+          
+
+        // return new Promise((resolve, reject) => {
+        //   response.data.on('end', () => {
+        //     resolve();
+        //   })
+
+        //   response.data.on('error', err => {
+        //     reject(err)
+        //   })
+        // })
       });
 
       //Stub:
@@ -595,7 +592,7 @@ export default {
     volumeBarReleased: function() {
       this.updateVolume();
       this.isVolumeBarPressed = false;
-    }
+    },
   },
   mounted: function() {
     this.setAudio(this.getAudio());
@@ -627,7 +624,7 @@ export default {
       }
     });
     */
-  }
+  },
 };
 </script>
 
