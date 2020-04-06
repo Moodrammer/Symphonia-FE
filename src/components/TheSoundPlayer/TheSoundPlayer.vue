@@ -210,7 +210,7 @@
                   v-bind:class="{
                     'green-icon-w-hover': device._id == currentDeviceId,
                   }"
-                  >{{ index + 1 }} {{ device.device }}</v-list-item-title
+                  >{{ index + 1 }} {{ device.devicesName }}</v-list-item-title
                 >
               </v-list-item>
             </v-list>
@@ -241,6 +241,9 @@
         </div>
       </v-col>
     </v-row>
+    <v-snackbar v-model="snackbar" style="bottom: 100px;">
+      <span>Please, choose your first song.</span> 
+    </v-snackbar>
   </v-footer>
 </template>
 
@@ -301,7 +304,8 @@ export default {
       currentDeviceId: undefined,
 
       //token: "Bearer " + window.sessionStorage.userToken,
-      token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlODJhNDgwNTQ2NjA2NzJmZDY5OTg4MyIsImlhdCI6MTU4NjE3NTU1OCwiZXhwIjoxNzU4OTc1NTU4fQ.n90gQsVs6oibFYVVyGPkvsYFTublg7cLFQZBqRv4HW0"
+      token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlOGI0ZTY2ZjMwY2Q0MGMzNjViOGNkNSIsImlhdCI6MTU4NjE4Nzg4MCwiZXhwIjoxNzU4OTg3ODgwfQ.JRqOSOFADL0PDChpRMiuICLD7kwNAClN0yLjqdYB3Vo"
+      ,snackbar: false
     };
   },
   methods: {
@@ -494,20 +498,33 @@ export default {
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
-      //add the device
+      //get the device
       axios({
-        method: "patch",
+        method: "get",
         url: "/v1/me/player/devices",
-        data: {
-          device: "Chrome", //TODO: get the browser name
-        },
         headers: {
           Authorization: this.token,
         },
       }).then((response) => {
-        this.devices = response.data.devices;
+        console.log(response)
+        this.devices = response.data.data;
         this.currentDeviceId = this.devices[this.devices.length - 1]._id;
       });
+
+      // axios({
+      //   method: "patch",
+      //   url: "/v1/me/player/devices",
+      //   data: {
+      //     device: "Chrome", //TODO: get the browser name
+      //   },
+      //   headers: {
+      //     Authorization: this.token,
+      //   },
+      // }).then((response) => {
+      //   console.log(response)
+      //   this.devices = response.data;
+      //   this.currentDeviceId = this.devices[this.devices.length - 1]._id;
+      // });
 
       //get the currently playing track
       axios({
@@ -520,44 +537,39 @@ export default {
         //get the track url
         var tempTrackUrl = response.data.data.currentTrack;
 
-        //get the track id
-        var songId = tempTrackUrl.slice(
-          tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
-          tempTrackUrl.length
-        );
+        if (tempTrackUrl != null)
+        {
+          //get the track id
+          var songId = tempTrackUrl.slice(
+            tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+            tempTrackUrl.length
+          );
 
-        //request the track data
-        this.getTrack(songId);
+          //request the track data
+          this.getTrack(songId);
 
-        //request the song mp3 file        
-        axios({
-          method: "get",
-          url: "/v1/me/player/tracks/" + songId,
-          data: {
-            device: this.currentDeviceId,
-          },
-          headers: {
-            Authorization: this.token,
-            "Content-Type": "audio/mpeg"
-          },
-          responseType: 'arraybuffer',
-        }).then(response => {
-          var blob = new Blob([response.data], {type : 'audio/mpeg'});
-          var objectUrl = URL.createObjectURL(blob);
-          this.setTrackUrl(objectUrl);
-        })
-          
-
-        // return new Promise((resolve, reject) => {
-        //   response.data.on('end', () => {
-        //     resolve();
-        //   })
-
-        //   response.data.on('error', err => {
-        //     reject(err)
-        //   })
-        // })
+          //request the song mp3 file        
+          axios({
+            method: "get",
+            url: "/v1/me/player/tracks/" + songId,
+            data: {
+              device: this.currentDeviceId,
+            },
+            headers: {
+              Authorization: this.token,
+              "Content-Type": "audio/mpeg"
+            },
+            responseType: 'arraybuffer',
+          }).then(response => {
+            var blob = new Blob([response.data], {type : 'audio/mpeg'});
+            var objectUrl = URL.createObjectURL(blob);
+            this.setTrackUrl(objectUrl);
+          })
+        } else {
+          this.snackbar = true;
+        }
       });
+      
 
       //Stub:
       /*
