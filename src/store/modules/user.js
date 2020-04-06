@@ -12,8 +12,6 @@ const state = {
   userEmail: "",
   //The user's date of Birth
   userDOB: "",
-  //If the user selects to remeber him
-  RememberMe: false
 };
 
 const mutations = {
@@ -29,10 +27,6 @@ const mutations = {
   setuserDOB(state, payload) {
     state.userDOB = payload;
   },
-  //Set remember me to true so that not to delete the user token
-  setRememberMe(state) {
-    state.RememberMe = false;
-  }
 };
 
 const actions = {
@@ -51,11 +45,10 @@ const actions = {
           type: payload.type
         })
         .then(response => {
-          console.log(response.data);
-          console.log(response);
+          //console.log(response.data);
+          //console.log(response);
           //if a response returned
           //Store the current user token in the local storage
-          //Maybe later I might need to parse the returned response to JSON before dealing with it
           localStorage.setItem("userToken", response.data.token);
           //Store the frequently needed user data in the localStorage
           localStorage.setItem("username", response.data.user.name);
@@ -67,7 +60,7 @@ const actions = {
           resolve(true);
         })
         .catch(error => {
-          console.log("sign up error object" + error.response.data);
+          //console.log("sign up error object" + error.response.data);
           reject(error.response.data);
         });
     });
@@ -83,13 +76,10 @@ const actions = {
           password: payload.password
         })
         .then(response => {
-          console.log(response.data);
-          console.log(response);
+          //console.log(response.data);
+          //console.log(response);
           //if the status code shows a successful request
           if (response.status == 200) {
-            //parse the recieved response as a JSON object
-            //let resData = JSON.parse(response.data)
-            //console.log(response.data)
             //store the user data in the store
             commit("setUserData", response.data);
             //since the local storage only stores strings we should convert the returned object first
