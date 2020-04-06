@@ -8,6 +8,7 @@
         :seeAll="category.showSeeAll"
         :griditems="category.list"
         :gridStyle="category.style"
+        :id="category.category_id"
       ></category>
     </v-container>
   </v-content>
