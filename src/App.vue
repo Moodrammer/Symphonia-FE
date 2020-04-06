@@ -7,10 +7,7 @@
 <script>
 export default {
   name: "App",
-  data: () => ({})
-  // created(){
-  //   localStorage.clear()
-  // }
+  data: () => ({}),
 };
 </script>
 

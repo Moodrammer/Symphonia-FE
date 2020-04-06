@@ -11,17 +11,24 @@
       </v-app-bar>
       <router-view></router-view>
     </v-container>
-    <Footer></Footer>
+    <!-- <Footer></Footer> -->
+    <v-footer 
+      app
+      absolute
+      color="black"
+      height="200px"
+    >
+    </v-footer>
   </div>
 </template>
 
 <script>
-import Footer from "../components/Homepage/TheHomepageFooter";
+//import Footer from "../components/Homepage/TheHomepageFooter";
 
 export default {
-  components: {
-    Footer
-  }
+  // components: {
+  //     Footer,
+  // },
 };
 </script>
 

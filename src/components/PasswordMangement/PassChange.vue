@@ -5,13 +5,13 @@
         <v-col>
           <!-- Password Change title Reset Password-->
           <v-row justify="center" class="my-8" v-if="notSubmitted">
-            <h1 class="display-2" style="font-weight: bold;">
+            <h1 class="display-2" style="font-weight: bold; text-align: center;">
               Reset Password
             </h1>
           </v-row>
           <!-- Password Change title Password updated-->
           <v-row justify="center" class="my-8" v-if="!notSubmitted">
-            <h1 class="display-2" style="font-weight: bold;">
+            <h1 class="display-2" style="font-weight: bold; text-align: center;">
               Password updated
             </h1>
           </v-row>

@@ -18,7 +18,7 @@
             <v-alert color="#e22134" style="font-size: 12px" dense>
               <v-row justify="center">
                 <div class="white--text px-3 py-2">
-                  Incorrect email or password.
+                  {{ errorMessage }}
                 </div>
               </v-row>
             </v-alert>
@@ -27,7 +27,13 @@
         <!-- Facebook button  -->
         <v-row>
           <v-col cols="12" class="py-0 pb-1">
-            <v-btn block large rounded color="#3B5998" class="white--text"
+            <v-btn
+              block
+              large
+              rounded
+              color="#3B5998"
+              class="white--text"
+              id="fb-login"
               >CONTINUE WITH FACEBOOK</v-btn
             >
           </v-col>
@@ -35,9 +41,15 @@
         <!-- Google button -->
         <v-row>
           <v-col cols="12" class="pt-1">
-            <v-btn block large rounded color="#dd4b39" class="white--text"
-              >CONTINUE WITH GOOGLE</v-btn
-            >
+            <v-btn
+              block
+              large
+              rounded
+              color="#dd4b39"
+              class="white--text"
+              id="ggl-login"
+              >CONTINUE WITH GOOGLE
+            </v-btn>
           </v-col>
         </v-row>
         <!-- Divider row -->
@@ -62,8 +74,8 @@
         </v-row>
         <!-- Login form -->
         <v-form ref="loginForm">
-          <v-row>
-            <v-col cols="12" class="pa-0 pb-3">
+          <v-row justify="center">
+            <v-col cols="11" class="pa-0 pb-3">
               <v-text-field
                 id="login-username"
                 name="username"
@@ -78,8 +90,8 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="12" class="pa-0 pt-3 pb-2">
+          <v-row justify="center">
+            <v-col cols="11" class="pa-0 pt-3 pb-2">
               <v-text-field
                 id="login-password"
                 name="password"
@@ -94,16 +106,17 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="12" sm="6" class="pa-0" align-self="center">
+          <v-row justify="center">
+            <v-col cols="12" sm="6" class="pa-0 pl-3" align-self="center">
               <v-checkbox
                 label="Remember me"
                 v-model="formData.rememberMe"
                 color="green"
+                id="rm-chkbx"
               ></v-checkbox>
             </v-col>
             <!-- Log in button -->
-            <v-col cols="12" sm="6" class="pa-0" align-self="center">
+            <v-col cols="11" sm="6" class="pa-0" align-self="center">
               <v-btn
                 id="login-button"
                 color="#1db954"
@@ -163,7 +176,7 @@
         <v-row>
           <v-col cols="12">
             <v-row justify="center">
-              <div style="font-size: 10px;" class="grey--text">
+              <div style="font-size: 10px; text-align: center;" class="grey--text">
                 If you click "Log in with Facebook" and are not a Symphonia
                 user, you will be registered
               </div>
@@ -192,6 +205,8 @@ export default {
         password: "",
         rememberMe: false
       },
+      //Back end data error handling
+      errorMessage: "",
       errorState: false,
       //validation rules for input data
       emailRules: [
@@ -220,6 +235,9 @@ export default {
      * @public
      */
     login() {
+      //clear the back error messages & alert
+      this.errorMessage = "";
+      this.errorState = false;
       //if the form validates and had no restrictions
       if (this.$refs.loginForm.validate()) {
         this.$store
@@ -232,11 +250,17 @@ export default {
             this.$router.push("/webhome/home");
           })
           .catch(err => {
-            console.log(err);
-            this.errorState = true;
+            // console.log(err)
+            if (err.status == "fail") {
+              this.errorMessage = err.msg;
+              this.errorState = true;
+            } else if (err.status == "error") {
+              this.errorMessage = "Please try again later";
+              this.errorState = true;
+            }
           });
       }
-    }
+    },
   }
 };
 </script>

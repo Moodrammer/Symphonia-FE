@@ -5,7 +5,7 @@
         <v-col>
           <!-- Password reset title -->
           <v-row justify="center">
-            <h1 class="display-2" style="font-weight: bold">Password Reset</h1>
+            <h1 class="display-2" style="font-weight: bold; text-align: center;">Password Reset</h1>
           </v-row>
           <!-- Simple Paragraph -->
           <v-row justify="center">

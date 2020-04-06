@@ -56,6 +56,13 @@
                 <v-divider></v-divider>
               </v-row>
 
+              <!-- alert to show any errors returning from back server -->
+              <v-alert id="backerr-alert" v-if="errorState" color="red">
+                <v-row justify="center" class="white--text">
+                  <p style="text-align: center;">{{ errorMessage }}</p>
+                </v-row>
+              </v-alert>
+
               <div
                 class="text-center mb-3"
                 style="font: 18px arial,sans serif; font-weight: bold;"
@@ -164,7 +171,7 @@
               </v-row>
               <v-divider />
               <v-row justify="center" class="mt-2">
-                <h2>How do you like to use Symphonia ?</h2>
+                <h2 style="text-align: center;">How do you like to use Symphonia ?</h2>
               </v-row>
               <!-- type radio group -->
               <v-row justify="center">
@@ -244,6 +251,9 @@ export default {
         gender: "",
         type: ""
       },
+      //Handling back server errors data
+      errorMessage: "",
+      errorState: false,
       //Set of rules for validation
       emailRules: [
         v => !!v || "Please enter your email",
@@ -352,6 +362,9 @@ export default {
      * @public
      */
     submitForm() {
+      //clear the back error message & alert
+      this.errorMessage = "";
+      this.errorState = false;
       if (
         this.$refs.userDataForm.validate() &&
         this.userData.email == this.userData.emailToMatch
@@ -366,7 +379,14 @@ export default {
           })
           //if an error object was caught temporarily display it in the console
           .catch(error => {
-            console.log(error);
+            if (error.status == "fail") {
+              this.errorMessage = error.msg;
+              this.errorState = true;
+            } else if (error.status == "error") {
+              this.errorMessage = "Please try again later";
+              this.errorState = true;
+            }
+            // console.log(error);
           });
       }
     }
@@ -383,5 +403,9 @@ export default {
 .v-content {
   max-width: 500px;
   margin: auto;
+}
+
+a {
+  text-decoration: none;
 }
 </style>

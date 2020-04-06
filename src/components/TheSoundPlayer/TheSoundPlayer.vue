@@ -760,18 +760,6 @@ export default {
 
     document.removeEventListener("keyup", this._handleSpaceUp);
     document.removeEventListener("keydown", this._handleSpaceDown);
-
-    // STUB
-    /*
-    var thisTemp = this;
-    axios({
-      method: "delete",
-      url: "/api/v1/me/player/devices",
-      data: {
-        deviceId: thisTemp.currentDeviceId
-      }
-    });
-    */
   }
 };
 </script>

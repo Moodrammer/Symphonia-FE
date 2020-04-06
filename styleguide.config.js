@@ -14,6 +14,12 @@ module.exports = {
       name: "Components",
       description: "Documentation for the components",
       components: ["src/components/**/*.vue"]
+    },
+
+    {
+      name: "Helpers",
+      description: "Documentation for global helper functions",
+      components: ["src/mixins/**/*.js"]
     }
   ],
   theme: {

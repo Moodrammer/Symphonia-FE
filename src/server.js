@@ -310,44 +310,72 @@ export function makeServer({ environment = "development" } = {}) {
             );
           }
         }
-        return new Response(400, {}, {});
+        return new Response(
+          400,
+          {},
+          {
+            status: "fail",
+            msg: "Incorrect email or password"
+          }
+        );
       }),
         //Intercepts post requests from Register page
         this.post("/v1/users/signup", (schema, request) => {
           //create a new user in the server schema
           //parse the sent request body to JSON
           let attrs = JSON.parse(request.requestBody);
-          //create a new user with the given data
-          schema.create("user", {
-            name: attrs.name,
-            email: attrs.email,
-            password: attrs.password,
-            DateOfBirth: attrs.dateOfBirth,
-            gender: attrs.gender,
-            type: attrs.type
-          });
-
-          //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
-          sessionStorage.setItem(
-            "SignedUpUser",
-            JSON.stringify(schema.users.find(3))
-          );
-          //return a request for now that the operation of creating the user was a success
-          return new Response(
-            201,
-            {},
-            {
-              token:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
-              user: {
-                _id: schema.users.find(schema.users.all().length).id,
-                email: attrs.email,
-                name: attrs.name,
-                type: attrs.type,
-                __v: 0
-              }
+          //make sure the sent email doesn't exist before
+          var exists = false;
+          for (let i = 1; i <= schema.users.all().length; i++) {
+            if (attrs.email == schema.users.find(i).email) {
+              exists = true;
+              break;
             }
-          );
+          }
+          //if the email already exists send an error
+          if (!exists) {
+            //create a new user with the given data
+            schema.create("user", {
+              name: attrs.name,
+              email: attrs.email,
+              password: attrs.password,
+              DateOfBirth: attrs.dateOfBirth,
+              gender: attrs.gender,
+              type: attrs.type
+            });
+
+            //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
+            sessionStorage.setItem(
+              "SignedUpUser",
+              JSON.stringify(schema.users.find(3))
+            );
+            //return a request for now that the operation of creating the user was a success
+            return new Response(
+              201,
+              {},
+              {
+                token:
+                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
+                user: {
+                  _id: schema.users.find(schema.users.all().length).id,
+                  email: attrs.email,
+                  name: attrs.name,
+                  type: attrs.type,
+                  __v: 0
+                }
+              }
+            );
+          } else {
+            //return an error object if the email address already exists
+            return new Response(
+              400,
+              {},
+              {
+                status: "fail",
+                msg: "email address already exists"
+              }
+            );
+          }
         }),
         //Handling the Forget password request(asking for changing password email)
         this.post("/v1/users/forgotpassword", (schema, request) => {
