@@ -37,7 +37,19 @@ const getters = {
   },
 
   allArtistRelatedArtists: (state) => {
-    return state.artistRelatedArtists;
+    var newValue = state.artistRelatedArtists;
+    var artists = [];
+    newValue.forEach(element => {
+      var k = {
+        name: element.name,
+        image: element.images[0].url,
+        description: element.type,
+        id: element.id,
+        url: "url to be added"
+      }
+      artists.push(k);
+    });
+    return artists;
   },
 
   allFollowedArtists: (state) => {
@@ -136,7 +148,7 @@ const actions = {
 
 
   getArtistRelatedArtists({ commit }, payload) {
-    console.log("token",payload.token)
+    console.log("token art",payload.token)
     console.log(payload.id)
     axios
       .get(`/v1/artists/${payload.id}/related-artists`, {

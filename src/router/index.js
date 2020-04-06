@@ -14,7 +14,9 @@ import HomepagePremium from "../views/PremiumOffer.vue";
 import PlaylistView from "../components/general/PlaylistView.vue";
 import PassReset from "../components/PasswordMangement/PassReset.vue";
 import PassChange from "../components/PasswordMangement/PassChange.vue";
-import ArtistUI from '../components/ArtistUI';
+import ArtistUI from "../components/artistUI/ArtistUI";
+import Overview from "../components/artistUI/Overview";
+import RelatedArtists from "../components/artistUI/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
 
 Vue.use(VueRouter);
@@ -26,9 +28,22 @@ const routes = [
     component: Homepage
   },
   {
-    path: "/ArtistUI/:id",
     name: "ArtistUI",
-    component: ArtistUI
+    path: "/artist/:id",
+    component: ArtistUI,
+    redirect: "artist/:id/overview",
+    children:[
+      {
+        name: "Overview",
+        path: "overview",
+        component: Overview,
+      },
+      {
+        name: "RelatedArtists",
+        path: "related-artists",
+        component: RelatedArtists,
+      }
+    ]
 
   },
   {

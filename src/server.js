@@ -110,7 +110,6 @@ export function makeServer({ environment = "development" } = {}) {
         server.create("artistAlbum", element)
       );
       
-      console.log(artistTopTracksJSON)
       artistTopTracksJSON.tracks.forEach(element =>
         server.create("artistTopTrack", element)
       );
@@ -257,6 +256,10 @@ export function makeServer({ environment = "development" } = {}) {
 
       this.get("/v1/artists/:id/top-tracks", (schema) => {
         return schema.artistTopTracks.all().models
+    });
+
+    this.get("/v1/artists/:id/related-artists", (schema) => {
+      return schema.artists.all().models
     });
 
 
