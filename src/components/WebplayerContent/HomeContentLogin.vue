@@ -5,6 +5,7 @@
         v-for="category in categories"
         :key="category.categoryName"
         :name="category.categoryName"
+        :id="category.category_id"
         :seeAll="category.showSeeAll"
         :griditems="category.list"
         :gridStyle="category.style"

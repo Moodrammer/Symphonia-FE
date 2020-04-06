@@ -79,87 +79,30 @@ const state = {
     },
     style: "artist"
   },
-  popCategory: {
-    categoryName: "Pop",
-    showSeeAll: true,
-    list: {
-      menuList: [
-        { title: "Start Radio" },
-        { title: "Save to Your Library" },
-        { title: "Copy Playlist Link" }
-      ],
-      showMenu: false,
-      hoveredCardIndex: null,
-      items: []
-    },
-    style: null
-  },
-  folkCategory: {
-    categoryName: "Folk",
-    showSeeAll: true,
-    list: {
-      menuList: [
-        { title: "Start Radio" },
-        { title: "Save to Your Library" },
-        { title: "Copy Playlist Link" }
-      ],
-      showMenu: false,
-      hoveredCardIndex: null,
-      items: []
-    },
-    style: null
-  },
-  rockCategory: {
-    categoryName: "Rock",
-    showSeeAll: true,
-    list: {
-      menuList: [
-        { title: "Start Radio" },
-        { title: "Save to Your Library" },
-        { title: "Copy Playlist Link" }
-      ],
-      showMenu: false,
-      hoveredCardIndex: null,
-      items: []
-    },
-    style: null
-  },
-  jazzCategory: {
-    categoryName: "Jazz",
-    showSeeAll: true,
-    list: {
-      menuList: [
-        { title: "Start Radio" },
-        { title: "Save to Your Library" },
-        { title: "Copy Playlist Link" }
-      ],
-      showMenu: false,
-      hoveredCardIndex: null,
-      items: []
-    },
-    style: null
-  },
   categories: [],
-  singleCategoryPlaylists: []
+  singleCategory: {
+    categoryName: "",
+    category_id: "",
+    //Used in home
+    showSeeAll: true,
+    //To provide the card grid with the menu which appear @right click
+    list: {
+      menuList: [
+        { title: "Start Radio" },
+        { title: "Save to Your Library" },
+        { title: "Copy Playlist Link" }
+      ],
+      showMenu: false,
+      hoveredCardIndex: null,
+      //items:the playlists to be shown
+      items: []
+    }
+  },
+  categoryNameHolder: "",
+  categoryIDHolder: ""
 };
 
 const mutations = {
-  load_popPlaylists(state, payload) {
-    state.popCategory.list.items = payload;
-    state.categories.push(state.popCategory);
-  },
-  load_folkPlaylists(state, payload) {
-    state.folkCategory.list.items = payload;
-    state.categories.push(state.folkCategory);
-  },
-  load_rockPlaylists(state, payload) {
-    state.rockCategory.list.items = payload;
-    state.categories.push(state.rockCategory);
-  },
-  load_jazzPlaylists(state, payload) {
-    state.jazzCategory.list.items = payload;
-    state.categories.push(state.jazzCategory);
-  },
   emptyArray(state) {
     state.categories = [];
   },
@@ -204,8 +147,49 @@ const mutations = {
   load_tracks(state, list) {
     state.tracks = list;
   },
-  load_genrePlaylists(state, payload) {
-    state.singleCategoryPlaylists = payload;
+  setName(state, payload) {
+    state.categoryNameHolder = payload.name;
+    state.categoryIDHolder = payload.id;
+    // console.log("from set name");
+    // console.log(state.singleCategory);
+  },
+  async setItems(state, payload) {
+    state.singleCategory.list.items = payload;
+    console.log("from set items");
+    console.log(state.singleCategory);
+    console.log(state.categories);
+    await state.categories.push(state.singleCategory);
+    console.log(state.categories);
+  },
+  emptyCategory(state) {
+    state.singleCategory.categoryName = "";
+    state.singleCategory.category_id = "";
+    state.singleCategory.list.items = [];
+  },
+  createCategory(state, payload) {
+    let singleCategory = {
+      categoryName: "",
+      category_id: "",
+      //Used in home
+      showSeeAll: true,
+      //To provide the card grid with the menu which appear @right click
+      list: {
+        menuList: [
+          { title: "Start Radio" },
+          { title: "Save to Your Library" },
+          { title: "Copy Playlist Link" }
+        ],
+        showMenu: false,
+        hoveredCardIndex: null,
+        //items:the playlists to be shown
+        items: []
+      }
+    };
+    singleCategory.categoryName = state.categoryNameHolder;
+    singleCategory.category_id = state.categoryIDHolder;
+    singleCategory.list.items = payload;
+    state.singleCategory = singleCategory;
+    state.categories.push(singleCategory);
   }
 };
 
@@ -235,42 +219,45 @@ const actions = {
         console.log(error);
       });
   },
-  getGenrePlaylists({ commit }, category_id) {
-    commit("emptyArray");
-    axios
+  async getGenrePlaylists({ commit, dispatch }, category_id) {
+    await dispatch("getCategory", category_id);
+    await axios
       .get("v1/browse/categories/" + category_id + "/playlists")
-      .then(response => {
+      .then(async response => {
         let genreList = response.data;
         let newList = [];
-        genreList.forEach(element => {
+        console.log(newList);
+        for (let index = 0; index < genreList.length; index++) {
+          //  genreList.forEach(element => {
           var k = {
-            name: element.name,
-            image: element.images[0].url,
-            description: element.description,
-            id: element.id,
-            url: element.href
+            name: genreList[index].name,
+            image: genreList[index].images[0].url,
+            description: genreList[index].description,
+            id: genreList[index].id,
+            url: genreList[index].href
           };
+          console.log(newList);
           newList.push(k);
-        });
-        if (category_id == "pop") commit("load_popPlaylists", newList);
-        else if (category_id == "folk") commit("load_folkPlaylists", newList);
-        else if (category_id == "rock") commit("load_rockPlaylists", newList);
-        else commit("load_jazzPlaylists", newList);
-
-        commit("load_genrePlaylists", newList);
+          console.log("from playlists");
+          console.log(newList);
+        }
+        //     });
+        await commit("createCategory", newList);
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
   },
-  loadGenres({ dispatch }) {
+  async loadGenres({ commit, dispatch }) {
+    commit("emptyArray");
     let genres_ids = ["pop", "folk", "rock", "jazz"];
-    genres_ids.forEach(element => {
-      dispatch("getGenrePlaylists", element);
-    });
+    for (let index = 0; index < genres_ids.length; index++) {
+      await dispatch("getGenrePlaylists", genres_ids[index]);
+    }
   },
   async loadUserSections({ dispatch, commit }, payload) {
+    commit("emptyArray");
     await dispatch("playlist/getPlaylists", payload, { root: true });
     commit("load_personalSections");
   },
@@ -284,6 +271,20 @@ const actions = {
       .then(response => {
         let list = response.data;
         commit("load_tracks", list);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  async getCategory({ commit }, category_id) {
+    await axios
+      .get("v1/browse/categories/" + category_id)
+      .then(async response => {
+        let category = response.data;
+        console.log("from get category");
+        console.log(category_id);
+        commit("setName", category);
       })
       .catch(error => {
         console.log("axios caught an error");

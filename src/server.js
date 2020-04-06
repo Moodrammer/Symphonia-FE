@@ -3,6 +3,7 @@ import playlistJson from "./api/mock/data/playlist.json";
 import trackJSON from "./api/mock/data/track.json";
 import artistJSON from "./api/mock/data/artist.json";
 import albumsJSON from "./api/mock/data/album.json";
+import categoryJSON from "./api/mock/data/category.json";
 
 //The makeserver function to be used to enable Mirage to intercept your requests
 export function makeServer({ environment = "development" } = {}) {
@@ -16,7 +17,8 @@ export function makeServer({ environment = "development" } = {}) {
       playlist: Model,
       album: Model,
       artist: Model,
-      soundplayer: Model
+      soundplayer: Model,
+      category: Model
     },
 
     seeds(server) {
@@ -102,6 +104,10 @@ export function makeServer({ environment = "development" } = {}) {
       });
 
       albumsJSON.items.forEach(element => server.create("album", element));
+
+      categoryJSON.items.forEach(element => {
+        server.create("category", element);
+      });
     },
 
     //Define serializers to format the responses
@@ -227,6 +233,21 @@ export function makeServer({ environment = "development" } = {}) {
         let trackId = JSON.parse(request.requestBody).data[0];
         schema.tracks.where({ id: trackId }).update({ liked: true });
         return new Response(200, {}, {});
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get a Category
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("v1/browse/categories/:category_id", (schema, request) => {
+        let categoryID = request.params.category_id;
+        return new Response(
+          200,
+          {},
+          {
+            name: schema.categories.where({ id: categoryID }).models[0].name,
+            id: schema.categories.where({ id: categoryID }).models[0].id,
+            href: schema.categories.where({ id: categoryID }).models[0].href
+          }
+        );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';

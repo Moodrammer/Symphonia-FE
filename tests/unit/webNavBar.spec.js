@@ -5,11 +5,11 @@ import vuetify from "vuetify";
 import NavBar from "@/components/WebNavBar.vue";
 
 describe("NavBar", () => {
-  let wrapper;
+  //let wrapper;
 
   beforeEach(() => {
     Vue.use(vuetify);
-    wrapper = shallowMount(NavBar);
+    //wrapper = shallowMount(NavBar);
   });
 
   it("renders a vue instance", () => {

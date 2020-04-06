@@ -93,6 +93,7 @@ export default {
   data: function() {
     return {
       menuItems: [
+        this.convert,
         "Start Radio",
         "Remove from your Liked Songs",
         "Add to Queue",
