@@ -126,8 +126,8 @@
                       v-for="(song, index) in cardItems.likedSongs"
                       :key="index"
                     >
-                      {{ song.artist }}
-                      <span class="grey--text">{{ song.title }}.</span>
+                      <span v-for="(artist,index) in song.artists" :key="index"> {{ artist.name }} </span>
+                      <span class="grey--text">{{ song.name }}.</span>
                     </span>
                   </v-card-text>
                 </div>

@@ -284,7 +284,8 @@ const actions = {
 const getters = {
   categoriesGetter: function(state) {
     return state.categories;
-  }
+  },
+  tracksGetter: (state) => state.tracks
 };
 export default {
   namespaced: true,

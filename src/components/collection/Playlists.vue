@@ -11,6 +11,8 @@
 
 <script>
 import CardGrid from "../general/CardGrid";
+import { mapGetters, mapActions } from "vuex";
+import getuserToken from "../../mixins/userService";
 
 export default {
   name: "Playlists",
@@ -37,95 +39,34 @@ export default {
 
         // Liked Songs Cards data section
         // likedSongs: hardcoded data "placeholders"
-        likedSongs: [
-          { title: "Lose your self", artist: "Eminem" },
-          { title: "Lose your self", artist: "Eminem" },
-          { title: "Lose your self", artist: "Eminem" },
-          { title: "Lose your self", artist: "Eminem" },
-          { title: "Lose your self", artist: "Eminem" },
-          { title: "Lose your self", artist: "Eminem" },
-          { title: "Lose your self", artist: "Eminem" },
-          { title: "Lose your self", artist: "Eminem" },
-          { title: "Lose your self", artist: "Eminem" },
-          { title: "Lose your self", artist: "Eminem" }
-        ],
+        likedSongs: [],
 
         // Playlists Cards data section
         // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered playlist visable - playlists: hardcoded data "placeholders"
         hoveredCardIndex: null,
-        items: [
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist",
-            url: "eejnwe1",
-            id: "8"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist",
-            url: "gmlkg1",
-            id: "7"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist",
-            url: "gregrelgpo[few1",
-            id: "6"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist",
-            url: "'hrl[t1",
-            id: "5"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist",
-            url: "1mkgreognre",
-            id: "4"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist",
-            url: "1jorewiorjrwer",
-            id: "3"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist",
-            url: "12mfnernkjfre1",
-            id: "2"
-          },
-          {
-            name: "Amr Diab Collection",
-            image:
-              "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
-            description: "1 new playlist",
-            url: "1glreoreo",
-            id: "1"
-          }
-        ]
+        items: []
       },
       contextMenuChoice: null,
       contextMenuCardIndex: null
     };
   },
-  created() {},
+  mixins: [getuserToken],
+  created() {
+    try{
+      this.getPlaylists(this.getuserToken())
+      this.getTracks(this.getuserToken())
+    }catch(error){
+      console.log(error)
+    }
+
+  },
+  computed:{
+    ...mapGetters("playlist", ["likedPlaylists"]),
+    ...mapGetters("category", ["tracksGetter"])
+  }, 
   methods: {
+    ...mapActions("playlist", ["getPlaylists"]),
+    ...mapActions( "category", ["getTracks"]),
     /**
      * called when the user clicks on an aption from the context menu
      * @param {string} menuItem the option chosen by user
@@ -145,6 +86,12 @@ export default {
       console.log(this.contextMenuCardIndex);
 
       this.contextMenuChoice = null;
+    },
+    likedPlaylists: function(newValue){
+      this.cardItems.items = newValue;
+    },
+    tracksGetter: function(newValue){
+      this.cardItems.likedSongs = newValue;
     }
   }
 };
