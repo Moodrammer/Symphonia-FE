@@ -378,11 +378,11 @@ export function makeServer({ environment = "development" } = {}) {
                     let attrs = JSON.parse(request.requestBody);
                     //for the sake of mocking only , treat the reset token as the user id
                     let resettoken = parseInt(request.params.resettoken);
-                    console.log(request.params);
+                    //console.log(request.params);
                     //change the password of the first user for testing only
                     schema.users.find(resettoken).update("password", attrs.password);
-                    console.log(schema.users.find(resettoken));
-                    console.log(attrs.password);
+                    //console.log(schema.users.find(resettoken));
+                    //console.log(attrs.password);
                     return new Response(
                         200, {}, {
                             token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",

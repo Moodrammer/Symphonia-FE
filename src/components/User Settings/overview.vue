@@ -156,7 +156,7 @@ export default {
         this.user = this.$store.state.user;
         this.user.userDOB = this.user.userDOB.slice(0,10);
       })
-      .catch(err => console.log(err));
+      .catch();
   }
 };
 </script>
