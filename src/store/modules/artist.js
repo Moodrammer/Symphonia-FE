@@ -5,20 +5,25 @@ const state = {
   followedArtists: [],
   artistAlbums: [],
   artistTopTracks: [],
-  artistRelatedArtists: []
+  artistRelatedArtists: [],
+  currentArtist: null
 };
 
 const mutations = {
-  load_followed_artists: (state, list) => state.followedArtists = list,
+  load_followedArtists: (state, list) => state.followedArtists = list,
   unfollow_artists: (state, list) => state.followedArtists = state.followedArtists.filter(artist => !list.includes(artist.id)),
   load_artistAlbums:(state, list) => state.artistAlbums = list,
   load_artistTopTracks: (state, list) => state.artistTopTracks = list,
   load_artistRelatedArtists: (state, list) => state.artistRelatedArtists = list,
+  load_currentArtist: (state, list) => state.currentArtist = list,
 };
 
 const getters = {
 
-
+  currentArtistgetter: (state) => {
+    console.log(state.currentArtist)
+  },
+  
   allArtistTopTracks: (state) => {
     var newValue = state.artistTopTracks;
     var artists = [];
@@ -86,6 +91,20 @@ const getters = {
 
 
 const actions = {
+
+  getCurrentArtist({commit}, payload){
+    axios
+    .get(`v1/artists/${payload.id}`, {
+    headers: {
+      Authorization: `Bearer ${payload.token}`
+    }
+  })
+  .then(response => { console.log("Saad art",response); commit("load_currentArtist", response.data);} )
+  .catch(error => {
+    console.log("axios caught an error in getCurrentArtist");
+    console.log(error);
+  });
+  },
 /**
  * called to get followed artists by current user
  * @param {object} payload contains the token 
@@ -100,7 +119,7 @@ const actions = {
         },
         params: { type: 'artist' }
       })
-      .then(response => { console.log("Saad art",response); commit("load_followed_artists", response.data);} )
+      .then(response => { console.log("Saad art",response); commit("load_followedArtists", response.data);} )
       .catch(error => {
         console.log("axios caught an error in getFollowedArtists");
         console.log(error);

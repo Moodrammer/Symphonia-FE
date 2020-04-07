@@ -12,7 +12,7 @@
       <v-container dark @contextmenu.prevent="on.click">
         <!-- adding the page content: -->
         <v-list v-if ="cardStyle === 'artistUIList'" dark color="#1a1a1a" max-width="1800" class="mx-auto">
-          <v-list-item-group v-model="selectedItem" color="#b3b3b3">
+          <v-list-item-group v-model="cardItems.selectedItem" color="#b3b3b3">
             <v-list-item
               v-for="(item, i) in cardItems.items.slice(0,5)"
               @mouseenter="cardItems.hoveredCardIndex = i"
@@ -20,7 +20,7 @@
               :key="i"
             >
               <v-list-item-icon>
-                <v-icon v-if="i == selectedItem" color="white"
+                <v-icon v-if="i == cardItems.selectedItem" color="white"
                   >mdi-pause</v-icon
                 >
                 <v-icon v-else-if="i == cardItems.hoveredCardIndex" color="white"
@@ -169,6 +169,7 @@
                 @mouseover="cardHover(index, item.id)"
                 @mouseleave="cardItems.hoveredCardIndex = null"
                 dark
+                @click="cardClicked(item.id, name, false)"
               >
                 <!-- card image -->
 
@@ -212,6 +213,7 @@
                     color="success"
                     small
                     id="play"
+                    @click="cardClicked(item.id, name, true)"
                   >
                     <v-icon color="white">mdi-play</v-icon>
                   </v-btn>
@@ -257,6 +259,7 @@ export default {
   ],
   data() {
     return {
+      playBTNFlag: false,
       lastHoveredCard: null,
       disableMenu: false,
       AUIitems: null,
@@ -269,6 +272,19 @@ export default {
     this.showMoreBtn = true;
   },
   methods: {
+    cardClicked(id, name, play){
+      if(this.playBTNFlag){
+        this.playBTNFlag = false;
+        return;
+      }
+      if(play){
+        this.playBTNFlag = true;
+      }
+      else{
+        
+        this.$router.push(`../${name}/${id}`);
+      }
+    },
     /**
      * used in artist ui cards if there is more than 12 cards
      */

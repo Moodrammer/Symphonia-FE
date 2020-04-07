@@ -103,6 +103,7 @@ export default {
         // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
         hoveredCardIndex: null,
         items: [],
+        selectedItem: null
       },
 
       singlesCardItems: {
