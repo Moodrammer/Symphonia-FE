@@ -544,7 +544,6 @@ export function makeServer({ environment = "development" } = {}) {
     }
   });
 
-  //server.shutdown();
 
   return server;
 }
