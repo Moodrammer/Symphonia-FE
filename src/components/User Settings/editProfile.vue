@@ -9,7 +9,7 @@
         <div class="alert-success" v-show="Done">Profile updated</div>
         <div class="alert-danger" v-show="error">Sorry,Profile isn't updated</div>
         <!-- here we take the changes for both users facebook & normal ones to change the profile -->
-        <form action="#">
+        <form @submit.prevent="submit">
           <!-- The name content -->
           <div class="form-group">
             <label for="email">Email</label>

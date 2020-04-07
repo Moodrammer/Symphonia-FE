@@ -204,6 +204,13 @@ const actions = {
                 .then(response => {
                     // check that the changes are done to make success alert
                     if (response.status == 201 || response.status == 200) {
+                        //If the old token is present in the localStorage
+                        if (localStorage.getItem("userToken") != null)
+                            localStorage.setItem("userToken", response.data.token)
+                            //If the old token is present in the sessionStorage
+                        else {
+                            sessionStorage.setItem("userToken", response.data.token)
+                        }
                         resolve(true);
                     }
                 })
@@ -243,7 +250,7 @@ const actions = {
                     if (response.status == 201 || response.status == 200) {
                         //create user object to send it to the setter
                         let user = {
-                            token: state.userToken,
+                            token: token,
                             user: {
                                 _id: state.userId,
                                 name: state.username,

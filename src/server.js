@@ -451,14 +451,21 @@ export function makeServer({ environment = "development" } = {}) {
                 });
             // patch the user's password =>(change the current user's password)
             this.patch("/v1/users/updatepassword", (schema, request) => {
-                //console.log(JSON.parse(request.requestBody));
+                let id;
+                if (localStorage.getItem("userToken") != null) {
+                    id = localStorage.getItem("userID");
+                }
+                //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+                else if (sessionStorage.getItem("userToken") != null) {
+                    id = sessionStorage.getItem("userID");
+                }
                 let attr = JSON.parse(request.requestBody);
-                let currentUser = schema.users.find(attr.id);
+                let currentUser = schema.users.find(id);
                 // check if the current user's entered password is equal that in the seed
                 if (currentUser.password == attr.passwordCurrent) {
                     // if it's right change it with the new one
                     currentUser.update({ password: attr.password });
-                    return new Response(201, {}, {});
+                    return new Response(200, { token: id }, {});
                 } else {
                     // if not return error to the view to display wrong password
                     return new Response(401, {}, {});
