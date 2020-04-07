@@ -23,7 +23,7 @@ const getters = {
   currentArtistgetter: (state) => {
     console.log(state.currentArtist)
   },
-  
+
   allArtistTopTracks: (state) => {
     var newValue = state.artistTopTracks;
     var artists = [];
@@ -33,7 +33,7 @@ const getters = {
         image: element.album.images[0].url,
         duration: Math.floor(element.duration_ms/60000) + ":" + (Math.floor((element.duration_ms/1000)%60) > 9 ? Math.floor((element.duration_ms/1000)%60): "0"+Math.floor((element.duration_ms/1000)%60)),
         id: element.id,
-        url: "url to be added"
+        type: element.type
       }
       artists.push(k);
     });
@@ -49,7 +49,7 @@ const getters = {
         image: element.images[0].url,
         description: element.type,
         id: element.id,
-        url: "url to be added"
+        type: element.type
       }
       artists.push(k);
     });
@@ -65,7 +65,7 @@ const getters = {
         image: element.images[0].url,
         description: element.type,
         id: element.id,
-        url: "url to be added"
+        type: element.type
       }
       artists.push(k);
     });
@@ -80,7 +80,7 @@ const getters = {
         name: element.name,
         image: element.images[0].url,
         id: element.id,
-        url: "url to be added"
+        type: element.type
       }
       albums.push(k);
     });

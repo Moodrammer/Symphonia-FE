@@ -169,12 +169,12 @@
                 @mouseover="cardHover(index, item.id)"
                 @mouseleave="cardItems.hoveredCardIndex = null"
                 dark
-                @click="cardClicked(item.id, name, false)"
+                @click="cardClicked(item.id, item.type, false)"
               >
                 <!-- card image -->
 
                 <v-img
-                  v-if="cardStyle === 'artist'"
+                  v-if="item.type === 'artist'"
                   class="mx-auto elevation-6"
                   style="border-radius: 50%"
                   height="140px"

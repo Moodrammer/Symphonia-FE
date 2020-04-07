@@ -1,7 +1,7 @@
 <template>
   <v-content class="pa-0 mr-5">
     <h1>Artists</h1>
-    <CardGrid :cardItems="cardItems" v-on:order="menuOrder" cardStyle="artist" name="artist" />
+    <CardGrid :cardItems="cardItems" v-on:order="menuOrder" />
   </v-content>
 </template>
 
