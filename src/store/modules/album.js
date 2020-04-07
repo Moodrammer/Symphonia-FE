@@ -29,15 +29,17 @@ const getters = {
 }
 }
 
-
-const token = localStorage.getItem("userToken");
-
 const actions = {
-  getAlbums({ commit }) {
+    /**
+   * called to get user's saved albums
+   * @param {object} payload contains the token
+   */
+
+  getAlbums({ commit }, payload) {
     axios
       .get("/v1/me/albums", {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${payload.token}`
         }
       })
       .then(response => commit("load_albums", response.data))
@@ -47,17 +49,21 @@ const actions = {
       });
   },
 
+  /**
+   * called to remove albums from the user's saved albums
+   * @param {object} payload contains the token and the albums ids
+   */
 
 
-  deleteAlbums({commit},albums){
+  deleteAlbums({commit},payload){
     
     axios.delete('/v1/me/albums', {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${payload.token}`,
       },
-      data: albums
+      data: payload.albums
     }).then(
-      commit("delete_albums", albums)
+      commit("delete_albums", payload.albums)
     )
     .catch(error => {
       console.log("axios caught an error in deleteAlbums");

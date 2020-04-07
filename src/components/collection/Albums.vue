@@ -8,6 +8,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CardGrid from "../general/CardGrid";
+import getuserToken from "../../mixins/userService";
 
 export default {
   name: "Albums",
@@ -35,15 +36,28 @@ export default {
       }
     };
   },
+  mixins: [getuserToken],
   methods:{
     ...mapActions(["getAlbums", "deleteAlbums"]),
+        /**
+     * called when the user clicks on an aption from the context menu
+     * @param {string} menuItem the option chosen by user
+     * @param {string} cardID the id of the card which user clicked on it
+     * @param {string} name the name of the grid that containg the card
+     */
     menuOrder(menuItem, cardIndex){
       this.contextMenuChoice = menuItem;
       this.contextMenuCardIndex = cardIndex;
     },
   },
   created(){
-    this.getAlbums();
+    try {
+        this.getAlbums({token: this.getuserToken()});
+    }
+    catch (error) {
+        console.log(error);
+    }
+
   },
 
   computed: mapGetters(['allAlbums']),
@@ -55,8 +69,11 @@ export default {
       console.log(this.contextMenuChoice);
       console.log(this.contextMenuCardIndex);
       if(this.contextMenuChoice === "Remove from your Library")
-      {
-          this.deleteAlbums([this.contextMenuCardIndex]);
+      {   try{
+          this.deleteAlbums({token: this.getuserToken() ,albums: [this.contextMenuCardIndex]});
+      }catch(error){
+        console.log(error);
+      }
       }
       this.contextMenuChoice = null
       },

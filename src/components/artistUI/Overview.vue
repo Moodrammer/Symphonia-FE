@@ -46,24 +46,30 @@ export default {
   computed: mapGetters(["allArtistAlbums", "allArtistTopTracks", "allArtistSingles", "allArtistAppearsOn"]),
   methods:{
     ...mapActions(["getArtistAlbums", "getArtistTopTracks", "getArtistSingles", "getArtistAppearsOn"]),
-    menuOrder(menuItem, cardIndex, name){
-      console.log(menuItem, cardIndex, name)
+    /**
+     * called when the user clicks on an aption from the context menu
+     * @param {string} menuItem the option chosen by user
+     * @param {string} cardID the id of the card which user clicked on it
+     * @param {string} name the name of the grid that containg the card
+     */
+    menuOrder(menuItem, cardID, name){
+      console.log(menuItem, cardID, name)
       if(name === "albums")
       {
         this.albumsContextMenuChoice = menuItem;
-        this.albumsContextMenuCardIndex = cardIndex;
+        this.albumsContextMenuCardID = cardID;
       }else if(name === "singles")
       {
         this.singlesContextMenuChoice = menuItem;
-        this.singlesContextMenuCardIndex = cardIndex;
+        this.singlesContextMenuCardIndex = cardID;
       }else if(name === "combilations")
       {
         this.combilationsContextMenuChoice = menuItem;
-        this.combilationsContextMenuCardIndex = cardIndex;
+        this.combilationsContextMenuCardIndex = cardID;
       }else if(name === "appearsOn")
       {
         this.appearsOnContextMenuChoice = menuItem;
-        this.appearsOnContextMenuCardIndex = cardIndex;
+        this.appearsOnContextMenuCardIndex = cardID;
       }
 
     }

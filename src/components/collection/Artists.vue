@@ -38,6 +38,13 @@ export default {
   },
   methods:{
     ...mapActions(["getFollowedArtists", "unfollowArtist"]),
+    /**
+     * called when the user clicks on an aption from the context menu
+     * @param {string} menuItem the option chosen by user
+     * @param {string} cardID the id of the card which user clicked on it
+     * @param {string} name the name of the grid that containg the card
+     */
+
     menuOrder(menuItem, cardIndex){
       this.contextMenuChoice = menuItem;
       this.contextMenuCardIndex = cardIndex;
@@ -45,9 +52,9 @@ export default {
 
   },
   mixins: [getuserToken],
-  async created(){
+  created(){
     try {
-        this.getFollowedArtists({token:await this.getuserToken()});
+        this.getFollowedArtists({token: this.getuserToken()});
     }
     catch (error) {
         console.log("error" + error);

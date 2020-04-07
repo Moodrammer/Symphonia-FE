@@ -18,9 +18,9 @@ const mutations = {
 
 const getters = {
 
+
   allArtistTopTracks: (state) => {
     var newValue = state.artistTopTracks;
-    console.log("ya raaab",newValue)
     var artists = [];
     newValue.forEach(element => {
       var k = {
@@ -30,7 +30,6 @@ const getters = {
         id: element.id,
         url: "url to be added"
       }
-      console.log("k",k)
       artists.push(k);
     });
     return artists;
@@ -87,6 +86,10 @@ const getters = {
 
 
 const actions = {
+/**
+ * called to get followed artists by current user
+ * @param {object} payload contains the token 
+ */
   getFollowedArtists({ commit }, payload) {
     console.log("saad token",payload.token)
     console.log(payload.token)
@@ -104,6 +107,10 @@ const actions = {
       });
   },
 
+/**
+ * called to get artist's albums 
+ * @param {object} payload contains the token and the artist id 
+ */
 
   getArtistAlbums({ commit }, payload) {
     console.log("token",payload.token)
@@ -127,6 +134,11 @@ const actions = {
       });
   },
 
+  /**
+   * called to get artist's top tracks 
+   * @param {object} payload contains the token and the artist id
+   */
+
   getArtistTopTracks({ commit }, payload) {
     console.log("token",payload.token)
     console.log(payload.id)
@@ -146,6 +158,10 @@ const actions = {
       });
   },
 
+    /**
+   * called to get artists related to a certain a artist 
+   * @param {object} payload contains the token and the artist id
+   */
 
   getArtistRelatedArtists({ commit }, payload) {
     console.log("token art",payload.token)
@@ -164,6 +180,10 @@ const actions = {
   },
 
 
+  /**
+   * called to unfollow artist
+   * @param {object} payload contains the token and the artist id
+   */
 
   unfollowArtist({ commit }, payload) {
 

@@ -238,7 +238,23 @@
 <script>
 export default {
   name: "CardGrid",
-  props: ["cardItems", "cardStyle","name"],
+  props:
+  [
+    /**
+     * Object consists of 
+     * items: array of objects contains the components of cards the grid
+     * menuList: array of strings contains the context menu options
+     * showMenu: boolean to know if context menu is shown
+     * hoveredCardIndex: int to know the index of the hovered card
+     */
+    "cardItems",
+    /**
+     * style of the card
+     * @values artist, artistUIList, artistUICard, none (default)
+     */
+     "cardStyle",
+     "name"
+  ],
   data() {
     return {
       lastHoveredCard: null,
@@ -253,18 +269,26 @@ export default {
     this.showMoreBtn = true;
   },
   methods: {
+    /**
+     * used in artist ui cards if there is more than 12 cards
+     */
     showMore() {
       this.AUIitems = this.$props.cardItems.items;
       this.showMoreBtn = !this.showMoreBtn;
       if (this.showMoreBtn) this.AUIitems = this.AUIitems.slice(0, 12);
     },
-    // cardHover: called when card is hover to save its index, and close other context menus
+    /**
+     * called when card is hover to save its index, and close other context menus
+     */ 
     cardHover(index, id) {
       this.$props.cardItems.hoveredCardIndex = index;
       this.lastHoveredCard = id;
       this.disableMenu = false;
       this.$props.cardItems.showMenu = false;
     },
+    /**
+     * called when user choose option from the context menu, it copy the url to user's clipboard if he chose the last option
+     */
     contextMenuClick(item, copyToClipboard) {
       this.$emit("order", item.title, this.lastHoveredCard,this.$props.name);
       console.log(copyToClipboard);
