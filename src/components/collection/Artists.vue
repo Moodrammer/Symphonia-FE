@@ -72,7 +72,7 @@ export default {
       if(this.contextMenuChoice === "Unfollow")
       {
         try{
-            this.unfollowArtist({artists:[this.contextMenuCardIndex],token: await this.getuserToken()});
+            this.unfollowArtist({artists:[this.contextMenuCardIndex],token: this.getuserToken()});
         }
         catch (error) {
         console.log("error" + error);

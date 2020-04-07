@@ -11,7 +11,7 @@ const state = {
 
 const mutations = {
   load_followedArtists: (state, list) => state.followedArtists = list,
-  unfollow_artists: (state, list) => state.followedArtists = state.followedArtists.filter(artist => !list.includes(artist.id)),
+  unfollow_artists: (state, list) => state.followedArtists = state.followedArtists.filter(artist => !list.includes(artist._id)),
   load_artistAlbums:(state, list) => state.artistAlbums = list,
   load_artistTopTracks: (state, list) => state.artistTopTracks = list,
   load_artistRelatedArtists: (state, list) => state.artistRelatedArtists = list,
@@ -59,15 +59,17 @@ const getters = {
 
   allFollowedArtists: (state) => {
     var newValue = state.followedArtists;
+    console.log("dsadsa",newValue)
     var artists = [];
     newValue.forEach(element => {
       var k = {
         name: element.name,
-        image: element.images[0].url,
+        image: element.imageUrl,
         description: element.type,
-        id: element.id,
+        id: element._id,
         type: element.type
       }
+      console.log(k)
       artists.push(k);
     });
     return artists;
@@ -75,6 +77,7 @@ const getters = {
   
   allArtistAlbums: (state) => {
     var newValue = state.artistAlbums;
+    console.log("hhhh", newValue)
     var albums = [];
     newValue.forEach(element => {
       var k = {
@@ -117,9 +120,9 @@ const actions = {
         headers: {
           Authorization: `Bearer ${payload.token}`
         },
-        params: { type: "artist" }
+        params: { type: "artist", limit: 50 }
       })
-      .then(response => { console.log("Saad art",response); commit("load_followedArtists", response.data);} )
+      .then(response => { console.log("Saad art",response); commit("load_followedArtists", response.data.artists.items);} )
       .catch(error => {
         console.log("axios caught an error in getFollowedArtists");
         console.log(error);
@@ -206,12 +209,16 @@ const actions = {
 
   unfollowArtist({ commit }, payload) {
 
+    console.log(payload.artists.join())
     axios.delete('/v1/me/following', {
       headers: {
         Authorization: `Bearer ${payload.token}`,
       },
-      params: { type: 'artist' },
-      data: payload.artists
+      params: { 
+        type: 'artist',
+        ids: payload.artists.join()
+      },
+      
     }).then(
       commit("unfollow_artists", payload.artists)
     )

@@ -282,7 +282,7 @@ export default {
       }
       else{
         
-        this.$router.push(`../${name}/${id}`);
+        this.$router.push(`/webhome/${name}/${id}`);
       }
     },
     /**
@@ -312,7 +312,7 @@ export default {
         var url = this.$props.cardItems.items.find(
           (item) => item.id === this.lastHoveredCard
         );
-        url = url.url;
+        url = `https://zasymphonia.ddns.net/webhome/${url.type}/${url.id}`;
         var el = document.createElement("textarea");
         // Set value (string to be copied)
         el.value = url;

@@ -8,7 +8,7 @@ const mutations = {
   load_albums: (state, list) => (state.albums = list),
   delete_albums: (state, list) =>
     (state.albums = state.albums.filter(
-      album => !list.includes(album.album.id)
+      album => !list.includes(album._id)
     ))
 };
 
@@ -18,11 +18,11 @@ const getters = {
     var albums = [];
     newValue.forEach(element => {
       var k = {
-        name: element.album.name,
-        image: element.album.images[0].url,
-        description: element.album.artists[0].name,
-        id: element.album.id,
-        type: element.album.type,
+        name: element.name,
+        image: element.image,
+        description: element.artists,
+        id: element._id,
+        type: "album",
       }
       console.log(k)
       albums.push(k);
@@ -44,7 +44,7 @@ const actions = {
           Authorization: `Bearer ${payload.token}`
         }
       })
-      .then(response => commit("load_albums", response.data))
+      .then(response => {console.log(response);commit("load_albums", response.data.Albums.items);})
       .catch(error => {
         console.log("axios caught an error in getAlbums");
         console.log(error);
@@ -58,10 +58,11 @@ const actions = {
 
 
   deleteAlbums({commit},payload){
-    
+    console.log("ssss", payload.albums)
     axios.delete('/v1/me/albums', {
       headers: {
         Authorization: `Bearer ${payload.token}`,
+        'Content-Type': "application/json"
       },
       data: payload.albums
     }).then(

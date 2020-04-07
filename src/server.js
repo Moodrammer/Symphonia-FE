@@ -274,7 +274,7 @@ export function makeServer({ environment = "development" } = {}) {
             // this.urlPrefix = 'http://localhost:8080';
 
             this.get("/v1/me/albums", schema => {
-                return schema.albums.all().models;
+                return {Albums: {items:schema.albums.all().models}}
             });
 
             this.delete("/v1/me/albums", (schema, request) => {
@@ -282,8 +282,8 @@ export function makeServer({ environment = "development" } = {}) {
 
                 for (var i = 2; i < request.requestBody.length - 2; i++)
                     x += request.requestBody[i];
-
-                return schema.albums.findBy(album => album.album.id === x).destroy();
+                console.log(x);
+                return schema.albums.findBy(album => album._id === x).destroy();
             });
 
       this.get("/v1/artists/:id/top-tracks", (schema) => {
@@ -296,16 +296,12 @@ export function makeServer({ environment = "development" } = {}) {
 
             this.get("/v1/me/following", (schema, request) => {
                 if (request.queryParams.type === "artist")
-                    return schema.artists.all().models;
+                    return {artists: {items:schema.artists.all().models}};
             });
 
             this.delete("/v1/me/following", (schema, request) => {
                 if (request.queryParams.type === "artist") {
-                    var x = "";
-                    for (var i = 2; i < request.requestBody.length - 2; i++)
-                        x += request.requestBody[i];
-
-                    return schema.artists.findBy(artist => artist.id === x).destroy();
+                    return schema.artists.findBy(artist => artist._id === request.queryParams.ids).destroy();
                 }
             });
 
