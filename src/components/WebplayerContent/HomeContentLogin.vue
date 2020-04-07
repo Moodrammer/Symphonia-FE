@@ -5,9 +5,9 @@
         v-for="category in categories"
         :key="category.categoryName"
         :name="category.categoryName"
-        :id="category.category_id"
+        :id="category.categoryID"
         :seeAll="category.showSeeAll"
-        :griditems="category.list"
+        :gridItems="category.list"
         :gridStyle="category.style"
       ></category>
     </v-container>

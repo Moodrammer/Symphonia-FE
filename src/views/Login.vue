@@ -176,7 +176,10 @@
         <v-row>
           <v-col cols="12">
             <v-row justify="center">
-              <div style="font-size: 10px; text-align: center;" class="grey--text">
+              <div
+                style="font-size: 10px; text-align: center;"
+                class="grey--text"
+              >
                 If you click "Log in with Facebook" and are not a Symphonia
                 user, you will be registered
               </div>
@@ -260,7 +263,7 @@ export default {
             }
           });
       }
-    },
+    }
   }
 };
 </script>

@@ -22,7 +22,8 @@ const getters = {
         image: element.album.images[0].url,
         description: element.album.artists[0].name,
         id: element.album.id,
-        url: "url to be added"
+        url: "url to be added",
+        type: "album"
       };
       albums.push(k);
     });

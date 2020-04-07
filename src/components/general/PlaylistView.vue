@@ -1,84 +1,85 @@
 <template>
   <!--The Playlist view wil be used later-->
-  <v-container class="pt-0">
-    <v-row justify="center">
-      <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">
-        <v-container class="pt-0">
-          <v-row justify-lg="center">
-            <v-col
-              lg="12"
-              md="3"
-              sm="5"
-              xs="2"
-              cols="12"
-              v-bind:class="{
-                'small-col': isSm() || isXs() || isMd(),
-                'lg-col': isLg()
-              }"
-            >
-              <v-card
-                elevation="9"
-                color="trasparent"
+  <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
+    <v-container class="pt-0">
+      <v-row justify="center">
+        <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">
+          <v-container class="pt-0">
+            <v-row justify-lg="center">
+              <v-col
+                lg="12"
+                md="3"
+                sm="5"
+                xs="2"
+                cols="12"
                 v-bind:class="{
-                  'small-card': isSm() || isXs() || isMd(),
-                  'lg-card': isLg()
+                  'small-col': isSm() || isXs() || isMd(),
+                  'lg-col': isLg()
                 }"
               >
-                <v-img
-                  src="https://t.scdn.co/images/3099b3803ad9496896c43f22fe9be8c4.png"
-                  id="playPhoto"
-                  @mouseover="hover = true"
-                  @mouseleave="hover = false"
-                  elevation="12"
+                <v-card
+                  elevation="9"
+                  color="trasparent"
                   v-bind:class="{
-                    'lg-img': isLg(),
-                    'sm-img': isSm() || isXs() || isMd()
+                    'small-card': isSm() || isXs() || isMd(),
+                    'lg-card': isLg()
                   }"
                 >
-                  <!--Overlay for the button that is showed at hover-->
-                  <v-overlay
-                    v-show="hover"
-                    class="overlay"
-                    absolute
-                    opacity="0.8"
+                  <v-img
+                    src="https://t.scdn.co/images/3099b3803ad9496896c43f22fe9be8c4.png"
+                    id="playPhoto"
+                    @mouseover="hover = true"
+                    @mouseleave="hover = false"
+                    elevation="12"
+                    v-bind:class="{
+                      'lg-img': isLg(),
+                      'sm-img': isSm() || isXs() || isMd()
+                    }"
                   >
-                    <v-btn
-                      fab
-                      outlined
-                      color="white"
-                      id="playIcon"
-                      @click="iconClick = !iconClick"
+                    <!--Overlay for the button that is showed at hover-->
+                    <v-overlay
+                      v-show="hover"
+                      class="overlay"
+                      absolute
+                      opacity="0.8"
                     >
-                      <v-icon large color="white" v-if="iconClick">
-                        mdi-pause
-                      </v-icon>
-                      <v-icon large color="white" v-else>mdi-play</v-icon>
-                    </v-btn>
-                  </v-overlay>
-                </v-img>
-              </v-card>
-            </v-col>
+                      <v-btn
+                        fab
+                        outlined
+                        color="white"
+                        id="playIcon"
+                        @click="iconClick = !iconClick"
+                      >
+                        <v-icon large color="white" v-if="iconClick">
+                          mdi-pause
+                        </v-icon>
+                        <v-icon large color="white" v-else>mdi-play</v-icon>
+                      </v-btn>
+                    </v-overlay>
+                  </v-img>
+                </v-card>
+              </v-col>
 
-            <v-col lg="12" md="8" sm="7" xs="1" cols="12">
-              <v-row justify-lg="center">
-                <h1 class="mt-5">Playlist Name</h1>
-              </v-row>
-              <v-row justify-lg="center">
-                <v-btn rounded class="white--text px-8" id="playBtn">
-                  Play
-                </v-btn>
-              </v-row>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-col>
-      <!--Display the Songs -->
-      <v-col lg="8" sm="12" md="12">
-        <!--this divider will be shown at the small screen sizes only-->
-        <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
-        <v-list color="transparent">
-          <!--Nesting the song component-->
-          <song
+              <v-col lg="12" md="8" sm="7" xs="1" cols="12">
+                <v-row justify-lg="center">
+                  <h1 class="mt-5">Liked Songs</h1>
+                </v-row>
+                <v-row justify-lg="center">
+                  <v-btn rounded class="white--text px-8" id="playBtn">
+                    Play
+                  </v-btn>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-col>
+        <!--Display the Songs -->
+        <v-col lg="8" sm="12" md="12">
+          <!--this divider will be shown at the small screen sizes only-->
+          <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
+          <v-list color="transparent">
+            <!--Nesting the song component-->
+            <!-- <song
             v-for="track in tracks"
             :key="track.name"
             :songName="track.name"
@@ -86,23 +87,27 @@
             :albumName="track.album.name"
             :duration="track.duration_ms"
             :id="track.id"
-          />
-        </v-list>
-      </v-col>
-    </v-row>
-  </v-container>
+          /> -->
+            ss
+          </v-list>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-content>
 </template>
 
 <script>
-import Song from "./Song";
+//import Song from "./Song";
 import { mapState, mapActions } from "vuex";
+import getDeviceSize from "../../mixins/getDeviceSize";
+import getuserToken from "../../mixins/userService";
 /**
  * @displayName Liked Songs
  * @example [none]
  */
 export default {
   components: {
-    Song
+    // Song
   },
   data: function() {
     return {
@@ -118,7 +123,8 @@ export default {
   },
   computed: mapState({
     tracks: state => state.track.tracks
-  })
+  }),
+  mixins: [getDeviceSize, getuserToken]
 };
 </script>
 

@@ -64,7 +64,7 @@
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item v-if="!liked">
+        <v-list-item v-if="!liked" @click="likeSong">
           <v-list-item-title class="draweritem">
             Save to your Liked Songs
           </v-list-item-title>
