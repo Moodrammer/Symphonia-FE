@@ -1,11 +1,7 @@
 <template>
   <v-footer app class="sound-player">
     <!-- audio tag -->
-    <audio
-      ref="audiofile"
-      :src="trackUrl"
-      style="display:none;"
-    ></audio>
+    <audio ref="audiofile" :src="trackUrl" style="display:none;"></audio>
     <!-- song info -->
     <v-row>
       <v-col cols="4">
@@ -71,8 +67,22 @@
             </v-icon>
           </a>
           <!-- Previous -->
-          <a @click="previous()" title="Previous" style="margin-right: 10px;">
+          <a
+            @click="previous()"
+            v-if="!firstTrackInQueue"
+            title="Previous"
+            style="margin-right: 10px;"
+          >
             <v-icon medium class="icons">
+              mdi-skip-previous
+            </v-icon>
+          </a>
+          <a
+            v-if="firstTrackInQueue"
+            title="Previous"
+            style="margin-right: 10px;"
+          >
+            <v-icon medium>
               mdi-skip-previous
             </v-icon>
           </a>
@@ -81,6 +91,7 @@
             @click="pauseAndPlay()"
             v-if="isBuffering"
             style="width: 36px; height: 36px;"
+            disabled
           >
             <v-icon v-if="paused" large class="icons" title="play">
               mdi-play-circle-outline
@@ -242,7 +253,7 @@
       </v-col>
     </v-row>
     <v-snackbar v-model="snackbar" style="bottom: 100px;">
-      <span>Please, choose your first song.</span> 
+      <span>Please, choose your first song.</span>
     </v-snackbar>
   </v-footer>
 </template>
@@ -299,13 +310,18 @@ export default {
       isShuffleEnabled: false,
       isRepeatOnceEnabled: false,
       isFirstSong: true,
+      firstTrackInQueue: false,
+      lastTrackInQueue: false,
 
       devices: undefined,
       currentDeviceId: undefined,
 
+      queueTracks: undefined,
+
       //token: "Bearer " + window.sessionStorage.userToken,
-      token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlOGI0ZTY2ZjMwY2Q0MGMzNjViOGNkNSIsImlhdCI6MTU4NjE4Nzg4MCwiZXhwIjoxNzU4OTg3ODgwfQ.JRqOSOFADL0PDChpRMiuICLD7kwNAClN0yLjqdYB3Vo"
-      ,snackbar: false
+      token:
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlOGJmNTQ3YTc5ZTg3M2EwZmU2YTFkOSIsImlhdCI6MTU4NjIzMDYwMCwiZXhwIjoxNzU5MDMwNjAwfQ.5E-WUS2_1t0Jk2XbdQ6vqT1UXD_siPuWZITQlvicKxQ",
+      snackbar: false,
     };
   },
   methods: {
@@ -317,7 +333,108 @@ export default {
     chooseDevice: function(id) {
       this.currentDeviceId = id;
     },
+    getQueue: function() {
+      axios({
+        method: "get",
+        url: "/v1/me/player/queue",
+        headers: {
+          Authorization: this.token,
+        },
+      }).then(async (response) => {
+        this.queueTracks = response.data.data.queueTracks;
+        ///////////////////////////////
+        //first time login (temporary behaviour)
 
+        if (this.queueTracks.length == 0) {
+          axios({
+            method: "post",
+            url: "/v1/me/player/tracks/" + "5e7d2ddd3429e24340ff1397",
+            headers: {
+              Authorization: this.token,
+            },
+            data: {
+              contextId: "5e8a6d96d4be480ab1d91c95",
+              context_type: "playlist",
+              context_url: "https://localhost:3000/",
+              device: "Chrome",
+            },
+            responseType: "arraybuffer",
+          }).then((response) => {
+            var blob = new Blob([response.data], { type: "audio/mpeg" });
+            var objectUrl = URL.createObjectURL(blob);
+            this.setTrackUrl(objectUrl);
+          });
+        }
+        ///////////////////////////////
+        if (response.data.data.previousTrack == null) {
+          this.firstTrackInQueue = true;
+        } else {
+          this.firstTrackInQueue = false;
+        }
+
+        if (response.data.data.nextTrack == null) {
+          this.lastTrackInQueue = true;
+        } else {
+          this.lastTrackInQueue = false;
+        }
+      });
+    },
+    getCurrentlyPlaying: function() {
+      //get the currently playing track
+      axios({
+        method: "get",
+        url: "/v1/me/player/currently-playing",
+        headers: {
+          Authorization: this.token,
+        },
+      }).then((response) => {
+        //get the track url
+        var tempTrackUrl = response.data.data.currentTrack;
+
+        if (axios.defaults.baseURL != "/api") {
+          //If i'm not in mocking
+          if (tempTrackUrl != null) {
+            //get the track id
+            var songId = tempTrackUrl.slice(
+              tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+              tempTrackUrl.length
+            );
+
+            //request the track data
+            this.getTrack(songId);
+
+            //request the song mp3 file
+            axios({
+              method: "post",
+              url: "/v1/me/player/tracks/" + songId,
+              data: {
+                device: "Chrome",
+              },
+              headers: {
+                Authorization: this.token,
+              },
+              responseType: "arraybuffer",
+            }).then((response) => {
+              var blob = new Blob([response.data], { type: "audio/mpeg" });
+              var objectUrl = URL.createObjectURL(blob);
+              this.setTrackUrl(objectUrl);
+            });
+          }
+        } else {
+          //#MOCK
+
+          //get the track id
+          var songId2 = tempTrackUrl.slice(
+            tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+            tempTrackUrl.length
+          );
+
+          this.getTrack(songId2);
+
+          this.setTrackUrl(tempTrackUrl + ".mp3");
+        }
+      });
+    },
     saveToLikedSongs: function() {
       if (!this.isSongIsLiked) {
         this.setLiked(true);
@@ -351,32 +468,84 @@ export default {
       this.isBuffering = false;
       this.setPaused(true); //the sound will be paused upon changing the soruce
 
-      //TODO: is it the current song is the last one in the playlist ?
-      var temp = this;
-      //this timeout is for simulating the server delay
-      //TODO: remove this delay before deployment
-      setTimeout(function() {
-        //call updateSongInfo()
-        //TODO: change this to a url coming from a request.
-        temp.setTrackUrl(
-          "https://www.bensound.com/bensound-music/bensound-summer.mp3"
-        );
-      }, 1000);
+      //////////////////////
+      if (axios.defaults.baseURL != "/api") {
+        //If i'm not in mocking
+
+        if (this.lastTrackInQueue == false) {
+          axios({
+            method: "post",
+            url: "/v1/me/player/next",
+            headers: {
+              Authorization: this.token,
+            },
+          }).then(() => {
+            this.getQueue();
+            this.getCurrentlyPlaying();
+          });
+        } else {
+          var tempTrackUrl = this.queueTracks[0];
+          var songId = tempTrackUrl.slice(
+            tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+            tempTrackUrl.length
+          );
+          //request the song mp3 file
+          axios({
+            method: "post",
+            url: "/v1/me/player/tracks/" + songId,
+            data: {
+              contextId: "5e8a6d96d4be480ab1d91c95",
+              context_type: "playlist",
+              context_url: "https://localhost:3000/",
+              device: "Chrome",
+            },
+            headers: {
+              Authorization: this.token,
+            },
+            responseType: "arraybuffer",
+          }).then((response) => {
+            var blob = new Blob([response.data], { type: "audio/mpeg" });
+            var objectUrl = URL.createObjectURL(blob);
+            this.setTrackUrl(objectUrl);
+
+            this.getQueue();
+          });
+          ////////////////////
+        }
+      } else {
+        //#MOCK
+        var temp = this;
+
+        setTimeout(function() {
+          temp.setTrackUrl(
+            "https://www.bensound.com/bensound-music/bensound-summer.mp3"
+          );
+        }, 1000);
+      }
     },
     previous: function() {
       this.isBuffering = false;
       this.setPaused(true); //the sound will be paused upon changing the soruce
 
-      //TODO: is it the current song is the first one in the playlist ?
-
-      var temp = this;
-      //this timeout to simulate the server delay
-      //TODO: remove this after delay before deployment
-      setTimeout(function() {
-        //call updateSongInfo()
-        //TODO: change this to a url coming from a request.
-        temp.setTrackUrl("/example.mp3");
-      }, 1000);
+      if (axios.defaults.baseURL != "/api") {
+        axios({
+          method: "post",
+          url: "/v1/me/player/previous",
+          headers: {
+            Authorization: this.token,
+          },
+        }).then(() => {
+          this.getQueue();
+          this.getCurrentlyPlaying();
+        });
+      } else {
+        //#MOCK
+        var temp = this;
+     
+        setTimeout(function() {
+          temp.setTrackUrl("/track/5e7d2dc03429e24340ff1396.mp3");
+        }, 1000);
+      }
     },
     //this method will be invoked after changing the song
     //it will change the song info: song name, artist, picture.
@@ -500,76 +669,22 @@ export default {
 
       //get the device
       axios({
-        method: "get",
+        method: "patch",
         url: "/v1/me/player/devices",
+        data: {
+          device: "Chrome", //TODO: get the browser name
+        },
         headers: {
           Authorization: this.token,
         },
       }).then((response) => {
-        console.log(response)
-        this.devices = response.data.data;
+        console.log(response);
+        this.devices = response.data.devices;
         this.currentDeviceId = this.devices[this.devices.length - 1]._id;
       });
 
-      // axios({
-      //   method: "patch",
-      //   url: "/v1/me/player/devices",
-      //   data: {
-      //     device: "Chrome", //TODO: get the browser name
-      //   },
-      //   headers: {
-      //     Authorization: this.token,
-      //   },
-      // }).then((response) => {
-      //   console.log(response)
-      //   this.devices = response.data;
-      //   this.currentDeviceId = this.devices[this.devices.length - 1]._id;
-      // });
-
-      //get the currently playing track
-      axios({
-        method: "get",
-        url: "/v1/me/player/currently-playing",
-        headers: {
-          "Authorization": this.token,
-        },
-      }).then((response) => {
-        //get the track url
-        var tempTrackUrl = response.data.data.currentTrack;
-
-        if (tempTrackUrl != null)
-        {
-          //get the track id
-          var songId = tempTrackUrl.slice(
-            tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
-            tempTrackUrl.length
-          );
-
-          //request the track data
-          this.getTrack(songId);
-
-          //request the song mp3 file        
-          axios({
-            method: "get",
-            url: "/v1/me/player/tracks/" + songId,
-            data: {
-              device: this.currentDeviceId,
-            },
-            headers: {
-              Authorization: this.token,
-              "Content-Type": "audio/mpeg"
-            },
-            responseType: 'arraybuffer',
-          }).then(response => {
-            var blob = new Blob([response.data], {type : 'audio/mpeg'});
-            var objectUrl = URL.createObjectURL(blob);
-            this.setTrackUrl(objectUrl);
-          })
-        } else {
-          this.snackbar = true;
-        }
-      });
-      
+      this.getQueue();
+      this.getCurrentlyPlaying();
 
       //Stub:
       /*

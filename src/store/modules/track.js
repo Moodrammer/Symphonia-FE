@@ -15,10 +15,6 @@ const state = {
 const mutations = {
   setTrackData( state ,payload) {
     state.trackName=payload.name;
-    //state.trackUrl=payload.href;
-    state.trackArtists=payload.artists;
-    state.imageUrl=payload.album.images[0].url;
-    state.trackAlbumId=payload.album.id;
   },
   setLiked( state , payload) {
     state.liked=payload;

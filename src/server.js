@@ -201,7 +201,7 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/users/track/:track_id", (schema, request) => {
         let trackId=request.params.track_id;
-        return schema.tracks.where({ id: trackId}).models;
+        return schema.tracks.where({ _id: trackId}).models;
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Check user's saved tracks
@@ -364,27 +364,27 @@ export function makeServer({ environment = "development" } = {}) {
             }
           );
         }),
-        this.patch("/v1/me/player/devices", () => {
+        this.get("/v1/me/player/devices", () => {
           return new Response(
             200,
             {},
             {
-              devices: [
+              data: [
                 {
                   _id: "1",
-                  device: "Chrome"
+                  devicesName: "Chrome"
                 },
                 {
                   _id: "2",
-                  device: "Chrome"
+                  devicesName: "Chrome"
                 },
                 {
                   _id: "3",
-                  device: "Firefox"
+                  devicesName: "Firefox"
                 },
                 {
                   _id: "4",
-                  device: "Chrome"
+                  devicesName: "Chrome"
                 },
               ]
             }
@@ -397,32 +397,16 @@ export function makeServer({ environment = "development" } = {}) {
             {},         
             {
               "data": {
-                "currentTrack": "/tracks/1",
+                "currentTrack": "/track/5e7d2dc03429e24340ff1396",
                 "device": "5e88ef4d54142e3db4d01ee5"
               }
             }
           );
-        }),
-        this.get("/v1/me/tracks/contains", () => {
-          return new Response(
-            200,
-            {},
-            [
-              true
-            ]
-          );
-        }),
-        this.get("/v1/me/player/tracks/:track_id", () => {
-          return new Response(
-            200,
-            {},
-            {}
-            )
-        });
+        })
     }
   });
 
-  server.shutdown();
+  //server.shutdown();
 
   return server;
 }
