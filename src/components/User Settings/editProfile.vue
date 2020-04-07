@@ -7,7 +7,9 @@
       </div>
       <div class="form-container">
         <div class="alert-success" v-show="Done">Profile updated</div>
-        <div class="alert-danger" v-show="error">Sorry,Profile isn't updated</div>
+        <div class="alert-danger" v-show="error">
+          Sorry,Profile isn't updated
+        </div>
         <!-- here we take the changes for both users facebook & normal ones to change the profile -->
         <form action="#">
           <!-- The name content -->
@@ -51,11 +53,7 @@
             <label for="bod">Date of birth</label>
             <div class="row">
               <div class="col-4" v-show="!facebook">
-                <select
-                  id="month"
-                  class="date"
-                  v-model="selectedMonth"
-                >
+                <select id="month" class="date" v-model="selectedMonth">
                   <option
                     v-for="month in months"
                     :key="month.value"
@@ -66,7 +64,7 @@
                 </select>
               </div>
               <div class="col-4" v-show="!facebook">
-                <select  id="day" class="date" v-model="selectedDay">
+                <select id="day" class="date" v-model="selectedDay">
                   <option
                     v-for="day in days"
                     :key="day.value"
@@ -77,11 +75,7 @@
                 </select>
               </div>
               <div class="col-4" v-show="!facebook">
-                <select
-                  id="year"
-                  class="date"
-                  v-model="selectedYear"
-                >
+                <select id="year" class="date" v-model="selectedYear">
                   <option
                     v-for="year in years"
                     :key="year.value"
@@ -160,7 +154,7 @@ export default {
         this.prevEmail = this.$store.state.user.userEmail;
         this.selectedDay = this.$store.state.user.userDOB.slice(8, 10);
         this.selectedMonth = this.$store.state.user.userDOB.slice(5, 7);
-        this.selectedYear = this.$store.state.user.userDOB.slice(0,4);
+        this.selectedYear = this.$store.state.user.userDOB.slice(0, 4);
         let counter = {};
         for (let i = 0; i < 31; i++) {
           counter = {
@@ -204,13 +198,15 @@ export default {
     },
     submit: function() {
       this.selectedDate();
-      this.$store.dispatch("updateProfile",{
-        email: this.user.userEmail,
-        gender: this.user.userGender,
-        dateOfBirth: this.user.userDOB,
-        phone: this.user.mobile,
-        password: this.user.password
-      }).then(() => {
+      this.$store
+        .dispatch("updateProfile", {
+          email: this.user.userEmail,
+          gender: this.user.userGender,
+          dateOfBirth: this.user.userDOB,
+          phone: this.user.mobile,
+          password: this.user.password
+        })
+        .then(() => {
           this.Done = true;
         })
         .catch(err => {

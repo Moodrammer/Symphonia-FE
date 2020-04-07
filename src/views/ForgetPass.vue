@@ -12,13 +12,7 @@
       <router-view></router-view>
     </v-container>
     <!-- <Footer></Footer> -->
-    <v-footer 
-      app
-      absolute
-      color="black"
-      height="200px"
-    >
-    </v-footer>
+    <v-footer app absolute color="black" height="200px"> </v-footer>
   </div>
 </template>
 

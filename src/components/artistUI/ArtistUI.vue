@@ -2,7 +2,7 @@
   <v-content
     :style="{
       backgroundImage: 'url(' + image + ')',
-      backgroundSize: '100% Auto',
+      backgroundSize: '100% Auto'
     }"
   >
     <div class="pl-10 pt-12 mt-12 gradient-body py-7">
@@ -17,17 +17,15 @@
       <span class="display-2 white--text">...</span>
     </div>
     <div style="background:#1a1a1a" class="pl-3" fill-height>
+      <div class="pl-9 mb-10">
+        <v-btn text color="white" class="mx-2" :to="{ name: 'Overview' }">
+          <span class="text-capitalize white--text">Overview</span>
+        </v-btn>
 
-    <div class="pl-9 mb-10">
-      <v-btn text color="white" class="mx-2" :to="{ name: 'Overview' }">
-        <span class="text-capitalize white--text">Overview</span>
-      </v-btn>
-
-      <v-btn text color="white" class="mx-2" :to="{ name: 'RelatedArtists' }">
-        <span class="text-capitalize white--text">Related Artists</span>
-      </v-btn>
-
-    </div>
+        <v-btn text color="white" class="mx-2" :to="{ name: 'RelatedArtists' }">
+          <span class="text-capitalize white--text">Related Artists</span>
+        </v-btn>
+      </div>
 
       <router-view />
     </div>
@@ -40,34 +38,35 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: mapGetters(["currentArtistGetter"]),
-  methods:{
-    ...mapActions(["getCurrentArtist"]),
+  methods: {
+    ...mapActions(["getCurrentArtist"])
   },
-  created(){
-    try{
-      this.getCurrentArtist({token: this.getuserToken(), id: this.$route.params.id})
-    }catch(error){
-      console.log(error)
+  created() {
+    try {
+      this.getCurrentArtist({
+        token: this.getuserToken(),
+        id: this.$route.params.id
+      });
+    } catch (error) {
+      console.log(error);
     }
-
   },
   watch: {
-    currentArtistGetter: function(newValue){
-      console.log("saad",newValue)
+    currentArtistGetter: function(newValue) {
+      console.log("saad", newValue);
       this.artist = newValue;
     }
   },
-  data: function(){
-    return{
-      artist: null,
-    }
+  data: function() {
+    return {
+      artist: null
+    };
   },
-  mixins: [getuserToken], 
+  mixins: [getuserToken]
 };
 </script>
 
 <style>
-
 .gradient-body {
   /* background: rgb(0,0,0);
     background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); */

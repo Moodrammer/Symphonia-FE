@@ -8,7 +8,10 @@
             Premium lets you play any song, anytime. You can even listen when
             you’re offline. No restrictions. No ads.
           </p>
-          <button class="btn-theme hidden-xs-only" href="/premium/?checkout=false">
+          <button
+            class="btn-theme hidden-xs-only"
+            href="/premium/?checkout=false"
+          >
             Get Premium
           </button>
         </div>

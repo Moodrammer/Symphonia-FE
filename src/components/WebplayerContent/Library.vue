@@ -7,18 +7,17 @@
 </template>
 
 <script>
-
-import getuserToken from "../../mixins/userService"
+import getuserToken from "../../mixins/userService";
 
 export default {
   name: "Library",
   mixins: [getuserToken],
-  
-  created(){
-    console.log("token", this.getuserToken())
-    if(!this.getuserToken()){
-      console.log("redirect to home")
-      this.$router.push("../")
+
+  created() {
+    console.log("token", this.getuserToken());
+    if (!this.getuserToken()) {
+      console.log("redirect to home");
+      this.$router.push("../");
     }
   }
 };

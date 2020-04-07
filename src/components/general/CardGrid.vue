@@ -11,10 +11,16 @@
     <template v-slot:activator="{ on }">
       <v-container dark @contextmenu.prevent="on.click">
         <!-- adding the page content: -->
-        <v-list v-if ="cardStyle === 'artistUIList'" dark color="#1a1a1a" max-width="1800" class="mx-auto">
+        <v-list
+          v-if="cardStyle === 'artistUIList'"
+          dark
+          color="#1a1a1a"
+          max-width="1800"
+          class="mx-auto"
+        >
           <v-list-item-group v-model="cardItems.selectedItem" color="#b3b3b3">
             <v-list-item
-              v-for="(item, i) in cardItems.items.slice(0,5)"
+              v-for="(item, i) in cardItems.items.slice(0, 5)"
               @mouseenter="cardItems.hoveredCardIndex = i"
               @mouseleave="cardItems.hoveredCardIndex = null"
               :key="i"
@@ -23,7 +29,9 @@
                 <v-icon v-if="i == cardItems.selectedItem" color="white"
                   >mdi-pause</v-icon
                 >
-                <v-icon v-else-if="i == cardItems.hoveredCardIndex" color="white"
+                <v-icon
+                  v-else-if="i == cardItems.hoveredCardIndex"
+                  color="white"
                   >mdi-play</v-icon
                 >
                 <v-icon v-else>mdi-music-note</v-icon>
@@ -31,7 +39,9 @@
               <v-img :src="item.image" max-width="50" class="mr-5"></v-img>
               <v-list-item-title v-text="cardItems.name"></v-list-item-title>
               <v-list-item-subtitle class="text-end"
-                ><span v-show="i == cardItems.hoveredCardIndex" class="mr-5 display-1"
+                ><span
+                  v-show="i == cardItems.hoveredCardIndex"
+                  class="mr-5 display-1"
                   >...</span
                 >{{ item.duration }}</v-list-item-subtitle
               >
@@ -240,10 +250,9 @@
 <script>
 export default {
   name: "CardGrid",
-  props:
-  [
+  props: [
     /**
-     * Object consists of 
+     * Object consists of
      * items: array of objects contains the components of cards the grid
      * menuList: array of strings contains the context menu options
      * showMenu: boolean to know if context menu is shown
@@ -254,8 +263,8 @@ export default {
      * style of the card
      * @values artist, artistUIList, artistUICard, none (default)
      */
-     "cardStyle",
-     "name"
+    "cardStyle",
+    "name"
   ],
   data() {
     return {
@@ -263,7 +272,7 @@ export default {
       lastHoveredCard: null,
       disableMenu: false,
       AUIitems: null,
-      showMoreBtn: false,
+      showMoreBtn: false
     };
   },
   created() {
@@ -272,16 +281,14 @@ export default {
     this.showMoreBtn = true;
   },
   methods: {
-    cardClicked(id, name, play){
-      if(this.playBTNFlag){
+    cardClicked(id, name, play) {
+      if (this.playBTNFlag) {
         this.playBTNFlag = false;
         return;
       }
-      if(play){
+      if (play) {
         this.playBTNFlag = true;
-      }
-      else{
-        
+      } else {
         this.$router.push(`/webhome/${name}/${id}`);
       }
     },
@@ -295,7 +302,8 @@ export default {
     },
     /**
      * called when card is hover to save its index, and close other context menus
-     */ 
+     */
+
     cardHover(index, id) {
       this.$props.cardItems.hoveredCardIndex = index;
       this.lastHoveredCard = id;
@@ -306,11 +314,11 @@ export default {
      * called when user choose option from the context menu, it copy the url to user's clipboard if he chose the last option
      */
     contextMenuClick(item, copyToClipboard) {
-      this.$emit("order", item.title, this.lastHoveredCard,this.$props.name);
+      this.$emit("order", item.title, this.lastHoveredCard, this.$props.name);
       console.log(copyToClipboard);
       if (copyToClipboard) {
         var url = this.$props.cardItems.items.find(
-          (item) => item.id === this.lastHoveredCard
+          item => item.id === this.lastHoveredCard
         );
         url = `https://zasymphonia.ddns.net/webhome/${url.type}/${url.id}`;
         var el = document.createElement("textarea");
@@ -328,7 +336,7 @@ export default {
         // Remove temporary element
         document.body.removeChild(el);
       }
-    },
+    }
   },
   watch: {
     // watching showMenu "context menu v-model" to disable the menu if the click wasn't on card
@@ -348,12 +356,11 @@ export default {
         else
           this.$props.cardItems.menuList = this.$props.cardItems.playlistsMenu;
       }
-      
     },
     "cardItems.items": function() {
-      this.AUIitems = this.$props.cardItems.items
+      this.AUIitems = this.$props.cardItems.items;
     }
-  },
+  }
 };
 </script>
 

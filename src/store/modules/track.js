@@ -14,8 +14,8 @@ const state = {
 };
 
 const mutations = {
-  setTrackData( state ,payload) {
-    state.trackName=payload.name;
+  setTrackData(state, payload) {
+    state.trackName = payload.name;
   },
   setLiked(state, payload) {
     if (payload.id == state.trackId) state.liked = payload.status;

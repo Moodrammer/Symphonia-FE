@@ -45,19 +45,17 @@ export default {
      * @param {string} name the name of the grid that containg the card
      */
 
-    menuOrder(menuItem, cardIndex){
+    menuOrder(menuItem, cardIndex) {
       this.contextMenuChoice = menuItem;
       this.contextMenuCardIndex = cardIndex;
-    },
-
+    }
   },
   mixins: [getuserToken],
-  created(){
+  created() {
     try {
-        this.getFollowedArtists({token: this.getuserToken()});
-    }
-    catch (error) {
-        console.log("error" + error);
+      this.getFollowedArtists({ token: this.getuserToken() });
+    } catch (error) {
+      console.log("error" + error);
     }
   },
 
@@ -65,24 +63,24 @@ export default {
 
   watch: {
     contextMenuChoice: async function() {
-      if (this.contextMenuChoice === null)
-        return;
+      if (this.contextMenuChoice === null) return;
       console.log(this.contextMenuChoice);
       console.log(this.contextMenuCardIndex);
-      if(this.contextMenuChoice === "Unfollow")
-      {
-        try{
-            this.unfollowArtist({artists:[this.contextMenuCardIndex],token: this.getuserToken()});
-        }
-        catch (error) {
-        console.log("error" + error);
+      if (this.contextMenuChoice === "Unfollow") {
+        try {
+          this.unfollowArtist({
+            artists: [this.contextMenuCardIndex],
+            token: this.getuserToken()
+          });
+        } catch (error) {
+          console.log("error" + error);
         }
       }
-      this.contextMenuChoice = null
-      },
-      allFollowedArtists(newValue){
-        this.cardItems.items = newValue
-      }
+      this.contextMenuChoice = null;
+    },
+    allFollowedArtists(newValue) {
+      this.cardItems.items = newValue;
     }
+  }
 };
 </script>

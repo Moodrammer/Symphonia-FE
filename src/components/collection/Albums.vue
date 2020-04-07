@@ -37,27 +37,25 @@ export default {
     };
   },
   mixins: [getuserToken],
-  methods:{
+  methods: {
     ...mapActions(["getAlbums", "deleteAlbums"]),
-        /**
+    /**
      * called when the user clicks on an aption from the context menu
      * @param {string} menuItem the option chosen by user
      * @param {string} cardID the id of the card which user clicked on it
      * @param {string} name the name of the grid that containg the card
      */
-    menuOrder(menuItem, cardIndex){
+    menuOrder(menuItem, cardIndex) {
       this.contextMenuChoice = menuItem;
       this.contextMenuCardIndex = cardIndex;
     }
   },
-  created(){
+  created() {
     try {
-        this.getAlbums({token: this.getuserToken()});
+      this.getAlbums({ token: this.getuserToken() });
+    } catch (error) {
+      console.log(error);
     }
-    catch (error) {
-        console.log(error);
-    }
-
   },
 
   computed: mapGetters(["allAlbums"]),
@@ -67,18 +65,21 @@ export default {
       if (this.contextMenuChoice === null) return;
       console.log(this.contextMenuChoice);
       console.log(this.contextMenuCardIndex);
-      if(this.contextMenuChoice === "Remove from your Library")
-      {   try{
-          this.deleteAlbums({token: this.getuserToken() ,albums: [this.contextMenuCardIndex]});
-      }catch(error){
-        console.log(error);
+      if (this.contextMenuChoice === "Remove from your Library") {
+        try {
+          this.deleteAlbums({
+            token: this.getuserToken(),
+            albums: [this.contextMenuCardIndex]
+          });
+        } catch (error) {
+          console.log(error);
+        }
       }
-      }
-      this.contextMenuChoice = null
-      },
-      allAlbums(newValue){
-        this.cardItems.items = newValue
-      }
+      this.contextMenuChoice = null;
+    },
+    allAlbums(newValue) {
+      this.cardItems.items = newValue;
+    }
   }
 };
 </script>

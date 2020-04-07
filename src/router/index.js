@@ -26,7 +26,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Homepage,
+    component: Homepage
   },
   {
     path: "/webhome",
@@ -43,24 +43,24 @@ const routes = [
           {
             name: "Overview",
             path: "overview",
-            component: Overview,
+            component: Overview
           },
           {
             name: "RelatedArtists",
             path: "related-artists",
-            component: RelatedArtists,
-          },
-        ],
+            component: RelatedArtists
+          }
+        ]
       },
       {
         name: "home",
         path: "home",
-        component: HomeContent,
+        component: HomeContent
       },
       {
         name: "search",
         path: "search",
-        component: Search,
+        component: Search
       },
       {
         name: "collection",
@@ -71,50 +71,50 @@ const routes = [
           {
             name: "Playlists",
             path: "playlists",
-            component: Playlists,
+            component: Playlists
           },
           {
             name: "Artists",
             path: "artists",
-            component: Artists,
+            component: Artists
           },
           {
             name: "Albums",
             path: "albums",
-            component: ALbums,
+            component: ALbums
           },
           {
             name: "tracks",
             path: "tracks",
-            component: Tracks,
+            component: Tracks
           },
           {
             name: "queue",
             path: "queue",
-            component: Queue,
-          },
-        ],
+            component: Queue
+          }
+        ]
       },
       {
         name: "playlist/:id",
         path: "/playlist/:id",
-        component: PlaylistView,
+        component: PlaylistView
       },
       {
         name: "album/:id",
         path: "/album/:id",
-        component: PlaylistView,
+        component: PlaylistView
       },
       {
         path: "genre/:id",
-        component: Genre,
-      },
-    ],
+        component: Genre
+      }
+    ]
   },
   {
     path: "/premium/",
     name: "HomePremium",
-    component: HomepagePremium,
+    component: HomepagePremium
   },
   {
     path: "/signup",
@@ -123,7 +123,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/SignUp.vue"),
+      import(/* webpackChunkName: "about" */ "../views/SignUp.vue")
   },
   {
     path: "/login",
@@ -132,7 +132,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Login.vue"),
+      import(/* webpackChunkName: "about" */ "../views/Login.vue")
   },
   {
     path: "/account/",
@@ -141,26 +141,26 @@ const routes = [
     children: [
       {
         path: "",
-        component: () => import("../components/User Settings/overview.vue"),
+        component: () => import("../components/User Settings/overview.vue")
       },
       {
         path: "edit",
-        component: () => import("../components/User Settings/editProfile.vue"),
+        component: () => import("../components/User Settings/editProfile.vue")
       },
       {
         path: "recover-playlists",
         component: () =>
-          import("../components/User Settings/recoverPlaylist.vue"),
+          import("../components/User Settings/recoverPlaylist.vue")
       },
       {
         path: "notifications",
-        component: () => import("../components/User Settings/notification.vue"),
+        component: () => import("../components/User Settings/notification.vue")
       },
       {
         path: "changePassword",
-        component: () => import("../components/User Settings/changePass.vue"),
-      },
-    ],
+        component: () => import("../components/User Settings/changePass.vue")
+      }
+    ]
   },
 
   {
@@ -176,21 +176,21 @@ const routes = [
       {
         path: "reset",
         name: "reset",
-        component: PassReset,
+        component: PassReset
       },
       {
         path: "change/:resettoken",
         name: "change",
-        component: PassChange,
-      },
-    ],
-  },
+        component: PassChange
+      }
+    ]
+  }
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
 export default router;

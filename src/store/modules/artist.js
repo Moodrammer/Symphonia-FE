@@ -10,38 +10,46 @@ const state = {
 };
 
 const mutations = {
-  load_followedArtists: (state, list) => state.followedArtists = list,
-  unfollow_artists: (state, list) => state.followedArtists = state.followedArtists.filter(artist => !list.includes(artist._id)),
-  load_artistAlbums:(state, list) => state.artistAlbums = list,
-  load_artistTopTracks: (state, list) => state.artistTopTracks = list,
-  load_artistRelatedArtists: (state, list) => state.artistRelatedArtists = list,
-  load_currentArtist: (state, artist) => state.currentArtist = artist,
+  load_followedArtists: (state, list) => (state.followedArtists = list),
+  unfollow_artists: (state, list) =>
+    (state.followedArtists = state.followedArtists.filter(
+      artist => !list.includes(artist._id)
+    )),
+  load_artistAlbums: (state, list) => (state.artistAlbums = list),
+  load_artistTopTracks: (state, list) => (state.artistTopTracks = list),
+  load_artistRelatedArtists: (state, list) =>
+    (state.artistRelatedArtists = list),
+  load_currentArtist: (state, artist) => (state.currentArtist = artist)
 };
 
 const getters = {
-
-  currentArtistGetter: (state) => {
-    console.log("haha",state.currentArtist)
-    return state.currentArtist
+  currentArtistGetter: state => {
+    console.log("haha", state.currentArtist);
+    return state.currentArtist;
   },
 
-  allArtistTopTracks: (state) => {
+  allArtistTopTracks: state => {
     var newValue = state.artistTopTracks;
     var artists = [];
     newValue.forEach(element => {
       var k = {
         name: element.name,
         image: element.album.images[0].url,
-        duration: Math.floor(element.duration_ms/60000) + ":" + (Math.floor((element.duration_ms/1000)%60) > 9 ? Math.floor((element.duration_ms/1000)%60): "0"+Math.floor((element.duration_ms/1000)%60)),
+        duration:
+          Math.floor(element.duration_ms / 60000) +
+          ":" +
+          (Math.floor((element.duration_ms / 1000) % 60) > 9
+            ? Math.floor((element.duration_ms / 1000) % 60)
+            : "0" + Math.floor((element.duration_ms / 1000) % 60)),
         id: element.id,
         type: element.type
-      }
+      };
       artists.push(k);
     });
     return artists;
   },
 
-  allArtistRelatedArtists: (state) => {
+  allArtistRelatedArtists: state => {
     var newValue = state.artistRelatedArtists;
     var artists = [];
     newValue.forEach(element => {
@@ -51,15 +59,15 @@ const getters = {
         description: element.type,
         id: element.id,
         type: element.type
-      }
+      };
       artists.push(k);
     });
     return artists;
   },
 
-  allFollowedArtists: (state) => {
+  allFollowedArtists: state => {
     var newValue = state.followedArtists;
-    console.log("dsadsa",newValue)
+    console.log("dsadsa", newValue);
     var artists = [];
     newValue.forEach(element => {
       var k = {
@@ -68,16 +76,16 @@ const getters = {
         description: element.type,
         id: element._id,
         type: element.type
-      }
-      console.log(k)
+      };
+      console.log(k);
       artists.push(k);
     });
     return artists;
   },
-  
-  allArtistAlbums: (state) => {
+
+  allArtistAlbums: state => {
     var newValue = state.artistAlbums;
-    console.log("hhhh", newValue)
+    console.log("hhhh", newValue);
     var albums = [];
     newValue.forEach(element => {
       var k = {
@@ -85,36 +93,37 @@ const getters = {
         image: element.images[0].url,
         id: element.id,
         type: element.type
-      }
+      };
       albums.push(k);
     });
     return albums;
   }
 };
 
-
 const actions = {
-
-  getCurrentArtist({commit}, payload){
+  getCurrentArtist({ commit }, payload) {
     axios
-    .get(`v1/artists/${payload.id}`, {
-    headers: {
-      Authorization: `Bearer ${payload.token}`
-    }
-  })
-  .then(response => { console.log("Saad art",response); commit("load_currentArtist", response.data);} )
-  .catch(error => {
-    console.log("axios caught an error in getCurrentArtist");
-    console.log(error);
-  });
+      .get(`v1/artists/${payload.id}`, {
+        headers: {
+          Authorization: `Bearer ${payload.token}`
+        }
+      })
+      .then(response => {
+        console.log("Saad art", response);
+        commit("load_currentArtist", response.data);
+      })
+      .catch(error => {
+        console.log("axios caught an error in getCurrentArtist");
+        console.log(error);
+      });
   },
-/**
- * called to get followed artists by current user
- * @param {object} payload contains the token 
- */
+  /**
+   * called to get followed artists by current user
+   * @param {object} payload contains the token
+   */
   getFollowedArtists({ commit }, payload) {
-    console.log("saad token",payload.token)
-    console.log(payload.token)
+    console.log("saad token", payload.token);
+    console.log(payload.token);
     axios
       .get("/v1/me/following", {
         headers: {
@@ -122,21 +131,24 @@ const actions = {
         },
         params: { type: "artist", limit: 50 }
       })
-      .then(response => { console.log("Saad art",response); commit("load_followedArtists", response.data.artists.items);} )
+      .then(response => {
+        console.log("Saad art", response);
+        commit("load_followedArtists", response.data.artists.items);
+      })
       .catch(error => {
         console.log("axios caught an error in getFollowedArtists");
         console.log(error);
       });
   },
 
-/**
- * called to get artist's albums 
- * @param {object} payload contains the token and the artist id 
- */
+  /**
+   * called to get artist's albums
+   * @param {object} payload contains the token and the artist id
+   */
 
   getArtistAlbums({ commit }, payload) {
-    console.log("token",payload.token)
-    console.log(payload.id)
+    console.log("token", payload.token);
+    console.log(payload.id);
     axios
       .get(`/v1/artists/${payload.id}/albums`, {
         headers: {
@@ -146,10 +158,13 @@ const actions = {
           //include_groups=appears_on&country=ES&limit=2&offset'
           country: "from_token",
           limiy: 50,
-          include_groups:"album"
+          include_groups: "album"
         }
       })
-      .then(response => { console.log("Saad art",response); commit("load_artistAlbums", response.data);} )
+      .then(response => {
+        console.log("Saad art", response);
+        commit("load_artistAlbums", response.data);
+      })
       .catch(error => {
         console.log("axios caught an error in getArtistAlbums");
         console.log(error);
@@ -157,50 +172,55 @@ const actions = {
   },
 
   /**
-   * called to get artist's top tracks 
+   * called to get artist's top tracks
    * @param {object} payload contains the token and the artist id
    */
 
   getArtistTopTracks({ commit }, payload) {
-    console.log("token",payload.token)
-    console.log(payload.id)
+    console.log("token", payload.token);
+    console.log(payload.id);
     axios
       .get(`/v1/artists/${payload.id}/top-tracks`, {
         headers: {
           Authorization: `Bearer ${payload.token}`
         },
         params: {
-          country: "from_token",
+          country: "from_token"
         }
       })
-      .then(response => { console.log("getArtistTopTracks",response.data); commit("load_artistTopTracks", response.data);} )
+      .then(response => {
+        console.log("getArtistTopTracks", response.data);
+        commit("load_artistTopTracks", response.data);
+      })
       .catch(error => {
         console.log("axios caught an error in getArtistTopTracks");
         console.log(error);
       });
   },
 
-    /**
-   * called to get artists related to a certain a artist 
+  /**
+   * called to get artists related to a certain a artist
    * @param {object} payload contains the token and the artist id
    */
 
   getArtistRelatedArtists({ commit }, payload) {
-    console.log("token art",payload.token)
-    console.log(payload.id)
+    console.log("token art", payload.token);
+    console.log(payload.id);
     axios
       .get(`/v1/artists/${payload.id}/related-artists`, {
         headers: {
           Authorization: `Bearer ${payload.token}`
-        },
+        }
       })
-      .then(response => { console.log("getArtistRelatedArtists",response); commit("load_artistRelatedArtists", response.data);} )
+      .then(response => {
+        console.log("getArtistRelatedArtists", response);
+        commit("load_artistRelatedArtists", response.data);
+      })
       .catch(error => {
         console.log("axios caught an error in getArtistTopTracks");
         console.log(error);
       });
   },
-
 
   /**
    * called to unfollow artist
@@ -208,20 +228,18 @@ const actions = {
    */
 
   unfollowArtist({ commit }, payload) {
-
-    console.log(payload.artists.join())
-    axios.delete('/v1/me/following', {
-      headers: {
-        Authorization: `Bearer ${payload.token}`,
-      },
-      params: { 
-        type: 'artist',
-        ids: payload.artists.join()
-      },
-      
-    }).then(
-      commit("unfollow_artists", payload.artists)
-    )
+    console.log(payload.artists.join());
+    axios
+      .delete("/v1/me/following", {
+        headers: {
+          Authorization: `Bearer ${payload.token}`
+        },
+        params: {
+          type: "artist",
+          ids: payload.artists.join()
+        }
+      })
+      .then(commit("unfollow_artists", payload.artists))
       .catch(error => {
         console.log("axios caught an error in unfollowArtist");
         console.log(error);
