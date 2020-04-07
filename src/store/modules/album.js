@@ -1,18 +1,19 @@
 import axios from "axios";
 
 const state = {
-    albums: []
+  albums: []
 };
 
 const mutations = {
-    
-  load_albums: (state, list) => state.albums = list,
-  delete_albums:(state, list) => state.albums = state.albums.filter(album => !list.includes(album.album.id))
-
+  load_albums: (state, list) => (state.albums = list),
+  delete_albums: (state, list) =>
+    (state.albums = state.albums.filter(
+      album => !list.includes(album.album.id)
+    ))
 };
-  
+
 const getters = {
-  allAlbums: function(state){
+  allAlbums: function(state) {
     var newValue = state.albums;
     var albums = [];
     newValue.forEach(element => {

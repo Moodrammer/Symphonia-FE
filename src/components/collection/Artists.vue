@@ -36,7 +36,7 @@ export default {
       }
     };
   },
-  methods:{
+  methods: {
     ...mapActions(["getFollowedArtists", "unfollowArtist"]),
     /**
      * called when the user clicks on an aption from the context menu
@@ -61,7 +61,7 @@ export default {
     }
   },
 
-  computed: mapGetters(['allFollowedArtists']),
+  computed: mapGetters(["allFollowedArtists"]),
 
   watch: {
     contextMenuChoice: async function() {
@@ -83,6 +83,11 @@ export default {
       allFollowedArtists(newValue){
         this.cardItems.items = newValue
       }
-  },
+      this.contextMenuChoice = null;
+    },
+    allFollowedArtists(newValue) {
+      this.cardItems.items = newValue;
+    }
+  }
 };
 </script>

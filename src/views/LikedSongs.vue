@@ -97,6 +97,8 @@
 import Song from "../components/general/Song";
 import { mapState, mapActions } from "vuex";
 import getDeviceSize from "../mixins/getDeviceSize";
+import getuserToken from "../mixins/userService";
+
 /**
  * @displayName Liked Songs
  * @example [none]
@@ -114,19 +116,19 @@ export default {
   methods: {
     ...mapActions("category", ["getTracks"])
   },
-  created: function(){
-     this.$store.dispatch("track/getTrack",1);
-     this.$store.dispatch("track/checkSaved",[4]);
-     this.$store.dispatch("track/removeSavedTrack",[1]);
-     this.$store.dispatch("track/saveTrack",[5]);
+  created: function() {
+    //this.$store.dispatch("track/getTrack", 1);
+    this.getTracks(this.getuserToken());
   },
   mounted() {
-    this.getTracks();
+    this.$root.$on("updateContent", () => {
+      this.getTracks(this.getuserToken());
+    });
   },
   computed: mapState({
     tracks: state => state.category.tracks
   }),
-  mixins: [getDeviceSize]
+  mixins: [getDeviceSize, getuserToken]
 };
 </script>
 

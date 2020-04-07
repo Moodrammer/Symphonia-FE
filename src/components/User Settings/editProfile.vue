@@ -6,6 +6,8 @@
         <h1>Edit Profile</h1>
       </div>
       <div class="form-container">
+        <div class="alert-success" v-show="Done">Profile updated</div>
+        <div class="alert-danger" v-show="error">Sorry,Profile isn't updated</div>
         <!-- here we take the changes for both users facebook & normal ones to change the profile -->
         <form action="#">
           <!-- The name content -->
@@ -14,61 +16,100 @@
             <input
               type="email"
               class="text"
-              v-model="user.email"
+              v-model="user.userEmail"
               v-show="!facebook"
             />
-            <p v-show="facebook">{{ user.email }}</p>
+            <p v-show="facebook">{{ user.userEmail }}</p>
+          </div>
+          <!-- The password content -->
+          <div class="form-group" v-show="!facebook">
+            <label for="email">Current password</label>
+            <input
+              type="password"
+              class="text"
+              v-model="user.password"
+              v-show="!facebook"
+              :disabled="needPassword"
+            />
           </div>
           <!-- The gender content -->
           <div class="form-group">
             <label for="gender">Gender</label>
-            <input
-              type="text"
-              class="text"
-              v-model="user.gender"
+            <select
+              id="gender"
+              required
               v-show="!facebook"
-            />
-            <p v-show="facebook">{{ user.gender }}</p>
+              v-model="user.userGender"
+            >
+              <option value="male" :selected="gender">Male</option>
+              <option value="female" :selected="!gender">Female</option>
+            </select>
+            <p v-show="facebook">{{ user.userGender }}</p>
           </div>
           <!-- The date of birth content -->
           <div class="form-group">
             <label for="bod">Date of birth</label>
-            <input
-              type="date"
-              class="text"
-              v-model="user.date"
-              v-show="!facebook"
-            />
-            <p v-show="facebook">{{ user.date }}</p>
+            <div class="row">
+              <div class="col-4" v-show="!facebook">
+                <select
+                  id="month"
+                  class="date"
+                  v-model="selectedMonth"
+                >
+                  <option
+                    v-for="month in months"
+                    :key="month.value"
+                    :selected="month.selected"
+                    :value="month.value"
+                    >{{ month.value }}</option
+                  >
+                </select>
+              </div>
+              <div class="col-4" v-show="!facebook">
+                <select  id="day" class="date" v-model="selectedDay">
+                  <option
+                    v-for="day in days"
+                    :key="day.value"
+                    :selected="day.selected"
+                    :value="day.value"
+                    >{{ day.value }}</option
+                  >
+                </select>
+              </div>
+              <div class="col-4" v-show="!facebook">
+                <select
+                  id="year"
+                  class="date"
+                  v-model="selectedYear"
+                >
+                  <option
+                    v-for="year in years"
+                    :key="year.value"
+                    :selected="year.selected"
+                    :value="year.value"
+                    >{{ year.value }}</option
+                  >
+                </select>
+              </div>
+            </div>
+            <p v-show="facebook">{{ user.userDOB }}</p>
           </div>
           <!-- The country content -->
           <div class="form-group">
             <label for="country">Country</label>
-            <select name="country" id="country" required>
-              <option value="EG" selected>{{ user.country }}</option>
+            <select id="country" required>
+              <option value="EG" selected>{{ user.userCountry }}</option>
             </select>
           </div>
           <!-- The mobile content -->
           <div class="form-group">
             <label for="mobile">Mobile phone number</label>
-            <input type="text" class="text" required v-model="user.mobile" />
-          </div>
-          <!-- One more option to check -->
-          <div class="form-group">
-            <label for="text" class="checkbox">
-              <v-checkbox
-                class="checkbox-input"
-                v-model="share"
-                color="green"
-                label="Share my registration data with Symphonia's content providers for
-              marketing purposes."
-              ></v-checkbox>
-            </label>
+            <input type="text" class="text" v-model="user.mobile" />
           </div>
           <div class="button-col">
             <!-- get the changes or cancel it -->
-            <button>save profile</button>
-            <a href="/" class="a-cancel">cancel</a>
+            <button @click="submit">save profile</button>
+            <a href="/account/" class="a-cancel">cancel</a>
           </div>
         </form>
       </div>
@@ -82,23 +123,101 @@ import bottomContent from "./bottomContent.vue";
 export default {
   data() {
     return {
-      user: {
-        email: "example@temp.com",
-        date: "12 19 98",
-        country: "EG",
-        gender: "",
-        form: "facebook"
-      },
+      user: {},
+      // If the user from facebook ,user can't edit some data
       facebook: false,
-      share: false
+      //if the gender Male is true , Female is false
+      gender: true,
+      //if the email is same we don't need the needPassword to access any change so it's true(disabled)
+      prevEmail: "",
+      //used for the display of  date options
+      days: [],
+      months: [],
+      years: [],
+      // The selected option for date
+      selectedDay: "",
+      selectedMonth: "",
+      selectedYear: "",
+      // to know the success or failure message
+      Done: false,
+      error: false
     };
   },
   components: {
+    // The review section
     bottomContent: bottomContent
   },
   created() {
-    if (this.user.form === "facebook") {
-      this.facebook = true;
+    //TODO :: check the user if from facebook or not
+    this.facebook = false;
+    // Get the user's data
+    this.$store
+      .dispatch("userData")
+      .then(() => {
+        // If we got it set it into the data to display the user's info
+        this.user = this.$store.state.user;
+        this.user.mobile = "";
+        this.prevEmail = this.$store.state.user.userEmail;
+        this.selectedDay = this.$store.state.user.userDOB.slice(8, 10);
+        this.selectedMonth = this.$store.state.user.userDOB.slice(5, 7);
+        this.selectedYear = this.$store.state.user.userDOB.slice(0,4);
+        let counter = {};
+        for (let i = 0; i < 31; i++) {
+          counter = {
+            value: i + 1,
+            selected: i + 1 == this.selectedDay ? true : false
+          };
+          this.days.push(counter);
+        }
+        for (let i = 0; i < 12; i++) {
+          counter = {
+            value: i + 1,
+            selected: i + 1 == this.selectedMonth ? true : false
+          };
+          this.months.push(counter);
+        }
+        for (let i = 1940; i <= 2020; i++) {
+          counter = {
+            value: i,
+            selected: i == this.selectedYear ? true : false
+          };
+          this.years.push(counter);
+        }
+      })
+      .catch(err => console.log(err));
+  },
+  computed: {
+    // Use this function to aask for password if the email is chaneged
+    needPassword: function() {
+      if (this.user.userEmail == this.prevEmail) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+  methods: {
+    // Used to update as V-model for the user's Date of Brith
+    selectedDate: function() {
+      this.user.userDOB =
+        this.selectedYear + "-" + this.selectedMonth + "-" + this.selectedDay;
+    },
+    submit: function() {
+      this.selectedDate();
+      this.$store.dispatch("updateProfile",{
+        email: this.user.userEmail,
+        gender: this.user.userGender,
+        dateOfBirth: this.user.userDOB,
+        phone: this.user.mobile,
+        password: this.user.password
+      }).then(() => {
+          this.Done = true;
+        })
+        .catch(err => {
+          console.log(err);
+          this.error = true;
+        });
+      console.log(this.user);
     }
   }
 };
@@ -378,5 +497,130 @@ button {
   user-select: none;
   text-decoration: none;
   background-color: transparent;
+}
+#gender {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("https://img.icons8.com/ios/90/000000/expand-arrow--v2.png");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  color: #222326;
+  padding-right: 48px;
+  text-indent: 0.01px;
+  text-overflow: "";
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-transition: border-color ease-in-out 0.15s,
+    box-shadow ease-in-out 0.15s;
+  -webkit-transition: border-color ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 12px;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #fff;
+  border: 1px solid #d9dadc;
+  border-radius: 0;
+  text-transform: none;
+  margin: 0;
+}
+#gender::placeholder {
+  transition: color 0.15s ease-in-out;
+  color: #c1c3c6;
+  opacity: 1;
+}
+#gender:focus {
+  border-color: #919496;
+  outline: 0;
+  box-shadow: none;
+}
+input[disabled] {
+  color: #c1c3c6;
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: #fafafa;
+  opacity: 1;
+}
+.date {
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  color: #222326;
+  padding-right: 48px;
+  text-indent: 0.01px;
+  text-overflow: "";
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  background-image: url("https://img.icons8.com/ios/90/000000/expand-arrow--v2.png");
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition: border-color ease-in-out 0.15s,
+    box-shadow ease-in-out 0.15s;
+  -webkit-transition: border-color ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s,
+    -webkit-box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 12px;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #fff;
+  border: 1px solid #d9dadc;
+  border-radius: 0;
+  margin: 0;
+}
+.alert-success {
+  border-width: 0;
+  font-size: 12px;
+  padding: 14px 14px 12px 14px;
+  font-weight: 400;
+  background-color: #1ed760;
+  border-color: #1ed760;
+  color: #fff;
+  margin-bottom: 24px;
+  border-style: solid;
+  border-image-outset: 0;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1;
+  border-radius: 0;
+}
+.alert-danger {
+  border-width: 0;
+  font-size: 12px;
+  padding: 14px 14px 12px 14px;
+  font-weight: 400;
+  background-color: #d71e1e;
+  border-color: #d71e1e;
+  color: #fff;
+  margin-bottom: 24px;
+  border-style: solid;
+  border-image-outset: 0;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1;
+  border-radius: 0;
 }
 </style>

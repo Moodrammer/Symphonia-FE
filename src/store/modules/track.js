@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = localStorage.getItem("userToken");
+const token = window.sessionStorage.getItem("userToken");
 
 const state = {
   trackName: "",
@@ -9,30 +9,37 @@ const state = {
   trackId: null,
   imageUrl: null,
   trackAlbumId: null,
-  trackArtists: []
+  trackArtists: [],
+  generalLiked: null
 };
 
 const mutations = {
   setTrackData( state ,payload) {
     state.trackName=payload.name;
-    state.trackUrl=payload.href;
-    state.trackArtists=payload.artists;
-    state.imageUrl=payload.album.images[0].url;
-    state.trackAlbumId=payload.album.id;
   },
-  setLiked( state , payload) {
-    state.liked=payload;
+  setLiked(state, payload) {
+    if (payload.id == state.trackId) state.liked = payload.status;
+    state.generalLiked = payload.status;
   },
-  unlikeTrack( state) {
-    state.liked=false;
+  unlikeTrack(state, id) {
+    if (id == state.trackId) state.liked = false;
+    state.generalLiked = false;
   },
-  likeTrack( state ) {
-    state.liked=true;
+  likeTrack(state, id) {
+    if (id == state.trackId) state.liked = true;
+    state.generalLiked = true;
+  },
+  setTrackUrl(state, trackUrl) {
+    state.trackUrl = trackUrl;
+  },
+  setID(state, id) {
+    state.trackId = id;
   }
 };
 
 const actions = {
-  getTrack({ commit }, id) {
+  async getTrack({ commit }, id) {
+    await commit("setID", id);
     axios
       .get("/v1/users/track/" + id, {
         headers: {
@@ -48,56 +55,58 @@ const actions = {
         console.log(error);
       });
   },
-  checkSaved({ commit }, id) {
-
+  checkSaved({ commit }, payload) {
     axios
-      .get("/v1/me/tracks/contains?ids="+id, {
+      .get("/v1/me/tracks/contains?ids=" + payload.id, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${payload.token}`
         }
       })
       .then(response => {
-        let liked=response.data;
-        commit("setLiked",liked);
+        let liked = response.data;
+        commit("setLiked", { status: liked, id: payload.id });
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
   },
-  removeSavedTrack({commit}, id) {
+  removeSavedTrack({ commit }, payload) {
     axios
-    .delete("/v1/me/tracks",{
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      data: id
-    })
-    .then(() => {
-   //   if(id[0]==state.trackId)           //comment it for now
-     commit("unlikeTrack");
-    })
-    .catch(error => {
-      console.log("axios caught an error");
-      console.log(error);
-    })
-  },
-  saveTrack({ commit } ,id) {
-    axios
-      .put("/v1/me/tracks",{
+      .delete("/v1/me/tracks", {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${payload.token}`
         },
-        data: id
+        data: payload.id
       })
       .then(() => {
-        //if(id[0]==state.trackId)
-        commit("likeTrack");
+        //   if(id[0]==state.trackId)           //comment it for now
+        commit("unlikeTrack", payload.id);
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
+      });
+  },
+  saveTrack({ commit }, payload) {
+    axios
+      .put(
+        "/v1/me/tracks",
+        { data: payload.id },
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`
+          }
+        }
+      )
+      .then(() => {
+        //if(id[0]==state.trackId)
+        commit("likeTrack", payload.id);
       })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
   }
 };
 

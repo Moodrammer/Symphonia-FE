@@ -87,8 +87,7 @@ const getters = {
     });
     return albums;
   }
-}
-
+};
 
 
 const actions = {
@@ -118,7 +117,7 @@ const actions = {
         headers: {
           Authorization: `Bearer ${payload.token}`
         },
-        params: { type: 'artist' }
+        params: { type: "artist" }
       })
       .then(response => { console.log("Saad art",response); commit("load_followedArtists", response.data);} )
       .catch(error => {
@@ -219,7 +218,7 @@ const actions = {
       .catch(error => {
         console.log("axios caught an error in unfollowArtist");
         console.log(error);
-      })
+      });
   }
 };
 

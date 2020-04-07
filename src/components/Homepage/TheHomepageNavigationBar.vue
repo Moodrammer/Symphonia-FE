@@ -19,11 +19,7 @@
         }"
       >
         <router-link to="/" style="text-decoration: none;">
-          <v-img
-            src="/s11.png"
-            max-width="50px"
-            style="float: left;"
-          ></v-img>
+          <v-img src="/s11.png" max-width="50px" style="float: left;"></v-img>
           <h1 style="display: inline;" display-4 class="black--text">
             Symphonia
           </h1>
@@ -80,10 +76,7 @@
                 class="toolbar-link-1 blue-hover"
               >
                 <v-avatar width="40" height="40">
-                  <img
-                    src="/profile.jpg"
-                    alt="profile pic"
-                  />
+                  <img src="/profile.jpg" alt="profile pic" />
                 </v-avatar>
 
                 <span style="text-transform: none; padding-left:15px;"
@@ -140,10 +133,7 @@
           <v-col cols="1">
             <router-link to="/account">
               <v-avatar v-if="isLoggedIn()" width="34" height="34">
-                <img
-                  src="/profile.jpg"
-                  alt="profile pic"
-                />
+                <img src="/profile.jpg" alt="profile pic" />
               </v-avatar>
             </router-link>
           </v-col>
@@ -226,12 +216,7 @@
         class="small-symphonia-icon"
         style="text-decoration: none;"
       >
-        <v-img
-          src="/s11.png"
-          max-width="50px"
-          style="float: left;"
-        >
-        </v-img>
+        <v-img src="/s11.png" max-width="50px" style="float: left;"> </v-img>
         <h1 style="display: inline;" display-4 class="white--text">
           Symphonia
         </h1>

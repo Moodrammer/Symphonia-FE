@@ -17,6 +17,8 @@ if (process.env.NODE_ENV === "development") {
 //configure axios base url
 // axios.defaults.baseURL = "https://zasymphonia.ddns.net/api";
 axios.defaults.baseURL = "/api";
+//axios.defaults.baseURL = "http://localhost:3000/api"
+//axios.defaults.headers.common['Authorization'] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlODJhNDgwNTQ2NjA2NzJmZDY5OTg4MyIsImlhdCI6MTU4NTg3NzMxOCwiZXhwIjoxNTg1ODgwOTE4fQ.6AylaCVfdT-M-BXyPik_Xc7DPJd_Os9W2fUnmKhovEA";
 
 new Vue({
   router,

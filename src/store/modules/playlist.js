@@ -5,9 +5,8 @@ const state = {
   playlists: [],
   audio: undefined,
   paused: true,
-  songLink: "",
   isQueueOpened: false,
-  isSongLoaded: false,
+  isSongLoaded: false
 };
 
 const mutations = {
@@ -31,9 +30,6 @@ const mutations = {
     state.paused = !state.paused;
     state.paused ? state.audio.pause() : state.audio.play();
   },
-  setSongLink(state, songLink) {
-    state.songLink = songLink;
-  },
   setIsQueueOpened(state, isQueueOpened) {
     state.isQueueOpened = isQueueOpened;
   },
@@ -49,30 +45,29 @@ const getters = {
   paused(state) {
     return state.paused;
   },
-  songLink(state) {
-    return state.songLink;
-  },
   isQueueOpened(state) {
     return state.isQueueOpened;
   },
   isSongLoaded(state) {
     return state.isSongLoaded;
   },
-  likedPlaylists: state => state.likedPlaylists,
+  likedPlaylists: state => state.likedPlaylists
 };
-
-const token = localStorage.getItem("userToken");
-//const user_id = localStorage.getItem("userID");
 
 const actions = {
   createPlaylist({ commit }, payload) {
     axios
-      .post("/v1/users/" + payload.id + "/playlists",{name: payload.name}, {
-        headers: {
-          Authorization: `Bearer ${payload.token}`
-        }})
+      .post(
+        "/v1/users/" + payload.id + "/playlists",
+        { name: payload.name },
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`
+          }
+        }
+      )
       .then(response => {
-        var newPlaylist = response.data;
+        var newPlaylist = response.data.playlist;
         commit("add_playlist", newPlaylist);
       })
       .catch(error => {
@@ -83,11 +78,11 @@ const actions = {
 
   // getPlayslist works for (Get a List of Current User's Playlists) when nothing send in the parameter 'user'
   // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
-  async getPlaylists({ commit }) {
+  async getPlaylists({ commit }, payload) {
     await axios
       .get("/v1/me/playlists", {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${payload}`
         }
       })
       .then(response => {
@@ -99,7 +94,7 @@ const actions = {
             image: element.images[0].url,
             description: element.description,
             id: element.id,
-            url: "url to be added"
+            url: element.href
           };
           newList.push(k);
         });

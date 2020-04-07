@@ -8,11 +8,12 @@
             Premium lets you play any song, anytime. You can even listen when
             you’re offline. No restrictions. No ads.
           </p>
-          <button class="btn-theme">
+          <button class="btn-theme hidden-xs-only" href="/premium/?checkout=false">
             Get Premium
           </button>
         </div>
         <div class="col-sm-4">
+          <!-- <a href="#" class="btn-theme-2 hidden-sm-and-up">Get Premium</a> -->
           <img
             src="//www.scdn.co/i/account/overview/iphone-ddd9e69.png"
             class="jumbotron-image"
@@ -156,5 +157,46 @@ p {
   padding-top: 0;
   padding-bottom: 0;
   box-sizing: border-box;
+}
+.btn-theme-2 {
+  -webkit-transform: translate(-50%, 50%) scale(1.04) !important;
+  transform: translate(-50%, 50%) scale(1.04) !important;
+  background-color: #1db954;
+  color: #fff;
+  border-radius: 100px;
+  min-height: 48px;
+  display: block;
+  width: 100%;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  padding: 1em 3em;
+  border: none;
+  -webkit-transition-duration: 33ms;
+  transition-duration: 33ms;
+  -webkit-transition-property: background-color, border-color, color,
+    -webkit-box-shadow, -webkit-filter, -webkit-transform;
+  transition-property: background-color, border-color, color, -webkit-box-shadow,
+    -webkit-filter, -webkit-transform;
+  transition-property: background-color, border-color, color, box-shadow, filter,
+    transform;
+  transition-property: background-color, border-color, color, box-shadow, filter,
+    transform, -webkit-box-shadow, -webkit-filter, -webkit-transform;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-decoration: none;
+  cursor: pointer;
+  max-width: none;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  right: -50%;
+  z-index: 1;
+  display: block !important;
 }
 </style>

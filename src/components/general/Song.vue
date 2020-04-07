@@ -7,7 +7,7 @@
     <v-icon
       class="mr-2 pb-9"
       v-if="hover && !disabled"
-      v-bind:class="{ enabled: !playing, 'playing': playing }"
+      v-bind:class="{ enabled: !playing, playing: playing }"
       >mdi-play</v-icon
     >
     <v-icon
@@ -15,7 +15,7 @@
       v-bind:class="{
         'disabled-1': disabled,
         enabled: !disabled && !playing,
-        'playing': playing
+        playing: playing
       }"
       v-else
     >
@@ -26,7 +26,7 @@
       v-bind:class="{
         'disabled-1': disabled,
         'white--text': !disabled && !playing,
-        'playing': playing
+        playing: playing
       }"
     >
       {{ songName }}
@@ -49,7 +49,7 @@
     <v-menu offset-x>
       <template v-slot:activator="{ on }">
         <!--Icon to activate the menu-->
-        <div v-on="on">
+        <div v-on="on" v-on:click="checkLiked">
           <v-icon color="white" class="mx-2" v-if="hover">
             mdi-dots-horizontal
           </v-icon>
@@ -57,10 +57,40 @@
       </template>
 
       <!--Menu list-->
-      <v-list color="#282828" dark class="mt-3">
-        <v-list-item v-for="item in menuItems" :key="item.text">
-          <v-list-item-title class="draweritem white--text">
-            {{ item }}
+      <v-list color="#282828" dark class="mt-3 white--text">
+        <v-list-item>
+          <v-list-item-title class="draweritem">
+            Start Radio
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-list-item v-if="!liked">
+          <v-list-item-title class="draweritem">
+            Save to your Liked Songs
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-list-item v-if="liked" @click="deleteSong">
+          <v-list-item-title class="draweritem">
+            Remove from your Liked Songs
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-title class="draweritem">
+            Add to Queue
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-title class="draweritem">
+            Add to Playlist
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-title class="draweritem">
+            Copy Song Link
           </v-list-item-title>
         </v-list-item>
       </v-list>
@@ -71,6 +101,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import getuserToken from "../../mixins/userService";
 /**
  * @example [none]
  */
@@ -92,13 +124,6 @@ export default {
   },
   data: function() {
     return {
-      menuItems: [
-        "Start Radio",
-        "Remove from your Liked Songs",
-        "Add to Queue",
-        "Add to Playlist",
-        "Copy Song Link"
-      ],
       hover: "false",
       min: 0,
       sec: 0
@@ -117,8 +142,31 @@ export default {
     convert: function(val) {
       this.min = Math.floor((val / 1000 / 60) << 0);
       this.sec = Math.floor((val / 1000) % 60);
+    },
+    deleteSong: function() {
+      this.$store.dispatch("track/removeSavedTrack", {
+        id: [this.id],
+        token: this.getuserToken()
+      });
+      this.$root.$emit("updateContent");
+    },
+    checkLiked: function() {
+      this.$store.dispatch("track/checkSaved", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+    },
+    likeSong: function() {
+      this.$store.dispatch("track/saveTrack", {
+        id: [this.id],
+        token: this.getuserToken()
+      });
     }
-  }
+  },
+  computed: mapState({
+    liked: state => state.track.generalLiked
+  }),
+  mixins: [getuserToken]
 };
 </script>
 
