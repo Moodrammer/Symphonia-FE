@@ -97,7 +97,8 @@ const actions = {
         }
       })
       .then(response => {
-        let list = response.data;
+        let list = response.data.items;
+        console.log(list);
         let newList = [];
         list.forEach(element => {
           var k = {
@@ -105,7 +106,7 @@ const actions = {
             image: element.images[0],
             description: element.description,
             id: element.id,
-            url: element.href,
+            url: "to be added",
             type: "playlist"
           };
           newList.push(k);

@@ -176,7 +176,13 @@ export function makeServer({ environment = "development" } = {}) {
       //Get a List of Current User's Playlists
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/playlists", schema => {
-        return schema.playlists.where({ liked: true }).models;
+        return new Response(
+          200,
+          {},
+          {
+            items: schema.playlists.where({ liked: true }).models
+          }
+        );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a User's Saved Tracks                "Liked Songs"
@@ -553,6 +559,7 @@ export function makeServer({ environment = "development" } = {}) {
     }
   });
 
+  //server.shutdown();
 
   return server;
 }
