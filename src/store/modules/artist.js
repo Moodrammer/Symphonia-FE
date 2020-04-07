@@ -15,13 +15,14 @@ const mutations = {
   load_artistAlbums:(state, list) => state.artistAlbums = list,
   load_artistTopTracks: (state, list) => state.artistTopTracks = list,
   load_artistRelatedArtists: (state, list) => state.artistRelatedArtists = list,
-  load_currentArtist: (state, list) => state.currentArtist = list,
+  load_currentArtist: (state, artist) => state.currentArtist = artist,
 };
 
 const getters = {
 
-  currentArtistgetter: (state) => {
-    console.log(state.currentArtist)
+  currentArtistGetter: (state) => {
+    console.log("haha",state.currentArtist)
+    return state.currentArtist
   },
 
   allArtistTopTracks: (state) => {

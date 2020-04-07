@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 //configure axios base url
-// axios.defaults.baseURL = "http://ec2-52-21-160-186.compute-1.amazonaws.com/api";
+// axios.defaults.baseURL = "https://zasymphonia.ddns.net/api";
 axios.defaults.baseURL = "/api";
 
 new Vue({

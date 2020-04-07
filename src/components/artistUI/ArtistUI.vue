@@ -36,13 +36,30 @@
 
 <script>
 import getuserToken from "../../mixins/userService";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  components: {
+  computed: mapGetters(["currentArtistGetter"]),
+  methods:{
+    ...mapActions(["getCurrentArtist"]),
+  },
+  created(){
+    try{
+      this.getCurrentArtist({token: this.getuserToken(), id: this.$route.params.id})
+    }catch(error){
+      console.log(error)
+    }
+
+  },
+  watch: {
+    currentArtistGetter: function(newValue){
+      console.log("saad",newValue)
+      this.artist = newValue;
+    }
   },
   data: function(){
     return{
-      image: "https://amrdiab.net/wp-content/uploads/2016/04/AhlaWAhla-2News.jpg",
+      artist: null,
     }
   },
   mixins: [getuserToken], 

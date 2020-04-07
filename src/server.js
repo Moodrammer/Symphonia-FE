@@ -244,6 +244,12 @@ export function makeServer({ environment = "development" } = {}) {
         return schema.artistAlbums.all().models
       });
 
+      this.get("/v1/artists/:id", (schema, request) => {
+        let id=request.params.id
+        return schema.artists.findBy(artist => artist.id === id)
+      });
+
+
       this.delete("/v1/me/albums", (schema, request) => {
 
         var x = '';
