@@ -155,7 +155,7 @@ const actions = {
                 })
                 .then(response => {
                     // the user is exist then put his data in the status to make the view take the required data
-                    if (response.status == 200) {
+                    if (response.status == 200 || response.status == 201) {
                         let user = {
                             token: token,
                             user: {
@@ -203,7 +203,7 @@ const actions = {
                 })
                 .then(response => {
                     // check that the changes are done to make success alert
-                    if (response.status == 201) {
+                    if (response.status == 201 || response.status == 200) {
                         resolve(true);
                     }
                 })
@@ -240,7 +240,7 @@ const actions = {
                 })
                 .then(response => {
                     // check that the changes are done to make success alert
-                    if (response.status == 201) {
+                    if (response.status == 201 || response.status == 200) {
                         //create user object to send it to the setter
                         let user = {
                             token: state.userToken,

@@ -213,11 +213,9 @@ export default {
       }).then(() => {
           this.Done = true;
         })
-        .catch(err => {
-          console.log(err);
+        .catch(() => {
           this.error = true;
         });
-      console.log(this.user);
     }
   }
 };
