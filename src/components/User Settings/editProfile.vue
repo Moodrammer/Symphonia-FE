@@ -200,7 +200,7 @@ export default {
     // Used to update as V-model for the user's Date of Brith
     selectedDate: function() {
       this.user.userDOB =
-        this.selectedDay + "-" + this.selectedMonth + "-" + this.selectedYear;
+        this.selectedYear + "-" + this.selectedMonth + "-" + this.selectedDay;
     },
     submit: function() {
       this.selectedDate();

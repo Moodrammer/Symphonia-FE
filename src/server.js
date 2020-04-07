@@ -27,7 +27,7 @@ export function makeServer({ environment = "development" } = {}) {
                 name: "Bobuser",
                 email: "Bob@gmail.com",
                 password: "12345678",
-                DateOfBirth: "1980-12-12",
+                dateOfBirth: "1980-12-12",
                 gender: "male",
                 type: "user",
                 country: "EG"
@@ -37,7 +37,7 @@ export function makeServer({ environment = "development" } = {}) {
                 name: "artistic",
                 email: "artist@gmail.com",
                 password: "12345678",
-                DateOfBirth: "1995-12-18",
+                dateOfBirth: "1995-12-18",
                 gender: "male",
                 type: "artist",
                 country: "EG"

@@ -136,7 +136,7 @@ const actions = {
     },
     // Send the current user's data to the views
 
-    userData({ commit, state }) {
+    userData({ commit }) {
         let token;
         //If the user checks rememberMe his token will be found in the localStorage
         if (localStorage.getItem("userToken") != null) {
@@ -157,7 +157,7 @@ const actions = {
                     // the user is exist then put his data in the status to make the view take the required data
                     if (response.status == 200) {
                         let user = {
-                            token: state.userToken,
+                            token: token,
                             user: {
                                 _id: response.data.id,
                                 name: response.data.name,
@@ -166,9 +166,9 @@ const actions = {
                         };
                         // set the data to the status that came from the response
                         commit("setUserData", user);
-                        commit("setCountry", response.data.country);
+                        commit("setCountry", "EG");
                         commit("setGender", response.data.gender);
-                        commit("setuserDOB", response.data.DateOfBirth);
+                        commit("setuserDOB", response.data.dateOfBirth);
                         resolve(true);
                     }
                 })
@@ -192,13 +192,14 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios
                 .patch("/v1/users/updatepassword", {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    },
                     id: payload.id,
                     password: payload.password,
                     passwordConfirm: payload.passwordConfirm,
                     passwordCurrent: payload.passwordCurrent
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 })
                 .then(response => {
                     // check that the changes are done to make success alert
@@ -227,14 +228,15 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios
                 .put("/v1/me", {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    },
                     email: payload.email,
                     gender: payload.gender,
                     dateOfBirth: payload.dateOfBirth,
                     phone: payload.phone,
                     name: state.username
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 })
                 .then(response => {
                     // check that the changes are done to make success alert
