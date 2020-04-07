@@ -209,15 +209,17 @@ const actions = {
     await axios
       .get("v1/browse/categories/" + category_id + "/playlists")
       .then(async response => {
-        let genreList = response.data;
+        let genreList = response.data.playlists.items;
+        console.log(genreList);
         let newList = [];
         for (let index = 0; index < genreList.length; index++) {
           var k = {
             name: genreList[index].name,
-            image: genreList[index].images[0].url,
+            image: genreList[index].images[0],
             description: genreList[index].description,
             id: genreList[index].id,
-            url: genreList[index].href
+            url: genreList[index].href,
+            type: "playlist"
           };
           newList.push(k);
         }
@@ -236,14 +238,13 @@ const actions = {
       .then(async response => {
         let genres = response.data;
         for (let i = 0; i < 4; i++) {
-          var id = genres.categories.items[i].id;
+          var id = genres.data.categorys[i].id;
           genres_ids.push(id);
         }
         for (let index = 0; index < genres_ids.length; index++) {
           await dispatch("getGenrePlaylists", genres_ids[index]);
         }
       })
-      //let genres_ids = ["pop", "folk", "rock", "jazz"];
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);

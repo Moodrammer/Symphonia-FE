@@ -105,7 +105,7 @@ export function makeServer({ environment = "development" } = {}) {
 
       albumsJSON.items.forEach(element => server.create("album", element));
 
-      categoryJSON.categories.items.forEach(element => {
+      categoryJSON.data.categorys.forEach(element => {
         server.create("category", element);
       });
     },
@@ -201,7 +201,15 @@ export function makeServer({ environment = "development" } = {}) {
         "v1/browse/categories/:category_id/playlists",
         (schema, request) => {
           let id = request.params.category_id;
-          return schema.playlists.where({ genre: id }).models;
+          return new Response(
+            200,
+            {},
+            {
+              playlists: {
+                items: schema.playlists.where({ genre: id }).models
+              }
+            }
+          );
         }
       );
       ///////////////////////////////////////////////////////////////////////////////////

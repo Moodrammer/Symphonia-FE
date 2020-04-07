@@ -90,6 +90,7 @@
                 @mouseover="cardHover(index, item.id)"
                 @mouseleave="cardItems.hoveredCardIndex = null"
                 dark
+                :to="item.type + '/' + item.id"
               >
                 <!-- card image -->
 

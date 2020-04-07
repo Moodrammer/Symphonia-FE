@@ -1,6 +1,7 @@
-{
-  "categories": {
-  "items": [
+{ 
+  "data":{
+  "categorys": 
+   [
     {
       "href": "https://api.symphonia.com/v1/browse/categories/pop",
       "icons": [
@@ -50,5 +51,5 @@
       "name": "Folk"
     }
     ]
-  }
+}
 }

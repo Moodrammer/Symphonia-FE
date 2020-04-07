@@ -11,9 +11,7 @@
     },
     "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
-      {
-        "url": "http://source.unsplash.com/PsEXbDsSlV4"
-      }
+        "http://source.unsplash.com/PsEXbDsSlV4"
     ],
     "name": "QuranPlaylist1",
     "owner": {
@@ -79,9 +77,7 @@
     },
   "href": "https://api.symphonia.com/v1/users/symphonia/playlists/2",
   "images": [
-      {
-      "url": "http://source.unsplash.com/Az_mSeq7vQQ"
-      }
+       "http://source.unsplash.com/Az_mSeq7vQQ"
     ],
   "name": "QuranPlaylist2",
   "owner": {
@@ -148,9 +144,7 @@
     },
   "href": "https://api.symphonia.com/v1/users/symphonia/playlists/3",
   "images": [
-      {
-      "url": "http://source.unsplash.com/yrVv6pwVp78"
-      }
+      "http://source.unsplash.com/yrVv6pwVp78"
     ],
   "name": "QuranPlaylist3",
   "owner": {
@@ -217,9 +211,7 @@
     },
     "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
-      {
-        "url": "http://source.unsplash.com/mp_FNJYcjBM"
-      }
+         "http://source.unsplash.com/mp_FNJYcjBM"
     ],
     "name": "New Playlist",
     "owner": {
@@ -286,9 +278,7 @@
     },
     "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
-      {
-        "url": "http://source.unsplash.com/S4KVecxgCDo"
-      }
+        "http://source.unsplash.com/S4KVecxgCDo"
     ],
     "name": "NewPlaylist",
     "owner": {
@@ -355,9 +345,7 @@
     },
     "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
-      {
-        "url": "http://source.unsplash.com/zm42KtKcn9c"
-      }
+        "http://source.unsplash.com/zm42KtKcn9c"
     ],
     "name": "New Playlist2",
     "owner": {
@@ -424,9 +412,7 @@
     },
     "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
-      {
-        "url": "http://source.unsplash.com/wf0c0d-h2fE"
-      }
+        "http://source.unsplash.com/wf0c0d-h2fE"
     ],
     "name": "New Playlist3",
     "owner": {
@@ -493,9 +479,7 @@
     },
     "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
-      {
-        "url": "http://source.unsplash.com/cZWZjymwI9o"
-      }
+        "http://source.unsplash.com/cZWZjymwI9o"
     ],
     "name": "New Playlist4",
     "owner": {
@@ -562,9 +546,7 @@
     },
     "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
-      {
-        "url": "http://source.unsplash.com/SBIak0pKUIE"
-      }
+        "http://source.unsplash.com/SBIak0pKUIE"
     ],
     "name": "New Playlist4",
     "owner": {
@@ -631,9 +613,7 @@
     },
     "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
-      {
-        "url": "http://source.unsplash.com/vISNAATFXlE"
-      }
+        "http://source.unsplash.com/vISNAATFXlE"
     ],
     "name": "New Playlist5",
     "owner": {
@@ -700,9 +680,7 @@
     },
     "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
-      {
-        "url": "http://source.unsplash.com/NCNzK2vVnpI"
-      }
+         "http://source.unsplash.com/NCNzK2vVnpI"
     ],
     "name": "NewPlaylist2",
     "owner": {

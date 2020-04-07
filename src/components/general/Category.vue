@@ -5,7 +5,7 @@
       <v-spacer></v-spacer>
       <router-link
         v-if="seeAll"
-        v-bind:to="'genre/' + id"
+        v-bind:to="'/genre/' + id"
         class="white--text mt-3"
       >
         <p id="seeAll">SEE ALL</p>
