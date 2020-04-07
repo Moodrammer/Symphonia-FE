@@ -192,7 +192,7 @@
 
           <!-- devices -->
 
-          <v-menu
+          <!-- <v-menu
             offset-y
             top
             transition="slide-y-transition"
@@ -225,7 +225,7 @@
                 >
               </v-list-item>
             </v-list>
-          </v-menu>
+          </v-menu> -->
 
           <!-- mute -->
           <a
@@ -266,6 +266,8 @@
 
 import { mapMutations, mapGetters, mapActions, mapState } from "vuex";
 import axios from "axios";
+import getuserToken from "../../mixins/userService";
+
 //import io from 'socket.io-client';
 
 export const convertTimeHHMMSS = (val) => {
@@ -282,6 +284,8 @@ export const convertTimeHHMMSS = (val) => {
 export default {
   name: "soundplayer",
 
+  mixins: [getuserToken],
+  
   computed: {
     ...mapGetters("playlist", ["audio", "paused", "isQueueOpened"]),
 
@@ -323,9 +327,8 @@ export default {
 
       queueTracks: undefined,
 
-      //token: "Bearer " + window.sessionStorage.userToken,
-      token:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlOGJmNTQ3YTc5ZTg3M2EwZmU2YTFkOSIsImlhdCI6MTU4NjIzMDYwMCwiZXhwIjoxNzU5MDMwNjAwfQ.5E-WUS2_1t0Jk2XbdQ6vqT1UXD_siPuWZITQlvicKxQ",
+      token: undefined,
+        
       snackbar: false,
     };
   },
@@ -783,6 +786,8 @@ export default {
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
+      this.token = "Bearer " + this.getuserToken()
+      
       //get the device
       axios({
         method: "patch",
