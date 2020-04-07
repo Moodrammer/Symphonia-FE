@@ -8,7 +8,7 @@
       <div class="form-container">
         <div class="alert-success" v-show="Done">Password updated</div>
         <!-- here we take the changes for both users facebook & normal ones to change the profile -->
-        <form action="#">
+        <form @submit.prevent="check">
           <!-- The Current password content -->
           <div class="form-group">
             <label for="Current-password">Current password</label>
@@ -38,7 +38,7 @@
           </div>
           <div class="button-col">
             <!-- get the changes or cancel it -->
-            <button @click="check">save profile</button>
+            <button >save profile</button>
             <a href="/account/" class="a-cancel">cancel</a>
           </div>
         </form>

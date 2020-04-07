@@ -11,7 +11,7 @@
           Sorry,Profile isn't updated
         </div>
         <!-- here we take the changes for both users facebook & normal ones to change the profile -->
-        <form action="#">
+        <form @submit.prevent="submit">
           <!-- The name content -->
           <div class="form-group">
             <label for="email">Email</label>
@@ -178,7 +178,7 @@ export default {
           this.years.push(counter);
         }
       })
-      .catch(err => console.log(err));
+      .catch(() => (this.error = true));
   },
   computed: {
     // Use this function to aask for password if the email is chaneged
