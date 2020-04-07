@@ -135,10 +135,15 @@ const actions = {
         });
     },
     // Send the current user's data to the views
-    userData({ commit, state }, payload) {
+
+    userData({ commit, state }) {
         return new Promise((resolve, reject) => {
             axios
-                .get("/v1/users/" + payload)
+                .get("/v1/users/me", {
+                    headers: {
+                        Authorization: `Bearer ${state.userToken}`
+                    }
+                })
                 .then(response => {
                     // the user is exist then put his data in the status to make the view take the required data
                     if (response.status == 200) {
@@ -168,10 +173,56 @@ const actions = {
     updatePass({}, payload) {
         return new Promise((resolve, reject) => {
             axios
-                .patch("/v1/users/updatepassword", payload)
+                .patch("/v1/users/updatepassword", {
+                    headers: {
+                        Authorization: `Bearer ${state.userToken}`
+                    },
+                    id: payload.id,
+                    password: payload.password,
+                    passwordConfirm: payload.passwordConfirm,
+                    passwordCurrent: payload.passwordCurrent
+                })
                 .then(response => {
                     // check that the changes are done to make success alert
                     if (response.status == 201) {
+                        resolve(true);
+                    }
+                })
+                .catch(error => {
+                    // check if there is error to send danger alert
+                    reject(error);
+                });
+        });
+    },
+    // Update the current user's password 
+    // eslint-disable-next-line no-empty-pattern
+    updateProfile({ commit, state }, payload) {
+        return new Promise((resolve, reject) => {
+            axios
+                .put("/v1/me", {
+                    headers: {
+                        Authorization: `Bearer ${state.userToken}`
+                    },
+                    email: payload.email,
+                    gender: payload.gender,
+                    dateOfBirth: payload.dateOfBirth,
+                    phone: payload.phone,
+                    name: state.username
+                })
+                .then(response => {
+                    // check that the changes are done to make success alert
+                    if (response.status == 201) {
+                        let user = {
+                            token: state.userToken,
+                            user: {
+                                _id: state.userId,
+                                name: state.username,
+                                email: payload.email
+                            }
+                        };
+                        commit("setuserDOB", payload.dateOfBirth);
+                        commit("setUserData", user);
+                        commit("setGender", payload.gender);
                         resolve(true);
                     }
                 })

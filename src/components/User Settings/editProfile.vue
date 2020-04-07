@@ -6,6 +6,8 @@
         <h1>Edit Profile</h1>
       </div>
       <div class="form-container">
+        <div class="alert-success" v-show="Done">Profile updated</div>
+        <div class="alert-danger" v-show="error">Sorry,Profile isn't updated</div>
         <!-- here we take the changes for both users facebook & normal ones to change the profile -->
         <form action="#">
           <!-- The name content -->
@@ -14,10 +16,10 @@
             <input
               type="email"
               class="text"
-              v-model="user.email"
+              v-model="user.userEmail"
               v-show="!facebook"
             />
-            <p v-show="facebook">{{ user.email }}</p>
+            <p v-show="facebook">{{ user.userEmail }}</p>
           </div>
           <!-- The password content -->
           <div class="form-group" v-show="!facebook">
@@ -27,24 +29,33 @@
               class="text"
               v-model="user.password"
               v-show="!facebook"
-              :disabled="password"
+              :disabled="needPassword"
             />
           </div>
           <!-- The gender content -->
           <div class="form-group">
             <label for="gender">Gender</label>
-            <select name="gender" id="gender" required>
+            <select
+              id="gender"
+              required
+              v-show="!facebook"
+              v-model="user.userGender"
+            >
               <option value="male" :selected="gender">Male</option>
               <option value="female" :selected="!gender">Female</option>
             </select>
-            <p v-show="facebook">{{ user.gender }}</p>
+            <p v-show="facebook">{{ user.userGender }}</p>
           </div>
           <!-- The date of birth content -->
           <div class="form-group">
             <label for="bod">Date of birth</label>
             <div class="row">
               <div class="col-4" v-show="!facebook">
-                <select name="month" id="month" class="date">
+                <select
+                  id="month"
+                  class="date"
+                  v-model="selectedMonth"
+                >
                   <option
                     v-for="month in months"
                     :key="month.value"
@@ -55,7 +66,7 @@
                 </select>
               </div>
               <div class="col-4" v-show="!facebook">
-                <select name="day" id="day" class="date">
+                <select  id="day" class="date" v-model="selectedDay">
                   <option
                     v-for="day in days"
                     :key="day.value"
@@ -66,7 +77,11 @@
                 </select>
               </div>
               <div class="col-4" v-show="!facebook">
-                <select name="year" id="year" class="date">
+                <select
+                  id="year"
+                  class="date"
+                  v-model="selectedYear"
+                >
                   <option
                     v-for="year in years"
                     :key="year.value"
@@ -77,24 +92,24 @@
                 </select>
               </div>
             </div>
-            <p v-show="facebook">{{ user.date }}</p>
+            <p v-show="facebook">{{ user.userDOB }}</p>
           </div>
           <!-- The country content -->
           <div class="form-group">
             <label for="country">Country</label>
-            <select name="country" id="country" required>
-              <option value="EG" selected>{{ user.country }}</option>
+            <select id="country" required>
+              <option value="EG" selected>{{ user.userCountry }}</option>
             </select>
           </div>
           <!-- The mobile content -->
           <div class="form-group">
             <label for="mobile">Mobile phone number</label>
-            <input type="text" class="text" required v-model="user.mobile" />
+            <input type="text" class="text" v-model="user.mobile" />
           </div>
           <div class="button-col">
             <!-- get the changes or cancel it -->
-            <button>save profile</button>
-            <a href="/" class="a-cancel">cancel</a>
+            <button @click="submit">save profile</button>
+            <a href="/account/" class="a-cancel">cancel</a>
           </div>
         </form>
       </div>
@@ -108,55 +123,101 @@ import bottomContent from "./bottomContent.vue";
 export default {
   data() {
     return {
-      user: {
-        email: "example@temp.com",
-        date: "12 19 98",
-        country: "EG",
-        gender: "",
-        form: "normal"
-      },
+      user: {},
+      // If the user from facebook ,user can't edit some data
       facebook: false,
-      share: false,
       //if the gender Male is true , Female is false
       gender: true,
-      //if the email is same we don't need the password to access any change so it's true(disabled)
-      password: true,
+      //if the email is same we don't need the needPassword to access any change so it's true(disabled)
+      prevEmail: "",
+      //used for the display of  date options
       days: [],
       months: [],
-      years: []
+      years: [],
+      // The selected option for date
+      selectedDay: "",
+      selectedMonth: "",
+      selectedYear: "",
+      // to know the success or failure message
+      Done: false,
+      error: false
     };
   },
   components: {
+    // The review section
     bottomContent: bottomContent
   },
   created() {
-    if (this.user.form === "facebook") {
-      this.facebook = true;
+    //TODO :: check the user if from facebook or not
+    this.facebook = false;
+    // Get the user's data
+    this.$store
+      .dispatch("userData")
+      .then(() => {
+        // If we got it set it into the data to display the user's info
+        this.user = this.$store.state.user;
+        this.user.mobile = "";
+        this.prevEmail = this.$store.state.user.userEmail;
+        this.selectedDay = this.$store.state.user.userDOB.slice(8, 10);
+        this.selectedMonth = this.$store.state.user.userDOB.slice(5, 7);
+        this.selectedYear = this.$store.state.user.userDOB.slice(0,4);
+        let counter = {};
+        for (let i = 0; i < 31; i++) {
+          counter = {
+            value: i + 1,
+            selected: i + 1 == this.selectedDay ? true : false
+          };
+          this.days.push(counter);
+        }
+        for (let i = 0; i < 12; i++) {
+          counter = {
+            value: i + 1,
+            selected: i + 1 == this.selectedMonth ? true : false
+          };
+          this.months.push(counter);
+        }
+        for (let i = 1940; i <= 2020; i++) {
+          counter = {
+            value: i,
+            selected: i == this.selectedYear ? true : false
+          };
+          this.years.push(counter);
+        }
+      })
+      .catch(err => console.log(err));
+  },
+  computed: {
+    // Use this function to aask for password if the email is chaneged
+    needPassword: function() {
+      if (this.user.userEmail == this.prevEmail) {
+        return true;
+      } else {
+        return false;
+      }
     }
-    let daySelect = 3;
-    let counter = {};
-    for (let i = 0; i < 31; i++) {
-       counter = {
-        value: i + 1,
-        selected: i + 1 == daySelect ? true : false
-      };
-      this.days.push(counter);
-    }
-    let monthSelect = 5;
-    for (let i = 0; i < 12; i++) {
-      counter = {
-        value: i + 1,
-        selected: i + 1 == monthSelect ? true : false
-      };
-      this.months.push(counter);
-    }
-    let yearSelect = 2005;
-    for (let i = 1990; i <= 2020; i++) {
-      counter = {
-        value: i,
-        selected: i == yearSelect ? true : false
-      };
-      this.years.push(counter);
+  },
+  methods: {
+    // Used to update as V-model for the user's Date of Brith
+    selectedDate: function() {
+      this.user.userDOB =
+        this.selectedDay + "-" + this.selectedMonth + "-" + this.selectedYear;
+    },
+    submit: function() {
+      this.selectedDate();
+      this.$store.dispatch("updateProfile",{
+        email: this.user.userEmail,
+        gender: this.user.userGender,
+        dateOfBirth: this.user.userDOB,
+        phone: this.user.mobile,
+        password: this.user.password
+      }).then(() => {
+          this.Done = true;
+        })
+        .catch(err => {
+          console.log(err);
+          this.error = true;
+        });
+      console.log(this.user);
     }
   }
 };
@@ -527,5 +588,39 @@ input[disabled] {
   border: 1px solid #d9dadc;
   border-radius: 0;
   margin: 0;
+}
+.alert-success {
+  border-width: 0;
+  font-size: 12px;
+  padding: 14px 14px 12px 14px;
+  font-weight: 400;
+  background-color: #1ed760;
+  border-color: #1ed760;
+  color: #fff;
+  margin-bottom: 24px;
+  border-style: solid;
+  border-image-outset: 0;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1;
+  border-radius: 0;
+}
+.alert-danger {
+  border-width: 0;
+  font-size: 12px;
+  padding: 14px 14px 12px 14px;
+  font-weight: 400;
+  background-color: #d71e1e;
+  border-color: #d71e1e;
+  color: #fff;
+  margin-bottom: 24px;
+  border-style: solid;
+  border-image-outset: 0;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1;
+  border-radius: 0;
 }
 </style>

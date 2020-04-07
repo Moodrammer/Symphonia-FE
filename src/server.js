@@ -21,7 +21,7 @@ export function makeServer({ environment = "development" } = {}) {
                 name: "Bobuser",
                 email: "Bob@gmail.com",
                 password: "12345678",
-                DateOfBirth: "12-12-1980",
+                DateOfBirth: "1980-12-12",
                 gender: "male",
                 type: "user",
                 country: "EG"
@@ -31,7 +31,7 @@ export function makeServer({ environment = "development" } = {}) {
                 name: "artistic",
                 email: "artist@gmail.com",
                 password: "12345678",
-                DateOfBirth: "18-12-1995",
+                DateOfBirth: "1995-12-18",
                 gender: "male",
                 type: "artist",
                 country: "EG"
@@ -187,14 +187,20 @@ export function makeServer({ environment = "development" } = {}) {
                 }
             });
             // Get the current user's data to the account overview(User's Settings)
-            this.get("/v1/users/:id", (schema, request) => {
+            this.get("/v1/users/me", (schema, request) => {
                 // get the user's data from seed if exist
-                if (schema.users.find(request.params.id).attrs) {
+                if (request.requestHeaders.Authorization) {
                     // return the user's data if exist in response
-                    return new Response(
-                        200, {},
-                        schema.users.find(request.params.id).attrs
-                    );
+                    //If the user checks rememberMe his token will be found in the localStorage
+                    let id;
+                    if (localStorage.getItem("userToken") != null) {
+                        id = localStorage.getItem("userID");
+                    }
+                    //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+                    else if (sessionStorage.getItem("userToken") != null) {
+                        id = sessionStorage.getItem("userID");
+                    }
+                    return new Response(200, {}, schema.users.find(id).attrs);
                 } else {
                     // if the data isn't valid so return error status(400)
                     return new Response(400, {}, {});
@@ -202,6 +208,7 @@ export function makeServer({ environment = "development" } = {}) {
             });
             // patch the user's password =>(change the current user's password)
             this.patch("/v1/users/updatepassword", (schema, request) => {
+                console.log(JSON.parse(request.requestBody));
                 let attr = JSON.parse(request.requestBody);
                 let currentUser = schema.users.find(attr.id);
                 // check if the current user's entered password is equal that in the seed
@@ -211,7 +218,31 @@ export function makeServer({ environment = "development" } = {}) {
                     return new Response(201, {}, {});
                 } else {
                     // if not return error to the view to display wrong password
-                    return new Response(401, {}, {});;
+                    return new Response(401, {}, {});
+                }
+            });
+            // update the current user profile data
+            this.put("/v1/me/", (schema, request) => {
+                if (request.requestBody) {
+                    let attr = JSON.parse(request.requestBody);
+                    let id;
+                    if (localStorage.getItem("userToken") != null) {
+                        id = localStorage.getItem("userID");
+                    }
+                    //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+                    else if (sessionStorage.getItem("userToken") != null) {
+                        id = sessionStorage.getItem("userID");
+                    }
+                    let currentUser = schema.users.find(id);
+                    currentUser.update({
+                        email: attr.email,
+                        gender: attr.gender,
+                        DateOfBirth: attr.dateOfBirth
+                    });
+
+                    return new Response(201, {}, {});
+                } else {
+                    return new Response(401, {}, {});
                 }
             });
 

@@ -34,6 +34,17 @@
                   <p class="info-value">{{ user.userEmail }}</p>
                 </td>
               </tr>
+              <!-- The Gender sction -->
+              <tr class="info-row">
+                <td class="info-cell">
+                  <label for="gender"
+                    ><span class="info-content">Gender</span></label
+                  >
+                </td>
+                <td class="info-cell">
+                  <p class="info-value">{{ user.userGender }}</p>
+                </td>
+              </tr>
               <!-- The Date of birth scetion -->
               <tr class="info-row">
                 <td class="info-cell">
@@ -68,7 +79,7 @@
           <div class="card">
             <div class="card-header">
               <div class="card-title">
-                //Todo:: change the plan with the dynamic user's data
+                <!-- //Todo:: change the plan with the dynamic user's data -->
                 <!-- The user's plan -->
                 <span class="card-span-title">Symphonia Free</span>
               </div>
@@ -118,7 +129,6 @@
 
 <script>
 import bottomContent from "./bottomContent.vue";
-import getuserID from "@/mixins/userService";
 
 export default {
   data() {
@@ -137,11 +147,10 @@ export default {
   // - Remove the request from computed as there is no need to return the data here without using it (Done)
   // - Put it in created or mounted only to set the user object in local state without returning (Done)
   //---------------------------------------------------------------------------------------------
-  mixins: [getuserID],
   created() {
     // Request to get the current user's data
     this.$store
-      .dispatch("userData", this.getuserID())
+      .dispatch("userData")
       .then(() => {
         // If we got it set it into the data to display the user's info
         this.user = this.$store.state.user;
