@@ -16,8 +16,7 @@ const state = {
       showMenu: false,
       hoveredCardIndex: null,
       items: []
-    },
-    style: null
+    }
   },
   heavyRoatation: {
     categoryName: "Your heavy rotation",
@@ -31,8 +30,7 @@ const state = {
       showMenu: false,
       hoveredCardIndex: null,
       items: []
-    },
-    style: null
+    }
   },
   likedPlaylists: {
     categoryName: "Your playlists",
@@ -46,8 +44,7 @@ const state = {
       showMenu: false,
       hoveredCardIndex: null,
       items: []
-    },
-    style: null
+    }
   },
   popularPlaylists: {
     categoryName: "Popular playlists",
@@ -61,8 +58,7 @@ const state = {
       showMenu: false,
       hoveredCardIndex: null,
       items: []
-    },
-    style: null
+    }
   },
   popularArtists: {
     categoryName: "Popular Artists",
@@ -76,8 +72,7 @@ const state = {
       showMenu: false,
       hoveredCardIndex: null,
       items: []
-    },
-    style: "artist"
+    }
   },
   categories: [],
   singleCategory: {
@@ -111,10 +106,11 @@ const mutations = {
     payload.forEach(element => {
       var k = {
         name: element.name,
-        image: element.images[0].url,
+        image: element.images[0],
         description: element.description,
         id: element.id,
-        url: element.href
+        url: element.href,
+        type: "playlist"
       };
       newList.push(k);
     });
@@ -129,7 +125,8 @@ const mutations = {
         image: element.images[0].url,
         description: element.description,
         id: element.id,
-        url: element.href
+        url: element.href,
+        type: "artist"
       };
       newList.push(k);
     });
@@ -210,7 +207,6 @@ const actions = {
       .get("v1/browse/categories/" + category_id + "/playlists")
       .then(async response => {
         let genreList = response.data.playlists.items;
-        console.log(genreList);
         let newList = [];
         for (let index = 0; index < genreList.length; index++) {
           var k = {

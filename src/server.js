@@ -245,8 +245,8 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a Category
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("v1/browse/categories/:category_id", (schema, request) => {
-        let categoryID = request.params.category_id;
+      this.get("v1/browse/categories/:categoryId", (schema, request) => {
+        let categoryID = request.params.categoryId;
         return new Response(
           200,
           {},
@@ -262,6 +262,18 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("v1/browse/categories", () => {
         return new Response(200, {}, categoryJSON);
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Follow a Playlist
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.put("/v1/playlists/:playlistId/followers", (schema, request) => {
+        let playlistID = request.params.playlistId;
+        console.log("from Mirage");
+        console.log(schema.playlists.where({ id: playlistID }));
+        console.log(playlistID);
+        schema.playlists.where({ id: playlistID }).update({ liked: true });
+        console.log(schema.playlists.where({ id: playlistID }));
+        return new Response(200, {}, {});
       });
       ///////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';

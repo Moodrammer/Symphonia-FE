@@ -7,7 +7,7 @@
         :name="category.categoryName"
         :id="category.category_id"
         :seeAll="category.showSeeAll"
-        :griditems="category.list"
+        :gridItems="category.list"
         :gridStyle="category.style"
       ></category>
     </v-container>

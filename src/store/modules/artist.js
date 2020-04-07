@@ -22,7 +22,8 @@ const getters = {
         image: element.images[0].url,
         description: element.type,
         id: element.id,
-        url: element.href
+        url: element.href,
+        type: "artist"
       };
       artists.push(k);
     });
