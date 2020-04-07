@@ -102,7 +102,7 @@
           </div>
         </section>
         <!-- If the user is free -->
-        <a class="btn-class" href="#">Join Premium</a>
+        <a class="btn-class" href="/premium/?checkout=false">Join Premium</a>
       </article>
       <article class="section">
         <h3>Sign out everywhere</h3>

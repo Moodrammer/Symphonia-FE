@@ -137,11 +137,20 @@ const actions = {
     // Send the current user's data to the views
 
     userData({ commit, state }) {
+        let token;
+        //If the user checks rememberMe his token will be found in the localStorage
+        if (localStorage.getItem("userToken") != null) {
+            token = localStorage.getItem("userToken");
+        }
+        //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+        else if (sessionStorage.getItem("userToken") != null) {
+            token = sessionStorage.getItem("userToken");
+        }
         return new Promise((resolve, reject) => {
             axios
                 .get("/v1/users/me", {
                     headers: {
-                        Authorization: `Bearer ${state.userToken}`
+                        Authorization: `Bearer ${token}`
                     }
                 })
                 .then(response => {
@@ -171,11 +180,20 @@ const actions = {
     // Update the current user's password 
     // eslint-disable-next-line no-empty-pattern
     updatePass({}, payload) {
+        let token;
+        //If the user checks rememberMe his token will be found in the localStorage
+        if (localStorage.getItem("userToken") != null) {
+            token = localStorage.getItem("userToken");
+        }
+        //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+        else if (sessionStorage.getItem("userToken") != null) {
+            token = sessionStorage.getItem("userToken");
+        }
         return new Promise((resolve, reject) => {
             axios
                 .patch("/v1/users/updatepassword", {
                     headers: {
-                        Authorization: `Bearer ${state.userToken}`
+                        Authorization: `Bearer ${token}`
                     },
                     id: payload.id,
                     password: payload.password,
@@ -197,11 +215,20 @@ const actions = {
     // Update the current user's password 
     // eslint-disable-next-line no-empty-pattern
     updateProfile({ commit, state }, payload) {
+        let token;
+        //If the user checks rememberMe his token will be found in the localStorage
+        if (localStorage.getItem("userToken") != null) {
+            token = localStorage.getItem("userToken");
+        }
+        //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+        else if (sessionStorage.getItem("userToken") != null) {
+            token = sessionStorage.getItem("userToken");
+        }
         return new Promise((resolve, reject) => {
             axios
                 .put("/v1/me", {
                     headers: {
-                        Authorization: `Bearer ${state.userToken}`
+                        Authorization: `Bearer ${token}`
                     },
                     email: payload.email,
                     gender: payload.gender,
