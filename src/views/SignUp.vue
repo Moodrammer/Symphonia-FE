@@ -171,7 +171,9 @@
               </v-row>
               <v-divider />
               <v-row justify="center" class="mt-2">
-                <h2 style="text-align: center;">How do you like to use Symphonia ?</h2>
+                <h2 style="text-align: center;">
+                  How do you like to use Symphonia ?
+                </h2>
               </v-row>
               <!-- type radio group -->
               <v-row justify="center">

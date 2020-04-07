@@ -16,8 +16,7 @@ const state = {
       showMenu: false,
       hoveredCardIndex: null,
       items: []
-    },
-    style: null
+    }
   },
   heavyRoatation: {
     categoryName: "Your heavy rotation",
@@ -31,8 +30,7 @@ const state = {
       showMenu: false,
       hoveredCardIndex: null,
       items: []
-    },
-    style: null
+    }
   },
   likedPlaylists: {
     categoryName: "Your playlists",
@@ -46,8 +44,7 @@ const state = {
       showMenu: false,
       hoveredCardIndex: null,
       items: []
-    },
-    style: null
+    }
   },
   popularPlaylists: {
     categoryName: "Popular playlists",
@@ -61,8 +58,7 @@ const state = {
       showMenu: false,
       hoveredCardIndex: null,
       items: []
-    },
-    style: null
+    }
   },
   popularArtists: {
     categoryName: "Popular Artists",
@@ -76,13 +72,12 @@ const state = {
       showMenu: false,
       hoveredCardIndex: null,
       items: []
-    },
-    style: "artist"
+    }
   },
   categories: [],
   singleCategory: {
     categoryName: "",
-    category_id: "",
+    categoryID: "",
     //Used in home
     showSeeAll: true,
     //To provide the card grid with the menu which appear @right click
@@ -111,10 +106,11 @@ const mutations = {
     payload.forEach(element => {
       var k = {
         name: element.name,
-        image: element.images[0].url,
+        image: element.images[0],
         description: element.description,
         id: element.id,
-        url: element.href
+        url: element.href,
+        type: "playlist"
       };
       newList.push(k);
     });
@@ -129,7 +125,8 @@ const mutations = {
         image: element.images[0].url,
         description: element.description,
         id: element.id,
-        url: element.href
+        url: element.href,
+        type: "artist"
       };
       newList.push(k);
     });
@@ -154,7 +151,7 @@ const mutations = {
   createCategory(state, payload) {
     let singleCategory = {
       categoryName: "",
-      category_id: "",
+      categoryID: "",
       //Used in home
       showSeeAll: true,
       //To provide the card grid with the menu which appear @right click
@@ -171,7 +168,7 @@ const mutations = {
       }
     };
     singleCategory.categoryName = state.categoryNameHolder;
-    singleCategory.category_id = state.categoryIDHolder;
+    singleCategory.categoryID = state.categoryIDHolder;
     singleCategory.list.items = payload;
     state.singleCategory = singleCategory;
     state.categories.push(singleCategory);
@@ -204,20 +201,21 @@ const actions = {
         console.log(error);
       });
   },
-  async getGenrePlaylists({ commit, dispatch }, category_id) {
-    await dispatch("getCategory", category_id);
+  async getGenrePlaylists({ commit, dispatch }, categoryID) {
+    await dispatch("getCategory", categoryID);
     await axios
-      .get("v1/browse/categories/" + category_id + "/playlists")
+      .get("v1/browse/categories/" + categoryID + "/playlists")
       .then(async response => {
-        let genreList = response.data;
+        let genreList = response.data.playlists.items;
         let newList = [];
         for (let index = 0; index < genreList.length; index++) {
           var k = {
             name: genreList[index].name,
-            image: genreList[index].images[0].url,
+            image: genreList[index].images[0],
             description: genreList[index].description,
             id: genreList[index].id,
-            url: genreList[index].href
+            url: genreList[index].href,
+            type: "playlist"
           };
           newList.push(k);
         }
@@ -230,10 +228,23 @@ const actions = {
   },
   async loadGenres({ commit, dispatch }) {
     commit("emptyArray");
-    let genres_ids = ["pop", "folk", "rock", "jazz"];
-    for (let index = 0; index < genres_ids.length; index++) {
-      await dispatch("getGenrePlaylists", genres_ids[index]);
-    }
+    let genres_ids = [];
+    axios
+      .get("/v1/browse/categories")
+      .then(async response => {
+        let genres = response.data;
+        for (let i = 0; i < 4; i++) {
+          var id = genres.data.categorys[i].id;
+          genres_ids.push(id);
+        }
+        for (let index = 0; index < genres_ids.length; index++) {
+          await dispatch("getGenrePlaylists", genres_ids[index]);
+        }
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
   },
   async loadUserSections({ dispatch, commit }, payload) {
     commit("emptyArray");
@@ -256,9 +267,9 @@ const actions = {
         console.log(error);
       });
   },
-  async getCategory({ commit }, category_id) {
+  async getCategory({ commit }, categoryID) {
     await axios
-      .get("v1/browse/categories/" + category_id)
+      .get("v1/browse/categories/" + categoryID)
       .then(async response => {
         let category = response.data;
         commit("setName", category);

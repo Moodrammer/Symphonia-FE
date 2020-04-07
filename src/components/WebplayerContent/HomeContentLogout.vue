@@ -6,9 +6,9 @@
         :key="category.categoryName"
         :name="category.categoryName"
         :seeAll="category.showSeeAll"
-        :griditems="category.list"
+        :id="category.categoryID"
+        :gridItems="category.list"
         :gridStyle="category.style"
-        :id="category.category_id"
       ></category>
     </v-container>
   </v-content>
