@@ -271,14 +271,23 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       this.put("/v1/playlists/:playlistId/followers", (schema, request) => {
         let playlistID = request.params.playlistId;
-        console.log("from Mirage");
-        console.log(schema.playlists.where({ id: playlistID }));
-        console.log(playlistID);
         schema.playlists.where({ id: playlistID }).update({ liked: true });
-        console.log(schema.playlists.where({ id: playlistID }));
         return new Response(200, {}, {});
       });
-      ///////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////
+      //Get a Playlist
+      ////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/playlists/:playlistId", (schema, request) => {
+        let playlistID = request.params.playlistId;
+        return new Response(
+          200,
+          {},
+          {
+            playlist: [schema.playlists.where({ id: playlistID }).models[0]]
+          }
+        );
+      });
+      ////////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';
 
       this.get("/v1/me/albums", schema => {

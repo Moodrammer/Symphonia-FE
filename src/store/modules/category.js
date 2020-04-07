@@ -247,7 +247,7 @@ const actions = {
       });
   },
   async loadUserSections({ dispatch, commit }, payload) {
-    commit("emptyArray");
+    await commit("emptyArray");
     await dispatch("playlist/getPlaylists", payload, { root: true });
     commit("load_personalSections");
   },
