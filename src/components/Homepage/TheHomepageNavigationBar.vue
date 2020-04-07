@@ -133,7 +133,7 @@
           <v-col cols="1">
             <router-link to="/account">
               <v-avatar v-if="isLoggedIn()" width="34" height="34">
-                <img src="/profile.jpg" alt="profile pic" />
+                <img src= "/profile.jpg" alt="profile.jpg"/>
               </v-avatar>
             </router-link>
           </v-col>
@@ -239,10 +239,9 @@ export default {
 
   data() {
     return {
-      drawer: false
+      drawer: false,
     };
   },
-
   methods: {
     /**
      * Gets called when the user logs out

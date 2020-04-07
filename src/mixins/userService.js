@@ -113,6 +113,20 @@ export default {
       }
     },
     /**
+     * This function is used to get the userimageUrl from the local or session Storage
+     * @public
+     */
+    getimageUrl() {
+      //If the user checks rememberMe his token will be found in the localStorage
+      if (localStorage.getItem("userToken") != null) {
+        return localStorage.getItem("imageUrl");
+      }
+      //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+      else if (sessionStorage.getItem("userToken") != null) {
+        return sessionStorage.getItem("imageUrl");
+      }
+    },
+    /**
      * This function is used to replace the already existing token in either the localStorage or the sessionStorage with 
      * the new token sent from the server
      * @param {string} newUserToken 

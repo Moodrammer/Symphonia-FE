@@ -304,7 +304,8 @@ export function makeServer({ environment = "development" } = {}) {
                   _id: schema.users.find(i).id,
                   email: attrs.email,
                   name: schema.users.find(i).name,
-                  type: schema.users.find(i).type
+                  type: schema.users.find(i).type,
+                  imageUrl: "profile.jpg"
                 }
               }
             );
