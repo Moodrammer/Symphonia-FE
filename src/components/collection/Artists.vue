@@ -83,11 +83,6 @@ export default {
       allFollowedArtists(newValue){
         this.cardItems.items = newValue
       }
-      this.contextMenuChoice = null;
-    },
-    allFollowedArtists(newValue) {
-      this.cardItems.items = newValue;
     }
-  }
 };
 </script>
