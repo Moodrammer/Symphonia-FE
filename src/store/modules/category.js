@@ -134,10 +134,10 @@ const mutations = {
     state.categories.push(state.popularArtists);
   },
   load_personalSections(state) {
-    state.recentlyPlayed.list.items = playlistModule.state.likedPlaylists;
-    state.categories.push(state.recentlyPlayed);
-    state.heavyRoatation.list.items = playlistModule.state.likedPlaylists;
-    state.categories.push(state.heavyRoatation);
+    // state.recentlyPlayed.list.items = playlistModule.state.likedPlaylists;
+    // state.categories.push(state.recentlyPlayed);
+    // state.heavyRoatation.list.items = playlistModule.state.likedPlaylists;
+    // state.categories.push(state.heavyRoatation);
     state.likedPlaylists.list.items = playlistModule.state.likedPlaylists;
     state.categories.push(state.likedPlaylists);
   },
