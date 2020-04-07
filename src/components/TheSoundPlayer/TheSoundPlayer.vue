@@ -285,7 +285,7 @@ export default {
   name: "soundplayer",
 
   mixins: [getuserToken],
-  
+
   computed: {
     ...mapGetters("playlist", ["audio", "paused", "isQueueOpened"]),
 
@@ -328,7 +328,7 @@ export default {
       queueTracks: undefined,
 
       token: undefined,
-        
+
       snackbar: false,
     };
   },
@@ -414,7 +414,10 @@ export default {
             );
 
             //request the track data
-            this.getTrack(songId);
+            this.getTrack({
+              token: this.token,
+              id: songId,
+            });
 
             //request the song mp3 file
             axios({
@@ -579,7 +582,7 @@ export default {
       } else {
         //#MOCK
         var temp = this;
-     
+
         setTimeout(function() {
           temp.setTrackUrl("/track/5e7d2dc03429e24340ff1396.mp3");
         }, 1000);
@@ -786,8 +789,8 @@ export default {
       this.audio.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
-      this.token = "Bearer " + this.getuserToken()
-      
+      this.token = "Bearer " + this.getuserToken();
+
       //get the device
       axios({
         method: "patch",
