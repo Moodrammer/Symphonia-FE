@@ -29,7 +29,10 @@ import overview from "../components/User Settings/overview.vue";
 import editProfile from "../components/User Settings/editProfile.vue";
 import recoverPlaylists from "../components/User Settings/recoverPlaylist.vue";
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
-import appFooter from "../components/Homepage/TheHomepageFooter";
+import appFooter from "../components/Homepage/TheHomepageFooter.vue";
+import changePassword from "../components/User Settings/changePass.vue";
+import isLoggedIn from "@/mixins/userService";
+
 export default {
   data() {
     return {};
@@ -43,8 +46,23 @@ export default {
     editProfile: editProfile,
     // eslint-disable-next-line vue/no-unused-components
     recoverPlaylists: recoverPlaylists,
+    // eslint-disable-next-line vue/no-unused-components
+    changePassword: changePassword,
     navBar: navBar,
     appFooter: appFooter
+  },
+  mixins: [isLoggedIn],
+  created() {
+    //check if the user is logged in ?
+    if (!this.isLoggedIn()) {
+      this.$router.push("/login");
+    }
+  },
+  beforeUpdate() {
+    //check if the user is logged in ?
+    if (!this.isLoggedIn()) {
+      this.$router.push("/login");
+    }
   }
 };
 </script>

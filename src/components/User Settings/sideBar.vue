@@ -6,51 +6,37 @@
         class="user-img img-circle"
       />
       <ul class="nav-inverse nav-tabs nav-stacked" style="padding: 0px">
+        <!-- the links to the user account options -->
+        <!-- account overview router -->
         <li>
           <router-link to="/account/" exact
             ><i class="fas fa-home svg"></i>Account overview</router-link
           >
         </li>
+        <!-- edit the account router -->
         <li>
           <router-link to="/account/edit" exact
             ><i class="fas fa-pencil-alt svg"></i>Edit profile</router-link
           >
         </li>
-        <!-- <li>
-          <router-link to="#" exact
-            ><i class="fas fa-lock svg"></i>Set device password</router-link
+        <!-- change the password router -->
+        <li>
+          <router-link to="/account/changePassword" exact
+            ><i class="fas fa-lock svg"></i>Change password</router-link
           >
-        </li> -->
+        </li>
+        <!-- Notification settings router -->
         <li>
           <router-link to="/account/notifications" exact
             ><i class="fas fa-bell svg"></i>Notification settings</router-link
           >
         </li>
-        <!-- <li>
-          <router-link to="#" exact
-            ><i class="fas fa-lock svg"></i>Privacy settings</router-link
-          >
-        </li> -->
+        <!-- Recover the playlists router -->
         <li>
           <router-link to="/account/recover-playlists" exact
             ><i class="fas fa-redo svg"></i>Recover playlists</router-link
           >
         </li>
-        <!-- <li>
-          <router-link to="#" exact
-            ><i class="far fa-clock svg"></i>Receipts</router-link
-          >
-        </li> -->
-        <!-- <li>
-          <router-link to="#" exact
-            ><i class="fas fa-puzzle-piece svg"></i>Apps</router-link
-          >
-        </li>
-        <li>
-          <router-link to="#" exact
-            ><i class="far fa-clipboard svg"></i>Redeem</router-link
-          >
-        </li> -->
       </ul>
     </div>
   </div>
