@@ -14,7 +14,6 @@ export default {
   mixins: [getuserToken],
 
   created() {
-    console.log("token", this.getuserToken());
     if (!this.getuserToken()) {
       console.log("redirect to home");
       this.$router.push("../");

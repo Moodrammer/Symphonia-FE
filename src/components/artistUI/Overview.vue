@@ -189,12 +189,10 @@ export default {
   watch: {
     allArtistAlbums(newValue) {
       this.albumsCardItems.items = newValue;
-      console.log(newValue);
     },
 
     allArtistTopTracks(newValue) {
       this.popularCardItems.items = newValue;
-      console.log("oh", newValue);
     }
   }
 };

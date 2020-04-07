@@ -53,7 +53,6 @@ export default {
   },
   watch: {
     currentArtistGetter: function(newValue) {
-      console.log("saad", newValue);
       this.artist = newValue;
     }
   },

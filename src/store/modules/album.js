@@ -22,7 +22,6 @@ const getters = {
         id: element._id,
         type: "album"
       };
-      console.log(k);
       albums.push(k);
     });
     return albums;
@@ -58,7 +57,6 @@ const actions = {
    */
 
   deleteAlbums({ commit }, payload) {
-    console.log("ssss", payload.albums);
     axios
       .delete("/v1/me/albums", {
         headers: {

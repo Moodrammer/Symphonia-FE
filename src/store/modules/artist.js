@@ -24,7 +24,6 @@ const mutations = {
 
 const getters = {
   currentArtistGetter: state => {
-    console.log("haha", state.currentArtist);
     return state.currentArtist;
   },
 
@@ -67,7 +66,6 @@ const getters = {
 
   allFollowedArtists: state => {
     var newValue = state.followedArtists;
-    console.log("dsadsa", newValue);
     var artists = [];
     newValue.forEach(element => {
       var k = {
@@ -77,7 +75,6 @@ const getters = {
         id: element._id,
         type: element.type
       };
-      console.log(k);
       artists.push(k);
     });
     return artists;
@@ -85,7 +82,6 @@ const getters = {
 
   allArtistAlbums: state => {
     var newValue = state.artistAlbums;
-    console.log("hhhh", newValue);
     var albums = [];
     newValue.forEach(element => {
       var k = {
@@ -109,7 +105,6 @@ const actions = {
         }
       })
       .then(response => {
-        console.log("Saad art", response);
         commit("load_currentArtist", response.data);
       })
       .catch(error => {
@@ -122,7 +117,6 @@ const actions = {
    * @param {object} payload contains the token
    */
   getFollowedArtists({ commit }, payload) {
-    console.log("saad token", payload.token);
     console.log(payload.token);
     axios
       .get("/v1/me/following", {
@@ -132,7 +126,6 @@ const actions = {
         params: { type: "artist", limit: 50 }
       })
       .then(response => {
-        console.log("Saad art", response);
         commit("load_followedArtists", response.data.artists.items);
       })
       .catch(error => {
@@ -147,7 +140,6 @@ const actions = {
    */
 
   getArtistAlbums({ commit }, payload) {
-    console.log("token", payload.token);
     console.log(payload.id);
     axios
       .get(`/v1/artists/${payload.id}/albums`, {
@@ -162,7 +154,6 @@ const actions = {
         }
       })
       .then(response => {
-        console.log("Saad art", response);
         commit("load_artistAlbums", response.data);
       })
       .catch(error => {
@@ -177,7 +168,6 @@ const actions = {
    */
 
   getArtistTopTracks({ commit }, payload) {
-    console.log("token", payload.token);
     console.log(payload.id);
     axios
       .get(`/v1/artists/${payload.id}/top-tracks`, {
@@ -204,7 +194,6 @@ const actions = {
    */
 
   getArtistRelatedArtists({ commit }, payload) {
-    console.log("token art", payload.token);
     console.log(payload.id);
     axios
       .get(`/v1/artists/${payload.id}/related-artists`, {
@@ -228,7 +217,6 @@ const actions = {
    */
 
   unfollowArtist({ commit }, payload) {
-    console.log(payload.artists.join());
     axios
       .delete("/v1/me/following", {
         headers: {

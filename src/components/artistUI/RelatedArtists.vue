@@ -62,7 +62,6 @@ export default {
   watch: {
     allArtistRelatedArtists(newValue) {
       this.cardItems.items = newValue;
-      console.log(newValue);
     }
   }
 };
