@@ -430,7 +430,7 @@ export function makeServer({ environment = "development" } = {}) {
                     );
                 }),
                 // Get the current user's data to the account overview(User's Settings)
-                this.get("/v1/users/me", (schema, request) => {
+                this.get("/v1/me", (schema, request) => {
                     // get the user's data from seed if exist
                     if (request.requestHeaders.Authorization) {
                         // return the user's data if exist in response

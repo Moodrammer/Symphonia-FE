@@ -148,7 +148,7 @@ const actions = {
         }
         return new Promise((resolve, reject) => {
             axios
-                .get("/v1/users/me", {
+                .get("/v1/me", {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
