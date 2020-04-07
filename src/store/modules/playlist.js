@@ -6,7 +6,8 @@ const state = {
   audio: undefined,
   paused: true,
   isQueueOpened: false,
-  isSongLoaded: false
+  isSongLoaded: false,
+  flag: null //A flag to know if the request had been done or not (will be removed)
 };
 
 const mutations = {
@@ -35,6 +36,9 @@ const mutations = {
   },
   setIsSongLoaded(state, isSongLoaded) {
     state.isSongLoaded = isSongLoaded;
+  },
+  setFlag(state) {
+    state.flag = true;
   }
 };
 
@@ -55,6 +59,7 @@ const getters = {
 };
 
 const actions = {
+  //Create a new playlist for the current user payload{Playlist's name & token}
   createPlaylist({ commit }, payload) {
     axios
       .post(
@@ -91,10 +96,11 @@ const actions = {
         list.forEach(element => {
           var k = {
             name: element.name,
-            image: element.images[0].url,
+            image: element.images[0],
             description: element.description,
             id: element.id,
-            url: element.href
+            url: element.href,
+            type: "playlist"
           };
           newList.push(k);
         });
@@ -107,6 +113,26 @@ const actions = {
   },
   pauseAndPlay(context) {
     context.commit("pauseAndPlay");
+  },
+  //Follow a playlist Payload {playlist's id , token}
+  followPlaylist({ commit }, payload) {
+    axios
+      .put(
+        "/v1/playlists/" + payload.id + "/followers",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`
+          }
+        }
+      )
+      .then(() => {
+        commit("setFlag");
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
   }
 };
 

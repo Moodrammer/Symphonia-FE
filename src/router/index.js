@@ -96,17 +96,12 @@ const routes = [
         ]
       },
       {
-        name: "playlist/:id",
-        path: "/playlist/:id",
+        name: ":type/:id",
+        path: ":type/:id",
         component: PlaylistView
       },
       {
-        name: "album/:id",
-        path: "/album/:id",
-        component: PlaylistView
-      },
-      {
-        path: "genre/:id",
+        path: "/genre/:id",
         component: Genre
       }
     ]

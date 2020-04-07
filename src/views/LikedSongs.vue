@@ -119,6 +119,10 @@ export default {
   created: function() {
     //this.$store.dispatch("track/getTrack", 1);
     this.getTracks(this.getuserToken());
+    // this.$store.dispatch("playlist/followPlaylist",{
+    //   id: 2,
+    //   token: this.getuserToken()
+    // })
   },
   mounted() {
     this.$root.$on("updateContent", () => {

@@ -111,15 +111,14 @@ export function makeServer({ environment = "development" } = {}) {
 
       albumsJSON.items.forEach(element => server.create("album", element));
 
-      artistAlbumsJSON.items.forEach(element =>
-        server.create("artistAlbum", element)
-      );
+    artistAlbumsJSON.items.forEach(element =>
+      server.create("artistAlbum", element)
+    );
 
-      artistTopTracksJSON.tracks.forEach(element =>
-        server.create("artistTopTrack", element)
-      );
-
-      categoryJSON.items.forEach(element => {
+    artistTopTracksJSON.tracks.forEach(element =>
+      server.create("artistTopTrack", element)
+    );
+    categoryJSON.data.categorys.forEach(element => {
         server.create("category", element);
       });
     },
@@ -132,7 +131,7 @@ export function makeServer({ environment = "development" } = {}) {
     routes() {
       //namespace will be prepended to any route (it acts like the server base address)
       this.namespace = "/api";
-
+      
       this.get("/v1/me/albums", schema => {
         return schema.albums.all().models;
       });
@@ -220,6 +219,7 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/me/popularArtists", schema => {
         return schema.artists.where({ popularity: 90 }).models;
       });
+
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Genre Playlists
       ///////////////////////////////////////////////////////////////////////////////////
@@ -227,7 +227,15 @@ export function makeServer({ environment = "development" } = {}) {
         "v1/browse/categories/:category_id/playlists",
         (schema, request) => {
           let id = request.params.category_id;
-          return schema.playlists.where({ genre: id }).models;
+          return new Response(
+            200,
+            {},
+            {
+              playlists: {
+                items: schema.playlists.where({ genre: id }).models
+              }
+            }
+          );
         }
       );
       ///////////////////////////////////////////////////////////////////////////////////
@@ -235,7 +243,7 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/users/track/:track_id", (schema, request) => {
         let trackId = request.params.track_id;
-        return schema.tracks.where({ _id: trackId }).models;
+        return schema.tracks.where({ id: trackId }).models;
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Check user's saved tracks
@@ -263,8 +271,8 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a Category
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("v1/browse/categories/:category_id", (schema, request) => {
-        let categoryID = request.params.category_id;
+      this.get("v1/browse/categories/:categoryId", (schema, request) => {
+        let categoryID = request.params.categoryId;
         return new Response(
           200,
           {},
@@ -274,6 +282,24 @@ export function makeServer({ environment = "development" } = {}) {
             href: schema.categories.where({ id: categoryID }).models[0].href
           }
         );
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get List of Categories
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("v1/browse/categories", () => {
+        return new Response(200, {}, categoryJSON);
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Follow a Playlist
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.put("/v1/playlists/:playlistId/followers", (schema, request) => {
+        let playlistID = request.params.playlistId;
+        console.log("from Mirage");
+        console.log(schema.playlists.where({ id: playlistID }));
+        console.log(playlistID);
+        schema.playlists.where({ id: playlistID }).update({ liked: true });
+        console.log(schema.playlists.where({ id: playlistID }));
+        return new Response(200, {}, {});
       });
       ///////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';
@@ -547,7 +573,6 @@ export function makeServer({ environment = "development" } = {}) {
     }
   });
 
-  //server.shutdown();
 
   return server;
 }

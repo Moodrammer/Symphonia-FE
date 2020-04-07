@@ -1,7 +1,5 @@
 import axios from "axios";
 
-const token = window.sessionStorage.getItem("userToken");
-
 const state = {
   trackName: "",
   liked: null,
@@ -10,12 +8,27 @@ const state = {
   imageUrl: null,
   trackAlbumId: null,
   trackArtists: [],
-  generalLiked: null
+  generalLiked: null,
 };
 
 const mutations = {
   setTrackData(state, payload) {
     state.trackName = payload.name;
+    state.imageUrl = payload.category[0].icons[0].url;
+    axios
+      .get("/v1/artists/" + payload.artist, {
+        headers: {
+          Authorization: payload.token,
+        },
+      })
+      .then((response) => {
+        let artist = {
+          name: undefined,
+          href: ""
+        }
+        artist.name = response.data.name
+        state.trackArtists[0] = artist;
+      });
   },
   setLiked(state, payload) {
     if (payload.id == state.trackId) state.liked = payload.status;
@@ -34,23 +47,23 @@ const mutations = {
   },
   setID(state, id) {
     state.trackId = id;
-  }
+  },
 };
 
 const actions = {
-  async getTrack({ commit }, id) {
-    await commit("setID", id);
+  async getTrack({ commit }, payload) {
+    await commit("setID", payload.id);
     axios
-      .get("/v1/users/track/" + id, {
+      .get("/v1/users/track/" + payload.id, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: payload.token,
+        },
       })
-      .then(response => {
-        let trackData = response.data[0];
+      .then((response) => {
+        let trackData = response.data;
         commit("setTrackData", trackData);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -59,14 +72,14 @@ const actions = {
     axios
       .get("/v1/me/tracks/contains?ids=" + payload.id, {
         headers: {
-          Authorization: `Bearer ${payload.token}`
-        }
+          Authorization: `Bearer ${payload.token}`,
+        },
       })
-      .then(response => {
+      .then((response) => {
         let liked = response.data;
         commit("setLiked", { status: liked, id: payload.id });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -75,15 +88,15 @@ const actions = {
     axios
       .delete("/v1/me/tracks", {
         headers: {
-          Authorization: `Bearer ${payload.token}`
+          Authorization: `Bearer ${payload.token}`,
         },
-        data: payload.id
+        data: payload.id,
       })
       .then(() => {
         //   if(id[0]==state.trackId)           //comment it for now
         commit("unlikeTrack", payload.id);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -95,24 +108,24 @@ const actions = {
         { data: payload.id },
         {
           headers: {
-            Authorization: `Bearer ${payload.token}`
-          }
+            Authorization: `Bearer ${payload.token}`,
+          },
         }
       )
       .then(() => {
         //if(id[0]==state.trackId)
         commit("likeTrack", payload.id);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error");
         console.log(error);
       });
-  }
+  },
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
 };
