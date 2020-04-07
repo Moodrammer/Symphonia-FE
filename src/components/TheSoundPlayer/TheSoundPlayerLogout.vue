@@ -59,21 +59,20 @@
     </v-row>
 
     <v-snackbar v-model="snackbar" style="bottom: 100px;">
-      <span>Start listening with a free Spotify account</span> 
+      <span>Start listening with a free Spotify account</span>
 
       <router-link to="/signup" style="text-decoration: none;">
-      <v-btn color="green" text>
-        sign up
-      </v-btn>
+        <v-btn color="green" text>
+          sign up
+        </v-btn>
       </router-link>
-      
+
       <router-link to="/login" style="text-decoration: none;">
-      <v-btn color="cyan" text min-width="20">
-        log in
-      </v-btn>
+        <v-btn color="cyan" text min-width="20">
+          log in
+        </v-btn>
       </router-link>
     </v-snackbar>
-
   </v-footer>
 </template>
 
@@ -82,13 +81,13 @@ export default {
   data() {
     return {
       snackbar: false
-    }
+    };
   },
   methods: {
     signIn: function() {
       this.snackbar = true;
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -3,7 +3,13 @@
     <v-row>
       <h1>{{ name }}</h1>
       <v-spacer></v-spacer>
-      <p v-if="seeAll" id="seeAll">SEE ALL</p>
+      <router-link
+        v-if="seeAll"
+        v-bind:to="'genre/' + id"
+        class="white--text mt-3"
+      >
+        <p id="seeAll">SEE ALL</p>
+      </router-link>
     </v-row>
     <CardGrid :cardItems="griditems" :cardStyle="gridStyle" />
   </v-container>
@@ -17,6 +23,7 @@ export default {
   },
   props: {
     name: String,
+    id: String,
     seeAll: Boolean,
     griditems: Object,
     gridStyle: String
@@ -25,13 +32,14 @@ export default {
 </script>
 
 <style scoped>
-#seeAll {
-  opacity: 0.6;
-}
-
-#seeAll:hover {
+a:hover {
   opacity: 1;
   cursor: pointer;
   text-decoration: underline;
+}
+
+a {
+  text-decoration: none;
+  opacity: 0.6;
 }
 </style>

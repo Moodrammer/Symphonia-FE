@@ -5,22 +5,27 @@ module.exports = {
   // defaultExample: true,
   sections: [
     {
-      name: 'Views',
-      description: 'Documentation for the views',
-      components: ['src/views/**/*.vue']
+      name: "Views",
+      description: "Documentation for the views",
+      components: ["src/views/**/*.vue"]
     },
 
     {
-      name: 'Components',
-      description: 'Documentation for the components',
-      components: ['src/components/**/*.vue']
+      name: "Components",
+      description: "Documentation for the components",
+      components: ["src/components/**/*.vue"]
+    },
+
+    {
+      name: "Helpers",
+      description: "Documentation for global helper functions",
+      components: ["src/mixins/**/*.js"]
     }
   ],
   theme: {
     color: {
-      base: "black",
-    },
-     
+      base: "black"
+    }
   },
   // webpackConfig: {
   //   // custom config goes here

@@ -35,34 +35,32 @@ export default {
       }
     };
   },
-  methods:{
+  methods: {
     ...mapActions(["getAlbums", "deleteAlbums"]),
-    menuOrder(menuItem, cardIndex){
+    menuOrder(menuItem, cardIndex) {
       this.contextMenuChoice = menuItem;
       this.contextMenuCardIndex = cardIndex;
-    },
+    }
   },
-  created(){
+  created() {
     this.getAlbums();
   },
 
-  computed: mapGetters(['allAlbums']),
+  computed: mapGetters(["allAlbums"]),
 
   watch: {
     contextMenuChoice: function() {
-      if (this.contextMenuChoice === null)
-        return;
+      if (this.contextMenuChoice === null) return;
       console.log(this.contextMenuChoice);
       console.log(this.contextMenuCardIndex);
-      if(this.contextMenuChoice === "Remove from your Library")
-      {
-          this.deleteAlbums([this.contextMenuCardIndex]);
+      if (this.contextMenuChoice === "Remove from your Library") {
+        this.deleteAlbums([this.contextMenuCardIndex]);
       }
-      this.contextMenuChoice = null
-      },
-      allAlbums(newValue){
-        this.cardItems.items = newValue
-      }
-  },
+      this.contextMenuChoice = null;
+    },
+    allAlbums(newValue) {
+      this.cardItems.items = newValue;
+    }
+  }
 };
 </script>

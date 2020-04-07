@@ -15,6 +15,7 @@ import PlaylistView from "../components/general/PlaylistView.vue";
 import PassReset from "../components/PasswordMangement/PassReset.vue";
 import PassChange from "../components/PasswordMangement/PassChange.vue";
 import Queue from "../views/TheQueue.vue";
+import Genre from "../components/general/Genre.vue";
 
 Vue.use(VueRouter);
 
@@ -77,6 +78,15 @@ const routes = [
         name: "playlist/:id",
         path: "/playlist/:id",
         component: PlaylistView
+      },
+      {
+        name: "album/:id",
+        path: "/album/:id",
+        component: PlaylistView
+      },
+      {
+        path: "genre/:id",
+        component: Genre
       }
     ]
   },

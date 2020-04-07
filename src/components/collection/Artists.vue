@@ -1,7 +1,11 @@
 <template>
   <v-content class="pa-0 mr-5">
     <h1>Artists</h1>
-    <CardGrid :cardItems="cardItems" v-on:order="menuOrder" cardStyle="artist" />
+    <CardGrid
+      :cardItems="cardItems"
+      v-on:order="menuOrder"
+      cardStyle="artist"
+    />
   </v-content>
 </template>
 
@@ -35,35 +39,33 @@ export default {
       }
     };
   },
-  methods:{
+  methods: {
     ...mapActions(["getFollowedArtists", "unfollowArtist"]),
-    menuOrder(menuItem, cardIndex){
+    menuOrder(menuItem, cardIndex) {
       this.contextMenuChoice = menuItem;
       this.contextMenuCardIndex = cardIndex;
-    },
+    }
   },
-  created(){
+  created() {
     this.getFollowedArtists();
     console.log("hello");
   },
 
-  computed: mapGetters(['allFollowedArtists']),
+  computed: mapGetters(["allFollowedArtists"]),
 
   watch: {
     contextMenuChoice: function() {
-      if (this.contextMenuChoice === null)
-        return;
+      if (this.contextMenuChoice === null) return;
       console.log(this.contextMenuChoice);
       console.log(this.contextMenuCardIndex);
-      if(this.contextMenuChoice === "Unfollow")
-      {
-          this.unfollowArtist([this.contextMenuCardIndex]);
+      if (this.contextMenuChoice === "Unfollow") {
+        this.unfollowArtist([this.contextMenuCardIndex]);
       }
-      this.contextMenuChoice = null
-      },
-      allFollowedArtists(newValue){
-        this.cardItems.items = newValue
-      }
-  },
+      this.contextMenuChoice = null;
+    },
+    allFollowedArtists(newValue) {
+      this.cardItems.items = newValue;
+    }
+  }
 };
 </script>

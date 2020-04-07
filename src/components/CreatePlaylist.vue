@@ -12,7 +12,9 @@
         >
           <v-icon color="black">mdi-plus</v-icon>
         </v-btn>
-        <v-list-item-title v-show="$vuetify.breakpoint.lgAndUp">Create Playlist</v-list-item-title>
+        <v-list-item-title v-show="$vuetify.breakpoint.lgAndUp"
+          >Create Playlist</v-list-item-title
+        >
       </v-list-item>
     </template>
 
@@ -73,7 +75,6 @@ import getDeviceSize from "../mixins/getDeviceSize";
 import getuserToken from "../mixins/userService";
 import getuserID from "../mixins/userService";
 
-
 /**
  * @displayName Create Playlist
  * @example [none]
@@ -95,7 +96,11 @@ export default {
     create: function() {
       //if the input was empty the playlist name will be "New Playlist" (it allows duplicats)
       if (this.name == "") this.name = "New Playlist";
-      this.$store.dispatch("playlist/createPlaylist",{name: this.name , token: this.getuserToken() ,id: this.getuserID()});
+      this.$store.dispatch("playlist/createPlaylist", {
+        name: this.name,
+        token: this.getuserToken(),
+        id: this.getuserID()
+      });
       //Reset the input data and close the popup
       this.name = "";
       this.dialog = false;
@@ -110,7 +115,7 @@ export default {
       this.dialog = false;
     }
   },
-  mixins: [getDeviceSize , getuserToken ,getuserID]
+  mixins: [getDeviceSize, getuserToken, getuserID]
 };
 </script>
 

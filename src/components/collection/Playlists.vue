@@ -59,65 +59,64 @@ export default {
             image:
               "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
             description: "1 new playlist",
-            url:"eejnwe1",
-            id:"8"
+            url: "eejnwe1",
+            id: "8"
           },
           {
             name: "Amr Diab Collection",
             image:
               "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
             description: "1 new playlist",
-            url:"gmlkg1",
-            id:"7"
+            url: "gmlkg1",
+            id: "7"
           },
           {
             name: "Amr Diab Collection",
             image:
               "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
             description: "1 new playlist",
-            url:"gregrelgpo[few1",
-            id:"6"
+            url: "gregrelgpo[few1",
+            id: "6"
           },
           {
             name: "Amr Diab Collection",
             image:
               "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
             description: "1 new playlist",
-            url:"'hrl[t1",
-            id:"5"
+            url: "'hrl[t1",
+            id: "5"
           },
           {
             name: "Amr Diab Collection",
             image:
               "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
             description: "1 new playlist",
-            url:"1mkgreognre",
-            id:"4"
+            url: "1mkgreognre",
+            id: "4"
           },
           {
             name: "Amr Diab Collection",
             image:
               "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
             description: "1 new playlist",
-            url:"1jorewiorjrwer",
-            id:"3"
-
+            url: "1jorewiorjrwer",
+            id: "3"
           },
           {
             name: "Amr Diab Collection",
             image:
               "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
             description: "1 new playlist",
-            url:"12mfnernkjfre1",
-            id:"2"
+            url: "12mfnernkjfre1",
+            id: "2"
           },
           {
             name: "Amr Diab Collection",
             image:
               "https://cdn.platinumlist.net/upload/artist/tamer_hosny_451-mobile1514454683.jpeg",
             description: "1 new playlist",
-            url:"1glreoreo",
-            id:"1"
+            url: "1glreoreo",
+            id: "1"
           }
         ]
       },
@@ -139,7 +138,6 @@ export default {
       if (this.contextMenuChoice === null) return;
       console.log(this.contextMenuChoice);
       console.log(this.contextMenuCardIndex);
-
 
       this.contextMenuChoice = null;
     }
