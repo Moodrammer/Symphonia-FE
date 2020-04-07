@@ -115,80 +115,195 @@ export function makeServer({ environment = "development" } = {}) {
         serializers: {
             application: JSONAPISerializer
         },
-
         routes() {
-            //namespace will be prepended to any route (it acts like the server base address)
-            this.namespace = "/api";
+          //namespace will be prepended to any route (it acts like the server base address)
+          this.namespace = "/api";
+      /////////////////////////////////////////////////////////////////////////////////
+      // Create Playlist Request
+      /////////////////////////////////////////////////////////////////////////////////
+      this.post("/v1/users/:user_id/playlists", (schema, request) => {
+        let user_id = request.params.user_id;
+        let newPlaylist = JSON.parse(request.requestBody);
+        schema.create("playlist", {
+          name: newPlaylist.name,
+          liked: true
+        });
+        return new Response(
+          200,
+          {},
+          {
+            playlist: {
+              name: newPlaylist.name,
+              id: schema.playlists.find(schema.playlists.all().length).id,
+              description: null,
+              followers: {
+                href: null,
+                total: 0
+              },
+              href:
+                "https://api.symphonia.com/v1/users/thelinmichael/playlists/" +
+                schema.playlists.find(schema.playlists.all().length).id,
+              images: [
+                {
+                  url: "http://source.unsplash.com/mp_FNJYcjBM"
+                }
+              ],
+              owner: {
+                href: "https://api.symphonia.com/v1/users/" + user_id,
+                id: user_id,
+                type: "user"
+              },
+              public: false,
+              tracks: {
+                href:
+                  "https://api.symphonia.com/v1/users/thelinmichael/playlists/7d2D2S200NyUE5KYs80PwO/tracks",
+                items: [],
+                limit: 100,
+                next: null,
+                offset: 0,
+                previous: null,
+                total: 0
+              },
+              type: "playlist"
+            }
+          }
+        );
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get a List of Current User's Playlists
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/playlists", schema => {
+        return new Response(
+          200,
+          {},
+          {
+            items: schema.playlists.where({ liked: true }).models
+          }
+        );
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get a User's Saved Tracks                "Liked Songs"
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/tracks", schema => {
+        return schema.tracks.where({ liked: true }).models;
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get a List of Popular Playlists
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/popularPlaylists", schema => {
+        return schema.playlists.where({ popularity: 90 }).models;
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get a List of Popular Artists
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/popularArtists", schema => {
+        return schema.artists.where({ popularity: 90 }).models;
+      });
 
-            /////////////////////////////////////////////////////////////////////////////////
-            // Create Playlist Request
-            /////////////////////////////////////////////////////////////////////////////////
-            this.post("/v1/users/:user_id/playlists", (schema, request) => {
-                let user_id = request.params.user_id;
-                let newPlaylist = JSON.parse(request.requestBody);
-                schema.create("playlist", {
-                    name: newPlaylist.name,
-                    liked: true
-                });
-                return new Response(
-                    200, {}, {
-                        playlist: {
-                            name: newPlaylist.name,
-                            id: schema.playlists.find(schema.playlists.all().length).id,
-                            description: null,
-                            followers: {
-                                href: null,
-                                total: 0
-                            },
-                            href: "https://api.symphonia.com/v1/users/thelinmichael/playlists/" +
-                                schema.playlists.find(schema.playlists.all().length).id,
-                            images: [{
-                                url: "http://source.unsplash.com/mp_FNJYcjBM"
-                            }],
-                            owner: {
-                                href: "https://api.symphonia.com/v1/users/" + user_id,
-                                id: user_id,
-                                type: "user"
-                            },
-                            public: false,
-                            tracks: {
-                                href: "https://api.symphonia.com/v1/users/thelinmichael/playlists/7d2D2S200NyUE5KYs80PwO/tracks",
-                                items: [],
-                                limit: 100,
-                                next: null,
-                                offset: 0,
-                                previous: null,
-                                total: 0
-                            },
-                            type: "playlist"
-                        }
-                    }
-                );
-            });
-            ///////////////////////////////////////////////////////////////////////////////////
-            //Get a List of Current User's Playlists
-            ///////////////////////////////////////////////////////////////////////////////////
-            this.get("/v1/me/playlists", schema => {
-                return schema.playlists.where({ liked: true }).models;
-            });
-            ///////////////////////////////////////////////////////////////////////////////////
-            //Get a User's Saved Tracks                "Liked Songs"
-            ///////////////////////////////////////////////////////////////////////////////////
-            this.get("/v1/me/tracks", schema => {
-                return schema.tracks.where({ liked: true }).models;
-            });
-            ///////////////////////////////////////////////////////////////////////////////////
-            //Get a List of Popular Playlists
-            ///////////////////////////////////////////////////////////////////////////////////
-            this.get("/v1/me/popularPlaylists", schema => {
-                return schema.playlists.where({ popularity: 90 }).models;
-            });
-            ///////////////////////////////////////////////////////////////////////////////////
-            //Get a List of Popular Artists
-            ///////////////////////////////////////////////////////////////////////////////////
-            this.get("/v1/me/popularArtists", schema => {
-                return schema.artists.where({ popularity: 90 }).models;
-            });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get a List of Genre Playlists
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get(
+        "v1/browse/categories/:category_id/playlists",
+        (schema, request) => {
+          let id = request.params.category_id;
+          return new Response(
+            200,
+            {},
+            {
+              playlists: {
+                items: schema.playlists.where({ genre: id }).models
+              }
+            }
+          );
+        }
+      );
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get track
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/users/track/:track_id", (schema, request) => {
+        let trackId = request.params.track_id;
+        return schema.tracks.where({ id: trackId }).models;
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Check user's saved tracks
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/tracks/contains", (schema, request) => {
+        let trackId = request.queryParams.ids;
+        return schema.tracks.where({ id: trackId }).models[0].liked;
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Remove User's Saved Tracks
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.delete("/v1/me/tracks", (schema, request) => {
+        let trackId = JSON.parse(request.requestBody)[0];
+        schema.tracks.where({ id: trackId }).update({ liked: false });
+        return new Response(200, {}, {});
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Save Tracks for User
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.put("/v1/me/tracks", (schema, request) => {
+        let trackId = JSON.parse(request.requestBody).data[0];
+        schema.tracks.where({ id: trackId }).update({ liked: true });
+        return new Response(200, {}, {});
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get a Category
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("v1/browse/categories/:categoryId", (schema, request) => {
+        let categoryID = request.params.categoryId;
+        return new Response(
+          200,
+          {},
+          {
+            name: schema.categories.where({ id: categoryID }).models[0].name,
+            id: schema.categories.where({ id: categoryID }).models[0].id,
+            href: schema.categories.where({ id: categoryID }).models[0].href
+          }
+        );
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get List of Categories
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("v1/browse/categories", () => {
+        return new Response(200, {}, categoryJSON);
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Follow a Playlist
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.put("/v1/playlists/:playlistId/followers", (schema, request) => {
+        let playlistID = request.params.playlistId;
+        schema.playlists.where({ id: playlistID }).update({ liked: true });
+        return new Response(200, {}, {});
+      });
+      ////////////////////////////////////////////////////////////////////////////////////
+      //Get a Playlist
+      ////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/playlists/:playlistId", (schema, request) => {
+        let playlistID = request.params.playlistId;
+        return new Response(
+          200,
+          {},
+          {
+            playlist: [schema.playlists.where({ id: playlistID }).models[0]]
+          }
+        );
+      });
+      //////////////////////////////////////////////////////////////////////////////////////
+      //
+      //////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/player/queue",() => {
+        return new Response(200,{},{});
+      });
+      //////////////////////////////////////////////////////////////////////////////////////
+      //
+      //////////////////////////////////////////////////////////////////////////////////////
+      this.patch("/v1/me/player/devices",() =>{
+        return new Response(200, {}, {});
+      });
+      /////////////////////////////////////////////////////////////////////////////////////
+      // this.urlPrefix = 'http://localhost:8080';
 
             ///////////////////////////////////////////////////////////////////////////////////
             //Get a List of Genre Playlists
@@ -522,6 +637,7 @@ export function makeServer({ environment = "development" } = {}) {
         }
     });
 
+  //server.shutdown();
 
     return server;
 }
