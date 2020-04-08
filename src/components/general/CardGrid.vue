@@ -277,7 +277,7 @@ export default {
   },
   created() {
     this.AUIitems = this.$props.cardItems.items;
-    if (this.AUIitems.length > 12) this.AUIitems = this.AUIitems.slice(0, 12);
+    if (this.cardStyle==="artist" && this.AUIitems && this.AUIitems.length > 12) this.AUIitems = this.AUIitems.slice(0, 12);
     this.showMoreBtn = true;
   },
   methods: {

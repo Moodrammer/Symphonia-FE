@@ -145,9 +145,9 @@ export function makeServer({ environment = "development" } = {}) {
                 "https://api.symphonia.com/v1/users/thelinmichael/playlists/" +
                 schema.playlists.find(schema.playlists.all().length).id,
               images: [
-                {
-                  url: "http://source.unsplash.com/mp_FNJYcjBM",
-                },
+                
+                   "http://source.unsplash.com/mp_FNJYcjBM"
+                
               ],
               owner: {
                 href: "https://api.symphonia.com/v1/users/" + user_id,

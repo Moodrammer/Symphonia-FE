@@ -146,8 +146,6 @@ const actions = {
       .get("/v1/playlists/" + playlistID)
       .then(response => {
         let returnedPlaylist = response.data.playlist[0];
-        console.log("dsasdsa")
-        console.log(returnedPlaylist)
         commit("setPlaylist", returnedPlaylist);
       })
       .catch(error => {
