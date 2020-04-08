@@ -51,7 +51,7 @@
         </p>
       </v-row>
       <v-row justify="center">
-        <router-link to="/" class="listen-button">
+        <router-link to="/webhome/home" class="listen-button">
           Listen on Symphonia
         </router-link>
       </v-row>

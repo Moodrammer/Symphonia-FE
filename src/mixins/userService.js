@@ -129,7 +129,7 @@ export default {
       }
     },
     /**
-     * This function is used to replace the already existing token in either the localStorage or the sessionStorage with 
+     * This function is used to replace the already existing token in either the localStorage or the sessionStorage with
      * the new token sent from the server
      * @param {string} newUserToken
      * @public

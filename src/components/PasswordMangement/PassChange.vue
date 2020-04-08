@@ -169,6 +169,7 @@ export default {
             localStorage.setItem("email", response.data.user.email);
             localStorage.setItem("userID", response.data.user._id);
             localStorage.setItem("type", response.data.user.type);
+            localStorage.setItem("imageUrl", response.data.user.imageUrl);
             //change the page state to be submitted
             this.notSubmitted = false;
           })

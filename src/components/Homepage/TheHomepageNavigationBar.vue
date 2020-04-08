@@ -22,9 +22,9 @@
           <v-row>
             <v-img src="/s11.png" max-width="50px" style="float: left;"></v-img>
             <v-col align="center" class="px-0">
-            <h1 style="display: inline;" display-4 class="white--text">
-              Symphonia
-            </h1>
+              <h1 style="display: inline;" display-4 class="white--text">
+                Symphonia
+              </h1>
             </v-col>
           </v-row>
         </router-link>
@@ -80,7 +80,7 @@
                 class="toolbar-link-1 blue-hover"
               >
                 <v-avatar width="40" height="40">
-                  <img :src= currentUserImageUrl alt="profile pic" />
+                  <img :src="currentUserImageUrl" alt="profile pic" />
                 </v-avatar>
 
                 <span style="text-transform: none; padding-left:15px;"
@@ -137,7 +137,7 @@
           <v-col cols="1">
             <router-link to="/account">
               <v-avatar v-if="isLoggedIn()" width="34" height="34">
-                <img :src= currentUserImageUrl alt="profile pic"/>
+                <img :src="currentUserImageUrl" alt="profile pic" />
               </v-avatar>
             </router-link>
           </v-col>
@@ -232,7 +232,7 @@
 <script>
 import isLoggedIn from "../../mixins/userService";
 import getDeviceSize from "../../mixins/getDeviceSize";
-import getimageUrl from "../../mixins/userService"
+import getimageUrl from "../../mixins/userService";
 
 /**
  * The homepage navigation bar.
@@ -246,11 +246,12 @@ export default {
     return {
       drawer: false,
       //The current user profile image
-      currentUserImageUrl: "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+      currentUserImageUrl:
+        "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
     };
   },
   created() {
-    this.currentUserImageUrl = this.getimageUrl()
+    this.currentUserImageUrl = this.getimageUrl();
   },
   methods: {
     /**
