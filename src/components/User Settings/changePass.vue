@@ -12,7 +12,12 @@
           <!-- The Current password content -->
           <div class="form-group">
             <label for="Current-password">Current password</label>
-            <input type="password" class="text" v-model="currentPassword" minlength="8"/>
+            <input
+              type="password"
+              class="text"
+              v-model="currentPassword"
+              minlength="8"
+            />
             <p v-show="errorWrongPass" class="alert">
               Sorry,wrong password or old one
             </p>
@@ -20,7 +25,12 @@
           <!-- The gender content -->
           <div class="form-group">
             <label for="New-password">New password</label>
-            <input type="password" class="text" v-model="newPassword" minlength="8" />
+            <input
+              type="password"
+              class="text"
+              v-model="newPassword"
+              minlength="8"
+            />
             <p v-show="errorEmptyNew" class="alert">
               Enter a password to continue.
             </p>
@@ -28,7 +38,12 @@
           <!-- The date of birth content -->
           <div class="form-group">
             <label for="Confirm">Repeat new password</label>
-            <input type="password" class="text" v-model="confirmPassword" minlength="8" />
+            <input
+              type="password"
+              class="text"
+              v-model="confirmPassword"
+              minlength="8"
+            />
             <p v-show="errorWrongMatch" class="alert">
               Please verify your password
             </p>
@@ -38,7 +53,7 @@
           </div>
           <div class="button-col">
             <!-- get the changes or cancel it -->
-            <button >save profile</button>
+            <button>save profile</button>
             <a href="/account/" class="a-cancel">cancel</a>
           </div>
         </form>
@@ -126,7 +141,7 @@ export default {
         .then(() => {
           this.Done = true;
         })
-        .catch(()=> {
+        .catch(() => {
           this.errorWrongPass = true;
         });
     }
