@@ -246,8 +246,7 @@ export default {
     return {
       drawer: false,
       //The current user profile image
-      currentUserImageUrl:
-        "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+      currentUserImageUrl: ""
     };
   },
   created() {

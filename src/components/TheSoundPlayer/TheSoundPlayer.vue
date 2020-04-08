@@ -183,7 +183,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened,
+                icons: !isQueueOpened
               }"
             >
               mdi-format-list-numbered-rtl
@@ -270,7 +270,7 @@ import getuserToken from "../../mixins/userService";
 
 //import io from 'socket.io-client';
 
-export const convertTimeHHMMSS = (val) => {
+export const convertTimeHHMMSS = val => {
   //-val is the time passed from the start of the sound in integer seconds
   //-new Data(val * 1000) get a date from 1970 2:00:00 and advance it with milli seconds
   //-convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
@@ -294,12 +294,12 @@ export default {
     },
 
     ...mapState({
-      isSongIsLiked: (state) => state.track.liked,
-      trackUrl: (state) => state.track.trackUrl,
-      songName: (state) => state.track.trackName,
-      artists: (state) => state.track.trackArtists,
-      imageUrl: (state) => state.track.imageUrl,
-    }),
+      isSongIsLiked: state => state.track.liked,
+      trackUrl: state => state.track.trackUrl,
+      songName: state => state.track.trackName,
+      artists: state => state.track.trackArtists,
+      imageUrl: state => state.track.imageUrl
+    })
   },
   data() {
     return {
@@ -329,7 +329,7 @@ export default {
 
       token: undefined,
 
-      snackbar: false,
+      snackbar: false
     };
   },
   methods: {
@@ -351,9 +351,9 @@ export default {
         method: "get",
         url: "/v1/me/player/queue",
         headers: {
-          Authorization: this.token,
-        },
-      }).then(async (response) => {
+          Authorization: this.token
+        }
+      }).then(async response => {
         this.queueTracks = response.data.data.queueTracks;
         ///////////////////////////////
         //first time login (temporary behaviour)
@@ -363,16 +363,16 @@ export default {
             method: "post",
             url: "/v1/me/player/tracks/" + "5e7d2ddd3429e24340ff1397",
             headers: {
-              Authorization: this.token,
+              Authorization: this.token
             },
             data: {
               contextId: "5e8a6d96d4be480ab1d91c95",
               context_type: "playlist",
               context_url: "https://localhost:3000/",
-              device: "Chrome",
+              device: "Chrome"
             },
-            responseType: "arraybuffer",
-          }).then((response) => {
+            responseType: "arraybuffer"
+          }).then(response => {
             var blob = new Blob([response.data], { type: "audio/mpeg" });
             var objectUrl = URL.createObjectURL(blob);
             this.setTrackUrl(objectUrl);
@@ -399,9 +399,9 @@ export default {
           method: "get",
           url: "/v1/me/player/currently-playing",
           headers: {
-            Authorization: this.token,
-          },
-        }).then((response) => {
+            Authorization: this.token
+          }
+        }).then(response => {
           //get the track url
           var tempTrackUrl = response.data.data.currentTrack;
 
@@ -416,7 +416,7 @@ export default {
             //request the track data
             this.getTrack({
               token: this.token,
-              id: songId,
+              id: songId
             });
 
             //request the song mp3 file
@@ -424,13 +424,13 @@ export default {
               method: "post",
               url: "/v1/me/player/tracks/" + songId,
               data: {
-                device: "Chrome",
+                device: "Chrome"
               },
               headers: {
-                Authorization: this.token,
+                Authorization: this.token
               },
-              responseType: "arraybuffer",
-            }).then((response) => {
+              responseType: "arraybuffer"
+            }).then(response => {
               var blob = new Blob([response.data], { type: "audio/mpeg" });
               var objectUrl = URL.createObjectURL(blob);
               this.setTrackUrl(objectUrl);
@@ -440,7 +440,9 @@ export default {
       } else {
         //#MOCK
 
-        this.setTrackUrl("https://www.bensound.com/bensound-music/bensound-ukulele.mp3");
+        this.setTrackUrl(
+          "https://www.bensound.com/bensound-music/bensound-ukulele.mp3"
+        );
       }
     },
     /**
@@ -504,8 +506,8 @@ export default {
             method: "post",
             url: "/v1/me/player/next",
             headers: {
-              Authorization: this.token,
-            },
+              Authorization: this.token
+            }
           }).then(() => {
             this.getQueue();
             this.getCurrentlyPlaying();
@@ -524,13 +526,13 @@ export default {
               contextId: "5e8a6d96d4be480ab1d91c95",
               context_type: "playlist",
               context_url: "https://localhost:3000/",
-              device: "Chrome",
+              device: "Chrome"
             },
             headers: {
-              Authorization: this.token,
+              Authorization: this.token
             },
-            responseType: "arraybuffer",
-          }).then((response) => {
+            responseType: "arraybuffer"
+          }).then(response => {
             var blob = new Blob([response.data], { type: "audio/mpeg" });
             var objectUrl = URL.createObjectURL(blob);
             this.setTrackUrl(objectUrl);
@@ -572,8 +574,8 @@ export default {
           method: "post",
           url: "/v1/me/player/previous",
           headers: {
-            Authorization: this.token,
-          },
+            Authorization: this.token
+          }
         }).then(() => {
           this.getQueue();
           this.getCurrentlyPlaying();
@@ -806,12 +808,12 @@ export default {
           method: "patch",
           url: "/v1/me/player/devices",
           data: {
-            device: "Chrome", //TODO: get the browser name
+            device: "Chrome" //TODO: get the browser name
           },
           headers: {
-            Authorization: this.token,
-          },
-        }).then((response) => {
+            Authorization: this.token
+          }
+        }).then(response => {
           console.log(response);
           this.devices = response.data.devices;
           this.currentDeviceId = this.devices[this.devices.length - 1]._id;
@@ -866,7 +868,7 @@ export default {
     volumeBarReleased: function() {
       this.updateVolume();
       this.isVolumeBarPressed = false;
-    },
+    }
   },
   mounted: function() {
     this.setAudio(this.getAudio());
@@ -898,7 +900,7 @@ export default {
       }
     });
     */
-  },
+  }
 };
 </script>
 
