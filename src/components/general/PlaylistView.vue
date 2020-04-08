@@ -65,7 +65,7 @@
                   <h1 class="mt-5">{{ playlist.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">
-                  <v-btn rounded class="white--text px-8" id="playBtn">
+                  <v-btn rounded class="white--text px-8" id="playBtn" @click="play">
                     Play
                   </v-btn>
                 </v-row>
@@ -88,6 +88,7 @@
               :duration="track.durationMs"
               :id="track._id"
             />
+            <p>{{this.getuserToken()}}</p>
           </v-list>
         </v-col>
       </v-row>
@@ -116,7 +117,15 @@ export default {
       type: this.$route.params.type
     };
   },
-  methods: {},
+  methods: {
+    play: function() {
+      this.$store.dispatch("track/playSongStore",{
+        songId: this.tracks[0]._id,
+        token: 'Bearer '+ this.getuserToken(),
+        contextId: this.playlist._id
+      });
+    }
+  },
   created: function() {
     this.$store.dispatch("playlist/getPlaylist", this.id);
     this.$store.dispatch("playlist/getPlaylistTracks", this.id);

@@ -294,12 +294,15 @@ export default {
     },
 
     ...mapState({
-      isSongIsLiked: state => state.track.liked,
-      trackUrl: state => state.track.trackUrl,
-      songName: state => state.track.trackName,
-      artists: state => state.track.trackArtists,
-      imageUrl: state => state.track.imageUrl
-    })
+      isSongIsLiked: (state) => state.track.liked,
+      trackUrl: (state) => state.track.trackUrl,
+      songName: (state) => state.track.trackName,
+      artists: (state) => state.track.trackArtists,
+      imageUrl: (state) => state.track.imageUrl,
+      lastTrackInQueue: (state) => state.track.lastTrackInQueue,
+      firstTrackInQueue: (state) => state.track.firstTrackInQueue,
+      queueTracks: (state) => state.track.queueTracks,
+    }),
   },
   data() {
     return {
@@ -319,13 +322,10 @@ export default {
       isShuffleEnabled: false,
       isRepeatOnceEnabled: false,
       isFirstSong: true,
-      firstTrackInQueue: false,
-      lastTrackInQueue: false,
+      isMocking: false,
 
       devices: undefined,
       currentDeviceId: undefined,
-
-      queueTracks: undefined,
 
       token: undefined,
 
@@ -334,9 +334,16 @@ export default {
   },
   methods: {
     ...mapMutations("playlist", ["setAudio", "setPaused", "setIsSongLoaded"]),
-    ...mapMutations("track", ["setLiked", "setTrackData", "setTrackUrl"]),
+    ...mapMutations("track", [
+      "setLiked",
+      "setTrackData",
+      "setTrackUrl",
+      "setFirstTrackInQueue",
+      "setLastTrackInQueue",
+      "setQueueTracks",
+    ]),
     ...mapActions("playlist", ["pauseAndPlay"]),
-    ...mapActions("track", ["getTrack"]),
+    ...mapActions("track", ["getTrack", "playSongStore"]),
 
     /**
      * choose the device you want.
@@ -351,10 +358,10 @@ export default {
         method: "get",
         url: "/v1/me/player/queue",
         headers: {
-          Authorization: this.token
-        }
-      }).then(async response => {
-        this.queueTracks = response.data.data.queueTracks;
+          Authorization: this.token,
+        },
+      }).then(async (response) => {
+        this.setQueueTracks(response.data.data.queueTracks);
         ///////////////////////////////
         //first time login (temporary behaviour)
 
@@ -380,20 +387,20 @@ export default {
         }
         ///////////////////////////////
         if (response.data.data.previousTrack == null) {
-          this.firstTrackInQueue = true;
+          this.setFirstTrackInQueue(true);
         } else {
-          this.firstTrackInQueue = false;
+          this.setFirstTrackInQueue(false);
         }
 
         if (response.data.data.nextTrack == null) {
-          this.lastTrackInQueue = true;
+          this.setLastTrackInQueue(true);
         } else {
-          this.lastTrackInQueue = false;
+          this.setLastTrackInQueue(false);
         }
       });
     },
     getCurrentlyPlaying: function() {
-      if (process.env.NODE_ENV !== "development") {
+      if (!this.isMocking) {
         //get the currently playing track
         axios({
           method: "get",
@@ -496,7 +503,7 @@ export default {
      */
     next: function() {
       //////////////////////
-      if (process.env.NODE_ENV !== "development") {
+      if (!this.isMocking) {
         //If i'm not in mocking
         this.isBuffering = false;
         this.setPaused(true); //the sound will be paused upon changing the soruce
@@ -514,10 +521,18 @@ export default {
           });
         } else {
           var tempTrackUrl = this.queueTracks[0];
+
           var songId = tempTrackUrl.slice(
             tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
             tempTrackUrl.length
           );
+
+          //request the track data
+          this.getTrack({
+            token: this.token,
+            id: songId,
+          });
+
           //request the song mp3 file
           axios({
             method: "post",
@@ -566,7 +581,7 @@ export default {
      * @public
      */
     previous: function() {
-      if (process.env.NODE_ENV !== "development") {
+      if (!this.isMocking) {
         this.isBuffering = false;
         this.setPaused(true); //the sound will be paused upon changing the soruce
 
@@ -780,6 +795,8 @@ export default {
      */
     init: function() {
       this.isBuffering = true; //I don't want a loading icon upon the loading of the page.
+      this.isMocking = (process.env.NODE_ENV === "development");
+      //this.isMocking = false;
 
       //set the listeners:
       this.audio.addEventListener("timeupdate", this._handlePlayingUI);
@@ -802,7 +819,7 @@ export default {
 
       this.token = "Bearer " + this.getuserToken();
 
-      if (process.env.NODE_ENV !== "development") {
+      if (!this.isMocking) {
         //get the device
         axios({
           method: "patch",
