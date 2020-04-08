@@ -546,7 +546,8 @@ export function makeServer({ environment = "development" } = {}) {
                 email: schema.users.find(resettoken).email,
                 name: schema.users.find(resettoken).name,
                 type: schema.users.find(resettoken).type,
-                imageUrl: "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+                imageUrl:
+                  "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
               }
             }
           );
