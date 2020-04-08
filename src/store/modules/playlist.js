@@ -1,4 +1,5 @@
 import axios from "axios";
+import Vue from "vue";
 
 const state = {
   likedPlaylists: [],
@@ -8,12 +9,22 @@ const state = {
   isQueueOpened: false,
   isSongLoaded: false,
   flag: null, //A flag to know if the request had been done or not (will be removed)
-  singlePlaylist: null
+  singlePlaylist: null,
+  playlistTracks: []
 };
 
 const mutations = {
   add_playlist(state, payload) {
-    state.likedPlaylists.push(payload);
+    console.log(payload);
+    var k = {
+      name: payload.name,
+      image: payload.images[0],
+      description: payload.description,
+      id: payload.id,
+      url: "to be added",
+      type: "playlist"
+    };
+    state.likedPlaylists.push(k);
   },
   load_likedPlaylists(state, list) {
     state.likedPlaylists = list;
@@ -43,8 +54,16 @@ const mutations = {
   },
   setPlaylist(state, playlist) {
     state.singlePlaylist = playlist;
-    console.log("from mutations");
-    console.log(state.singlePlaylist.tracks);
+  },
+  setTracks(state, tracks) {
+    console.log(state.playlistTracks);
+    //state.playlistTracks = tracks;
+    Vue.set(state, "playlistTracks", tracks);
+    console.log("from mutation");
+    console.log(state.playlistTracks);
+  },
+  emptyTracks(state) {
+    state.playlistTracks = [];
   }
 };
 
@@ -61,7 +80,13 @@ const getters = {
   isSongLoaded(state) {
     return state.isSongLoaded;
   },
-  likedPlaylists: state => state.likedPlaylists
+  likedPlaylists: state => state.likedPlaylists,
+  playlistTracks(state) {
+    return state.playlistTracks;
+  },
+  singlePlaylist(state) {
+    return state.singlePlaylist;
+  }
 };
 
 const actions = {
@@ -78,7 +103,7 @@ const actions = {
         }
       )
       .then(response => {
-        var newPlaylist = response.data.playlist;
+        var newPlaylist = response.data;
         commit("add_playlist", newPlaylist);
       })
       .catch(error => {
@@ -97,8 +122,7 @@ const actions = {
         }
       })
       .then(response => {
-        let list = response.data.items;
-        console.log(list);
+        let list = response.data.ownedPlaylists;
         let newList = [];
         list.forEach(element => {
           var k = {
@@ -145,8 +169,20 @@ const actions = {
     axios
       .get("/v1/playlists/" + playlistID)
       .then(response => {
-        let returnedPlaylist = response.data.playlist[0];
+        let returnedPlaylist = response.data[0];
         commit("setPlaylist", returnedPlaylist);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  getPlaylistTracks({ commit }, playlistID) {
+    axios
+      .get("/v1/playlists/" + playlistID + "/tracks")
+      .then(response => {
+        let returnedTracks = response.data[0].tracks;
+        commit("setTracks", returnedTracks);
       })
       .catch(error => {
         console.log("axios caught an error");

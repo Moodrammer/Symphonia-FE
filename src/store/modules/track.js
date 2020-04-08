@@ -31,8 +31,8 @@ const mutations = {
       });
   },
   setLiked(state, payload) {
-    if (payload.id == state.trackId) state.liked = payload.status;
-    state.generalLiked = payload.status;
+    if (payload.id == state.trackId) state.liked = payload.status[0];
+    state.generalLiked = payload.status[0];
   },
   unlikeTrack(state, id) {
     if (id == state.trackId) state.liked = false;
@@ -104,8 +104,8 @@ const actions = {
   saveTrack({ commit }, payload) {
     axios
       .put(
-        "/v1/me/tracks",
-        { data: payload.id },
+        "/v1/me/tracks?ids=" + payload.id,
+        {},
         {
           headers: {
             Authorization: `Bearer ${payload.token}`

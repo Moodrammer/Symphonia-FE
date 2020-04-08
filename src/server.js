@@ -129,48 +129,39 @@ export function makeServer({ environment = "development" } = {}) {
         let newPlaylist = JSON.parse(request.requestBody);
         schema.create("playlist", {
           name: newPlaylist.name,
-          liked: true
+          id: schema.playlists.find(schema.playlists.all().length).id,
+          description: null,
+          followers: {
+            href: null,
+            total: 0
+          },
+          href:
+            "https://api.symphonia.com/v1/users/thelinmichael/playlists/" +
+            schema.playlists.find(schema.playlists.all().length).id,
+          images: ["http://source.unsplash.com/mp_FNJYcjBM"],
+          owner: {
+            href: "https://api.symphonia.com/v1/users/" + user_id,
+            id: user_id,
+            type: "user"
+          },
+          public: false,
+          tracks: {
+            href:
+              "https://api.symphonia.com/v1/users/thelinmichael/playlists/7d2D2S200NyUE5KYs80PwO/tracks",
+            items: [],
+            limit: 100,
+            next: null,
+            offset: 0,
+            previous: null,
+            total: 0
+          },
+          type: "playlist"
         });
-        return new Response(
-          200,
-          {},
-          {
-            playlist: {
-              name: newPlaylist.name,
-              id: schema.playlists.find(schema.playlists.all().length).id,
-              description: null,
-              followers: {
-                href: null,
-                total: 0
-              },
-              href:
-                "https://api.symphonia.com/v1/users/thelinmichael/playlists/" +
-                schema.playlists.find(schema.playlists.all().length).id,
-              images: [
-                {
-                  url: "http://source.unsplash.com/mp_FNJYcjBM"
-                }
-              ],
-              owner: {
-                href: "https://api.symphonia.com/v1/users/" + user_id,
-                id: user_id,
-                type: "user"
-              },
-              public: false,
-              tracks: {
-                href:
-                  "https://api.symphonia.com/v1/users/thelinmichael/playlists/7d2D2S200NyUE5KYs80PwO/tracks",
-                items: [],
-                limit: 100,
-                next: null,
-                offset: 0,
-                previous: null,
-                total: 0
-              },
-              type: "playlist"
-            }
-          }
-        );
+
+        let ID = schema.playlists.find(schema.playlists.all().length).id;
+        console.log(schema.playlists.where({ id: ID }).models[0]);
+        console.log(ID);
+        return schema.playlists.where({ id: ID }).models[0];
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Current User's Playlists
@@ -180,7 +171,7 @@ export function makeServer({ environment = "development" } = {}) {
           200,
           {},
           {
-            items: schema.playlists.where({ liked: true }).models
+            ownedPlaylists: schema.playlists.where({ liked: true }).models
           }
         );
       });
@@ -285,24 +276,33 @@ export function makeServer({ environment = "development" } = {}) {
       ////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/playlists/:playlistId", (schema, request) => {
         let playlistID = request.params.playlistId;
-        return new Response(
-          200,
-          {},
-          {
-            playlist: [schema.playlists.where({ id: playlistID }).models[0]]
-          }
+        return [schema.playlists.where({ id: playlistID }).models[0]];
+      });
+      ////////////////////////////////////////////////////////////////////////////////////
+      //Get playlist's tracks
+      ////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/playlists/:playlistId/tracks", (schema, request) => {
+        let playlistID = request.params.playlistId;
+        console.log("from mirage");
+        console.log(
+          schema.playlists.where({ id: playlistID }).models[0].tracks
         );
+        return [
+          {
+            tracks: schema.playlists.where({ id: playlistID }).models[0].tracks
+          }
+        ];
+      });
+      ////////////////////////////////////////////////////////////////////////////////////
+      //
+      //////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/player/queue", () => {
+        return new Response(200, {}, {});
       });
       //////////////////////////////////////////////////////////////////////////////////////
       //
       //////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/player/queue",() => {
-        return new Response(200,{},{});
-      });
-      //////////////////////////////////////////////////////////////////////////////////////
-      //
-      //////////////////////////////////////////////////////////////////////////////////////
-      this.patch("/v1/me/player/devices",() =>{
+      this.patch("/v1/me/player/devices", () => {
         return new Response(200, {}, {});
       });
       /////////////////////////////////////////////////////////////////////////////////////

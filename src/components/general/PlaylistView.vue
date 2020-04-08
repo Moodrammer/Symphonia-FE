@@ -80,13 +80,13 @@
           <v-list color="transparent">
             <!--Nesting the song component-->
             <song
-              v-for="track in playlist.tracks"
+              v-for="track in tracks"
               :key="track.name"
               :songName="track.name"
               :artistName="track.artist.name"
               :albumName="track.album.name"
-              :duration="track.durationMS"
-              :id="track.id"
+              :duration="track.durationMs"
+              :id="track._id"
             />
           </v-list>
         </v-col>
@@ -97,7 +97,7 @@
 
 <script>
 import Song from "./Song";
-import { mapState } from "vuex";
+//import { mapState } from "vuex";
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getuserToken from "../../mixins/userService";
 /**
@@ -119,10 +119,20 @@ export default {
   methods: {},
   created: function() {
     this.$store.dispatch("playlist/getPlaylist", this.id);
+    this.$store.dispatch("playlist/getPlaylistTracks", this.id);
   },
-  computed: mapState({
-    playlist: state => state.playlist.singlePlaylist
-  }),
+  computed: {
+    // ...mapState('playlist',{
+    //     playlist: state => state.singlePlaylist,
+    //     tracks: state => state.playlistTracks
+    //   })
+    playlist() {
+      return this.$store.state.playlist.singlePlaylist;
+    },
+    tracks() {
+      return this.$store.state.playlist.playlistTracks;
+    }
+  },
   mixins: [getDeviceSize, getuserToken]
 };
 </script>

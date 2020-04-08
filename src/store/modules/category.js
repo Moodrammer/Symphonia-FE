@@ -142,6 +142,8 @@ const mutations = {
     state.categories.push(state.likedPlaylists);
   },
   load_tracks(state, list) {
+    console.log("from mutation");
+    console.log(list);
     state.tracks = list;
   },
   setName(state, payload) {
@@ -259,7 +261,9 @@ const actions = {
         }
       })
       .then(response => {
-        let list = response.data;
+        let list = response.data.tracks.items;
+        console.log("from action");
+        console.log(list);
         commit("load_tracks", list);
       })
       .catch(error => {

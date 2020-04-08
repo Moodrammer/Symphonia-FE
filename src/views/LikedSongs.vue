@@ -82,10 +82,10 @@
             v-for="track in tracks"
             :key="track.name"
             :songName="track.name"
-            :artistName="track.artists[0].name"
-            :albumName="track.album.name"
-            :duration="track.duration_ms"
-            :id="track.id"
+            :artistName="track.artist"
+            :albumName="track.album"
+            :duration="track.durationMs"
+            :id="track._id"
           />
         </v-list>
       </v-col>
@@ -122,7 +122,7 @@ export default {
     // this.$store.dispatch("playlist/followPlaylist",{
     //   id: 2,
     //   token: this.getuserToken()
-    // })
+    // }) 5e7d2dc03429e24340ff1396
   },
   mounted() {
     this.$root.$on("updateContent", () => {

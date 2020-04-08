@@ -95,7 +95,6 @@
         </v-list-item>
       </v-list>
     </v-menu>
-
     <p class="white--text ml-12">{{ min }}:{{ sec }}</p>
   </v-list-item>
 </template>
