@@ -7,9 +7,7 @@ const state = {
 const mutations = {
   load_albums: (state, list) => (state.albums = list),
   delete_albums: (state, list) =>
-    (state.albums = state.albums.filter(
-      album => !list.includes(album.album.id)
-    ))
+    (state.albums = state.albums.filter(album => !list.includes(album._id)))
 };
 
 const getters = {
@@ -18,11 +16,10 @@ const getters = {
     var albums = [];
     newValue.forEach(element => {
       var k = {
-        name: element.album.name,
-        image: element.album.images[0].url,
-        description: element.album.artists[0].name,
-        id: element.album.id,
-        url: "url to be added",
+        name: element.name,
+        image: element.image,
+        description: element.artists,
+        id: element._id,
         type: "album"
       };
       albums.push(k);
@@ -31,32 +28,44 @@ const getters = {
   }
 };
 
-const token = localStorage.getItem("userToken");
-
 const actions = {
-  getAlbums({ commit }) {
+  /**
+   * called to get user's saved albums
+   * @param {object} payload contains the token
+   */
+
+  getAlbums({ commit }, payload) {
     axios
       .get("/v1/me/albums", {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${payload.token}`
         }
       })
-      .then(response => commit("load_albums", response.data))
+      .then(response => {
+        console.log(response);
+        commit("load_albums", response.data.Albums.items);
+      })
       .catch(error => {
         console.log("axios caught an error in getAlbums");
         console.log(error);
       });
   },
 
-  deleteAlbums({ commit }, albums) {
+  /**
+   * called to remove albums from the user's saved albums
+   * @param {object} payload contains the token and the albums ids
+   */
+
+  deleteAlbums({ commit }, payload) {
     axios
       .delete("/v1/me/albums", {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${payload.token}`,
+          "Content-Type": "application/json"
         },
-        data: albums
+        data: payload.albums
       })
-      .then(commit("delete_albums", albums))
+      .then(commit("delete_albums", payload.albums))
       .catch(error => {
         console.log("axios caught an error in deleteAlbums");
         console.log(error);

@@ -75,7 +75,7 @@ const actions = {
           localStorage.setItem("email", response.data.user.email);
           localStorage.setItem("userID", response.data.user._id);
           localStorage.setItem("type", response.data.user.type);
-
+          localStorage.setItem("imageUrl", response.data.user.imageUrl);
           //Resolve to direct the user to the application
           resolve(true);
         })
@@ -116,6 +116,7 @@ const actions = {
               localStorage.setItem("email", response.data.user.email);
               localStorage.setItem("userID", response.data.user._id);
               localStorage.setItem("type", response.data.user.type);
+              localStorage.setItem("imageUrl", response.data.user.imageUrl);
             }
             //If the user choses not to remember him store his data in the session Storage
             else {
@@ -125,6 +126,7 @@ const actions = {
               sessionStorage.setItem("email", response.data.user.email);
               sessionStorage.setItem("userID", response.data.user._id);
               sessionStorage.setItem("type", response.data.user.type);
+              sessionStorage.setItem("imageUrl", response.data.user.imageUrl);
             }
             resolve(true);
           }
@@ -155,7 +157,7 @@ const actions = {
         })
         .then(response => {
           // the user is exist then put his data in the status to make the view take the required data
-          if (response.status == 200) {
+          if (response.status == 200 || response.status == 201) {
             let user = {
               token: token,
               user: {
@@ -207,7 +209,14 @@ const actions = {
         )
         .then(response => {
           // check that the changes are done to make success alert
-          if (response.status == 201) {
+          if (response.status == 201 || response.status == 200) {
+            //If the old token is present in the localStorage
+            if (localStorage.getItem("userToken") != null)
+              localStorage.setItem("userToken", response.data.token);
+            //If the old token is present in the sessionStorage
+            else {
+              sessionStorage.setItem("userToken", response.data.token);
+            }
             resolve(true);
           }
         })
@@ -248,10 +257,10 @@ const actions = {
         )
         .then(response => {
           // check that the changes are done to make success alert
-          if (response.status == 201) {
+          if (response.status == 201 || response.status == 200) {
             //create user object to send it to the setter
             let user = {
-              token: state.userToken,
+              token: token,
               user: {
                 _id: state.userId,
                 name: state.username,

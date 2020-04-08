@@ -14,6 +14,9 @@ import HomepagePremium from "../views/PremiumOffer.vue";
 import PlaylistView from "../components/general/PlaylistView.vue";
 import PassReset from "../components/PasswordMangement/PassReset.vue";
 import PassChange from "../components/PasswordMangement/PassChange.vue";
+import ArtistUI from "../components/artistUI/ArtistUI";
+import Overview from "../components/artistUI/Overview";
+import RelatedArtists from "../components/artistUI/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
 import Genre from "../components/general/Genre.vue";
 
@@ -31,6 +34,24 @@ const routes = [
     component: WebPlayerHome,
     redirect: "webhome/home",
     children: [
+      {
+        name: "ArtistUI",
+        path: "artist/:id",
+        component: ArtistUI,
+        redirect: "artist/:id/overview",
+        children: [
+          {
+            name: "Overview",
+            path: "overview",
+            component: Overview
+          },
+          {
+            name: "RelatedArtists",
+            path: "related-artists",
+            component: RelatedArtists
+          }
+        ]
+      },
       {
         name: "home",
         path: "home",

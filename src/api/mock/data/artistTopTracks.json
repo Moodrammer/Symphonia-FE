@@ -1,0 +1,784 @@
+{
+  "tracks": [
+    {
+      "album": {
+        "album_type": "album",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+            },
+            "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+            "id": "5abSRg0xN1NV3gLbuvX24M",
+            "name": "Amr Diab",
+            "type": "artist",
+            "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/3qZ0kZ8d3F8EpvEyx0yemA"
+        },
+        "href": "https://api.spotify.com/v1/albums/3qZ0kZ8d3F8EpvEyx0yemA",
+        "id": "3qZ0kZ8d3F8EpvEyx0yemA",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b273d352e68d3f9ef21f6d167a96",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e02d352e68d3f9ef21f6d167a96",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d00004851d352e68d3f9ef21f6d167a96",
+            "width": 64
+          }
+        ],
+        "name": "نور العين",
+        "release_date": "1996-01-01",
+        "release_date_precision": "day",
+        "total_tracks": 8,
+        "type": "album",
+        "uri": "spotify:album:3qZ0kZ8d3F8EpvEyx0yemA"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+          },
+          "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+          "id": "5abSRg0xN1NV3gLbuvX24M",
+          "name": "Amr Diab",
+          "type": "artist",
+          "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 307762,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "EGA020501535"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/3ZTuYuaV1fhdNnuIBuzTYy"
+      },
+      "href": "https://api.spotify.com/v1/tracks/3ZTuYuaV1fhdNnuIBuzTYy",
+      "id": "3ZTuYuaV1fhdNnuIBuzTYy",
+      "is_local": false,
+      "is_playable": true,
+      "name": "نور العين",
+      "popularity": 54,
+      "preview_url": "https://p.scdn.co/mp3-preview/540c4bd92fb5dc37f5a98c9cff482565c920c360?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 1,
+      "type": "track",
+      "uri": "spotify:track:3ZTuYuaV1fhdNnuIBuzTYy"
+    },
+    {
+      "album": {
+        "album_type": "album",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+            },
+            "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+            "id": "5abSRg0xN1NV3gLbuvX24M",
+            "name": "Amr Diab",
+            "type": "artist",
+            "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/1qmAaW25CPUyam9Wrp9ZEu"
+        },
+        "href": "https://api.spotify.com/v1/albums/1qmAaW25CPUyam9Wrp9ZEu",
+        "id": "1qmAaW25CPUyam9Wrp9ZEu",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b2732a37edda69e67266f05a9753",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e022a37edda69e67266f05a9753",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d000048512a37edda69e67266f05a9753",
+            "width": 64
+          }
+        ],
+        "name": "تملى معاك",
+        "release_date": "2000-01-01",
+        "release_date_precision": "day",
+        "total_tracks": 10,
+        "type": "album",
+        "uri": "spotify:album:1qmAaW25CPUyam9Wrp9ZEu"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+          },
+          "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+          "id": "5abSRg0xN1NV3gLbuvX24M",
+          "name": "Amr Diab",
+          "type": "artist",
+          "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 269232,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "EGA020501614"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/6TYFcqqQVQPb3YsgfRhvqs"
+      },
+      "href": "https://api.spotify.com/v1/tracks/6TYFcqqQVQPb3YsgfRhvqs",
+      "id": "6TYFcqqQVQPb3YsgfRhvqs",
+      "is_local": false,
+      "is_playable": true,
+      "name": "تملى معاك",
+      "popularity": 53,
+      "preview_url": "https://p.scdn.co/mp3-preview/9861692925b7a6d4f9f113f6af012a99a88247b5?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 2,
+      "type": "track",
+      "uri": "spotify:track:6TYFcqqQVQPb3YsgfRhvqs"
+    },
+    {
+      "album": {
+        "album_type": "compilation",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/0LyfQWJT6nXafLPZqxe9Of"
+            },
+            "href": "https://api.spotify.com/v1/artists/0LyfQWJT6nXafLPZqxe9Of",
+            "id": "0LyfQWJT6nXafLPZqxe9Of",
+            "name": "Various Artists",
+            "type": "artist",
+            "uri": "spotify:artist:0LyfQWJT6nXafLPZqxe9Of"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/1rhwjore04STMhDGzVvIeE"
+        },
+        "href": "https://api.spotify.com/v1/albums/1rhwjore04STMhDGzVvIeE",
+        "id": "1rhwjore04STMhDGzVvIeE",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b2737e6e6d8ffdd9597a96ab019e",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e027e6e6d8ffdd9597a96ab019e",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d000048517e6e6d8ffdd9597a96ab019e",
+            "width": 64
+          }
+        ],
+        "name": "Oriental Rainbow",
+        "release_date": "2018-06-08",
+        "release_date_precision": "day",
+        "total_tracks": 14,
+        "type": "album",
+        "uri": "spotify:album:1rhwjore04STMhDGzVvIeE"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+          },
+          "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+          "id": "5abSRg0xN1NV3gLbuvX24M",
+          "name": "Amr Diab",
+          "type": "artist",
+          "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 246026,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "FR43D1712040"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/72HOx5h43VZMsbM6VI3J3G"
+      },
+      "href": "https://api.spotify.com/v1/tracks/72HOx5h43VZMsbM6VI3J3G",
+      "id": "72HOx5h43VZMsbM6VI3J3G",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Leily nahary",
+      "popularity": 52,
+      "preview_url": "https://p.scdn.co/mp3-preview/9c65235c4d5e0e0bea8c1b772faa0a696932eb68?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 1,
+      "type": "track",
+      "uri": "spotify:track:72HOx5h43VZMsbM6VI3J3G"
+    },
+    {
+      "album": {
+        "album_type": "album",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+            },
+            "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+            "id": "5abSRg0xN1NV3gLbuvX24M",
+            "name": "Amr Diab",
+            "type": "artist",
+            "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/7vFOyIrTbPoOihnZFu16cd"
+        },
+        "href": "https://api.spotify.com/v1/albums/7vFOyIrTbPoOihnZFu16cd",
+        "id": "7vFOyIrTbPoOihnZFu16cd",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b2737c607f5d6a8f657998ad9936",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e027c607f5d6a8f657998ad9936",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d000048517c607f5d6a8f657998ad9936",
+            "width": 64
+          }
+        ],
+        "name": "Meaddy El Nas",
+        "release_date": "2017-08-14",
+        "release_date_precision": "day",
+        "total_tracks": 10,
+        "type": "album",
+        "uri": "spotify:album:7vFOyIrTbPoOihnZFu16cd"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+          },
+          "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+          "id": "5abSRg0xN1NV3gLbuvX24M",
+          "name": "Amr Diab",
+          "type": "artist",
+          "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 250478,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "AEA141703978"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/2G8hCbEMe4WoOhtw2EKJd5"
+      },
+      "href": "https://api.spotify.com/v1/tracks/2G8hCbEMe4WoOhtw2EKJd5",
+      "id": "2G8hCbEMe4WoOhtw2EKJd5",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Alby Etmannah",
+      "popularity": 50,
+      "preview_url": "https://p.scdn.co/mp3-preview/249c0bb670bf72ac0bdbfa29ef1e38a38d76e2a4?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 1,
+      "type": "track",
+      "uri": "spotify:track:2G8hCbEMe4WoOhtw2EKJd5"
+    },
+    {
+      "album": {
+        "album_type": "album",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+            },
+            "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+            "id": "5abSRg0xN1NV3gLbuvX24M",
+            "name": "Amr Diab",
+            "type": "artist",
+            "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/7eFyrxZRPqw8yvZXMUm88A"
+        },
+        "href": "https://api.spotify.com/v1/albums/7eFyrxZRPqw8yvZXMUm88A",
+        "id": "7eFyrxZRPqw8yvZXMUm88A",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b273b4df726e2f184eacb95261a9",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e02b4df726e2f184eacb95261a9",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d00004851b4df726e2f184eacb95261a9",
+            "width": 64
+          }
+        ],
+        "name": "Kol Hayaty",
+        "release_date": "2018-10-03",
+        "release_date_precision": "day",
+        "total_tracks": 13,
+        "type": "album",
+        "uri": "spotify:album:7eFyrxZRPqw8yvZXMUm88A"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+          },
+          "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+          "id": "5abSRg0xN1NV3gLbuvX24M",
+          "name": "Amr Diab",
+          "type": "artist",
+          "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+        },
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/64KEffDW9EtZ1y2vBYgq8T"
+          },
+          "href": "https://api.spotify.com/v1/artists/64KEffDW9EtZ1y2vBYgq8T",
+          "id": "64KEffDW9EtZ1y2vBYgq8T",
+          "name": "Marshmello",
+          "type": "artist",
+          "uri": "spotify:artist:64KEffDW9EtZ1y2vBYgq8T"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 139920,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "US23A1500972"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/7EKL6tqwaXDlvioAsah2on"
+      },
+      "href": "https://api.spotify.com/v1/tracks/7EKL6tqwaXDlvioAsah2on",
+      "id": "7EKL6tqwaXDlvioAsah2on",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Bayen Habeit",
+      "popularity": 45,
+      "preview_url": "https://p.scdn.co/mp3-preview/6abbf8ba094c26d02eadfcec767774b7a68d912d?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 5,
+      "type": "track",
+      "uri": "spotify:track:7EKL6tqwaXDlvioAsah2on"
+    },
+    {
+      "album": {
+        "album_type": "single",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+            },
+            "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+            "id": "5abSRg0xN1NV3gLbuvX24M",
+            "name": "Amr Diab",
+            "type": "artist",
+            "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/77EnInA6w6JDuDZp0lw1em"
+        },
+        "href": "https://api.spotify.com/v1/albums/77EnInA6w6JDuDZp0lw1em",
+        "id": "77EnInA6w6JDuDZp0lw1em",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b273c5a226da2167649b08555b1c",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e02c5a226da2167649b08555b1c",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d00004851c5a226da2167649b08555b1c",
+            "width": 64
+          }
+        ],
+        "name": "Ana Gheir",
+        "release_date": "2019-08-02",
+        "release_date_precision": "day",
+        "total_tracks": 1,
+        "type": "album",
+        "uri": "spotify:album:77EnInA6w6JDuDZp0lw1em"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+          },
+          "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+          "id": "5abSRg0xN1NV3gLbuvX24M",
+          "name": "Amr Diab",
+          "type": "artist",
+          "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 220974,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "US23A1501409"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/0Yj7X7wC1UmOI7MUjDRtKH"
+      },
+      "href": "https://api.spotify.com/v1/tracks/0Yj7X7wC1UmOI7MUjDRtKH",
+      "id": "0Yj7X7wC1UmOI7MUjDRtKH",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Ana Gheir",
+      "popularity": 48,
+      "preview_url": "https://p.scdn.co/mp3-preview/9fc810d81482400e5fbfadb33b8711b1df124ad0?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 1,
+      "type": "track",
+      "uri": "spotify:track:0Yj7X7wC1UmOI7MUjDRtKH"
+    },
+    {
+      "album": {
+        "album_type": "album",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+            },
+            "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+            "id": "5abSRg0xN1NV3gLbuvX24M",
+            "name": "Amr Diab",
+            "type": "artist",
+            "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/08fHah0PYjQwfoqIis8y84"
+        },
+        "href": "https://api.spotify.com/v1/albums/08fHah0PYjQwfoqIis8y84",
+        "id": "08fHah0PYjQwfoqIis8y84",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b2738b989426c336c1d1cf89502a",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e028b989426c336c1d1cf89502a",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d000048518b989426c336c1d1cf89502a",
+            "width": 64
+          }
+        ],
+        "name": "Sahran",
+        "release_date": "2020-02-12",
+        "release_date_precision": "day",
+        "total_tracks": 16,
+        "type": "album",
+        "uri": "spotify:album:08fHah0PYjQwfoqIis8y84"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+          },
+          "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+          "id": "5abSRg0xN1NV3gLbuvX24M",
+          "name": "Amr Diab",
+          "type": "artist",
+          "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 286169,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "uscgh2089757"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/1VPjnnkxsxXdgaIbH2dhnq"
+      },
+      "href": "https://api.spotify.com/v1/tracks/1VPjnnkxsxXdgaIbH2dhnq",
+      "id": "1VPjnnkxsxXdgaIbH2dhnq",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Sahran",
+      "popularity": 47,
+      "preview_url": "https://p.scdn.co/mp3-preview/b8d462b1aa235bcb144d5101153f913698bc9c3b?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 2,
+      "type": "track",
+      "uri": "spotify:track:1VPjnnkxsxXdgaIbH2dhnq"
+    },
+    {
+      "album": {
+        "album_type": "album",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+            },
+            "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+            "id": "5abSRg0xN1NV3gLbuvX24M",
+            "name": "Amr Diab",
+            "type": "artist",
+            "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/1qmAaW25CPUyam9Wrp9ZEu"
+        },
+        "href": "https://api.spotify.com/v1/albums/1qmAaW25CPUyam9Wrp9ZEu",
+        "id": "1qmAaW25CPUyam9Wrp9ZEu",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b2732a37edda69e67266f05a9753",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e022a37edda69e67266f05a9753",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d000048512a37edda69e67266f05a9753",
+            "width": 64
+          }
+        ],
+        "name": "تملى معاك",
+        "release_date": "2000-01-01",
+        "release_date_precision": "day",
+        "total_tracks": 10,
+        "type": "album",
+        "uri": "spotify:album:1qmAaW25CPUyam9Wrp9ZEu"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+          },
+          "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+          "id": "5abSRg0xN1NV3gLbuvX24M",
+          "name": "Amr Diab",
+          "type": "artist",
+          "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 244650,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "EGA020501613"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/0iHyLzEeCcu19aEC2M3o5M"
+      },
+      "href": "https://api.spotify.com/v1/tracks/0iHyLzEeCcu19aEC2M3o5M",
+      "id": "0iHyLzEeCcu19aEC2M3o5M",
+      "is_local": false,
+      "is_playable": true,
+      "name": "العالم الله",
+      "popularity": 47,
+      "preview_url": "https://p.scdn.co/mp3-preview/b593b2e6cf21f2b5881804ed6b04db16ba890ecb?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 1,
+      "type": "track",
+      "uri": "spotify:track:0iHyLzEeCcu19aEC2M3o5M"
+    },
+    {
+      "album": {
+        "album_type": "album",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+            },
+            "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+            "id": "5abSRg0xN1NV3gLbuvX24M",
+            "name": "Amr Diab",
+            "type": "artist",
+            "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/08fHah0PYjQwfoqIis8y84"
+        },
+        "href": "https://api.spotify.com/v1/albums/08fHah0PYjQwfoqIis8y84",
+        "id": "08fHah0PYjQwfoqIis8y84",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b2738b989426c336c1d1cf89502a",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e028b989426c336c1d1cf89502a",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d000048518b989426c336c1d1cf89502a",
+            "width": 64
+          }
+        ],
+        "name": "Sahran",
+        "release_date": "2020-02-12",
+        "release_date_precision": "day",
+        "total_tracks": 16,
+        "type": "album",
+        "uri": "spotify:album:08fHah0PYjQwfoqIis8y84"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+          },
+          "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+          "id": "5abSRg0xN1NV3gLbuvX24M",
+          "name": "Amr Diab",
+          "type": "artist",
+          "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 238000,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "US23A1501408"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/1HPiNrK6F3dwedYvu9I915"
+      },
+      "href": "https://api.spotify.com/v1/tracks/1HPiNrK6F3dwedYvu9I915",
+      "id": "1HPiNrK6F3dwedYvu9I915",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Bahebo",
+      "popularity": 46,
+      "preview_url": "https://p.scdn.co/mp3-preview/b136a5dac5d10766f33446aa55daf0e6b3b4b3c9?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 13,
+      "type": "track",
+      "uri": "spotify:track:1HPiNrK6F3dwedYvu9I915"
+    },
+    {
+      "album": {
+        "album_type": "single",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+            },
+            "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+            "id": "5abSRg0xN1NV3gLbuvX24M",
+            "name": "Amr Diab",
+            "type": "artist",
+            "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/6wswcG2GMwCulHksFmclJb"
+        },
+        "href": "https://api.spotify.com/v1/albums/6wswcG2GMwCulHksFmclJb",
+        "id": "6wswcG2GMwCulHksFmclJb",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b27322f6db77466f8b64009eeef7",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e0222f6db77466f8b64009eeef7",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d0000485122f6db77466f8b64009eeef7",
+            "width": 64
+          }
+        ],
+        "name": "Ya Agmal Eyoun (Remix)",
+        "release_date": "2019-12-21",
+        "release_date_precision": "day",
+        "total_tracks": 1,
+        "type": "album",
+        "uri": "spotify:album:6wswcG2GMwCulHksFmclJb"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M"
+          },
+          "href": "https://api.spotify.com/v1/artists/5abSRg0xN1NV3gLbuvX24M",
+          "id": "5abSRg0xN1NV3gLbuvX24M",
+          "name": "Amr Diab",
+          "type": "artist",
+          "uri": "spotify:artist:5abSRg0xN1NV3gLbuvX24M"
+        },
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/6cEuCEZu7PAE9ZSzLLc2oQ"
+          },
+          "href": "https://api.spotify.com/v1/artists/6cEuCEZu7PAE9ZSzLLc2oQ",
+          "id": "6cEuCEZu7PAE9ZSzLLc2oQ",
+          "name": "R3HAB",
+          "type": "artist",
+          "uri": "spotify:artist:6cEuCEZu7PAE9ZSzLLc2oQ"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 255412,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "usl4r1935477"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/7DEjIvVqP0YvoCxHCOcGMl"
+      },
+      "href": "https://api.spotify.com/v1/tracks/7DEjIvVqP0YvoCxHCOcGMl",
+      "id": "7DEjIvVqP0YvoCxHCOcGMl",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Ya Agmal Eyoun (Remix)",
+      "popularity": 45,
+      "preview_url": "https://p.scdn.co/mp3-preview/17362a461577411fc25e51e86db66a5ff295387b?cid=774b29d4f13844c495f206cafdad9c86",
+      "track_number": 1,
+      "type": "track",
+      "uri": "spotify:track:7DEjIvVqP0YvoCxHCOcGMl"
+    }
+  ]
+}

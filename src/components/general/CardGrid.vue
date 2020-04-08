@@ -126,8 +126,13 @@
                       v-for="(song, index) in cardItems.likedSongs"
                       :key="index"
                     >
-                      {{ song.artist }}
-                      <span class="grey--text">{{ song.title }}.</span>
+                      <span
+                        v-for="(artist, index) in song.artists"
+                        :key="index"
+                      >
+                        {{ artist.name }}
+                      </span>
+                      <span class="grey--text">{{ song.name }}.</span>
                     </span>
                   </v-card-text>
                 </div>
@@ -277,7 +282,12 @@ export default {
   },
   created() {
     this.AUIitems = this.$props.cardItems.items;
-    if (this.AUIitems.length > 12) this.AUIitems = this.AUIitems.slice(0, 12);
+    if (
+      this.cardStyle === "artist" &&
+      this.AUIitems &&
+      this.AUIitems.length > 12
+    )
+      this.AUIitems = this.AUIitems.slice(0, 12);
     this.showMoreBtn = true;
   },
   methods: {
@@ -320,11 +330,10 @@ export default {
         var url = this.$props.cardItems.items.find(
           item => item.id === this.lastHoveredCard
         );
-        url = url.url;
+        url = `https://zasymphonia.ddns.net/webhome/${url.type}/${url.id}`;
         var el = document.createElement("textarea");
         // Set value (string to be copied)
         el.value = url;
-        console.log("url", url);
         // Set non-editable to avoid focus and move outside of view
         el.setAttribute("readonly", "");
         el.style = { position: "absolute", left: "-9999px" };
@@ -366,26 +375,33 @@ export default {
 
 <style>
 /* card styles section */
+
 .card {
   height: 270;
   padding: 0;
   overflow: hidden;
   word-break: normal;
 }
+
 .card-text {
   overflow: hidden;
   word-break: normal;
 }
+
 .card-text-title {
   height: 30px;
 }
+
 .card-text-subtitle {
   height: 20px;
 }
+
 /* liked songs card styles section */
+
 .likedsongs-card-text {
   height: 100px;
 }
+
 .gradient-likedsongs-card {
   background: rgb(89, 0, 172);
   background: linear-gradient(

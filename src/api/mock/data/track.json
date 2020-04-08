@@ -32,7 +32,7 @@
         "type": "artist"
       }
     ],
-    "duration_ms": 2131000,
+    "durationMs": 2131000,
     "explicit": false,
     "href": "https://server11.mp3quran.net/yasser/012.mp3",
     "name": "Surah Yossef",
@@ -64,7 +64,7 @@
         "type": "artist"
       }
     ],
-    "duration_ms": 374000,
+    "durationMs": 374000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/qtm/053.mp3",
     "name": "Surah Al-Najm",
@@ -96,7 +96,7 @@
         "type": "artist"
       }
     ],
-    "duration_ms": 1659000,
+    "durationMs": 1659000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/wdee3/020.mp3",
     "name": "Surah Taha",
@@ -128,7 +128,7 @@
         "type": "artist"
       }
     ],
-    "duration_ms": 409000,
+    "durationMs": 409000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/qtm/067.mp3",
     "name": "Surah Al-Mulk",
@@ -160,7 +160,7 @@
         "type": "artist"
       }
     ],
-    "duration_ms": 1129000,
+    "durationMs": 1129000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/aloosi/014.mp3",
     "name": "Surah Ibrahim",

@@ -116,11 +116,9 @@ export function makeServer({ environment = "development" } = {}) {
     serializers: {
       application: JSONAPISerializer
     },
-
     routes() {
       //namespace will be prepended to any route (it acts like the server base address)
       this.namespace = "/api";
-
       /////////////////////////////////////////////////////////////////////////////////
       // Create Playlist Request
       /////////////////////////////////////////////////////////////////////////////////
@@ -179,7 +177,15 @@ export function makeServer({ environment = "development" } = {}) {
       //Get a User's Saved Tracks                "Liked Songs"
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/tracks", schema => {
-        return schema.tracks.where({ liked: true }).models;
+        return new Response(
+          200,
+          {},
+          {
+            tracks: {
+              items: schema.tracks.where({ liked: true }).models
+            }
+          }
+        );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Popular Playlists
@@ -308,8 +314,92 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';
 
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get a List of Genre Playlists
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get(
+        "v1/browse/categories/:category_id/playlists",
+        (schema, request) => {
+          let id = request.params.category_id;
+          return new Response(
+            200,
+            {},
+            {
+              playlists: {
+                items: schema.playlists.where({ genre: id }).models
+              }
+            }
+          );
+        }
+      );
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get track
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/users/track/:track_id", (schema, request) => {
+        let trackId = request.params.track_id;
+        return schema.tracks.where({ id: trackId }).models;
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Check user's saved tracks
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/tracks/contains", (schema, request) => {
+        let trackId = request.queryParams.ids;
+        return schema.tracks.where({ id: trackId }).models[0].liked;
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Remove User's Saved Tracks
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.delete("/v1/me/tracks", (schema, request) => {
+        let trackId = JSON.parse(request.requestBody)[0];
+        schema.tracks.where({ id: trackId }).update({ liked: false });
+        return new Response(200, {}, {});
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Save Tracks for User
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.put("/v1/me/tracks", (schema, request) => {
+        let trackId = JSON.parse(request.requestBody).data[0];
+        schema.tracks.where({ id: trackId }).update({ liked: true });
+        return new Response(200, {}, {});
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get a Category
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("v1/browse/categories/:categoryId", (schema, request) => {
+        let categoryID = request.params.categoryId;
+        return new Response(
+          200,
+          {},
+          {
+            name: schema.categories.where({ id: categoryID }).models[0].name,
+            id: schema.categories.where({ id: categoryID }).models[0].id,
+            href: schema.categories.where({ id: categoryID }).models[0].href
+          }
+        );
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Get List of Categories
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.get("v1/browse/categories", () => {
+        return new Response(200, {}, categoryJSON);
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      //Follow a Playlist
+      ///////////////////////////////////////////////////////////////////////////////////
+      this.put("/v1/playlists/:playlistId/followers", (schema, request) => {
+        let playlistID = request.params.playlistId;
+        console.log("from Mirage");
+        console.log(schema.playlists.where({ id: playlistID }));
+        console.log(playlistID);
+        schema.playlists.where({ id: playlistID }).update({ liked: true });
+        console.log(schema.playlists.where({ id: playlistID }));
+        return new Response(200, {}, {});
+      });
+      ///////////////////////////////////////////////////////////////////////////////////
+      // this.urlPrefix = 'http://localhost:8080';
+
       this.get("/v1/me/albums", schema => {
-        return schema.albums.all().models;
+        return { Albums: { items: schema.albums.all().models } };
       });
 
       this.delete("/v1/me/albums", (schema, request) => {
@@ -317,25 +407,22 @@ export function makeServer({ environment = "development" } = {}) {
 
         for (var i = 2; i < request.requestBody.length - 2; i++)
           x += request.requestBody[i];
-
-        return schema.albums.findBy(album => album.album.id === x).destroy();
+        console.log(x);
+        return schema.albums.findBy(album => album._id === x).destroy();
       });
 
       this.get("/v1/me/following", (schema, request) => {
         if (request.queryParams.type === "artist")
-          return schema.artists.all().models;
+          return { artists: { items: schema.artists.all().models } };
       });
 
       this.delete("/v1/me/following", (schema, request) => {
         if (request.queryParams.type === "artist") {
-          var x = "";
-          for (var i = 2; i < request.requestBody.length - 2; i++)
-            x += request.requestBody[i];
-
-          return schema.artists.findBy(artist => artist.id === x).destroy();
+          return schema.artists
+            .findBy(artist => artist._id === request.queryParams.ids)
+            .destroy();
         }
       });
-
       this.get("/v1/bestsongs"),
         schema => {
           return schema.bestsongs.bestSixSongs;
@@ -360,7 +447,9 @@ export function makeServer({ environment = "development" } = {}) {
                   _id: schema.users.find(i).id,
                   email: attrs.email,
                   name: schema.users.find(i).name,
-                  type: schema.users.find(i).type
+                  type: schema.users.find(i).type,
+                  imageUrl:
+                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
                 }
               }
             );
@@ -395,7 +484,7 @@ export function makeServer({ environment = "development" } = {}) {
               name: attrs.name,
               email: attrs.email,
               password: attrs.password,
-              DateOfBirth: attrs.dateOfBirth,
+              dateOfBirth: attrs.dateOfBirth,
               gender: attrs.gender,
               type: attrs.type
             });
@@ -417,6 +506,8 @@ export function makeServer({ environment = "development" } = {}) {
                   email: attrs.email,
                   name: attrs.name,
                   type: attrs.type,
+                  imageUrl:
+                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
                   __v: 0
                 }
               }
@@ -466,7 +557,9 @@ export function makeServer({ environment = "development" } = {}) {
                 _id: schema.users.find(resettoken).id,
                 email: schema.users.find(resettoken).email,
                 name: schema.users.find(resettoken).name,
-                type: schema.users.find(resettoken).type
+                type: schema.users.find(resettoken).type,
+                imageUrl:
+                  "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
               }
             }
           );
@@ -531,14 +624,21 @@ export function makeServer({ environment = "development" } = {}) {
         });
       // patch the user's password =>(change the current user's password)
       this.patch("/v1/users/updatepassword", (schema, request) => {
-        //console.log(JSON.parse(request.requestBody));
+        let id;
+        if (localStorage.getItem("userToken") != null) {
+          id = localStorage.getItem("userID");
+        }
+        //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+        else if (sessionStorage.getItem("userToken") != null) {
+          id = sessionStorage.getItem("userID");
+        }
         let attr = JSON.parse(request.requestBody);
-        let currentUser = schema.users.find(attr.id);
+        let currentUser = schema.users.find(id);
         // check if the current user's entered password is equal that in the seed
         if (currentUser.password == attr.passwordCurrent) {
           // if it's right change it with the new one
           currentUser.update({ password: attr.password });
-          return new Response(201, {}, {});
+          return new Response(200, { token: id }, {});
         } else {
           // if not return error to the view to display wrong password
           return new Response(401, {}, {});
@@ -560,7 +660,7 @@ export function makeServer({ environment = "development" } = {}) {
           currentUser.update({
             email: attr.email,
             gender: attr.gender,
-            DateOfBirth: attr.dateOfBirth
+            dateOfBirth: attr.dateOfBirth
           });
 
           return new Response(201, {}, {});
