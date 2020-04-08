@@ -26,7 +26,7 @@
                   }"
                 >
                   <v-img
-                    src="https://t.scdn.co/images/3099b3803ad9496896c43f22fe9be8c4.png"
+                    :src="playlist.images[0]"
                     id="playPhoto"
                     @mouseover="hover = true"
                     @mouseleave="hover = false"
@@ -62,7 +62,7 @@
 
               <v-col lg="12" md="8" sm="7" xs="1" cols="12">
                 <v-row justify-lg="center">
-                  <h1 class="mt-5">Liked Songs</h1>
+                  <h1 class="mt-5">{{ playlist.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">
                   <v-btn rounded class="white--text px-8" id="playBtn">
@@ -79,16 +79,15 @@
           <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
           <v-list color="transparent">
             <!--Nesting the song component-->
-            <!-- <song
-            v-for="track in tracks"
-            :key="track.name"
-            :songName="track.name"
-            :artistName="track.artists[0].name"
-            :albumName="track.album.name"
-            :duration="track.duration_ms"
-            :id="track.id"
-          /> -->
-            ss
+            <song
+              v-for="track in playlist.tracks"
+              :key="track.name"
+              :songName="track.name"
+              :artistName="track.artist.name"
+              :albumName="track.album.name"
+              :duration="track.durationMS"
+              :id="track.id"
+            />
           </v-list>
         </v-col>
       </v-row>
@@ -97,8 +96,8 @@
 </template>
 
 <script>
-//import Song from "./Song";
-import { mapState, mapActions } from "vuex";
+import Song from "./Song";
+import { mapState } from "vuex";
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getuserToken from "../../mixins/userService";
 /**
@@ -107,22 +106,22 @@ import getuserToken from "../../mixins/userService";
  */
 export default {
   components: {
-    // Song
+    Song
   },
   data: function() {
     return {
       hover: false,
-      iconClick: false
+      iconClick: false,
+      id: this.$route.params.id,
+      type: this.$route.params.type
     };
   },
-  methods: {
-    ...mapActions("track", ["getTracks"])
-  },
-  mounted() {
-    this.getTracks();
+  methods: {},
+  created: function() {
+    this.$store.dispatch("playlist/getPlaylist", this.id);
   },
   computed: mapState({
-    tracks: state => state.track.tracks
+    playlist: state => state.playlist.singlePlaylist
   }),
   mixins: [getDeviceSize, getuserToken]
 };

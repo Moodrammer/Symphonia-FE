@@ -9,6 +9,7 @@
       class="mr-4 ml-6"
       @click="prev"
       id="backward"
+      disabled
     >
       <v-icon color="grey darken-1" large>mdi-chevron-left</v-icon>
     </v-btn>
@@ -20,6 +21,7 @@
       class="hidden-md-and-down"
       @click="next"
       id="forward"
+      disabled
     >
       <v-icon color="grey darken-1" large>mdi-chevron-right</v-icon>
     </v-btn>

@@ -329,7 +329,7 @@ export default {
 
       token: undefined,
 
-      snackbar: false,
+      snackbar: false
     };
   },
   methods: {
@@ -416,7 +416,7 @@ export default {
             //request the track data
             this.getTrack({
               token: this.token,
-              id: songId,
+              id: songId
             });
 
             //request the song mp3 file

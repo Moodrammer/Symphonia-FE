@@ -28,8 +28,8 @@ export default {
   },
   created: function() {
     this.$store.dispatch("category/loadUserSections", this.getuserToken());
-    this.$store.dispatch("category/getPopularPlaylists");
-    this.$store.dispatch("category/getPopularArtists");
+    //this.$store.dispatch("category/getPopularPlaylists");
+    //this.$store.dispatch("category/getPopularArtists");
     this.$store.dispatch("category/loadGenres");
   },
   computed: mapGetters({

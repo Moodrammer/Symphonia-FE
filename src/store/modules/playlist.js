@@ -7,7 +7,8 @@ const state = {
   paused: true,
   isQueueOpened: false,
   isSongLoaded: false,
-  flag: null //A flag to know if the request had been done or not (will be removed)
+  flag: null, //A flag to know if the request had been done or not (will be removed)
+  singlePlaylist: null
 };
 
 const mutations = {
@@ -39,6 +40,12 @@ const mutations = {
   },
   setFlag(state) {
     state.flag = true;
+  },
+  setPlaylist(state, playlist) {
+    state.singlePlaylist = playlist;
+    console.log("from mutations");
+    console.log(state.singlePlaylist.tracks);
+    console.log(state.singlePlaylist);
   }
 };
 
@@ -91,7 +98,7 @@ const actions = {
         }
       })
       .then(response => {
-        let list = response.data;
+        let list = response.data.items;
         let newList = [];
         list.forEach(element => {
           var k = {
@@ -99,7 +106,7 @@ const actions = {
             image: element.images[0],
             description: element.description,
             id: element.id,
-            url: element.href,
+            url: "to be added",
             type: "playlist"
           };
           newList.push(k);
@@ -128,6 +135,20 @@ const actions = {
       )
       .then(() => {
         commit("setFlag");
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  getPlaylist({ commit }, playlistID) {
+    axios
+      .get("/v1/playlists/" + playlistID)
+      .then(response => {
+        let returnedPlaylist = response.data.playlist[0];
+        console.log("dsasdsa")
+        console.log(returnedPlaylist)
+        commit("setPlaylist", returnedPlaylist);
       })
       .catch(error => {
         console.log("axios caught an error");
