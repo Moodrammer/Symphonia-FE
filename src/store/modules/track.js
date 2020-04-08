@@ -8,7 +8,10 @@ const state = {
   imageUrl: null,
   trackAlbumId: null,
   trackArtists: [],
-  generalLiked: null
+  generalLiked: null,
+  firstTrackInQueue: false,
+  lastTrackInQueue: false,
+  queueTracks: [],
 };
 
 const mutations = {
@@ -18,13 +21,13 @@ const mutations = {
     axios
       .get("/v1/artists/" + payload.artist, {
         headers: {
-          Authorization: payload.token
-        }
+          Authorization: payload.token,
+        },
       })
-      .then(response => {
+      .then((response) => {
         let artist = {
           name: undefined,
-          href: ""
+          href: "",
         };
         artist.name = response.data.name;
         state.trackArtists[0] = artist;
@@ -47,7 +50,16 @@ const mutations = {
   },
   setID(state, id) {
     state.trackId = id;
-  }
+  },
+  setFirstTrackInQueue(state, a) {
+    state.firstTrackInQueue = a;
+  },
+  setLastTrackInQueue(state, a) {
+    state.lastTrackInQueue = a;
+  },
+  setQueueTracks(state, queueTracks) {
+    state.queueTracks = queueTracks;
+  },
 };
 
 const actions = {
@@ -56,14 +68,14 @@ const actions = {
     axios
       .get("/v1/users/track/" + payload.id, {
         headers: {
-          Authorization: payload.token
-        }
+          Authorization: payload.token,
+        },
       })
-      .then(response => {
+      .then((response) => {
         let trackData = response.data;
         commit("setTrackData", trackData);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -72,14 +84,14 @@ const actions = {
     axios
       .get("/v1/me/tracks/contains?ids=" + payload.id, {
         headers: {
-          Authorization: `Bearer ${payload.token}`
-        }
+          Authorization: `Bearer ${payload.token}`,
+        },
       })
-      .then(response => {
+      .then((response) => {
         let liked = response.data;
         commit("setLiked", { status: liked, id: payload.id });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -88,15 +100,15 @@ const actions = {
     axios
       .delete("/v1/me/tracks", {
         headers: {
-          Authorization: `Bearer ${payload.token}`
+          Authorization: `Bearer ${payload.token}`,
         },
-        data: payload.id
+        data: payload.id,
       })
       .then(() => {
         //   if(id[0]==state.trackId)           //comment it for now
         commit("unlikeTrack", payload.id);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -108,24 +120,79 @@ const actions = {
         { data: payload.id },
         {
           headers: {
-            Authorization: `Bearer ${payload.token}`
-          }
+            Authorization: `Bearer ${payload.token}`,
+          },
         }
       )
       .then(() => {
         //if(id[0]==state.trackId)
         commit("likeTrack", payload.id);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error");
         console.log(error);
       });
-  }
+  },
+  getQueueStore({ state }, token) {
+    axios({
+      method: "get",
+      url: "/v1/me/player/queue",
+      headers: {
+        Authorization: token,
+      },
+    }).then(async (response) => {
+      state.queueTracks = response.data.data.queueTracks;
+
+      if (response.data.data.previousTrack == null) {
+        state.firstTrackInQueue = true;
+      } else {
+        state.firstTrackInQueue = false;
+      }
+
+      if (response.data.data.nextTrack == null) {
+        state.lastTrackInQueue = true;
+      } else {
+        state.lastTrackInQueue = false;
+      }
+    });
+  },
+  /**
+   * 
+   * @param payload object contains songId, contextId, token 
+   */
+  playSongStore({ dispatch, state }, payload) {
+    //request the song mp3 file
+    axios({
+      method: "post",
+      url: "/v1/me/player/tracks/" + payload.songId,
+      data: {
+        contextId: payload.contextId,
+        context_type: "playlist",
+        context_url: "https://localhost:3000/",
+        device: "Chrome",
+      },
+      headers: {
+        Authorization: payload.token,
+      },
+      responseType: "arraybuffer",
+    }).then((response) => {
+      var blob = new Blob([response.data], { type: "audio/mpeg" });
+      var objectUrl = URL.createObjectURL(blob);
+      state.trackUrl = objectUrl;
+
+      var payloadTrack = {
+        token: payload.token,
+        id: payload.songId
+      }
+      dispatch("getTrack", payloadTrack);
+      dispatch("getQueueStore", payload.token);
+    });
+  },
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
 };
