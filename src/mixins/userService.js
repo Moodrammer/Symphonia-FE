@@ -27,12 +27,14 @@ export default {
         localStorage.removeItem("email");
         localStorage.removeItem("userID");
         localStorage.removeItem("type");
+        localStorage.removeItem("imageUrl");
       } else {
         sessionStorage.removeItem("userToken");
         sessionStorage.removeItem("username");
         sessionStorage.removeItem("email");
         sessionStorage.removeItem("userID");
         sessionStorage.removeItem("type");
+        sessionStorage.removeItem("imageUrl");
       }
     },
     /**

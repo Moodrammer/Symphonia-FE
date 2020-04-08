@@ -305,7 +305,7 @@ export function makeServer({ environment = "development" } = {}) {
                   email: attrs.email,
                   name: schema.users.find(i).name,
                   type: schema.users.find(i).type,
-                  imageUrl: "profile.jpg"
+                  imageUrl: "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
                 }
               }
             );
@@ -362,6 +362,7 @@ export function makeServer({ environment = "development" } = {}) {
                   email: attrs.email,
                   name: attrs.name,
                   type: attrs.type,
+                  imageUrl: "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
                   __v: 0
                 }
               }
