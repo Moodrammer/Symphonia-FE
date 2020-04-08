@@ -159,21 +159,21 @@ export default {
         for (let i = 0; i < 31; i++) {
           counter = {
             value: i + 1,
-            selected: i + 1 == this.selectedDay ? true : false
+            selected: i + 1 == parseInt(this.selectedDay) ? true : false
           };
           this.days.push(counter);
         }
         for (let i = 0; i < 12; i++) {
           counter = {
             value: i + 1,
-            selected: i + 1 == this.selectedMonth ? true : false
+            selected: i + 1 == parseInt(this.selectedMonth) ? true : false
           };
           this.months.push(counter);
         }
         for (let i = 1940; i <= 2020; i++) {
           counter = {
             value: i,
-            selected: i == this.selectedYear ? true : false
+            selected: i == parseInt(this.selectedYear) ? true : false
           };
           this.years.push(counter);
         }
@@ -193,8 +193,15 @@ export default {
   methods: {
     // Used to update as V-model for the user's Date of Brith
     selectedDate: function() {
-      this.user.userDOB =
-        this.selectedYear + "-" + this.selectedMonth + "-" + this.selectedDay;
+      let d =
+        this.selectedDay.toString().length == 1
+          ? "0" + this.selectedDay.toString()
+          : this.selectedDay.toString();
+      let m =
+        this.selectedMonth.toString().length == 1
+          ? "0" + this.selectedMonth.toString()
+          : this.selectedMonth.toString();
+      this.user.userDOB = this.selectedYear + "-" + m + "-" + d;
     },
     submit: function() {
       this.selectedDate();
