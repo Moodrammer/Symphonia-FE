@@ -35,7 +35,7 @@
           <v-col sm="1" v-if="isSm()"></v-col>
           <v-col sm="10" md="12" lg="12" xs="12">
             <router-link
-              to="/trial"
+              to="/premium"
               class="download-button-large"
               v-bind:class="{ 'download-button-xs': isXs() }"
             >
@@ -117,7 +117,7 @@
           <v-divider class="mx-4"></v-divider>
 
           <router-link
-            to="/trial"
+            to="/premium"
             class="download-button-large download-button-xs"
           >
             get premium

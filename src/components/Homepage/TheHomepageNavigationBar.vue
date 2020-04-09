@@ -42,13 +42,13 @@
             >Premium</router-link
           >
           <router-link
-            to="/help"
+            to="/"
             class="toolbar-link-1"
             v-bind:class="{ 'blue-hover': isLoggedIn() }"
             >Help</router-link
           >
           <router-link
-            to="/download"
+            to="/"
             class="toolbar-link-1"
             v-bind:class="{ 'blue-hover': isLoggedIn() }"
             >Download</router-link

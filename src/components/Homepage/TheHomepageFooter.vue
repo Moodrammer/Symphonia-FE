@@ -94,13 +94,13 @@
           class="links-column-3"
           v-bind:class="{ 'links-column-3-small': isSm() || isXs() }"
         >
-          <router-link class="socialmedia-icon" to="/instagram">
+          <router-link class="socialmedia-icon" to="/">
             <v-icon medium class="socialmedia-icon-color">mdi-instagram</v-icon>
           </router-link>
-          <router-link class="socialmedia-icon" to="/twitter">
+          <router-link class="socialmedia-icon" to="/">
             <v-icon medium class="socialmedia-icon-color">mdi-twitter</v-icon>
           </router-link>
-          <router-link class="socialmedia-icon" to="/facebook">
+          <router-link class="socialmedia-icon" to="/">
             <v-icon medium class="socialmedia-icon-color">mdi-facebook</v-icon>
           </router-link>
         </v-container>

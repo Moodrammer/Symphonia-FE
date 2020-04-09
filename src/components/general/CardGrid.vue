@@ -330,7 +330,7 @@ export default {
         var url = this.$props.cardItems.items.find(
           item => item.id === this.lastHoveredCard
         );
-        url = `https://zasymphonia.ddns.net/webhome/${url.type}/${url.id}`;
+        url = `https://thesymphonia.ddns.net/webhome/${url.type}/${url.id}`;
         var el = document.createElement("textarea");
         // Set value (string to be copied)
         el.value = url;

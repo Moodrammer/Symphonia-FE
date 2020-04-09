@@ -816,8 +816,8 @@ export default {
      */
     init: function() {
       this.isBuffering = true; //I don't want a loading icon upon the loading of the page.
-      this.isMocking = process.env.NODE_ENV === "development";
-      //this.isMocking = false;
+      //this.isMocking = process.env.NODE_ENV === "development";
+      this.isMocking = false;
 
       //set the listeners:
       this.audio.addEventListener("timeupdate", this._handlePlayingUI);

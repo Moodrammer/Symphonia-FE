@@ -24,7 +24,7 @@
 
         <v-row>
           <v-col md="10" offset-md="1" xs="12" align="center">
-            <router-link to="/download" class="download-button-large">
+            <router-link to="/" class="download-button-large">
               start free trial
             </router-link>
           </v-col>
