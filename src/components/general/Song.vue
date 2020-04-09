@@ -49,8 +49,8 @@
     <v-menu offset-x>
       <template v-slot:activator="{ on }">
         <!--Icon to activate the menu-->
-        <div v-on="on" v-on:click="checkLiked">
-          <v-icon color="white" class="mx-2" v-if="hover">
+        <div v-on="on" v-on:click="checkLiked" id="enableMenu">
+          <v-icon color="white" class="mx-2" v-if="hover" id="menu">
             mdi-dots-horizontal
           </v-icon>
         </div>
@@ -64,13 +64,13 @@
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item v-if="!liked" @click="likeSong">
+        <v-list-item v-if="!liked" @click="likeSong" id="saveTrack">
           <v-list-item-title class="draweritem">
             Save to your Liked Songs
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item v-if="liked" @click="deleteSong">
+        <v-list-item v-if="liked" @click="deleteSong" id="removeTrack">
           <v-list-item-title class="draweritem">
             Remove from your Liked Songs
           </v-list-item-title>
@@ -100,13 +100,13 @@
       <span>Start listening with a free Spotify account</span>
 
       <router-link to="/signup" style="text-decoration: none;">
-        <v-btn color="green" text>
+        <v-btn color="green" text id="snackbarSignup">
           sign up
         </v-btn>
       </router-link>
 
       <router-link to="/login" style="text-decoration: none;">
-        <v-btn color="cyan" text min-width="20">
+        <v-btn color="cyan" text min-width="20" id="snackbarLogin">
           log in
         </v-btn>
       </router-link>

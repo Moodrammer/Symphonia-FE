@@ -89,12 +89,14 @@
                   <v-icon
                     color="white"
                     @click="followPlaylist"
+                    id="followIcon"
                     v-if="!followed"
                     class="mr-3"
                     >mdi-heart-outline</v-icon
                   >
                   <v-icon
                     color="success"
+                    id="unfollowIcon"
                     @click="unfollowPlaylist"
                     v-else
                     class="mr-3"
@@ -103,8 +105,8 @@
                   <v-menu offset-x>
                     <template v-slot:activator="{ on }">
                       <!--Icon to activate the menu-->
-                      <div v-on="on">
-                        <v-icon color="white" class="mx-2">
+                      <div v-on="on" id="playlistMenu">
+                        <v-icon color="white" class="mx-2" id="menuDots">
                           mdi-dots-horizontal
                         </v-icon>
                       </div>
@@ -116,13 +118,13 @@
                           Start Radio
                         </v-list-item-title>
                       </v-list-item>
-                      <v-list-item v-if="!followed" @click="followPlaylist">
+                      <v-list-item v-if="!followed" @click="followPlaylist" id="followButton">
                         <v-list-item-title class="draweritem">
                           Save to Your Library
                         </v-list-item-title>
                       </v-list-item>
 
-                      <v-list-item v-if="followed" @click="unfollowPlaylist">
+                      <v-list-item v-if="followed" @click="unfollowPlaylist" id="unfollowButton">
                         <v-list-item-title class="draweritem">
                           Remove from your Library
                         </v-list-item-title>
