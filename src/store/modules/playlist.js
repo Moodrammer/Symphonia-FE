@@ -125,32 +125,34 @@ const actions = {
   // getPlayslist works for (Get a List of Current User's Playlists) when nothing send in the parameter 'user'
   // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
   async getPlaylists({ commit }, payload) {
-    await axios
-      .get("/v1/me/playlists", {
-        headers: {
-          Authorization: `Bearer ${payload}`
-        }
-      })
-      .then(response => {
-        let list = response.data.ownedPlaylists;
-        let newList = [];
-        list.forEach(element => {
-          var k = {
-            name: element.name,
-            image: element.images[0],
-            description: element.description,
-            id: element.id,
-            url: "to be added",
-            type: "playlist"
-          };
-          newList.push(k);
+    if (payload != null) {
+      await axios
+        .get("/v1/me/playlists", {
+          headers: {
+            Authorization: `Bearer ${payload}`
+          }
+        })
+        .then(response => {
+          let list = response.data.ownedPlaylists;
+          let newList = [];
+          list.forEach(element => {
+            var k = {
+              name: element.name,
+              image: element.images[0],
+              description: element.description,
+              id: element.id,
+              url: "to be added",
+              type: "playlist"
+            };
+            newList.push(k);
+          });
+          commit("load_likedPlaylists", newList);
+        })
+        .catch(error => {
+          console.log("axios caught an error");
+          console.log(error);
         });
-        commit("load_likedPlaylists", newList);
-      })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
+    }
   },
   pauseAndPlay(context) {
     context.commit("pauseAndPlay");
@@ -201,26 +203,30 @@ const actions = {
       });
   },
   checkFollowed({ commit }, payload) {
-    axios
-      .get(
-        "/v1/playlists/" +
-          payload.playlistId +
-          "/followers/contains?ids=" +
-          payload.usersID,
-        {
-          headers: {
-            Authorization: `Bearer ${payload.token}`
+    if (payload.token == null) {
+      commit("unfollow");
+    } else {
+      axios
+        .get(
+          "/v1/playlists/" +
+            payload.playlistId +
+            "/followers/contains?ids=" +
+            payload.usersID,
+          {
+            headers: {
+              Authorization: `Bearer ${payload.token}`
+            }
           }
-        }
-      )
-      .then(response => {
-        let status = response.data;
-        commit("setFollowed", status);
-      })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
+        )
+        .then(response => {
+          let status = response.data;
+          commit("setFollowed", status);
+        })
+        .catch(error => {
+          console.log("axios caught an error");
+          console.log(error);
+        });
+    }
   },
   unfollowPlaylist({ commit }, payload) {
     axios

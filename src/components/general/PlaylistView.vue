@@ -70,6 +70,17 @@
                     class="white--text px-8"
                     id="playBtn"
                     @click="play"
+                    v-if="!emptyPlaylist"
+                  >
+                    Play
+                  </v-btn>
+                  <v-btn
+                    v-else
+                    rounded
+                    class="white--text px-8"
+                    id="playBtn"
+                    @click="play"
+                    disabled
                   >
                     Play
                   </v-btn>
@@ -146,8 +157,34 @@
               />
             </div>
           </v-list>
+          <div v-if="emptyPlaylist" class="white--text ">
+            <v-row justify="center" class="my-5">
+              <v-icon color="white" large>mdi-camera-outline</v-icon>
+            </v-row>
+            <v-row justify="center" class="my-5">
+              <h1>It's a bit empty here...</h1>
+            </v-row>
+            <v-row justify="center" class="my-5">
+              <p>Let's find some songs for your playlis</p>
+            </v-row>
+          </div>
         </v-col>
       </v-row>
+      <v-snackbar v-model="snackbar" style="bottom: 100px;">
+        <span>Start listening with a free Spotify account</span>
+
+        <router-link to="/signup" style="text-decoration: none;">
+          <v-btn color="green" text>
+            sign up
+          </v-btn>
+        </router-link>
+
+        <router-link to="/login" style="text-decoration: none;">
+          <v-btn color="cyan" text min-width="20">
+            log in
+          </v-btn>
+        </router-link>
+      </v-snackbar>
     </v-container>
   </v-content>
 </template>
@@ -174,33 +211,41 @@ export default {
       iconClick: false,
       id: this.$route.params.id,
       type: this.$route.params.type,
-      disable: false
+      disable: false,
+      snackbar: false
     };
   },
   methods: {
     play: function() {
-      this.$store.dispatch("track/playSongStore", {
-        songId: this.tracks[0]._id,
-        token: "Bearer " + this.getuserToken(),
-        contextId: this.playlist._id
-      });
+      if (this.isLoggedIn()) {
+        this.$store.dispatch("track/playSongStore", {
+          songId: this.tracks[0]._id,
+          token: "Bearer " + this.getuserToken(),
+          contextId: this.playlist._id
+        });
+      } else {
+        this.snackbar = true;
+      }
     },
     followPlaylist: function() {
-      this.$store.dispatch("playlist/followPlaylist", {
-        id: this.id,
-        token: this.getuserToken()
-      });
+      if (this.isLoggedIn()) {
+        this.$store.dispatch("playlist/followPlaylist", {
+          id: this.id,
+          token: this.getuserToken()
+        });
+      } else {
+        this.snackbar = true;
+      }
     },
     unfollowPlaylist: async function() {
-      await this.$store.dispatch("playlist/unfollowPlaylist", {
-        id: this.id,
-        token: this.getuserToken()
-      });
-      this.$store.dispatch("playlist/checkFollowed", {
-        playlistId: this.id,
-        usersID: [this.getuserID()],
-        token: this.getuserToken()
-      });
+      if (this.isLoggedIn()) {
+        await this.$store.dispatch("playlist/unfollowPlaylist", {
+          id: this.id,
+          token: this.getuserToken()
+        });
+      } else {
+        this.snackbar = true;
+      }
     }
   },
   created: function() {
@@ -220,6 +265,9 @@ export default {
     },
     followed() {
       return this.$store.state.playlist.followed;
+    },
+    emptyPlaylist() {
+      return this.$store.state.playlist.playlistTracks.length == 0;
     }
   },
   mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID]

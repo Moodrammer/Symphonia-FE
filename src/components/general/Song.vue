@@ -96,12 +96,28 @@
       </v-list>
     </v-menu>
     <p class="white--text ml-12">{{ min }}:{{ sec }}</p>
+    <v-snackbar v-model="snackbar" style="bottom: 100px;">
+      <span>Start listening with a free Spotify account</span>
+
+      <router-link to="/signup" style="text-decoration: none;">
+        <v-btn color="green" text>
+          sign up
+        </v-btn>
+      </router-link>
+
+      <router-link to="/login" style="text-decoration: none;">
+        <v-btn color="cyan" text min-width="20">
+          log in
+        </v-btn>
+      </router-link>
+    </v-snackbar>
   </v-list-item>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import getuserToken from "../../mixins/userService";
+import isLoggedIn from "../../mixins/userService";
 /**
  * @example [none]
  */
@@ -125,7 +141,8 @@ export default {
     return {
       hover: "false",
       min: 0,
-      sec: 0
+      sec: 0,
+      snackbar: false
     };
   },
   created() {
@@ -143,11 +160,15 @@ export default {
       this.sec = Math.floor((val / 1000) % 60);
     },
     deleteSong: function() {
-      this.$store.dispatch("track/removeSavedTrack", {
-        id: [this.id],
-        token: this.getuserToken()
-      });
-      this.$root.$emit("updateContent");
+      if (this.isLoggedIn()) {
+        this.$store.dispatch("track/removeSavedTrack", {
+          id: [this.id],
+          token: this.getuserToken()
+        });
+        this.$root.$emit("updateContent");
+      } else {
+        this.snackbar = true;
+      }
     },
     checkLiked: function() {
       this.$store.dispatch("track/checkSaved", {
@@ -156,16 +177,20 @@ export default {
       });
     },
     likeSong: function() {
-      this.$store.dispatch("track/saveTrack", {
-        id: [this.id],
-        token: this.getuserToken()
-      });
+      if (this.isLoggedIn()) {
+        this.$store.dispatch("track/saveTrack", {
+          id: [this.id],
+          token: this.getuserToken()
+        });
+      } else {
+        this.snackbar = true;
+      }
     }
   },
   computed: mapState({
     liked: state => state.track.generalLiked
   }),
-  mixins: [getuserToken]
+  mixins: [getuserToken, isLoggedIn]
 };
 </script>
 
