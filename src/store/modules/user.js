@@ -75,7 +75,7 @@ const actions = {
           localStorage.setItem("email", response.data.user.email);
           localStorage.setItem("userID", response.data.user._id);
           localStorage.setItem("type", response.data.user.type);
-
+          localStorage.setItem("imageUrl", response.data.user.imageUrl);
           //Resolve to direct the user to the application
           resolve(true);
         })
