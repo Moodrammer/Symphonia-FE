@@ -65,9 +65,65 @@
                   <h1 class="mt-5">{{ playlist.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">
-                  <v-btn rounded class="white--text px-8" id="playBtn">
+                  <v-btn
+                    rounded
+                    class="white--text px-8"
+                    id="playBtn"
+                    @click="play"
+                  >
                     Play
                   </v-btn>
+                </v-row>
+                <v-row justify-lg="center" class="mt-6">
+                  <v-icon
+                    color="white"
+                    @click="followPlaylist"
+                    v-if="!followed"
+                    class="mr-3"
+                    >mdi-heart-outline</v-icon
+                  >
+                  <v-icon
+                    color="success"
+                    @click="unfollowPlaylist"
+                    v-else
+                    class="mr-3"
+                    >mdi-heart</v-icon
+                  >
+                  <v-menu offset-x>
+                    <template v-slot:activator="{ on }">
+                      <!--Icon to activate the menu-->
+                      <div v-on="on">
+                        <v-icon color="white" class="mx-2">
+                          mdi-dots-horizontal
+                        </v-icon>
+                      </div>
+                    </template>
+                    <!--Menu list-->
+                    <v-list color="#282828" dark class="mt-3 white--text">
+                      <v-list-item>
+                        <v-list-item-title class="draweritem">
+                          Start Radio
+                        </v-list-item-title>
+                      </v-list-item>
+                      <v-list-item v-if="!followed" @click="followPlaylist">
+                        <v-list-item-title class="draweritem">
+                          Save to Your Library
+                        </v-list-item-title>
+                      </v-list-item>
+
+                      <v-list-item v-if="followed" @click="unfollowPlaylist">
+                        <v-list-item-title class="draweritem">
+                          Remove from your Library
+                        </v-list-item-title>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-title class="draweritem">
+                          Copy Link
+                        </v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                 </v-row>
               </v-col>
             </v-row>
@@ -79,15 +135,16 @@
           <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
           <v-list color="transparent">
             <!--Nesting the song component-->
-            <song
-              v-for="track in playlist.tracks"
-              :key="track.name"
-              :songName="track.name"
-              :artistName="track.artist.name"
-              :albumName="track.album.name"
-              :duration="track.durationMS"
-              :id="track.id"
-            />
+            <div v-if="tracks">
+              <song
+                v-for="track in tracks"
+                :key="track.name"
+                :songName="track.name"
+                :albumName="track.album.name"
+                :duration="track.durationMs"
+                :id="track._id"
+              />
+            </div>
           </v-list>
         </v-col>
       </v-row>
@@ -97,9 +154,12 @@
 
 <script>
 import Song from "./Song";
-import { mapState } from "vuex";
+//import { mapState } from "vuex";
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getuserToken from "../../mixins/userService";
+import getuserID from "../../mixins/userService";
+import isLoggedIn from "../../mixins/userService";
+
 /**
  * @displayName Liked Songs
  * @example [none]
@@ -113,17 +173,56 @@ export default {
       hover: false,
       iconClick: false,
       id: this.$route.params.id,
-      type: this.$route.params.type
+      type: this.$route.params.type,
+      disable: false
     };
   },
-  methods: {},
-  created: function() {
-    this.$store.dispatch("playlist/getPlaylist", this.id);
+  methods: {
+    play: function() {
+      this.$store.dispatch("track/playSongStore", {
+        songId: this.tracks[0]._id,
+        token: "Bearer " + this.getuserToken(),
+        contextId: this.playlist._id
+      });
+    },
+    followPlaylist: function() {
+      this.$store.dispatch("playlist/followPlaylist", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+    },
+    unfollowPlaylist: async function() {
+      await this.$store.dispatch("playlist/unfollowPlaylist", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+      this.$store.dispatch("playlist/checkFollowed", {
+        playlistId: this.id,
+        usersID: [this.getuserID()],
+        token: this.getuserToken()
+      });
+    }
   },
-  computed: mapState({
-    playlist: state => state.playlist.singlePlaylist
-  }),
-  mixins: [getDeviceSize, getuserToken]
+  created: function() {
+    this.$store.dispatch("playlist/getPlaylist", this.$route.params.id);
+    this.$store.dispatch("playlist/checkFollowed", {
+      playlistId: this.$route.params.id,
+      usersID: [this.getuserID()],
+      token: this.getuserToken()
+    });
+  },
+  computed: {
+    playlist() {
+      return this.$store.state.playlist.singlePlaylist;
+    },
+    tracks() {
+      return this.$store.state.playlist.playlistTracks;
+    },
+    followed() {
+      return this.$store.state.playlist.followed;
+    }
+  },
+  mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID]
 };
 </script>
 
@@ -143,6 +242,10 @@ export default {
   background-color: #1ed760;
   transform: scale(1.05, 1.05);
 }
+
+/* #followPlaylist {
+  border-radius: 0; 
+} */
 
 .lg-img,
 .lg-card,

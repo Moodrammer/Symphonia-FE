@@ -259,7 +259,7 @@ const actions = {
         }
       })
       .then(response => {
-        let list = response.data;
+        let list = response.data.tracks.items;
         commit("load_tracks", list);
       })
       .catch(error => {

@@ -43,7 +43,7 @@
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               },
-            "durationMS": 2131000,
+            "durationMs": 2131000,
             "explicit": false,
             "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
             "id": "4i9sYtSIlR80bxje5B3rUb",
@@ -51,7 +51,38 @@
             "popularity": 45,
             "track_number": 1,
             "type": "track"
-          }
+          },
+          {
+            "album": {
+              "album_type": "single",
+              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ74PC563",
+              "id": "5GWoXPsTQylMuaZ74PC563",
+              "images": [
+                  {
+                    "height": 640,
+                    "url": "http://source.unsplash.com/Gmb4U6JFyHo",
+                    "width": 640
+                  }
+                ],
+              "name": "Quran ALbum2",
+              "type": "album"
+              },
+          "artist":
+                {
+              "href": "https://api.symphonia.com/v1/artists/2",
+              "id": "2",
+              "name": "Nasser Al-Qatami",
+              "type": "artist"
+                },
+          "durationMs": 374000,
+          "explicit": false,
+          "trackPath": "https://server6.mp3quran.net/qtm/053.mp3",
+          "id": "4i9sYtSIlR81bxje5B3rUb",
+          "name": "Surah Al-Najm",
+          "popularity": 45,
+          "track_number": 1,
+          "type": "track"
+            }
       ]
   },
   {
@@ -97,7 +128,7 @@
             "name": "Nasser Al-Qatami",
             "type": "artist"
               },
-        "durationMS": 374000,
+        "durationMs": 374000,
         "explicit": false,
         "trackPath": "https://server6.mp3quran.net/qtm/053.mp3",
         "id": "4i9sYtSIlR81bxje5B3rUb",
@@ -154,7 +185,7 @@
             "type": "artist"
               }
             ,
-        "durationMS": 374000,
+        "durationMs": 374000,
         "explicit": false,
         "trackPath": "https://server6.mp3quran.net/qtm/053.mp3",
         "id": "4i9sYtSIlR81bxje5B3rUb",
@@ -187,6 +218,37 @@
     "public": true,
     "liked": false,
     "tracks":[
+      {
+        "album": {
+          "album_type": "single",
+          "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ74PC563",
+          "id": "5GWoXPsTQylMuaZ74PC563",
+          "images": [
+              {
+                "height": 640,
+                "url": "http://source.unsplash.com/Gmb4U6JFyHo",
+                "width": 640
+              }
+            ],
+          "name": "Quran ALbum2",
+          "type": "album"
+          },
+      "artist":
+            {
+          "href": "https://api.symphonia.com/v1/artists/2",
+          "id": "2",
+          "name": "Nasser Al-Qatami",
+          "type": "artist"
+            },
+      "durationMs": 374000,
+      "explicit": false,
+      "trackPath": "https://server6.mp3quran.net/qtm/053.mp3",
+      "id": "4i9sYtSIlR81bxje5B3rUb",
+      "name": "Surah Al-Najm",
+      "popularity": 45,
+      "track_number": 1,
+      "type": "track"
+        },
         {
             "album": {
               "album_type": "single",
@@ -209,7 +271,7 @@
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               },
-            "durationMS": 2131000,
+            "durationMs": 2131000,
             "explicit": false,
             "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
             "id": "4i9sYtSIlR80bxje5B3rUb",
@@ -264,7 +326,7 @@
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               },
-            "durationMS": 2131000,
+            "durationMs": 2131000,
             "explicit": false,
             "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
             "id": "4i9sYtSIlR80bxje5B3rUb",
@@ -319,7 +381,7 @@
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               },
-            "durationMS": 2131000,
+            "durationMs": 2131000,
             "explicit": false,
             "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
             "id": "4i9sYtSIlR80bxje5B3rUb",
@@ -374,7 +436,7 @@
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               },
-            "durationMS": 2131000,
+            "durationMs": 2131000,
             "explicit": false,
             "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
             "id": "4i9sYtSIlR80bxje5B3rUb",
@@ -430,7 +492,7 @@
                 "type": "artist"
               }
             ,
-            "durationMS": 2131000,
+            "durationMs": 2131000,
             "explicit": false,
             "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
             "id": "4i9sYtSIlR80bxje5B3rUb",
@@ -485,7 +547,7 @@
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               },
-            "durationMS": 2131000,
+            "durationMs": 2131000,
             "explicit": false,
             "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
             "id": "4i9sYtSIlR80bxje5B3rUb",
@@ -539,7 +601,7 @@
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               },
-            "durationMS": 2131000,
+            "durationMs": 2131000,
             "explicit": false,
             "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
             "id": "4i9sYtSIlR80bxje5B3rUb",
@@ -593,7 +655,7 @@
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
               },
-            "durationMS": 2131000,
+            "durationMs": 2131000,
             "explicit": false,
             "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
             "id": "4i9sYtSIlR80bxje5B3rUb",

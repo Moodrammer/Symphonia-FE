@@ -371,6 +371,52 @@ export default {
     chooseDevice: function(id) {
       this.currentDeviceId = id;
     },
+    getQueue: function() {
+      axios({
+        method: "get",
+        url: "/v1/me/player/queue",
+        headers: {
+          Authorization: this.token
+        }
+      }).then(async response => {
+        this.setQueueTracks(response.data.data.queueTracks);
+        ///////////////////////////////
+        //first time login (temporary behaviour)
+
+        if (this.queueTracks.length == 0) {
+          axios({
+            method: "post",
+            url: "/v1/me/player/tracks/" + "5e7d2ddd3429e24340ff1397",
+            headers: {
+              Authorization: this.token
+            },
+            data: {
+              contextId: "5e8a6d96d4be480ab1d91c95",
+              context_type: "playlist",
+              context_url: "https://localhost:3000/",
+              device: "Chrome"
+            },
+            responseType: "arraybuffer"
+          }).then(response => {
+            var blob = new Blob([response.data], { type: "audio/mpeg" });
+            var objectUrl = URL.createObjectURL(blob);
+            this.setTrackUrl(objectUrl);
+          });
+        }
+        ///////////////////////////////
+        if (response.data.data.previousTrack == null) {
+          this.setFirstTrackInQueue(true);
+        } else {
+          this.setFirstTrackInQueue(false);
+        }
+
+        if (response.data.data.nextTrack == null) {
+          this.setLastTrackInQueue(true);
+        } else {
+          this.setLastTrackInQueue(false);
+        }
+      });
+    },
     getCurrentlyPlaying: function() {
       if (!this.isMocking) {
         //get the currently playing track
@@ -806,7 +852,6 @@ export default {
             Authorization: this.token
           }
         }).then(response => {
-          console.log(response);
           this.devices = response.data.devices;
           this.currentDeviceId = this.devices[this.devices.length - 1]._id;
         });

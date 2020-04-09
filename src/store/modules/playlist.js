@@ -7,14 +7,23 @@ const state = {
   paused: true,
   isQueueOpened: false,
   isSongLoaded: false,
-  flag: null, //A flag to know if the request had been done or not (will be removed)
   singlePlaylist: null,
+  playlistTracks: [],
+  followed: false,
   isFirstSong: true
 };
 
 const mutations = {
   add_playlist(state, payload) {
-    state.likedPlaylists.push(payload);
+    var k = {
+      name: payload.name,
+      image: payload.images[0],
+      description: payload.description,
+      id: payload.id,
+      url: "to be added",
+      type: "playlist"
+    };
+    state.likedPlaylists.push(k);
   },
   load_likedPlaylists(state, list) {
     state.likedPlaylists = list;
@@ -44,17 +53,27 @@ const mutations = {
   setIsSongLoaded(state, isSongLoaded) {
     state.isSongLoaded = isSongLoaded;
   },
-  setFlag(state) {
-    state.flag = true;
+  followed(state) {
+    state.followed = true;
   },
   setPlaylist(state, playlist) {
     state.singlePlaylist = playlist;
-    console.log("from mutations");
-    console.log(state.singlePlaylist.tracks);
-    console.log(state.singlePlaylist);
   },
   setIsFirstSong(state, isFirstSong) {
     state.isFirstSong = isFirstSong;
+  },
+  setTracks(state, tracks) {
+    //Vue.set(state, "playlistTracks", tracks);
+    state.playlistTracks = tracks;
+  },
+  emptyTracks(state) {
+    state.playlistTracks = [];
+  },
+  setFollowed(state, payload) {
+    state.followed = payload[0];
+  },
+  unfollow(state) {
+    state.followed = false;
   }
 };
 
@@ -71,7 +90,13 @@ const getters = {
   isSongLoaded(state) {
     return state.isSongLoaded;
   },
-  likedPlaylists: state => state.likedPlaylists
+  likedPlaylists: state => state.likedPlaylists,
+  playlistTracks(state) {
+    return state.playlistTracks;
+  },
+  singlePlaylist(state) {
+    return state.singlePlaylist;
+  }
 };
 
 const actions = {
@@ -88,7 +113,7 @@ const actions = {
         }
       )
       .then(response => {
-        var newPlaylist = response.data.playlist;
+        var newPlaylist = response.data;
         commit("add_playlist", newPlaylist);
       })
       .catch(error => {
@@ -107,7 +132,7 @@ const actions = {
         }
       })
       .then(response => {
-        let list = response.data.items;
+        let list = response.data.ownedPlaylists;
         let newList = [];
         list.forEach(element => {
           var k = {
@@ -143,19 +168,69 @@ const actions = {
         }
       )
       .then(() => {
-        commit("setFlag");
+        commit("followed");
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
   },
-  getPlaylist({ commit }, playlistID) {
+  getPlaylist({ commit, dispatch }, playlistID) {
+    dispatch("getPlaylistTracks", playlistID);
     axios
       .get("/v1/playlists/" + playlistID)
       .then(response => {
-        let returnedPlaylist = response.data.playlist[0];
+        let returnedPlaylist = response.data[0];
         commit("setPlaylist", returnedPlaylist);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  getPlaylistTracks({ commit }, playlistID) {
+    axios
+      .get("/v1/playlists/" + playlistID + "/tracks")
+      .then(response => {
+        let returnedTracks = response.data[0].tracks;
+        commit("setTracks", returnedTracks);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  checkFollowed({ commit }, payload) {
+    axios
+      .get(
+        "/v1/playlists/" +
+          payload.playlistId +
+          "/followers/contains?ids=" +
+          payload.usersID,
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`
+          }
+        }
+      )
+      .then(response => {
+        let status = response.data;
+        commit("setFollowed", status);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  unfollowPlaylist({ commit }, payload) {
+    axios
+      .delete("/v1/playlists/" + payload.id + "/followers", {
+        headers: {
+          Authorization: `Bearer ${payload.token}`
+        }
+      })
+      .then(() => {
+        commit("unfollow");
       })
       .catch(error => {
         console.log("axios caught an error");
