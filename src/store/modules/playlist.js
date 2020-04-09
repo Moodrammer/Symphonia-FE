@@ -9,7 +9,8 @@ const state = {
   isSongLoaded: false,
   singlePlaylist: null,
   playlistTracks: [],
-  followed: false
+  followed: false,
+  isFirstSong: true
 };
 
 const mutations = {
@@ -39,7 +40,12 @@ const mutations = {
   },
   pauseAndPlay(state) {
     state.paused = !state.paused;
-    state.paused ? state.audio.pause() : state.audio.play();
+    if (state.paused) {
+      state.audio.pause();
+    } else {
+      state.isFirstSong = false;
+      state.audio.play();
+    }
   },
   setIsQueueOpened(state, isQueueOpened) {
     state.isQueueOpened = isQueueOpened;
@@ -52,6 +58,9 @@ const mutations = {
   },
   setPlaylist(state, playlist) {
     state.singlePlaylist = playlist;
+  },
+  setIsFirstSong(state, isFirstSong) {
+    state.isFirstSong = isFirstSong;
   },
   setTracks(state, tracks) {
     //Vue.set(state, "playlistTracks", tracks);

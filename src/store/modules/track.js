@@ -7,18 +7,30 @@ const state = {
   trackId: null,
   imageUrl: null,
   trackAlbumId: null,
-  trackArtists: [],
+  albumName: "",
+  totalDuration: 0,
+  totalDurationMs: 0,
+  trackArtists: [
+    {
+      name: "",
+      href: ""
+    }
+  ],
   generalLiked: null,
   firstTrackInQueue: false,
   lastTrackInQueue: false,
-  queueTracks: []
+  queueTracks: [],
+  queueNextTracks: [],
+  isCurTrkReady: false
 };
 
 const mutations = {
-  setTrackData(state, payload) {
+  async setTrackData(state, payload) {
+    state.isCurTrkReady = false;
+
     state.trackName = payload.name;
-    state.imageUrl = payload.category[0].icons[0].url;
-    axios
+    state.totalDurationMs = payload.durationMs;
+    await axios
       .get("/v1/artists/" + payload.artist, {
         headers: {
           Authorization: payload.token
@@ -32,6 +44,19 @@ const mutations = {
         artist.name = response.data.name;
         state.trackArtists[0] = artist;
       });
+
+    await axios
+      .get("/v1/albums/" + payload.album, {
+        headers: {
+          Authorization: payload.token
+        }
+      })
+      .then(response => {
+        state.imageUrl = response.data[0].image;
+        state.albumName = response.data[0].name;
+      });
+
+    state.isCurTrkReady = true;
   },
   setLiked(state, payload) {
     if (payload.id == state.trackId) state.liked = payload.status[0];
@@ -59,6 +84,12 @@ const mutations = {
   },
   setQueueTracks(state, queueTracks) {
     state.queueTracks = queueTracks;
+  },
+  setTrackId(state, trackId) {
+    state.trackId = trackId;
+  },
+  setTotalDuration(state, totalDuration) {
+    state.totalDuration = totalDuration;
   }
 };
 
@@ -137,15 +168,54 @@ const actions = {
         console.log(error);
       });
   },
-  getQueueStore({ state }, token) {
+  getQueueStore({ dispatch, state }, token) {
     axios({
       method: "get",
       url: "/v1/me/player/queue",
       headers: {
         Authorization: token
       }
-    }).then(async response => {
+    }).then(response => {
       state.queueTracks = response.data.data.queueTracks;
+
+      ///////////////////////////////
+      //first time login (temporary behaviour)
+
+      if (state.queueTracks.length == 0) {
+        axios({
+          method: "post",
+          url: "/v1/me/player/tracks/" + "5e7d2ddd3429e24340ff1397",
+          headers: {
+            Authorization: token
+          },
+          data: {
+            contextId: "5e8a6d96d4be480ab1d91c95",
+            context_type: "playlist",
+            context_url: "https://localhost:3000/",
+            device: "Chrome"
+          },
+          responseType: "arraybuffer"
+        }).then(response => {
+          var blob = new Blob([response.data], { type: "audio/mpeg" });
+          var objectUrl = URL.createObjectURL(blob);
+          state.trackUrl = objectUrl;
+
+          //reinitialize the queue
+          dispatch("getQueueStore", token);
+        });
+      } else {
+        var tempTrackUrl = response.data.data.currentlyPlaying.currentTrack;
+        //If i'm not in mocking
+        //get the track id
+        var songId = tempTrackUrl.slice(
+          tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+          tempTrackUrl.length
+        );
+
+        state.trackId = songId;
+
+        dispatch("updateQueueNextTracksInfo", token);
+      }
 
       if (response.data.data.previousTrack == null) {
         state.firstTrackInQueue = true;
@@ -191,6 +261,80 @@ const actions = {
       dispatch("getTrack", payloadTrack);
       dispatch("getQueueStore", payload.token);
     });
+  },
+  /**
+   * update the queue next songs data
+   */
+  async updateQueueNextTracksInfo({ state }, token) {
+    //get the start of next songs
+    var i;
+    var tempTrackUrl;
+    var songId;
+
+    for (i = 0; i < state.queueTracks.length; i++) {
+      tempTrackUrl = state.queueTracks[i];
+
+      songId = tempTrackUrl.slice(
+        tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+        tempTrackUrl.length
+      );
+      if (state.trackId == songId) {
+        break;
+      }
+    }
+
+    var tracks = [];
+
+    //request the data
+    for (var j = i + 1; j < state.queueTracks.length; j++) {
+      tempTrackUrl = state.queueTracks[j];
+
+      songId = tempTrackUrl.slice(
+        tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+        tempTrackUrl.length
+      );
+
+      var track = {
+        name: undefined,
+        artistName: undefined
+      };
+
+      await axios
+        .get("/v1/users/track/" + songId, {
+          headers: {
+            Authorization: token
+          }
+        })
+        .then(async response => {
+          let trackData = response.data;
+
+          track.name = trackData.name;
+          track.durationMs = trackData.durationMs;
+
+          //get the artist name
+          await axios
+            .get("/v1/artists/" + trackData.artist, {
+              headers: {
+                Authorization: token
+              }
+            })
+            .then(response => {
+              track.artistName = response.data.name;
+            });
+
+          await axios
+            .get("/v1/albums/" + trackData.album, {
+              headers: {
+                Authorization: token
+              }
+            })
+            .then(response => {
+              track.albumName = response.data[0].name;
+            });
+        });
+      tracks.push(track);
+    }
+    state.queueNextTracks = tracks;
   }
 };
 

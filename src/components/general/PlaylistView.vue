@@ -70,6 +70,17 @@
                     class="white--text px-8"
                     id="playBtn"
                     @click="play"
+                    v-if="!emptyPlaylist"
+                  >
+                    Play
+                  </v-btn>
+                  <v-btn
+                    v-else
+                    rounded
+                    class="white--text px-8"
+                    id="playBtn"
+                    @click="play"
+                    disabled
                   >
                     Play
                   </v-btn>
@@ -146,6 +157,17 @@
               />
             </div>
           </v-list>
+          <div v-if="emptyPlaylist" class="white--text ">
+            <v-row justify="center" class="my-5">
+              <v-icon color="white" large>mdi-camera-outline</v-icon>
+            </v-row>
+            <v-row justify="center" class="my-5">
+              <h1>It's a bit empty here...</h1>
+            </v-row>
+            <v-row justify="center" class="my-5">
+              <p>Let's find some songs for your playlis</p>
+            </v-row>
+          </div>
         </v-col>
       </v-row>
       <v-snackbar v-model="snackbar" style="bottom: 100px;">
@@ -243,6 +265,9 @@ export default {
     },
     followed() {
       return this.$store.state.playlist.followed;
+    },
+    emptyPlaylist() {
+      return this.$store.state.playlist.playlistTracks.length == 0;
     }
   },
   mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID]
