@@ -70,7 +70,6 @@
                     class="white--text px-8"
                     id="playBtn"
                     @click="play"
-                    disabled
                   >
                     Play
                   </v-btn>
@@ -149,6 +148,21 @@
           </v-list>
         </v-col>
       </v-row>
+      <v-snackbar v-model="snackbar" style="bottom: 100px;">
+        <span>Start listening with a free Spotify account</span>
+
+        <router-link to="/signup" style="text-decoration: none;">
+          <v-btn color="green" text>
+            sign up
+          </v-btn>
+        </router-link>
+
+        <router-link to="/login" style="text-decoration: none;">
+          <v-btn color="cyan" text min-width="20">
+            log in
+          </v-btn>
+        </router-link>
+      </v-snackbar>
     </v-container>
   </v-content>
 </template>
@@ -175,33 +189,41 @@ export default {
       iconClick: false,
       id: this.$route.params.id,
       type: this.$route.params.type,
-      disable: false
+      disable: false,
+      snackbar: false
     };
   },
   methods: {
     play: function() {
-      this.$store.dispatch("track/playSongStore", {
-        songId: this.tracks[0]._id,
-        token: "Bearer " + this.getuserToken(),
-        contextId: this.playlist._id
-      });
+      if (this.isLoggedIn()) {
+        this.$store.dispatch("track/playSongStore", {
+          songId: this.tracks[0]._id,
+          token: "Bearer " + this.getuserToken(),
+          contextId: this.playlist._id
+        });
+      } else {
+        this.snackbar = true;
+      }
     },
     followPlaylist: function() {
-      this.$store.dispatch("playlist/followPlaylist", {
-        id: this.id,
-        token: this.getuserToken()
-      });
+      if (this.isLoggedIn()) {
+        this.$store.dispatch("playlist/followPlaylist", {
+          id: this.id,
+          token: this.getuserToken()
+        });
+      } else {
+        this.snackbar = true;
+      }
     },
     unfollowPlaylist: async function() {
-      await this.$store.dispatch("playlist/unfollowPlaylist", {
-        id: this.id,
-        token: this.getuserToken()
-      });
-      this.$store.dispatch("playlist/checkFollowed", {
-        playlistId: this.id,
-        usersID: [this.getuserID()],
-        token: this.getuserToken()
-      });
+      if (this.isLoggedIn()) {
+        await this.$store.dispatch("playlist/unfollowPlaylist", {
+          id: this.id,
+          token: this.getuserToken()
+        });
+      } else {
+        this.snackbar = true;
+      }
     }
   },
   created: function() {

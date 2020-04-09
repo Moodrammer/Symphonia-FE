@@ -294,15 +294,15 @@ export default {
     },
 
     ...mapState({
-      isSongIsLiked: (state) => state.track.liked,
-      trackUrl: (state) => state.track.trackUrl,
-      songName: (state) => state.track.trackName,
-      artists: (state) => state.track.trackArtists,
-      imageUrl: (state) => state.track.imageUrl,
-      lastTrackInQueue: (state) => state.track.lastTrackInQueue,
-      firstTrackInQueue: (state) => state.track.firstTrackInQueue,
-      queueTracks: (state) => state.track.queueTracks,
-    }),
+      isSongIsLiked: state => state.track.liked,
+      trackUrl: state => state.track.trackUrl,
+      songName: state => state.track.trackName,
+      artists: state => state.track.trackArtists,
+      imageUrl: state => state.track.imageUrl,
+      lastTrackInQueue: state => state.track.lastTrackInQueue,
+      firstTrackInQueue: state => state.track.firstTrackInQueue,
+      queueTracks: state => state.track.queueTracks
+    })
   },
   data() {
     return {
@@ -340,7 +340,7 @@ export default {
       "setTrackUrl",
       "setFirstTrackInQueue",
       "setLastTrackInQueue",
-      "setQueueTracks",
+      "setQueueTracks"
     ]),
     ...mapActions("playlist", ["pauseAndPlay"]),
     ...mapActions("track", ["getTrack", "playSongStore"]),
@@ -358,9 +358,9 @@ export default {
         method: "get",
         url: "/v1/me/player/queue",
         headers: {
-          Authorization: this.token,
-        },
-      }).then(async (response) => {
+          Authorization: this.token
+        }
+      }).then(async response => {
         this.setQueueTracks(response.data.data.queueTracks);
         ///////////////////////////////
         //first time login (temporary behaviour)
@@ -530,7 +530,7 @@ export default {
           //request the track data
           this.getTrack({
             token: this.token,
-            id: songId,
+            id: songId
           });
 
           //request the song mp3 file
@@ -795,7 +795,7 @@ export default {
      */
     init: function() {
       this.isBuffering = true; //I don't want a loading icon upon the loading of the page.
-      this.isMocking = (process.env.NODE_ENV === "development");
+      this.isMocking = process.env.NODE_ENV === "development";
       //this.isMocking = false;
 
       //set the listeners:

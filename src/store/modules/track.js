@@ -81,20 +81,24 @@ const actions = {
       });
   },
   checkSaved({ commit }, payload) {
-    axios
-      .get("/v1/me/tracks/contains?ids=" + payload.id, {
-        headers: {
-          Authorization: `Bearer ${payload.token}`
-        }
-      })
-      .then(response => {
-        let liked = response.data;
-        commit("setLiked", { status: liked, id: payload.id });
-      })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
+    if (payload.token == null) {
+      commit("unlikeTrack", payload.id);
+    } else {
+      axios
+        .get("/v1/me/tracks/contains?ids=" + payload.id, {
+          headers: {
+            Authorization: `Bearer ${payload.token}`
+          }
+        })
+        .then(response => {
+          let liked = response.data;
+          commit("setLiked", { status: liked, id: payload.id });
+        })
+        .catch(error => {
+          console.log("axios caught an error");
+          console.log(error);
+        });
+    }
   },
   removeSavedTrack({ commit }, payload) {
     axios
