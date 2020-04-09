@@ -71,6 +71,7 @@
             @click="previous()"
             v-if="!firstTrackInQueue"
             title="Previous"
+            id="previous"
             style="margin-right: 10px;"
           >
             <v-icon medium class="icons">
@@ -92,6 +93,7 @@
             v-if="isBuffering"
             style="width: 36px; height: 36px;"
             disabled
+            id="playPause"
           >
             <v-icon v-if="paused" large class="icons" title="play">
               mdi-play-circle-outline
@@ -108,13 +110,13 @@
           />
 
           <!-- Next -->
-          <a @click="next()" title="Next" style="margin-left: 10px;">
+          <a @click="next()" title="Next" id="next" style="margin-left: 10px;">
             <v-icon medium class="icons">
               mdi-skip-next
             </v-icon>
           </a>
 
-          <a
+          <!-- <a
             @click="enableRepeat()"
             v-if="!isRepeatEnabled && !isRepeatOnceEnabled"
             title="Enable repeat"
@@ -123,22 +125,27 @@
             <v-icon small class="icons">
               mdi-repeat
             </v-icon>
-          </a>
+          </a> -->
 
+          <!-- v-if="isRepeatEnabled && !isRepeatOnceEnabled" -->
           <a
+            id="enRepeatOnce"
             @click="enableRepeatOnce()"
-            v-if="isRepeatEnabled && !isRepeatOnceEnabled"
+            v-if="!isRepeatOnceEnabled"
             title="Enable repeat once"
             style="margin-left: 20px;"
           >
-            <v-icon small class="icons" color="green">
+            <!-- <v-icon small class="icons" color="green"> -->
+            <v-icon small class="icons">
               mdi-repeat
             </v-icon>
           </a>
 
+          <!-- v-if="!isRepeatEnabled && isRepeatOnceEnabled" -->
           <a
+            id="disRepeatOnce"
             @click="disableRepeatOnce()"
-            v-if="!isRepeatEnabled && isRepeatOnceEnabled"
+            v-if="isRepeatOnceEnabled"
             title="Disable repeat once"
             style="margin-left: 20px;"
           >
@@ -155,6 +162,7 @@
           }}</span>
 
           <input
+            id="songBar"
             type="range"
             min="0"
             v-bind:max="totalDuration"
@@ -177,6 +185,7 @@
           <router-link
             to="/webhome/collection/queue"
             title="queue"
+            id="queue"
             style="margin-right: 10px; float: left; text-decoration: none;"
           >
             <v-icon
@@ -231,6 +240,7 @@
           <a
             @click="mute()"
             title="Mute"
+            id="mute"
             style="float: left; margin-right: 10px;"
           >
             <v-icon v-if="isMuted" class="icons">
@@ -241,6 +251,7 @@
             </v-icon>
           </a>
           <input
+            id="volumeBar"
             type="range"
             min="0"
             max="100"
@@ -252,9 +263,6 @@
         </div>
       </v-col>
     </v-row>
-    <v-snackbar v-model="snackbar" style="bottom: 100px;">
-      <span>Please, choose your first song.</span>
-    </v-snackbar>
   </v-footer>
 </template>
 
@@ -328,8 +336,6 @@ export default {
       currentDeviceId: undefined,
 
       token: undefined,
-
-      snackbar: false
     };
   },
   methods: {
@@ -711,8 +717,9 @@ export default {
         //if (is the current song is the last song in the playlist)?
         //change "file" to the link of the first song of the playlist,
         //then after loading in the loaded handler: invoke play()
+      } else{
+        this.next();
       }
-      this.next();
     },
     /**
      * This handler is invoked when the track started
