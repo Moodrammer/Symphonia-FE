@@ -13,6 +13,7 @@
             :playing="true"
             :songName="curTrkName"
             :artistName="curTrkArtistName"
+            :duration="totalDuration * 1000"
           />
         </v-list>
       </v-col>
@@ -32,6 +33,7 @@
             :disabled="true"
             :songName="track.name"
             :artistName="track.artistName"
+            :duration="track.durationMs"
           /> 
         </v-list>
       </v-col>
@@ -67,10 +69,10 @@ export default {
 
   computed: {
     ...mapState({
-      queueTracks: (state) => state.track.queueTracks,
       curTrkName: (state) => state.track.trackName,
       curTrkArtistName: (state) => state.track.trackArtists[0].name,
-      queueNextTracks: (state) => state.track.queueNextTracks
+      queueNextTracks: (state) => state.track.queueNextTracks,
+      totalDuration: (state) => state.track.totalDuration
     }),
   },
 

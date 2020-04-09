@@ -302,13 +302,14 @@ export default {
       lastTrackInQueue: (state) => state.track.lastTrackInQueue,
       firstTrackInQueue: (state) => state.track.firstTrackInQueue,
       queueTracks: (state) => state.track.queueTracks,
+      isFirstSong: (state) => state.playlist.isFirstSong,
+      totalDuration: (state) => state.track.totalDuration,
     }),
   },
   data() {
     return {
       //Audio info:
       currentTime: "00:00",
-      totalDuration: 0,
       volumeValue: 50,
       previousVolumeValue: 50,
       currentTimeInSec: 0,
@@ -321,7 +322,6 @@ export default {
       isRepeatEnabled: false,
       isShuffleEnabled: false,
       isRepeatOnceEnabled: false,
-      isFirstSong: true,
       isMocking: false,
 
       devices: undefined,
@@ -333,7 +333,12 @@ export default {
     };
   },
   methods: {
-    ...mapMutations("playlist", ["setAudio", "setPaused", "setIsSongLoaded"]),
+    ...mapMutations("playlist", [
+      "setAudio",
+      "setPaused",
+      "setIsSongLoaded",
+      "setIsFirstSong",
+    ]),
     ...mapMutations("track", [
       "setLiked",
       "setTrackData",
@@ -342,13 +347,14 @@ export default {
       "setFirstTrackInQueue",
       "setLastTrackInQueue",
       "setQueueTracks",
+      "setTotalDuration",
     ]),
     ...mapActions("playlist", ["pauseAndPlay"]),
     ...mapActions("track", [
       "getTrack",
       "playSongStore",
       "updateQueueNextTracksInfo",
-      "getQueueStore"
+      "getQueueStore",
     ]),
 
     /**
@@ -462,6 +468,7 @@ export default {
      * @public
      */
     next: function() {
+      this.setIsFirstSong(false);
       //////////////////////
       if (!this.isMocking) {
         //If i'm not in mocking
@@ -541,6 +548,8 @@ export default {
      * @public
      */
     previous: function() {
+      this.setIsFirstSong(false);
+
       if (!this.isMocking) {
         this.isBuffering = false;
         this.setPaused(true); //the sound will be paused upon changing the soruce
@@ -655,14 +664,12 @@ export default {
       if (this.audio.readyState >= 2) {
         if (!this.isFirstSong) {
           this.play();
-        } else {
-          this.isFirstSong = false;
         }
 
         this.setIsSongLoaded(true);
         this.isBuffering = true; //finished loading the next song.
 
-        this.totalDuration = parseInt(this.audio.duration);
+        this.setTotalDuration(parseInt(this.audio.duration));
       } else {
         throw new Error("Failed to load sound file");
       }
@@ -756,7 +763,7 @@ export default {
     init: function() {
       this.isBuffering = true; //I don't want a loading icon upon the loading of the page.
       //this.isMocking = (process.env.NODE_ENV === "development");
-      this.isMocking = true;
+      this.isMocking = false;
 
       //set the listeners:
       this.audio.addEventListener("timeupdate", this._handlePlayingUI);

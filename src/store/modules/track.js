@@ -7,6 +7,7 @@ const state = {
   trackId: null,
   imageUrl: null,
   trackAlbumId: null,
+  totalDuration: 0,
   trackArtists: [
     {
       name: "",
@@ -23,7 +24,6 @@ const state = {
 const mutations = {
   setTrackData(state, payload) {
     state.trackName = payload.name;
-    state.imageUrl = payload.category[0].icons[0].url;
     axios
       .get("/v1/artists/" + payload.artist, {
         headers: {
@@ -38,6 +38,16 @@ const mutations = {
         artist.name = response.data.name;
         state.trackArtists[0] = artist;
       });
+    
+    axios
+      .get("/v1/albums/" + payload.album, {
+        headers: {
+          Authorization: payload.token,
+        },
+      })
+      .then((response) => {
+        state.imageUrl = response.data[0].image;
+      })
   },
   setLiked(state, payload) {
     if (payload.id == state.trackId) state.liked = payload.status;
@@ -69,6 +79,9 @@ const mutations = {
   setTrackId(state, trackId) {
     state.trackId = trackId;
   },
+  setTotalDuration(state, totalDuration) {
+    state.totalDuration = totalDuration;
+  }
 };
 
 const actions = {
@@ -173,6 +186,9 @@ const actions = {
           var blob = new Blob([response.data], { type: "audio/mpeg" });
           var objectUrl = URL.createObjectURL(blob);
           state.trackUrl = objectUrl;
+          
+          //reinitialize the queue
+          dispatch("getQueueStore", token);
         });
       } else {
         var tempTrackUrl = response.data.data.currentlyPlaying.currentTrack;
@@ -280,6 +296,7 @@ const actions = {
           let trackData = response.data;
 
           track.name = trackData.name;
+          track.durationMs = trackData.durationMs;
 
           //get the artist name
           await axios
