@@ -7,7 +7,9 @@ const state = {
   trackId: null,
   imageUrl: null,
   trackAlbumId: null,
+  albumName: "",
   totalDuration: 0,
+  totalDurationMs: 0,
   trackArtists: [
     {
       name: "",
@@ -19,12 +21,16 @@ const state = {
   lastTrackInQueue: false,
   queueTracks: [],
   queueNextTracks: [],
+  isCurTrkReady: false
 };
 
 const mutations = {
-  setTrackData(state, payload) {
+  async setTrackData(state, payload) {
+    state.isCurTrkReady = false;
+    
     state.trackName = payload.name;
-    axios
+    state.totalDurationMs = payload.durationMs;
+    await axios
       .get("/v1/artists/" + payload.artist, {
         headers: {
           Authorization: payload.token,
@@ -39,7 +45,7 @@ const mutations = {
         state.trackArtists[0] = artist;
       });
     
-    axios
+    await axios
       .get("/v1/albums/" + payload.album, {
         headers: {
           Authorization: payload.token,
@@ -47,7 +53,10 @@ const mutations = {
       })
       .then((response) => {
         state.imageUrl = response.data[0].image;
+        state.albumName = response.data[0].name;
       })
+
+    state.isCurTrkReady = true;
   },
   setLiked(state, payload) {
     if (payload.id == state.trackId) state.liked = payload.status;
@@ -81,7 +90,7 @@ const mutations = {
   },
   setTotalDuration(state, totalDuration) {
     state.totalDuration = totalDuration;
-  }
+  },
 };
 
 const actions = {
@@ -297,7 +306,7 @@ const actions = {
 
           track.name = trackData.name;
           track.durationMs = trackData.durationMs;
-
+          
           //get the artist name
           await axios
             .get("/v1/artists/" + trackData.artist, {
@@ -308,6 +317,16 @@ const actions = {
             .then((response) => {
               track.artistName = response.data.name;
             });
+
+          await axios
+            .get("/v1/albums/" + trackData.album, {
+              headers: {
+                Authorization: token,
+              },
+            })
+            .then((response) => {
+              track.albumName = response.data[0].name;
+            })
         });
       tracks.push(track);
     }

@@ -24,7 +24,7 @@
               {{ artist.name }}
             </router-link>
           </div>
-          <a @click="saveToLikedSongs()" v-if="!isSongIsLiked">
+          <!-- <a @click="saveToLikedSongs()" v-if="!isSongIsLiked">
             <v-icon small title="save your liked songs" class="icons">
               mdi-heart-outline
             </v-icon>
@@ -38,7 +38,7 @@
             >
               mdi-heart
             </v-icon>
-          </a>
+          </a> -->
         </v-toolbar>
       </v-col>
 
@@ -712,6 +712,7 @@ export default {
         //change "file" to the link of the first song of the playlist,
         //then after loading in the loaded handler: invoke play()
       }
+      this.next();
     },
     /**
      * This handler is invoked when the track started

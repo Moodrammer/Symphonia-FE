@@ -13,7 +13,9 @@
             :playing="true"
             :songName="curTrkName"
             :artistName="curTrkArtistName"
-            :duration="totalDuration * 1000"
+            :albumName="albumName"
+            :duration="totalDurationMs"
+            v-if="isCurTrkReady"
           />
         </v-list>
       </v-col>
@@ -34,6 +36,7 @@
             :songName="track.name"
             :artistName="track.artistName"
             :duration="track.durationMs"
+            :albumName="track.albumName"
           /> 
         </v-list>
       </v-col>
@@ -72,7 +75,9 @@ export default {
       curTrkName: (state) => state.track.trackName,
       curTrkArtistName: (state) => state.track.trackArtists[0].name,
       queueNextTracks: (state) => state.track.queueNextTracks,
-      totalDuration: (state) => state.track.totalDuration
+      totalDurationMs: (state) => state.track.totalDurationMs,
+      albumName: (state) => state.track.albumName,
+      isCurTrkReady: (state) => state.track.isCurTrkReady
     }),
   },
 
