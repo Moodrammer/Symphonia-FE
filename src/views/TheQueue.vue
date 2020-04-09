@@ -11,10 +11,8 @@
           <!--Nesting the song component-->
           <song
             :playing="true"
-            songName="Changes"
-            artistName="2PAC"
-            albumName="from creed to grave"
-            :duration="80000"
+            :songName="curTrkName"
+            :artistName="curTrkArtistName"
           />
         </v-list>
       </v-col>
@@ -29,14 +27,12 @@
         <v-list color="transparent">
           <!--Nesting the song component-->
           <song
-            v-for="track in tracks"
+            v-for="track in queueNextTracks"
             :key="track.name"
             :disabled="true"
             :songName="track.name"
-            :artistName="track.artists[0].name"
-            :albumName="track.album.name"
-            :duration="track.duration_ms"
-          />
+            :artistName="track.artistName"
+          /> 
         </v-list>
       </v-col>
     </v-row>
@@ -45,42 +41,49 @@
 
 <script>
 import Song from "../components/general/Song";
-import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
-import getDeviceSize from "../mixins/getDeviceSize";
-/**
- * @displayName Liked Songs
- * @example [none]
- */
+import { mapState, mapActions, mapMutations } from "vuex";
+import getuserToken from "../mixins/userService";
+
 export default {
+  name: "TheQueue",
+
   components: {
-    Song
+    Song,
   },
+
   data: function() {
     return {
       hover: false,
-      iconClick: false
+      loading: true,
+
+      token: undefined,
     };
   },
 
   methods: {
-    ...mapMutations("playlist", ["setIsQueueOpened"]),
-    ...mapActions("category", ["getTracks"])
+    ...mapActions("track", ["updateQueueNextTracksInfo"]),
+    ...mapMutations("playlist", ["setIsQueueOpened"])
   },
+
+  computed: {
+    ...mapState({
+      queueTracks: (state) => state.track.queueTracks,
+      curTrkName: (state) => state.track.trackName,
+      curTrkArtistName: (state) => state.track.trackArtists[0].name,
+      queueNextTracks: (state) => state.track.queueNextTracks
+    }),
+  },
+
   mounted: function() {
-    this.getTracks();
-    this.setIsQueueOpened(true);
+    this.token = "Bearer " + this.getuserToken();
+
+    //this.updateQueueNextTracksInfo(this.token);
   },
-  computed: mapState({
-    ...mapGetters("playlist", ["isQueueOpened"]),
-
-    tracks: state => state.category.tracks
-  }),
-
-  mixins: [getDeviceSize],
 
   beforeDestroy: function() {
     this.setIsQueueOpened(false);
-  }
+  },
+  mixins: [getuserToken]
 };
 </script>
 

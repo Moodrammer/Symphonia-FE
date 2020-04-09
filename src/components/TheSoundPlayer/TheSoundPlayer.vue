@@ -338,12 +338,18 @@ export default {
       "setLiked",
       "setTrackData",
       "setTrackUrl",
+      "setTrackId",
       "setFirstTrackInQueue",
       "setLastTrackInQueue",
       "setQueueTracks",
     ]),
     ...mapActions("playlist", ["pauseAndPlay"]),
-    ...mapActions("track", ["getTrack", "playSongStore"]),
+    ...mapActions("track", [
+      "getTrack",
+      "playSongStore",
+      "updateQueueNextTracksInfo",
+      "getQueueStore"
+    ]),
 
     /**
      * choose the device you want.
@@ -352,52 +358,6 @@ export default {
      */
     chooseDevice: function(id) {
       this.currentDeviceId = id;
-    },
-    getQueue: function() {
-      axios({
-        method: "get",
-        url: "/v1/me/player/queue",
-        headers: {
-          Authorization: this.token,
-        },
-      }).then(async (response) => {
-        this.setQueueTracks(response.data.data.queueTracks);
-        ///////////////////////////////
-        //first time login (temporary behaviour)
-
-        if (this.queueTracks.length == 0) {
-          axios({
-            method: "post",
-            url: "/v1/me/player/tracks/" + "5e7d2ddd3429e24340ff1397",
-            headers: {
-              Authorization: this.token,
-            },
-            data: {
-              contextId: "5e8a6d96d4be480ab1d91c95",
-              context_type: "playlist",
-              context_url: "https://localhost:3000/",
-              device: "Chrome",
-            },
-            responseType: "arraybuffer",
-          }).then((response) => {
-            var blob = new Blob([response.data], { type: "audio/mpeg" });
-            var objectUrl = URL.createObjectURL(blob);
-            this.setTrackUrl(objectUrl);
-          });
-        }
-        ///////////////////////////////
-        if (response.data.data.previousTrack == null) {
-          this.setFirstTrackInQueue(true);
-        } else {
-          this.setFirstTrackInQueue(false);
-        }
-
-        if (response.data.data.nextTrack == null) {
-          this.setLastTrackInQueue(true);
-        } else {
-          this.setLastTrackInQueue(false);
-        }
-      });
     },
     getCurrentlyPlaying: function() {
       if (!this.isMocking) {
@@ -516,7 +476,7 @@ export default {
               Authorization: this.token,
             },
           }).then(() => {
-            this.getQueue();
+            this.getQueueStore(this.token);
             this.getCurrentlyPlaying();
           });
         } else {
@@ -552,7 +512,7 @@ export default {
             var objectUrl = URL.createObjectURL(blob);
             this.setTrackUrl(objectUrl);
 
-            this.getQueue();
+            this.getQueueStore(this.token);
           });
           ////////////////////
         }
@@ -592,7 +552,7 @@ export default {
             Authorization: this.token,
           },
         }).then(() => {
-          this.getQueue();
+          this.getQueueStore(this.token);
           this.getCurrentlyPlaying();
         });
       } else {
@@ -796,7 +756,7 @@ export default {
     init: function() {
       this.isBuffering = true; //I don't want a loading icon upon the loading of the page.
       //this.isMocking = (process.env.NODE_ENV === "development");
-      this.isMocking = false;
+      this.isMocking = true;
 
       //set the listeners:
       this.audio.addEventListener("timeupdate", this._handlePlayingUI);
@@ -836,7 +796,7 @@ export default {
           this.currentDeviceId = this.devices[this.devices.length - 1]._id;
         });
 
-        this.getQueue();
+        this.getQueueStore(this.token);
       }
       this.getCurrentlyPlaying();
     },
