@@ -13,8 +13,8 @@ const state = {
   trackArtists: [
     {
       name: "",
-      href: "",
-    },
+      href: ""
+    }
   ],
   generalLiked: null,
   firstTrackInQueue: false,
@@ -27,34 +27,34 @@ const state = {
 const mutations = {
   async setTrackData(state, payload) {
     state.isCurTrkReady = false;
-    
+
     state.trackName = payload.name;
     state.totalDurationMs = payload.durationMs;
     await axios
       .get("/v1/artists/" + payload.artist, {
         headers: {
-          Authorization: payload.token,
-        },
+          Authorization: payload.token
+        }
       })
-      .then((response) => {
+      .then(response => {
         let artist = {
           name: undefined,
-          href: "",
+          href: ""
         };
         artist.name = response.data.name;
         state.trackArtists[0] = artist;
       });
-    
+
     await axios
       .get("/v1/albums/" + payload.album, {
         headers: {
-          Authorization: payload.token,
-        },
+          Authorization: payload.token
+        }
       })
-      .then((response) => {
+      .then(response => {
         state.imageUrl = response.data[0].image;
         state.albumName = response.data[0].name;
-      })
+      });
 
     state.isCurTrkReady = true;
   },
@@ -90,7 +90,7 @@ const mutations = {
   },
   setTotalDuration(state, totalDuration) {
     state.totalDuration = totalDuration;
-  },
+  }
 };
 
 const actions = {
@@ -99,14 +99,14 @@ const actions = {
     axios
       .get("/v1/users/track/" + payload.id, {
         headers: {
-          Authorization: payload.token,
-        },
+          Authorization: payload.token
+        }
       })
-      .then((response) => {
+      .then(response => {
         let trackData = response.data;
         commit("setTrackData", trackData);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -115,14 +115,14 @@ const actions = {
     axios
       .get("/v1/me/tracks/contains?ids=" + payload.id, {
         headers: {
-          Authorization: `Bearer ${payload.token}`,
-        },
+          Authorization: `Bearer ${payload.token}`
+        }
       })
-      .then((response) => {
+      .then(response => {
         let liked = response.data;
         commit("setLiked", { status: liked, id: payload.id });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -131,15 +131,15 @@ const actions = {
     axios
       .delete("/v1/me/tracks", {
         headers: {
-          Authorization: `Bearer ${payload.token}`,
+          Authorization: `Bearer ${payload.token}`
         },
-        data: payload.id,
+        data: payload.id
       })
       .then(() => {
         //   if(id[0]==state.trackId)           //comment it for now
         commit("unlikeTrack", payload.id);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -151,15 +151,15 @@ const actions = {
         { data: payload.id },
         {
           headers: {
-            Authorization: `Bearer ${payload.token}`,
-          },
+            Authorization: `Bearer ${payload.token}`
+          }
         }
       )
       .then(() => {
         //if(id[0]==state.trackId)
         commit("likeTrack", payload.id);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -169,9 +169,9 @@ const actions = {
       method: "get",
       url: "/v1/me/player/queue",
       headers: {
-        Authorization: token,
-      },
-    }).then((response) => {
+        Authorization: token
+      }
+    }).then(response => {
       state.queueTracks = response.data.data.queueTracks;
 
       ///////////////////////////////
@@ -182,20 +182,20 @@ const actions = {
           method: "post",
           url: "/v1/me/player/tracks/" + "5e7d2ddd3429e24340ff1397",
           headers: {
-            Authorization: token,
+            Authorization: token
           },
           data: {
             contextId: "5e8a6d96d4be480ab1d91c95",
             context_type: "playlist",
             context_url: "https://localhost:3000/",
-            device: "Chrome",
+            device: "Chrome"
           },
-          responseType: "arraybuffer",
-        }).then((response) => {
+          responseType: "arraybuffer"
+        }).then(response => {
           var blob = new Blob([response.data], { type: "audio/mpeg" });
           var objectUrl = URL.createObjectURL(blob);
           state.trackUrl = objectUrl;
-          
+
           //reinitialize the queue
           dispatch("getQueueStore", token);
         });
@@ -207,9 +207,9 @@ const actions = {
           tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
           tempTrackUrl.length
         );
-  
+
         state.trackId = songId;
-        
+
         dispatch("updateQueueNextTracksInfo", token);
       }
 
@@ -239,20 +239,20 @@ const actions = {
         contextId: payload.contextId,
         context_type: "playlist",
         context_url: "https://localhost:3000/",
-        device: "Chrome",
+        device: "Chrome"
       },
       headers: {
-        Authorization: payload.token,
+        Authorization: payload.token
       },
-      responseType: "arraybuffer",
-    }).then((response) => {
+      responseType: "arraybuffer"
+    }).then(response => {
       var blob = new Blob([response.data], { type: "audio/mpeg" });
       var objectUrl = URL.createObjectURL(blob);
       state.trackUrl = objectUrl;
 
       var payloadTrack = {
         token: payload.token,
-        id: payload.songId,
+        id: payload.songId
       };
       dispatch("getTrack", payloadTrack);
       dispatch("getQueueStore", payload.token);
@@ -292,51 +292,51 @@ const actions = {
 
       var track = {
         name: undefined,
-        artistName: undefined,
+        artistName: undefined
       };
 
       await axios
         .get("/v1/users/track/" + songId, {
           headers: {
-            Authorization: token,
-          },
+            Authorization: token
+          }
         })
-        .then(async (response) => {
+        .then(async response => {
           let trackData = response.data;
 
           track.name = trackData.name;
           track.durationMs = trackData.durationMs;
-          
+
           //get the artist name
           await axios
             .get("/v1/artists/" + trackData.artist, {
               headers: {
-                Authorization: token,
-              },
+                Authorization: token
+              }
             })
-            .then((response) => {
+            .then(response => {
               track.artistName = response.data.name;
             });
 
           await axios
             .get("/v1/albums/" + trackData.album, {
               headers: {
-                Authorization: token,
-              },
+                Authorization: token
+              }
             })
-            .then((response) => {
+            .then(response => {
               track.albumName = response.data[0].name;
-            })
+            });
         });
       tracks.push(track);
     }
     state.queueNextTracks = tracks;
-  },
+  }
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions,
+  actions
 };

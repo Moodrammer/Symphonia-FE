@@ -9,7 +9,7 @@ const state = {
   isSongLoaded: false,
   flag: null, //A flag to know if the request had been done or not (will be removed)
   singlePlaylist: null,
-  isFirstSong: true,
+  isFirstSong: true
 };
 
 const mutations = {
@@ -34,7 +34,7 @@ const mutations = {
     if (state.paused) {
       state.audio.pause();
     } else {
-      state.isFirstSong = false
+      state.isFirstSong = false;
       state.audio.play();
     }
   },
@@ -71,7 +71,7 @@ const getters = {
   isSongLoaded(state) {
     return state.isSongLoaded;
   },
-  likedPlaylists: (state) => state.likedPlaylists,
+  likedPlaylists: state => state.likedPlaylists
 };
 
 const actions = {
@@ -83,15 +83,15 @@ const actions = {
         { name: payload.name },
         {
           headers: {
-            Authorization: `Bearer ${payload.token}`,
-          },
+            Authorization: `Bearer ${payload.token}`
+          }
         }
       )
-      .then((response) => {
+      .then(response => {
         var newPlaylist = response.data.playlist;
         commit("add_playlist", newPlaylist);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -103,26 +103,26 @@ const actions = {
     await axios
       .get("/v1/me/playlists", {
         headers: {
-          Authorization: `Bearer ${payload}`,
-        },
+          Authorization: `Bearer ${payload}`
+        }
       })
-      .then((response) => {
+      .then(response => {
         let list = response.data.items;
         let newList = [];
-        list.forEach((element) => {
+        list.forEach(element => {
           var k = {
             name: element.name,
             image: element.images[0],
             description: element.description,
             id: element.id,
             url: "to be added",
-            type: "playlist",
+            type: "playlist"
           };
           newList.push(k);
         });
         commit("load_likedPlaylists", newList);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -138,14 +138,14 @@ const actions = {
         {},
         {
           headers: {
-            Authorization: `Bearer ${payload.token}`,
-          },
+            Authorization: `Bearer ${payload.token}`
+          }
         }
       )
       .then(() => {
         commit("setFlag");
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -153,15 +153,15 @@ const actions = {
   getPlaylist({ commit }, playlistID) {
     axios
       .get("/v1/playlists/" + playlistID)
-      .then((response) => {
+      .then(response => {
         let returnedPlaylist = response.data.playlist[0];
         commit("setPlaylist", returnedPlaylist);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
-  },
+  }
 };
 
 export default {
@@ -169,5 +169,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

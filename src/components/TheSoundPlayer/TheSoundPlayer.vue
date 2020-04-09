@@ -302,17 +302,17 @@ export default {
     },
 
     ...mapState({
-      isSongIsLiked: (state) => state.track.liked,
-      trackUrl: (state) => state.track.trackUrl,
-      songName: (state) => state.track.trackName,
-      artists: (state) => state.track.trackArtists,
-      imageUrl: (state) => state.track.imageUrl,
-      lastTrackInQueue: (state) => state.track.lastTrackInQueue,
-      firstTrackInQueue: (state) => state.track.firstTrackInQueue,
-      queueTracks: (state) => state.track.queueTracks,
-      isFirstSong: (state) => state.playlist.isFirstSong,
-      totalDuration: (state) => state.track.totalDuration,
-    }),
+      isSongIsLiked: state => state.track.liked,
+      trackUrl: state => state.track.trackUrl,
+      songName: state => state.track.trackName,
+      artists: state => state.track.trackArtists,
+      imageUrl: state => state.track.imageUrl,
+      lastTrackInQueue: state => state.track.lastTrackInQueue,
+      firstTrackInQueue: state => state.track.firstTrackInQueue,
+      queueTracks: state => state.track.queueTracks,
+      isFirstSong: state => state.playlist.isFirstSong,
+      totalDuration: state => state.track.totalDuration
+    })
   },
   data() {
     return {
@@ -335,7 +335,7 @@ export default {
       devices: undefined,
       currentDeviceId: undefined,
 
-      token: undefined,
+      token: undefined
     };
   },
   methods: {
@@ -343,7 +343,7 @@ export default {
       "setAudio",
       "setPaused",
       "setIsSongLoaded",
-      "setIsFirstSong",
+      "setIsFirstSong"
     ]),
     ...mapMutations("track", [
       "setLiked",
@@ -353,14 +353,14 @@ export default {
       "setFirstTrackInQueue",
       "setLastTrackInQueue",
       "setQueueTracks",
-      "setTotalDuration",
+      "setTotalDuration"
     ]),
     ...mapActions("playlist", ["pauseAndPlay"]),
     ...mapActions("track", [
       "getTrack",
       "playSongStore",
       "updateQueueNextTracksInfo",
-      "getQueueStore",
+      "getQueueStore"
     ]),
 
     /**
@@ -503,7 +503,7 @@ export default {
           //request the track data
           this.getTrack({
             token: this.token,
-            id: songId,
+            id: songId
           });
 
           //request the song mp3 file
@@ -717,7 +717,7 @@ export default {
         //if (is the current song is the last song in the playlist)?
         //change "file" to the link of the first song of the playlist,
         //then after loading in the loaded handler: invoke play()
-      } else{
+      } else {
         this.next();
       }
     },
@@ -770,7 +770,7 @@ export default {
      */
     init: function() {
       this.isBuffering = true; //I don't want a loading icon upon the loading of the page.
-      this.isMocking = (process.env.NODE_ENV === "development");
+      this.isMocking = process.env.NODE_ENV === "development";
       //this.isMocking = false;
 
       //set the listeners:

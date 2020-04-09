@@ -37,7 +37,7 @@
             :artistName="track.artistName"
             :duration="track.durationMs"
             :albumName="track.albumName"
-          /> 
+          />
         </v-list>
       </v-col>
     </v-row>
@@ -53,7 +53,7 @@ export default {
   name: "TheQueue",
 
   components: {
-    Song,
+    Song
   },
 
   data: function() {
@@ -61,7 +61,7 @@ export default {
       hover: false,
       loading: true,
 
-      token: undefined,
+      token: undefined
     };
   },
 
@@ -72,13 +72,13 @@ export default {
 
   computed: {
     ...mapState({
-      curTrkName: (state) => state.track.trackName,
-      curTrkArtistName: (state) => state.track.trackArtists[0].name,
-      queueNextTracks: (state) => state.track.queueNextTracks,
-      totalDurationMs: (state) => state.track.totalDurationMs,
-      albumName: (state) => state.track.albumName,
-      isCurTrkReady: (state) => state.track.isCurTrkReady
-    }),
+      curTrkName: state => state.track.trackName,
+      curTrkArtistName: state => state.track.trackArtists[0].name,
+      queueNextTracks: state => state.track.queueNextTracks,
+      totalDurationMs: state => state.track.totalDurationMs,
+      albumName: state => state.track.albumName,
+      isCurTrkReady: state => state.track.isCurTrkReady
+    })
   },
 
   mounted: function() {
