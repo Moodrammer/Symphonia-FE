@@ -831,7 +831,6 @@ export default {
             Authorization: this.token
           }
         }).then(response => {
-          console.log(response);
           this.devices = response.data.devices;
           this.currentDeviceId = this.devices[this.devices.length - 1]._id;
         });
