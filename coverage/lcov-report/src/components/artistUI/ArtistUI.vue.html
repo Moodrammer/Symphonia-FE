@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/Style guide examples/AppButton.vue</title>
+    <title>Code coverage report for src/components/artistUI/ArtistUI.vue</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="..\..\..\prettify.css" />
     <link rel="stylesheet" href="..\..\..\base.css" />
@@ -18,13 +18,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="..\..\..\index.html">All files</a> / <a href="index.html">src/components/Style guide examples</a> AppButton.vue</h1>
+        <h1><a href="..\..\..\index.html">All files</a> / <a href="index.html">src/components/artistUI</a> ArtistUI.vue</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
@@ -38,14 +38,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
@@ -135,20 +135,7 @@
 <a name='L77'></a><a href='#L77'>77</a>
 <a name='L78'></a><a href='#L78'>78</a>
 <a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a>
-<a name='L81'></a><a href='#L81'>81</a>
-<a name='L82'></a><a href='#L82'>82</a>
-<a name='L83'></a><a href='#L83'>83</a>
-<a name='L84'></a><a href='#L84'>84</a>
-<a name='L85'></a><a href='#L85'>85</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -171,8 +158,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -186,7 +171,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -196,15 +190,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -225,89 +215,84 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-  &lt;button :style="styles" @click="handleClick"&gt;
-    &lt;!-- @slot Use this slot to place the button content --&gt;
-    &lt;slot&gt;&lt;/slot&gt;
-  &lt;/button&gt;
+  &lt;v-content
+    :style="{
+      backgroundImage: 'url(' + image + ')',
+      backgroundSize: '100% Auto'
+    }"
+  &gt;
+    &lt;div class="pl-10 pt-12 mt-12 gradient-body py-7"&gt;
+      &lt;p class="caption grey--text"&gt;638,490 MONTHLY LISTENERS&lt;/p&gt;
+      &lt;h1 class="display-3 font-weight-bold white--text my-5"&gt;Amr Diab&lt;/h1&gt;
+      &lt;v-btn rounded color="success" min-width="110" min-height="40" dark
+        &gt;Play&lt;/v-btn
+      &gt;
+      &lt;v-btn rounded outlined min-width="160" min-height="40" dark class="mx-3"
+        &gt;Unfollow&lt;/v-btn
+      &gt;
+      &lt;span class="display-2 white--text"&gt;...&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div style="background:#1a1a1a" class="pl-3" fill-height&gt;
+      &lt;div class="pl-9 mb-10"&gt;
+        &lt;v-btn text color="white" class="mx-2" :to="{ name: 'Overview' }"&gt;
+          &lt;span class="text-capitalize white--text"&gt;Overview&lt;/span&gt;
+        &lt;/v-btn&gt;
+&nbsp;
+        &lt;v-btn text color="white" class="mx-2" :to="{ name: 'RelatedArtists' }"&gt;
+          &lt;span class="text-capitalize white--text"&gt;Related Artists&lt;/span&gt;
+        &lt;/v-btn&gt;
+      &lt;/div&gt;
+&nbsp;
+      &lt;router-view /&gt;
+    &lt;/div&gt;
+  &lt;/v-content&gt;
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-<span class="cstat-no" title="statement not covered" >import sizeMixin from "./sizeMixin";</span>
-export default {
-  name: "app-button",
-  mixins: [sizeMixin],
-  props: {
-    /**
-     * Sets the button font color
-     */
-    color: {
-      type: String,
-      default: "black"
-    },
-    /** Sets background color of the button
-     * @since 1.2.0
-     */
-    background: {
-      type: String,
-      default: "white"
-    },
-    /** @deprecated Use color instead */
-    oldColor: String
-  },
-  computed: {
-<span class="fstat-no" title="function not covered" >    styles() {</span>
-<span class="cstat-no" title="statement not covered" >      return {</span>
-        "font-size": this.size,
-        color: this.color,
-        background: this.background
-      };
-    }
-  },
-  methods: {
-<span class="fstat-no" title="function not covered" >    handleClick(e) {</span>
-      /** Triggered when button is clicked
-       * @event click
-       * @type {Event}
-       */
-<span class="cstat-no" title="statement not covered" >      this.$emit("click", e);</span>
+<span class="cstat-no" title="statement not covered" >import getuserToken from "../../mixins/userService";</span>
+<span class="cstat-no" title="statement not covered" >import { mapGetters, mapActions } from "vuex";</span>
 &nbsp;
-      /** Event for Alligator's example
-       * @event gator
-       * @type {Event}
-       */
-<span class="cstat-no" title="statement not covered" >      this.$emit("gator", e);</span>
+export default {
+  computed: mapGetters(["currentArtistGetter"]),
+  methods: {
+    ...mapActions(["getCurrentArtist"])
+  },
+<span class="fstat-no" title="function not covered" >  created() {</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >      this.getCurrentArtist({</span>
+        token: this.getuserToken(),
+        id: this.$route.params.id
+      });
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      console.log(error);</span>
     }
-  }
+  },
+  watch: {
+<span class="fstat-no" title="function not covered" >    currentArtistGetter: function(newValue) {</span>
+<span class="cstat-no" title="statement not covered" >      this.artist = newValue;</span>
+    }
+  },
+<span class="fstat-no" title="function not covered" >  data: function() {</span>
+<span class="cstat-no" title="statement not covered" >    return {</span>
+      artist: null
+    };
+  },
+  mixins: [getuserToken]
 };
 &lt;/script&gt;
 &nbsp;
-&lt;docs&gt;
-This button is amazing, use it responsibly.
-&nbsp;
-## Examples
-&nbsp;
-Orange button:
-&nbsp;
-```jsx
-&lt;app-button color="orange"&gt;Push Me&lt;/app-button&gt;
-```
-&nbsp;
-Ugly button with pink font and blue background:
-&nbsp;
-```jsx
-&lt;app-button color="pink" background="blue"&gt;
-  Ugly button
-&lt;/app-button&gt;
-```
-&nbsp;
-Button containing custom tags:
-&nbsp;
-```jsx
-&lt;app-button&gt;
-  Text with &lt;b&gt;bold&lt;/b&gt;
-&lt;/app-button&gt;
-```
-&lt;/docs&gt;
+&lt;style&gt;
+.gradient-body {
+  /* background: rgb(0,0,0);
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); */
+  background: rgb(26, 26, 26);
+  background: linear-gradient(
+    0deg,
+    rgba(26, 26, 26, 1) 0%,
+    rgba(26, 26, 26, 0) 100%
+  );
+}
+&lt;/style&gt;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
