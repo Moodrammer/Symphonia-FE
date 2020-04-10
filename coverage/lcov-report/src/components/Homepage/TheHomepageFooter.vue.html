@@ -5,13 +5,12 @@
 <head>
     <title>Code coverage report for src/components/Homepage/TheHomepageFooter.vue</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../prettify.css" />
-    <link rel="stylesheet" href="../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../sort-arrow-sprite.png);
+            background-image: url(..\..\..\sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +18,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/Homepage</a> TheHomepageFooter.vue</h1>
+        <h1><a href="..\..\..\index.html">All files</a> / <a href="index.html">src/components/Homepage</a> TheHomepageFooter.vue</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
@@ -44,9 +43,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
@@ -55,7 +54,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -309,15 +308,7 @@
 <a name='L250'></a><a href='#L250'>250</a>
 <a name='L251'></a><a href='#L251'>251</a>
 <a name='L252'></a><a href='#L252'>252</a>
-<a name='L253'></a><a href='#L253'>253</a>
-<a name='L254'></a><a href='#L254'>254</a>
-<a name='L255'></a><a href='#L255'>255</a>
-<a name='L256'></a><a href='#L256'>256</a>
-<a name='L257'></a><a href='#L257'>257</a>
-<a name='L258'></a><a href='#L258'>258</a>
-<a name='L259'></a><a href='#L259'>259</a>
-<a name='L260'></a><a href='#L260'>260</a>
-<a name='L261'></a><a href='#L261'>261</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L253'></a><a href='#L253'>253</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -429,15 +420,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -594,22 +577,14 @@
         style="position: relative;"
       &gt;
         &lt;router-link v-if="isLg() || isMd()" to="/" class="links-column-1"&gt;
-          &lt;v-img
-            src="/s11.png"
-            max-width="50px"
-            style="float: left;"
-          &gt;&lt;/v-img&gt;
+          &lt;v-img src="/s11.png" max-width="50px" style="float: left;"&gt;&lt;/v-img&gt;
           &lt;h2 style="display: inline;" display-4 class="white--text"&gt;
             Symphonia
           &lt;/h2&gt;
         &lt;/router-link&gt;
 &nbsp;
         &lt;router-link class="links-column-1" to="/" v-if="isSm() || isXs()"&gt;
-          &lt;v-img
-            src="/s11.png"
-            max-width="50px"
-            style="float: left;"
-          &gt;&lt;/v-img&gt;
+          &lt;v-img src="/s11.png" max-width="50px" style="float: left;"&gt;&lt;/v-img&gt;
           &lt;h2 style="display: inline;" display-4 class="white--text"&gt;
             Symphonia
           &lt;/h2&gt;
@@ -681,13 +656,13 @@
           class="links-column-3"
           v-bind:class="{ 'links-column-3-small': isSm() || isXs() }"
         &gt;
-          &lt;router-link class="socialmedia-icon" to="/instagram"&gt;
+          &lt;router-link class="socialmedia-icon" to="/"&gt;
             &lt;v-icon medium class="socialmedia-icon-color"&gt;mdi-instagram&lt;/v-icon&gt;
           &lt;/router-link&gt;
-          &lt;router-link class="socialmedia-icon" to="/twitter"&gt;
+          &lt;router-link class="socialmedia-icon" to="/"&gt;
             &lt;v-icon medium class="socialmedia-icon-color"&gt;mdi-twitter&lt;/v-icon&gt;
           &lt;/router-link&gt;
-          &lt;router-link class="socialmedia-icon" to="/facebook"&gt;
+          &lt;router-link class="socialmedia-icon" to="/"&gt;
             &lt;v-icon medium class="socialmedia-icon-color"&gt;mdi-facebook&lt;/v-icon&gt;
           &lt;/router-link&gt;
         &lt;/v-container&gt;
@@ -697,7 +672,7 @@
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-<span class="cstat-no" title="statement not covered" >import getDeviceSize from "../../mixins/getDeviceSize"</span>
+import getDeviceSize from "../../mixins/getDeviceSize";
 &nbsp;
 /**
  * The homepage footer.
@@ -844,17 +819,17 @@ a {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Apr 03 2020 20:57:56 GMT+0200 (Eastern European Standard Time)
+                at Sat Apr 11 2020 00:52:06 GMT+0200 (Eastern European Standard Time)
             </div>
         </div>
-        <script src="../../../prettify.js"></script>
+        <script src="..\..\..\prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../sorter.js"></script>
-        <script src="../../../block-navigation.js"></script>
+        <script src="..\..\..\sorter.js"></script>
+        <script src="..\..\..\block-navigation.js"></script>
     </body>
 </html>
     

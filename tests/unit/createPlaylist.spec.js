@@ -1,20 +1,40 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import Vuex from 'vuex'
 
 import CreatePlaylist from "@/components/CreatePlaylist.vue";
 
 describe("CreatePlaylist", () => {
   let wrapper;
   let vuetify;
+  let store;
 
   beforeEach(() => {
     vuetify = new Vuetify();
     Vue.use(Vuetify);
+    Vue.use(Vuex);
+
+    store = new Vuex.Store({
+      modules: {
+        playlist: {
+          namespaced: true,
+
+          actions: {
+            createPlaylist: jest.fn()
+          }
+        }
+      }
+    });
 
     wrapper = shallowMount(CreatePlaylist, {
-      vuetify
+      vuetify,
+      store
     });
+  });
+
+  it("renders", () => {
+    expect(wrapper.exists()).toBe(true);
   });
 
   it("renders a vue instance", () => {
@@ -39,7 +59,7 @@ describe("CreatePlaylist", () => {
     const createBtn = wrapper.find("#create");
     expect(createBtn.text() == "Create").toBe(true);
   });
-
+  
   it("Contains close icon", () => {
     const icon = wrapper.find("#closeIcon");
     expect(icon.exists()).toBe(true);
@@ -61,8 +81,23 @@ describe("CreatePlaylist", () => {
 
   it("Close the pop up with icon click", async () => {
     wrapper.vm.dialog = true;
-    const icon = wrapper.find("#cancel");
-    icon.vm.$emit("click");
+    const btn = wrapper.find("#cancel");
+    btn.vm.$emit("click");
     expect(wrapper.vm.dialog).toBe(false);
+  });
+
+  it("Create a playlist with name", () => {
+    wrapper.vm.dialog = true;
+    const btn = wrapper.find("#create");
+    wrapper.vm.name="NewPlaylist";
+    btn.vm.$emit("click");
+    expect("createPlaylist").toHaveBeenCalled;
+  });
+
+  it("Create a playlist without name", () => {
+    const btn = wrapper.find("#create");
+    wrapper.vm.name="";
+    btn.vm.$emit("click");
+    expect("createPlaylist").toHaveBeenCalled;
   });
 });

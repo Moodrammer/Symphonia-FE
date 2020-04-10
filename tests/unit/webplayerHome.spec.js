@@ -1,25 +1,29 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
-import vuetify from "vuetify";
+import Vuetify from "vuetify";
 
 import WebplayerHome from "@/views/WebPlayerHome.vue";
-import NavBar from "@/components/WebNavBar.vue";
-import NavDrawer from "@/components/WebNavDrawer.vue";
+import NavBar from "@/components/WebplayerLayout/WebNavBar.vue";
+import NavDrawer from "@/components/WebplayerLayout/WebNavDrawer.vue";
 
-describe("WebplayerHome", () => {
+describe("Webplayer Home", () => {
   let wrapper;
-
+  let vuetify;
+  let newDiv
   beforeEach(() => {
-    Vue.use(vuetify);
-    wrapper = shallowMount(WebplayerHome);
+    vuetify = new Vuetify();
+    Vue.use(Vuetify);
+    newDiv = document.createElement("html");
+    document.body.appendChild(newDiv);
+    wrapper = shallowMount(WebplayerHome,vuetify,global.document);
   });
 
   it("renders a vue instance", () => {
-    expect(shallowMount(WebplayerHome).isVueInstance()).toBe(true);
+    expect(wrapper.isVueInstance()).toBe(true);
   });
 
   it("Has Navagation Bar", () => {
-    expect(wrapper.contains(NavBar)).toBe(true);
+    expect(wrapper.contains(NavBar)). toBe(true);
   });
 
   it("Has Navagation Drawer", () => {
