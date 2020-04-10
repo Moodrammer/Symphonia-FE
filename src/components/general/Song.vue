@@ -119,6 +119,7 @@ import { mapState } from "vuex";
 import getuserToken from "../../mixins/userService";
 import isLoggedIn from "../../mixins/userService";
 /**
+ * Song component contains the track name , duration , artist's name , album's name
  * @example [none]
  */
 export default {
@@ -159,6 +160,11 @@ export default {
       this.min = Math.floor((val / 1000 / 60) << 0);
       this.sec = Math.floor((val / 1000) % 60);
     },
+    /**
+     * Function to remove this song from user's the saved tracks
+     * @public This is a public method
+     * @param {none}
+     */
     deleteSong: function() {
       if (this.isLoggedIn()) {
         this.$store.dispatch("track/removeSavedTrack", {
@@ -170,12 +176,22 @@ export default {
         this.snackbar = true;
       }
     },
+    /**
+     * Function to check if the user saves this song or not , gets called at the menu click
+     * @public This is a public method
+     * @param {none}
+     */
     checkLiked: function() {
       this.$store.dispatch("track/checkSaved", {
         id: this.id,
         token: this.getuserToken()
       });
     },
+    /**
+     * Function to save a track for user
+     * @public This is a public method
+     * @param {none}
+     */
     likeSong: function() {
       if (this.isLoggedIn()) {
         this.$store.dispatch("track/saveTrack", {

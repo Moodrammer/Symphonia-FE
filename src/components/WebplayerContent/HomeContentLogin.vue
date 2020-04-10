@@ -20,6 +20,7 @@ import { mapGetters } from "vuex";
 import getuserToken from "../../mixins/userService";
 /**
  * The webplayer home content if the user is logged in
+ * @displayName Home Content Login
  * @example [none]
  */
 export default {
