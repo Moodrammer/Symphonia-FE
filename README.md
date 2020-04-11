@@ -46,6 +46,25 @@ For mocking we use **Mirage.js**
 The server is established in **development** environment automatically and runs on the same port as the frontend code 
 where it intercepts all the requests and api calls and mocks their responses through defined routes
 
+## Runing on real server from localhost (for debugging temporarily)
+some changes should be made in the development env :
+1. prevent mirage from runing by changing the condition in **main.js** from development to production
+```javascript
+  if (process.env.NODE_ENV === "production") {
+  makeServer();
+}
+```
+2. define the axios base url to direct the calls to the deployed back end server in **main.js**
+```javascript
+axios.defaults.baseURL = "https://thesymphonia.ddns.net/api";
+```
+3. From **src/components/TheSoundPlayer/TheSoundPlayer.vue** inside the **init** function prevent mocking by changing development to production as follows
+```javascript
+this.isMocking = process.env.NODE_ENV === "production";
+```
+note: switching from development to production is done manually while serving in development environment to let the conditions where the process.env = development fail ,but it should be changed in the next phase
+
+
 ## Runing on real server
 When deployed in a **Production environment**, the **Mirage** server is not established and it doesn't intercept the calls to the api
 The publicPath is taken form the domain name where the project runs
