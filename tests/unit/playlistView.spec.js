@@ -103,11 +103,15 @@ describe("Playlist View", () => {
     expect(wrapper.vm.snackbar).toBe(true);
   });
 
-  // it("Show Snack Bar at follow click", ()=>{
-  //   wrapper.vm.snackbar=false;
-  //   wrapper.vm.followed=false;
-  //   const followBtn=wrapper.find("#followIcon")
-  //   followBtn.vm.$emit("click");
-  //   expect(wrapper.vm.snackbar).toBe(true);
-  // });
+  it("Show Snack Bar at follow click", ()=>{
+    wrapper.vm.snackbar=false;
+    wrapper.vm.followPlaylist();
+    expect(wrapper.vm.snackbar).toBe(true);
+  });
+
+  it("Show Snack Bar at unfollow click", ()=>{
+    wrapper.vm.snackbar=false;
+    wrapper.vm.unfollowPlaylist();
+    expect(wrapper.vm.snackbar).toBe(true);
+  });
 });
