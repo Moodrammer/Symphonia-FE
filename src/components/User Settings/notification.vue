@@ -232,11 +232,6 @@ export default {
   },
   components: {
     bottomContent: bottomContent
-  },
-  methods: {
-    restore: function(index) {
-      this.playlists[index].restored = true;
-    }
   }
 };
 </script>

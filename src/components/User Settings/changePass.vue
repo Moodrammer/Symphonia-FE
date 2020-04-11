@@ -17,6 +17,7 @@
               class="text"
               v-model="currentPassword"
               minlength="8"
+              id="current"
             />
             <p v-show="errorWrongPass" class="alert">
               Sorry,wrong password or old one
@@ -30,6 +31,7 @@
               class="text"
               v-model="newPassword"
               minlength="8"
+              id="pass"
             />
             <p v-show="errorEmptyNew" class="alert">
               Enter a password to continue.
@@ -43,6 +45,7 @@
               class="text"
               v-model="confirmPassword"
               minlength="8"
+              id="confirm"
             />
             <p v-show="errorWrongMatch" class="alert">
               Please verify your password
