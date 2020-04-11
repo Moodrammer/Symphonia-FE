@@ -106,5 +106,30 @@ describe("TheSoundplayer", () => {
     expect(wrapper.vm.isSongIsLiked).toEqual(false)
   });
 
+  //test volume mute
+  it("volume is muted after volumebar is 0 ", () => {
+    wrapper.vm.volumeValue = 0;
+    wrapper.vm.updateVolume()
+    expect(wrapper.vm.isMuted).toEqual(true)
+  })
+
+  it("volume gets back after changing the volumebar", () => {
+    wrapper.vm.volumeValue = 50;
+    wrapper.vm.isMuted = true; //volume is muted
+    wrapper.vm.updateVolume()
+    expect(wrapper.vm.isMuted).toEqual(false)
+  });
+
+  //mute
+  it("mute the volume", () => {
+    wrapper.vm.isMuted = false;
+    wrapper.vm.mute()
+    expect(wrapper.vm.isMuted).toBe(true)
+
+    wrapper.vm.mute()
+    expect(wrapper.vm.isMuted).toBe(false)
+  })
+
   
+
 });
