@@ -104,7 +104,6 @@ it("card hover", async() =>{
     let option = "not copy";
     wrapper.vm.contextMenuClick({title: option}, false);
     await wrapper.vm.$nextTick()
-    console.log(wrapper.emitted().order)
     expect(
         wrapper.emitted().order[0][0]
     ).toBe('not copy')
@@ -122,7 +121,7 @@ it("card hover", async() =>{
  });*/
 
  /////////////////////////////////////////////////////////
-///////////// Buttons Functions      ///////////////////
+/////////////  Buttons Functions      ///////////////////
 /////////////////////////////////////////////////////////
 
 
@@ -142,20 +141,6 @@ it("card hover", async() =>{
     expect(
         wrapper.vm.showMoreBtn
     ).toBe(false)
- });
-
-
-/////////////////////////////////////////////////////////
-/////////////        Wathcers           ////////////////
-///////////////////////////////////////////////////////
-
-it("showLess clicked", async() =>{
-    wrapper.setProps({"cardItems.items": 1})
-
-    await wrapper.vm.$nextTick()
-    expect(
-        wrapper.vm.AUIitems
-    ).toBe(1)
  });
 
 
