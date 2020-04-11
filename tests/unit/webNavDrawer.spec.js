@@ -15,6 +15,7 @@ describe("Webplayer Navigation Drawer", () => {
     Vue.use(Vuetify);
     Vue.use(Vuex);
 
+    //Mocking the store
     store = new Vuex.Store({
       modules: {
         playlist: {
@@ -58,6 +59,9 @@ describe("Webplayer Navigation Drawer", () => {
     });
   });
 
+  //--------------------------------------------------
+  //              Test Rendering
+  //--------------------------------------------------
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
   });
@@ -66,6 +70,9 @@ describe("Webplayer Navigation Drawer", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
 
+  //--------------------------------------------------
+  //         Testing created hook cycle actions
+  //--------------------------------------------------
   it("Get user's saved playlists", () =>{
     expect("getPlaylists").toHaveBeenCalled;
   });

@@ -40,6 +40,9 @@ describe("ًWebplayer Home- user logged out", () => {
     });
   });
 
+  //--------------------------------------------------
+  //              Test Rendering
+  //--------------------------------------------------
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
   });

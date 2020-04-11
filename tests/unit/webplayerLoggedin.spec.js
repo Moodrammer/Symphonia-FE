@@ -41,6 +41,9 @@ describe("Webplayer Home - user logged in", () => {
     });
   });
 
+  //--------------------------------------------------
+  //              Test Rendering
+  //--------------------------------------------------
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
   });

@@ -5,8 +5,6 @@ import VueRouter from "vue-router";
 
 import NavBar from "@/components/WebplayerLayout/WebNavBar.vue";
 
-//const localVue = createLocalVue();
-
 describe("Nav Bar", () => {
   let wrapper;
   let vuetify;
@@ -18,10 +16,14 @@ describe("Nav Bar", () => {
     Vue.use(VueRouter);
     wrapper = shallowMount(NavBar, {
       router,
-      vuetify
+      vuetify,
+      attachToDocument: true
     });
   });
 
+  //--------------------------------------------------
+  //              Test Rendering
+  //--------------------------------------------------
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
   });
@@ -30,6 +32,9 @@ describe("Nav Bar", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
 
+  //--------------------------------------------------------
+  //        Check the existance of the components
+  //--------------------------------------------------------
   it("Contains backward icon", () => {
     const icon = wrapper.find("#backward");
     expect(icon.exists()).toBe(true);
@@ -50,10 +55,54 @@ describe("Nav Bar", () => {
     expect(loginBtn.text()=="LOG IN").toBe(true);
   });
 
-  // it("Logout",()=>{
-  //   // const isLoggedIn = jest.fn();
-  //   // isLoggedIn.mockReturnValueOnce(true);
-  //   const logoutBtn=wrapper.find("#logout");
-  //   expect(logoutBtn.text()=="Log out").toBe(true);
-  // });
+  //------------------------------------------------
+  //            Test component functions
+  //-----------------------------------------------
+  it("Logout function",() =>{
+    wrapper.vm.logOutAndRerender();
+    expect(wrapper.vm.logOut()).toHaveBeenCalled;
+  });
+
+  it("Handles searvh view tabs",() => {
+    wrapper.vm.handleTabs("search");
+    expect(wrapper.vm.showSearch).toBe(true);
+    expect(wrapper.vm.showCollection).toBe(false);
+    expect(wrapper.vm.showUpgrade).toBe(false);
+  });
+
+  it("Handles Home tabs", () =>{
+    wrapper.vm.handleTabs("home");
+    expect(wrapper.vm.showSearch).toBe(false);
+    expect(wrapper.vm.showCollection).toBe(false);
+    expect(wrapper.vm.showUpgrade).toBe(true);
+  });
+
+  it("Handles Library tabs", ()=>{
+    wrapper.vm.handleTabs("Playlists");
+    expect(wrapper.vm.showSearch).toBe(false);
+    expect(wrapper.vm.showCollection).toBe(true);
+    expect(wrapper.vm.showUpgrade).toBe(false);
+  });
+
+  it("Handles menu items at artist view",() =>{
+    wrapper.vm.itemChosen('Artists');
+    expect(wrapper.vm.selectedItem).toBe('Artists');
+  });
+
+  it("Handles menu items at album view",() =>{
+    wrapper.vm.itemChosen('Albums');
+    expect(wrapper.vm.selectedItem).toBe('Albums');
+  });
+
+  it("Go forward", ()=>{
+    const icon = wrapper.find("#forward");
+    icon.vm.$emit("click");
+    expect("next").toBeCalled;
+  });
+
+  it("Go backward", ()=>{
+    const icon = wrapper.find("#backward");
+    icon.vm.$emit("click");
+    expect("prev").toBeCalled;
+  });
 });
