@@ -4,9 +4,9 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
-import PremiumAds from "@/components/User Settings/PremiumAds.vue";
+import User_Settings from "@/views/User_Settings.vue";
 
-describe("PremiumAds", () => {
+describe("User_Settings", () => {
     let wrapper;
     let vuetify;
     beforeEach(() => {
@@ -16,7 +16,7 @@ describe("PremiumAds", () => {
         Vue.use(VueRouter);
         //using mount not shallowMount to render the true html behind vuetify's components which are child components
         //in order to find the elements by their ids
-        wrapper = mount(PremiumAds, {
+        wrapper = mount(User_Settings, {
             router,
             vuetify,
             data() {
@@ -31,18 +31,5 @@ describe("PremiumAds", () => {
     //check if it is a vue instance
     it("renders a vue instance", () => {
         expect(wrapper.isVueInstance()).toBe(true);
-    });
-    //check the function routes to primium link
-    it("call the method", async() => {
-        wrapper.vm.direct();
-        await wrapper.vm.$nextTick();
-        expect(wrapper.vm.$router.currentRoute.fullPath).toBe("/premium/?checkout=false");
-    });
-    //check if the function called
-    it("press the button", async() => {
-        let button = wrapper.find("button");
-        button.trigger('click');
-        await wrapper.vm.$nextTick();
-        expect(wrapper.vm.$router.currentRoute.fullPath).toBe("/premium/?checkout=false");
     });
 });

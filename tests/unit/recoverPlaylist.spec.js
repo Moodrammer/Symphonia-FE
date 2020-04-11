@@ -4,9 +4,9 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
-import PremiumAds from "@/components/User Settings/PremiumAds.vue";
+import recoverPlaylist from "@/components/User Settings/recoverPlaylist.vue";
 
-describe("PremiumAds", () => {
+describe("recoverPlaylist", () => {
     let wrapper;
     let vuetify;
     beforeEach(() => {
@@ -16,11 +16,21 @@ describe("PremiumAds", () => {
         Vue.use(VueRouter);
         //using mount not shallowMount to render the true html behind vuetify's components which are child components
         //in order to find the elements by their ids
-        wrapper = mount(PremiumAds, {
+        wrapper = mount(recoverPlaylist, {
             router,
             vuetify,
             data() {
-                return {};
+                return {
+                    playlists: [{
+                        date: "3/18/20",
+                        title: "list",
+                        songs: 1,
+                        restored: false
+                    }],
+                    NoPlaylists: true,
+                    PlaylistNoRecover: false,
+                    PlaylistsRecover: false
+                };
             }
         });
     });
@@ -32,17 +42,9 @@ describe("PremiumAds", () => {
     it("renders a vue instance", () => {
         expect(wrapper.isVueInstance()).toBe(true);
     });
-    //check the function routes to primium link
-    it("call the method", async() => {
-        wrapper.vm.direct();
-        await wrapper.vm.$nextTick();
-        expect(wrapper.vm.$router.currentRoute.fullPath).toBe("/premium/?checkout=false");
-    });
-    //check if the function called
-    it("press the button", async() => {
-        let button = wrapper.find("button");
-        button.trigger('click');
-        await wrapper.vm.$nextTick();
-        expect(wrapper.vm.$router.currentRoute.fullPath).toBe("/premium/?checkout=false");
+    //check that the method is working
+    it("renders a vue instance", () => {
+        wrapper.vm.restore(0);
+        expect(wrapper.vm.playlists[0].restored).toBe(true);
     });
 });
