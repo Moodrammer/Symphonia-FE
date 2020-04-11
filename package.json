@@ -60,15 +60,17 @@
             "parser": "babel-eslint"
         },
         "rules": {},
-        "overrides": [{
-            "files": [
-                "**/__tests__/*.{j,t}s?(x)",
-                "**/tests/unit/**/*.spec.{j,t}s?(x)"
-            ],
-            "env": {
-                "jest": true
+        "overrides": [
+            {
+                "files": [
+                    "**/__tests__/*.{j,t}s?(x)",
+                    "**/tests/unit/**/*.spec.{j,t}s?(x)"
+                ],
+                "env": {
+                    "jest": true
+                }
             }
-        }]
+        ]
     },
     "browserslist": [
         "> 1%",
@@ -77,6 +79,9 @@
     "jest": {
         "preset": "@vue/cli-plugin-unit-jest",
         "collectCoverage": true,
-        "collectCoverageFrom": ["**/*.vue", "!**/node_modules/**"]
+        "collectCoverageFrom": [
+            "**/*.vue",
+            "!**/node_modules/**"
+        ]
     }
 }

@@ -13,11 +13,11 @@ export default {
   name: "Library",
   mixins: [getuserToken],
 
-  created() {
-    if (!this.getuserToken()) {
-      console.log("redirect to home");
-      this.$router.push("../");
-    }
-  }
+  // created() {
+  //   if (!this.getuserToken()) {
+  //     console.log("redirect to home");
+  //     this.$router.push("../");
+  //   }
+  // }
 };
 </script>
