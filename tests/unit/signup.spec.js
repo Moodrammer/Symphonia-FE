@@ -2,26 +2,54 @@
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import VueRouter from "vue-router";
+import Vuex from "vuex";
 //Importing the component to be tested
 import signup from "@/views/SignUp.vue";
 
 describe("signup", () => {
   let wrapper;
   let vuetify;
+  //vuex variables
+  let actions
+  let mutations
+  let store
+  let mockState = ""
 
   beforeEach(() => {
-    const router = new VueRouter();
+    Vue.use(Vuex)
+    //define a mock version of the store
+    actions = {
+      registerUser: jest.fn(() => {
+        if(mockState == "fail"){ 
+          return Promise.reject({
+            status: "fail"
+          })}
+        else if (mockState == "error")
+          return Promise.reject({
+            status: "error",
+            msg: "Please try again later"
+          })  
+        else
+          return Promise.resolve()  
+      })
+    }
+    mutations = {
+      setuserDOB: jest.fn()
+    }
+    store = new Vuex.Store({
+      actions,
+      mutations
+    })
+
     vuetify = new Vuetify();
     Vue.use(Vuetify);
-    Vue.use(VueRouter);
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
     //in order to find the elements by their ids
     wrapper = mount(signup, {
-      router,
-      vuetify
+      vuetify,
+      store,
+      stubs: ['router-link']
     });
-    //console.log(wrapper)
   });
   //-------------------------------------------------------------------------//
   //                          Rendering tests                                //
@@ -150,4 +178,16 @@ describe("signup", () => {
       "Password is too short"
     );
   });
+
+  //-------------------------------------------------------------------------//
+  //                        Submitting the form                             //
+  //-------------------------------------------------------------------------//
+   it("submits the form on valid input", () => {
+  //   //set the mockState so that the stub action returns the suitable promise result
+  //   mockState = "fail"
+  //   wrapper.vm.submitForm()
+  //   expect(wrapper.vm.errorState).toBe(true)
+    
+  })
+
 });
