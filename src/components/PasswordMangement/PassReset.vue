@@ -20,7 +20,7 @@
               to reset your password.
             </p>
             <!-- Paragraph to show after sending the request -->
-            <p style="text-align: center;" v-if="!NotSubmitted">
+            <p id="successful-submission" style="text-align: center;" v-if="!NotSubmitted">
               A message has been sent to you by email with instructions on how
               to reset your password.
             </p>
