@@ -5,6 +5,7 @@ import Vuex from "vuex";
 import VueRouter from "vue-router";
 import soundplayer from "@/components/TheSoundplayer/TheSoundplayer.vue";
 
+
 describe("TheSoundplayer", () => {
   let wrapper;
   let vuetify;
@@ -24,7 +25,7 @@ describe("TheSoundplayer", () => {
 
           state: {
             trackName: "",
-            liked: null,
+            liked: true,
             trackUrl: null,
             trackId: null,
             imageUrl: null,
@@ -47,6 +48,10 @@ describe("TheSoundplayer", () => {
           },
           actions: {
             getQueueStore: () => {} 
+          },
+          mutations: {
+            setAudio: (state, audio) => {state.audio = audio},
+            setLiked: (state, liked) => {state.liked = liked}
           }
         },
         playlist: {
@@ -89,4 +94,17 @@ describe("TheSoundplayer", () => {
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
   });
+
+  //check if it is a vue instance
+  it("renders a vue instance", () => {
+    expect(wrapper.isVueInstance()).toBe(true);
+  });
+
+  // test like song
+  it("song is disliked", () => {
+    wrapper.vm.saveToLikedSongs();
+    expect(wrapper.vm.isSongIsLiked).toEqual(false)
+  });
+
+  
 });
