@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
@@ -16,7 +16,7 @@ describe("Nav Bar", () => {
     vuetify = new Vuetify();
     Vue.use(Vuetify);
     Vue.use(VueRouter);
-    wrapper = mount(NavBar, {
+    wrapper = shallowMount(NavBar, {
       router,
       vuetify
     });
@@ -48,5 +48,12 @@ describe("Nav Bar", () => {
   it("contains Log in button", () => {
     const loginBtn=wrapper.find("#logIn");
     expect(loginBtn.text()=="LOG IN").toBe(true);
-  })
+  });
+
+  // it("Logout",()=>{
+  //   // const isLoggedIn = jest.fn();
+  //   // isLoggedIn.mockReturnValueOnce(true);
+  //   const logoutBtn=wrapper.find("#logout");
+  //   expect(logoutBtn.text()=="Log out").toBe(true);
+  // });
 });

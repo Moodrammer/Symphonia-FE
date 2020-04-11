@@ -4,7 +4,7 @@ import Vuetify from "vuetify";
 import Vuex from 'vuex'
 
 import likedSongs from "@/views/LikedSongs.vue";
-import Song from "@/components/general/Song.vue"
+import Song from "@/components/general/Song.vue";
 
 describe("Liked Songs", () => {
   let wrapper;
@@ -72,9 +72,9 @@ describe("Liked Songs", () => {
   });
 
   it("Get Saved tracks", async() =>{
-    wrapper.vm.$emit('updateContent');
-    await wrapper.vm.$nextTick()
-    wrapper.emitted('updateContent');
+    wrapper.vm.$root.$on('updateContent')
+    // await wrapper.vm.$nextTick()
+    // wrapper.emitted('updateContent');
     expect("getTracks").toHaveBeenCalled;
   });
 });

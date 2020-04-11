@@ -49,10 +49,34 @@ describe("Song Component", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
 
-  it("Save a track for user", () =>{
+  // it("Save a track for user", () =>{
+  //   const item=wrapper.find("#removeTrack");
+  //   item.vm.$emit("click");
+  //   expect("saveTrack").toHaveBeenCalled;
+  // });
+
+  it("Show snack bar when user logged out at remove track click", () =>{
+    wrapper.vm.snackbar=false;
     const item=wrapper.find("#removeTrack");
     item.vm.$emit("click");
-    expect("saveTrack").toHaveBeenCalled;
+    expect(wrapper.vm.snackbar).toBe(true);
+  });
+
+  it("Convert function",()=>{
+    wrapper.vm.convert(2000);
+    expect(wrapper.vm.min).toBe(Math.floor((2000 / 1000 / 60) << 0));
+    expect(wrapper.vm.sec).toBe(Math.floor((2000 / 1000) % 60));
+  });
+
+  it("Check if the user saved this track", ()=>{
+    wrapper.vm.checkLiked();
+    expect("checkSaved").toHaveBeenCalled;
+  });
+
+  it("Show snack bar when user is logged out and click save track",()=>{
+    wrapper.vm.snackbar=false;
+    wrapper.vm.likeSong();
+    expect(wrapper.vm.snackbar).toBe(true);
   });
 
 });

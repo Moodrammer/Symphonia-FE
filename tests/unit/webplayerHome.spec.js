@@ -3,19 +3,23 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 
 import WebplayerHome from "@/views/WebPlayerHome.vue";
+import VueRouter from "vue-router";
 import NavBar from "@/components/WebplayerLayout/WebNavBar.vue";
 import NavDrawer from "@/components/WebplayerLayout/WebNavDrawer.vue";
 
 describe("Webplayer Home", () => {
   let wrapper;
   let vuetify;
-  let newDiv
+
   beforeEach(() => {
     vuetify = new Vuetify();
+    const router = new VueRouter();
     Vue.use(Vuetify);
-    newDiv = document.createElement("html");
-    document.body.appendChild(newDiv);
-    wrapper = shallowMount(WebplayerHome,vuetify,global.document);
+    Vue.use(VueRouter);
+    wrapper = shallowMount(WebplayerHome, {
+      router,
+      vuetify
+    });
   });
 
   it("renders a vue instance", () => {
@@ -30,7 +34,4 @@ describe("Webplayer Home", () => {
     expect(wrapper.contains(NavDrawer)).toBe(true);
   });
 
-  it("Contains recently played h1", () => {
-    expect(wrapper.html()).toContain('<h1 class="mb-3">Recently played</h1>');
-  });
 });
