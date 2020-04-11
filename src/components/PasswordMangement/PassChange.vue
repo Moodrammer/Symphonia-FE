@@ -94,7 +94,7 @@
           </v-form>
           <!-- Successfully updated message -->
           <v-row justify="center">
-            <p style="text-align: center" v-if="!notSubmitted">
+            <p id="successful-submission" style="text-align: center" v-if="!notSubmitted">
               Sweet! Your new password has now been set and you are logged in.
             </p>
             <router-link to="/account" v-if="!notSubmitted"

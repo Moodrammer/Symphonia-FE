@@ -19,6 +19,7 @@ import Category from "../general/Category";
 import { mapGetters } from "vuex";
 /**
  * The webplayer home content if the user hasn't logged in yet
+ * @displayName Home Content Logout
  * @example [none]
  */
 export default {

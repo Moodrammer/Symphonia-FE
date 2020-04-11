@@ -200,7 +200,7 @@ import getuserID from "../../mixins/userService";
 import isLoggedIn from "../../mixins/userService";
 
 /**
- * @displayName Liked Songs
+ * @displayName Playlist View
  * @example [none]
  */
 export default {
@@ -218,6 +218,11 @@ export default {
     };
   },
   methods: {
+    /**
+     * Gets called when the user clicks on the play button to play the playlist\album
+     * @public This is a public method
+     * @param {none}
+     */
     play: function() {
       if (this.isLoggedIn()) {
         this.$store.dispatch("track/playSongStore", {
@@ -229,6 +234,11 @@ export default {
         this.snackbar = true;
       }
     },
+    /**
+     * Gets called when the user clicks on heart icon to follow the playlist\album
+     * @public This is a public method
+     * @param {none}
+     */
     followPlaylist: function() {
       if (this.isLoggedIn()) {
         this.$store.dispatch("playlist/followPlaylist", {
@@ -239,6 +249,11 @@ export default {
         this.snackbar = true;
       }
     },
+    /**
+     * Gets called when the user clicks on heart icon to unfollow the playlist\album
+     * @public This is a public method
+     * @param {none}
+     */
     unfollowPlaylist: async function() {
       if (this.isLoggedIn()) {
         await this.$store.dispatch("playlist/unfollowPlaylist", {

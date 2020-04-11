@@ -10,6 +10,7 @@ import HomeContentLogin from "./HomeContentLogin.vue";
 import HomeConentLogout from "./HomeContentLogout.vue";
 /**
  * This component to handle the home content of the webplayer according to user state
+ * @displayName Home Content Router
  * @example [none]
  */
 export default {
