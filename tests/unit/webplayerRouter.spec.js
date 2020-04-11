@@ -19,6 +19,9 @@ describe("Webplayer Router", () => {
     });
   });
 
+  //--------------------------------------------------
+  //              Test Rendering
+  //--------------------------------------------------
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
   });

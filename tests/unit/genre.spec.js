@@ -19,6 +19,7 @@ describe("Genre Component", () => {
     Vue.use(Vuex);
     Vue.use(VueRouter);
 
+    //Mocking the store
     store = new Vuex.Store({
       modules: {
         category: {
@@ -27,9 +28,7 @@ describe("Genre Component", () => {
             singleCategory: {
               categoryName: "",
               categoryID: "",
-              //Used in home
               showSeeAll: true,
-              //To provide the card grid with the menu which appear @right click
               list: {
                 menuList: [
                   { title: "Start Radio" },

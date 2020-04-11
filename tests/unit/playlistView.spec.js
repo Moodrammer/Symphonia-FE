@@ -4,7 +4,7 @@ import Vuetify from "vuetify";
 import Vuex from 'vuex';
 import VueRouter from "vue-router";
 
-
+//import the required componets
 import PlaylistView from "@/components/general/PlaylistView.vue";
 import Song from "@/components/general/Song.vue";
 
@@ -20,6 +20,7 @@ describe("Playlist View", () => {
     Vue.use(VueRouter);
     Vue.use(Vuex);
 
+    //Mocking the store
     store = new Vuex.Store({
       modules: {
         playlist: {
@@ -70,6 +71,9 @@ describe("Playlist View", () => {
     });
   });
 
+  //--------------------------------------------------
+  //              Test Rendering
+  //--------------------------------------------------
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
   }); 
@@ -78,6 +82,9 @@ describe("Playlist View", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
 
+  //--------------------------------------------------------
+  //        Check the existance of the components
+  //--------------------------------------------------------
   it("Contains Play Button", () =>{
     const btn = wrapper.find("#playBtn");
     expect(btn.text() == "Play").toBe(true);
@@ -92,10 +99,16 @@ describe("Playlist View", () => {
     expect(wrapper.contains(Song)).toBe(true);
   });
 
+  //--------------------------------------------------
+  //         Testing created hook cycle actions
+  //--------------------------------------------------
   it("Gets a playlist at the begining", () => {
     expect("getPlaylist").toHaveBeenCalled;
   });
 
+  //---------------------------------------------------
+  //       Test user functionalities (logged out)
+  //---------------------------------------------------
   it("Show Snack Bar at play button click", () => {
     wrapper.vm.snackbar=false;
     const playBtn=wrapper.find("#playBtn");

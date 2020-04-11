@@ -3,6 +3,7 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import Vuex from 'vuex'
 
+//importing the required components
 import likedSongs from "@/views/LikedSongs.vue";
 import Song from "@/components/general/Song.vue";
 
@@ -16,6 +17,7 @@ describe("Liked Songs", () => {
     Vue.use(Vuetify);
     Vue.use(Vuex);
 
+    //Mocking the store
     store = new Vuex.Store({
       modules: {
         category: {
@@ -42,13 +44,17 @@ describe("Liked Songs", () => {
         }
       }
     });
-
+    
+    //Mount the component to be tested
     wrapper = shallowMount(likedSongs, {
       vuetify,
       store
     });
   });
 
+  //--------------------------------------------------
+  //             Test Rendering
+  //--------------------------------------------------
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
   });
@@ -57,6 +63,9 @@ describe("Liked Songs", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
 
+  //--------------------------------------------------
+  //     Check the existance of the components
+  //--------------------------------------------------
   it("Contains Play Button", () =>{
     const btn = wrapper.find("#playBtn");
     expect(btn.text() == "Play").toBe(true);
@@ -70,11 +79,12 @@ describe("Liked Songs", () => {
   it("Contains Song component", () => {
     expect(wrapper.contains(Song)).toBe(true);
   });
-
+  
+  //-------------------------------------------------
+  //             Update the tracks
+  //-------------------------------------------------
   it("Get Saved tracks", async() =>{
     wrapper.vm.$root.$on('updateContent')
-    // await wrapper.vm.$nextTick()
-    // wrapper.emitted('updateContent');
     expect("getTracks").toHaveBeenCalled;
   });
 });

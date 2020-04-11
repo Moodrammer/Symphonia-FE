@@ -5,8 +5,6 @@ import VueRouter from "vue-router";
 
 import NavBar from "@/components/WebplayerLayout/WebNavBar.vue";
 
-//const localVue = createLocalVue();
-
 describe("Nav Bar", () => {
   let wrapper;
   let vuetify;
@@ -23,6 +21,9 @@ describe("Nav Bar", () => {
     });
   });
 
+  //--------------------------------------------------
+  //              Test Rendering
+  //--------------------------------------------------
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
   });
@@ -31,6 +32,9 @@ describe("Nav Bar", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
 
+  //--------------------------------------------------------
+  //        Check the existance of the components
+  //--------------------------------------------------------
   it("Contains backward icon", () => {
     const icon = wrapper.find("#backward");
     expect(icon.exists()).toBe(true);
@@ -51,13 +55,9 @@ describe("Nav Bar", () => {
     expect(loginBtn.text()=="LOG IN").toBe(true);
   });
 
-  // it("Logout",()=>{
-  //   // const isLoggedIn = jest.fn();
-  //   // isLoggedIn.mockReturnValueOnce(true);
-  //   const logoutBtn=wrapper.find("#logout");
-  //   expect(logoutBtn.text()=="Log out").toBe(true);
-  // });
-
+  //------------------------------------------------
+  //            Test component functions
+  //-----------------------------------------------
   it("Logout function",() =>{
     wrapper.vm.logOutAndRerender();
     expect(wrapper.vm.logOut()).toHaveBeenCalled;

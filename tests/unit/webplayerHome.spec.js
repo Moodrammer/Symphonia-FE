@@ -22,6 +22,9 @@ describe("Webplayer Home", () => {
     });
   });
 
+  //--------------------------------------------------
+  //              Test Rendering
+  //--------------------------------------------------
   it("renders a vue instance", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
