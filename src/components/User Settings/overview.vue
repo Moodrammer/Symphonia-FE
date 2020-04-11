@@ -20,7 +20,7 @@
                   >
                 </td>
                 <td class="info-cell">
-                  <p class="info-value">{{ user.username }}</p>
+                  <p class="info-value" id="username">{{ user.username }}</p>
                 </td>
               </tr>
               <!-- The Email sction -->

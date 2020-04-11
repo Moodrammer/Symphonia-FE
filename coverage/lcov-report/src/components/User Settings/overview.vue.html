@@ -22,9 +22,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
@@ -36,16 +36,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
@@ -54,7 +54,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -547,15 +547,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -568,12 +564,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -800,7 +800,7 @@
                   &gt;
                 &lt;/td&gt;
                 &lt;td class="info-cell"&gt;
-                  &lt;p class="info-value"&gt;{{ user.username }}&lt;/p&gt;
+                  &lt;p class="info-value" id="username"&gt;{{ user.username }}&lt;/p&gt;
                 &lt;/td&gt;
               &lt;/tr&gt;
               &lt;!-- The Email sction --&gt;
@@ -908,11 +908,11 @@
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-<span class="cstat-no" title="statement not covered" >import bottomContent from "./bottomContent.vue";</span>
+import bottomContent from "./bottomContent.vue";
 &nbsp;
 export default {
-<span class="fstat-no" title="function not covered" >  data() {</span>
-<span class="cstat-no" title="statement not covered" >    return {</span>
+  data() {
+    return {
       // The current user's data got from the created request
       user: {}
     };
@@ -927,14 +927,14 @@ export default {
   // - Remove the request from computed as there is no need to return the data here without using it (Done)
   // - Put it in created or mounted only to set the user object in local state without returning (Done)
   //---------------------------------------------------------------------------------------------
-<span class="fstat-no" title="function not covered" >  created() {</span>
+  created() {
     // Request to get the current user's data
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    this.$store</span></span>
+    this.$store
       .dispatch("userData")
       .then(() =&gt; {
         // If we got it set it into the data to display the user's info
-<span class="cstat-no" title="statement not covered" >        this.user = this.$store.state.user;</span>
-<span class="cstat-no" title="statement not covered" >        this.user.userDOB = this.user.userDOB.slice(0, 10);</span>
+        this.user = this.$store.state.user;
+        this.user.userDOB = this.user.userDOB.slice(0, 10);
       })
       .catch();
   }
@@ -1146,7 +1146,7 @@ h3 {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Apr 10 2020 19:13:15 GMT+0200 (Eastern European Standard Time)
+                at Sat Apr 11 2020 20:33:42 GMT+0200 (Eastern European Standard Time)
             </div>
         </div>
         <script src="..\..\..\prettify.js"></script>

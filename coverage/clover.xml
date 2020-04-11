@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1586538795323" clover="3.2.0">
-  <project timestamp="1586538795323" name="All files">
-    <metrics statements="645" coveredstatements="37" conditionals="243" coveredconditionals="28" methods="235" coveredmethods="20" elements="1123" coveredelements="85" complexity="0" loc="645" ncloc="645" packages="13" files="45" classes="45"/>
+<coverage generated="1586630022364" clover="3.2.0">
+  <project timestamp="1586630022364" name="All files">
+    <metrics statements="645" coveredstatements="48" conditionals="243" coveredconditionals="28" methods="235" coveredmethods="27" elements="1123" coveredelements="103" complexity="0" loc="645" ncloc="645" packages="13" files="45" classes="45"/>
     <package name="src">
       <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-      <file name="App.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\App.vue">
+      <file name="App.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\App.vue">
         <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="10" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.components">
       <metrics statements="9" coveredstatements="5" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="2"/>
-      <file name="CreatePlaylist.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\CreatePlaylist.vue">
+      <file name="CreatePlaylist.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\CreatePlaylist.vue">
         <metrics statements="9" coveredstatements="5" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="2"/>
         <line num="74" count="1" type="stmt"/>
         <line num="75" count="1" type="stmt"/>
@@ -26,15 +26,15 @@
     </package>
     <package name="src.components.Homepage">
       <metrics statements="27" coveredstatements="6" conditionals="2" coveredconditionals="0" methods="12" coveredmethods="0"/>
-      <file name="TheHomepageContent.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Homepage\TheHomepageContent.vue">
+      <file name="TheHomepageContent.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\Homepage\TheHomepageContent.vue">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="30" count="1" type="stmt"/>
       </file>
-      <file name="TheHomepageFooter.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Homepage\TheHomepageFooter.vue">
+      <file name="TheHomepageFooter.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\Homepage\TheHomepageFooter.vue">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="113" count="1" type="stmt"/>
       </file>
-      <file name="TheHomepageLoginContent.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Homepage\TheHomepageLoginContent.vue">
+      <file name="TheHomepageLoginContent.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\Homepage\TheHomepageLoginContent.vue">
         <metrics statements="7" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="175" count="1" type="stmt"/>
         <line num="176" count="1" type="stmt"/>
@@ -44,7 +44,7 @@
         <line num="198" count="0" type="stmt"/>
         <line num="199" count="0" type="stmt"/>
       </file>
-      <file name="TheHomepageNavigationBar.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Homepage\TheHomepageNavigationBar.vue">
+      <file name="TheHomepageNavigationBar.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\Homepage\TheHomepageNavigationBar.vue">
         <metrics statements="7" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="233" count="1" type="stmt"/>
         <line num="234" count="1" type="stmt"/>
@@ -54,7 +54,7 @@
         <line num="263" count="0" type="stmt"/>
         <line num="264" count="0" type="stmt"/>
       </file>
-      <file name="TheHomepagePremiumContent.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Homepage\TheHomepagePremiumContent.vue">
+      <file name="TheHomepagePremiumContent.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\Homepage\TheHomepagePremiumContent.vue">
         <metrics statements="11" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="6" coveredmethods="0"/>
         <line num="132" count="0" type="stmt"/>
         <line num="143" count="0" type="stmt"/>
@@ -71,7 +71,7 @@
     </package>
     <package name="src.components.PasswordMangement">
       <metrics statements="27" coveredstatements="0" conditionals="25" coveredconditionals="0" methods="15" coveredmethods="0"/>
-      <file name="PassChange.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\PasswordMangement\PassChange.vue">
+      <file name="PassChange.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\PasswordMangement\PassChange.vue">
         <metrics statements="18" coveredstatements="0" conditionals="17" coveredconditionals="0" methods="9" coveredmethods="0"/>
         <line num="111" count="0" type="stmt"/>
         <line num="115" count="0" type="stmt"/>
@@ -92,7 +92,7 @@
         <line num="178" count="0" type="stmt"/>
         <line num="187" count="0" type="cond" truecount="0" falsecount="2"/>
       </file>
-      <file name="PassReset.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\PasswordMangement\PassReset.vue">
+      <file name="PassReset.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\PasswordMangement\PassReset.vue">
         <metrics statements="9" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="6" coveredmethods="0"/>
         <line num="71" count="0" type="stmt"/>
         <line num="76" count="0" type="stmt"/>
@@ -107,7 +107,7 @@
     </package>
     <package name="src.components.Style guide examples">
       <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
-      <file name="AppButton.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Style guide examples\AppButton.vue">
+      <file name="AppButton.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\Style guide examples\AppButton.vue">
         <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
         <line num="9" count="0" type="stmt"/>
         <line num="33" count="0" type="stmt"/>
@@ -117,7 +117,7 @@
     </package>
     <package name="src.components.TheSoundPlayer">
       <metrics statements="166" coveredstatements="0" conditionals="60" coveredconditionals="0" methods="55" coveredmethods="0"/>
-      <file name="TheSoundPlayer.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\TheSoundPlayer\TheSoundPlayer.vue">
+      <file name="TheSoundPlayer.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\TheSoundPlayer\TheSoundPlayer.vue">
         <metrics statements="164" coveredstatements="0" conditionals="60" coveredconditionals="0" methods="53" coveredmethods="0"/>
         <line num="275" count="0" type="stmt"/>
         <line num="276" count="0" type="stmt"/>
@@ -284,32 +284,32 @@
         <line num="926" count="0" type="stmt"/>
         <line num="927" count="0" type="stmt"/>
       </file>
-      <file name="TheSoundPlayerLogout.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\TheSoundPlayer\TheSoundPlayerLogout.vue">
+      <file name="TheSoundPlayerLogout.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\TheSoundPlayer\TheSoundPlayerLogout.vue">
         <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
         <line num="82" count="0" type="stmt"/>
         <line num="88" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.components.User Settings">
-      <metrics statements="74" coveredstatements="0" conditionals="28" coveredconditionals="0" methods="28" coveredmethods="0"/>
-      <file name="PremiumAds.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\PremiumAds.vue">
-        <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="34" count="0" type="stmt"/>
+      <metrics statements="74" coveredstatements="11" conditionals="28" coveredconditionals="0" methods="28" coveredmethods="7"/>
+      <file name="PremiumAds.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\PremiumAds.vue">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="30" count="3" type="stmt"/>
+        <line num="34" count="2" type="stmt"/>
       </file>
-      <file name="bottomContent.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\bottomContent.vue">
-        <metrics statements="9" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="4" coveredmethods="0"/>
-        <line num="58" count="0" type="stmt"/>
+      <file name="bottomContent.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\bottomContent.vue">
+        <metrics statements="9" coveredstatements="4" conditionals="2" coveredconditionals="0" methods="4" coveredmethods="2"/>
+        <line num="58" count="3" type="stmt"/>
         <line num="68" count="0" type="stmt"/>
         <line num="69" count="0" type="stmt"/>
         <line num="72" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="73" count="0" type="stmt"/>
         <line num="74" count="0" type="stmt"/>
-        <line num="79" count="0" type="stmt"/>
-        <line num="80" count="0" type="stmt"/>
-        <line num="81" count="0" type="stmt"/>
+        <line num="79" count="3" type="stmt"/>
+        <line num="80" count="3" type="stmt"/>
+        <line num="81" count="3" type="stmt"/>
       </file>
-      <file name="changePass.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\changePass.vue">
+      <file name="changePass.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\changePass.vue">
         <metrics statements="20" coveredstatements="0" conditionals="14" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="67" count="0" type="stmt"/>
         <line num="68" count="0" type="stmt"/>
@@ -332,7 +332,7 @@
         <line num="142" count="0" type="stmt"/>
         <line num="145" count="0" type="stmt"/>
       </file>
-      <file name="editProfile.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\editProfile.vue">
+      <file name="editProfile.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\editProfile.vue">
         <metrics statements="31" coveredstatements="0" conditionals="12" coveredconditionals="0" methods="9" coveredmethods="0"/>
         <line num="116" count="0" type="stmt"/>
         <line num="119" count="0" type="stmt"/>
@@ -366,34 +366,34 @@
         <line num="223" count="0" type="stmt"/>
         <line num="226" count="0" type="stmt"/>
       </file>
-      <file name="notification.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\notification.vue">
+      <file name="notification.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\notification.vue">
         <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
         <line num="218" count="0" type="stmt"/>
         <line num="221" count="0" type="stmt"/>
         <line num="238" count="0" type="stmt"/>
       </file>
-      <file name="overview.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\overview.vue">
-        <metrics statements="5" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
-        <line num="131" count="0" type="stmt"/>
-        <line num="135" count="0" type="stmt"/>
-        <line num="152" count="0" type="stmt"/>
-        <line num="156" count="0" type="stmt"/>
-        <line num="157" count="0" type="stmt"/>
+      <file name="overview.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\overview.vue">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="131" count="1" type="stmt"/>
+        <line num="135" count="3" type="stmt"/>
+        <line num="152" count="3" type="stmt"/>
+        <line num="156" count="3" type="stmt"/>
+        <line num="157" count="3" type="stmt"/>
       </file>
-      <file name="recoverPlaylist.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\recoverPlaylist.vue">
+      <file name="recoverPlaylist.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\recoverPlaylist.vue">
         <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
         <line num="52" count="0" type="stmt"/>
         <line num="55" count="0" type="stmt"/>
         <line num="74" count="0" type="stmt"/>
       </file>
-      <file name="sideBar.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\sideBar.vue">
+      <file name="sideBar.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\sideBar.vue">
         <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="48" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.components.WebplayerContent">
       <metrics statements="14" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
-      <file name="HomeContentLogin.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerContent\HomeContentLogin.vue">
+      <file name="HomeContentLogin.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerContent\HomeContentLogin.vue">
         <metrics statements="5" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="18" count="0" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
@@ -401,18 +401,18 @@
         <line num="30" count="0" type="stmt"/>
         <line num="33" count="0" type="stmt"/>
       </file>
-      <file name="HomeContentLogout.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerContent\HomeContentLogout.vue">
+      <file name="HomeContentLogout.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerContent\HomeContentLogout.vue">
         <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="18" count="0" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
         <line num="29" count="0" type="stmt"/>
       </file>
-      <file name="HomeContentRouter.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerContent\HomeContentRouter.vue">
+      <file name="HomeContentRouter.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerContent\HomeContentRouter.vue">
         <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="9" count="0" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
       </file>
-      <file name="Library.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerContent\Library.vue">
+      <file name="Library.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerContent\Library.vue">
         <metrics statements="4" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="10" count="0" type="stmt"/>
         <line num="17" count="0" type="cond" truecount="0" falsecount="2"/>
@@ -422,7 +422,7 @@
     </package>
     <package name="src.components.WebplayerLayout">
       <metrics statements="44" coveredstatements="0" conditionals="11" coveredconditionals="0" methods="15" coveredmethods="0"/>
-      <file name="WebNavBar.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerLayout\WebNavBar.vue">
+      <file name="WebNavBar.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerLayout\WebNavBar.vue">
         <metrics statements="38" coveredstatements="0" conditionals="11" coveredconditionals="0" methods="12" coveredmethods="0"/>
         <line num="183" count="0" type="stmt"/>
         <line num="191" count="0" type="stmt"/>
@@ -463,7 +463,7 @@
         <line num="307" count="0" type="stmt"/>
         <line num="311" count="0" type="stmt"/>
       </file>
-      <file name="WebNavDrawer.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerLayout\WebNavDrawer.vue">
+      <file name="WebNavDrawer.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerLayout\WebNavDrawer.vue">
         <metrics statements="6" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="97" count="0" type="stmt"/>
         <line num="98" count="0" type="stmt"/>
@@ -475,7 +475,7 @@
     </package>
     <package name="src.components.artistUI">
       <metrics statements="47" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="12" coveredmethods="0"/>
-      <file name="ArtistUI.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\artistUI\ArtistUI.vue">
+      <file name="ArtistUI.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\artistUI\ArtistUI.vue">
         <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="36" count="0" type="stmt"/>
         <line num="37" count="0" type="stmt"/>
@@ -485,7 +485,7 @@
         <line num="56" count="0" type="stmt"/>
         <line num="60" count="0" type="stmt"/>
       </file>
-      <file name="Overview.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\artistUI\Overview.vue">
+      <file name="Overview.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\artistUI\Overview.vue">
         <metrics statements="28" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="42" count="0" type="stmt"/>
         <line num="43" count="0" type="stmt"/>
@@ -516,7 +516,7 @@
         <line num="191" count="0" type="stmt"/>
         <line num="195" count="0" type="stmt"/>
       </file>
-      <file name="RelatedArtists.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\artistUI\RelatedArtists.vue">
+      <file name="RelatedArtists.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\artistUI\RelatedArtists.vue">
         <metrics statements="12" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
         <line num="6" count="0" type="stmt"/>
         <line num="7" count="0" type="stmt"/>
@@ -534,7 +534,7 @@
     </package>
     <package name="src.components.collection">
       <metrics statements="52" coveredstatements="0" conditionals="10" coveredconditionals="0" methods="16" coveredmethods="0"/>
-      <file name="Albums.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\collection\Albums.vue">
+      <file name="Albums.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\collection\Albums.vue">
         <metrics statements="18" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="9" count="0" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
@@ -555,7 +555,7 @@
         <line num="78" count="0" type="stmt"/>
         <line num="81" count="0" type="stmt"/>
       </file>
-      <file name="Artists.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\collection\Artists.vue">
+      <file name="Artists.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\collection\Artists.vue">
         <metrics statements="18" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="9" count="0" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
@@ -576,7 +576,7 @@
         <line num="79" count="0" type="stmt"/>
         <line num="82" count="0" type="stmt"/>
       </file>
-      <file name="Playlists.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\collection\Playlists.vue">
+      <file name="Playlists.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\collection\Playlists.vue">
         <metrics statements="16" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="6" coveredmethods="0"/>
         <line num="13" count="0" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
@@ -598,7 +598,7 @@
     </package>
     <package name="src.components.general">
       <metrics statements="74" coveredstatements="0" conditionals="29" coveredconditionals="0" methods="28" coveredmethods="0"/>
-      <file name="CardGrid.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\general\CardGrid.vue">
+      <file name="CardGrid.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\general\CardGrid.vue">
         <metrics statements="33" coveredstatements="0" conditionals="19" coveredconditionals="0" methods="9" coveredmethods="0"/>
         <line num="275" count="0" type="stmt"/>
         <line num="284" count="0" type="stmt"/>
@@ -634,11 +634,11 @@
         <line num="363" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="370" count="0" type="stmt"/>
       </file>
-      <file name="Category.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\general\Category.vue">
+      <file name="Category.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\general\Category.vue">
         <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="19" count="0" type="stmt"/>
       </file>
-      <file name="Genre.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\general\Genre.vue">
+      <file name="Genre.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\general\Genre.vue">
         <metrics statements="5" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="11" count="0" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
@@ -646,7 +646,7 @@
         <line num="23" count="0" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
       </file>
-      <file name="PlaylistView.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\general\PlaylistView.vue">
+      <file name="PlaylistView.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\general\PlaylistView.vue">
         <metrics statements="19" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="9" coveredmethods="0"/>
         <line num="195" count="0" type="stmt"/>
         <line num="197" count="0" type="stmt"/>
@@ -668,7 +668,7 @@
         <line num="269" count="0" type="stmt"/>
         <line num="272" count="0" type="stmt"/>
       </file>
-      <file name="Song.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\general\Song.vue">
+      <file name="Song.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\components\general\Song.vue">
         <metrics statements="16" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="7" coveredmethods="0"/>
         <line num="118" count="0" type="stmt"/>
         <line num="119" count="0" type="stmt"/>
@@ -690,7 +690,7 @@
     </package>
     <package name="src.views">
       <metrics statements="106" coveredstatements="26" conditionals="66" coveredconditionals="28" methods="45" coveredmethods="18"/>
-      <file name="Home.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\Home.vue">
+      <file name="Home.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\views\Home.vue">
         <metrics statements="7" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
@@ -700,7 +700,7 @@
         <line num="33" count="1" type="stmt"/>
         <line num="35" count="0" type="stmt"/>
       </file>
-      <file name="LikedSongs.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\LikedSongs.vue">
+      <file name="LikedSongs.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\views\LikedSongs.vue">
         <metrics statements="9" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="97" count="0" type="stmt"/>
         <line num="98" count="0" type="stmt"/>
@@ -712,7 +712,7 @@
         <line num="129" count="0" type="stmt"/>
         <line num="133" count="0" type="stmt"/>
       </file>
-      <file name="Login.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\Login.vue">
+      <file name="Login.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\views\Login.vue">
         <metrics statements="18" coveredstatements="6" conditionals="14" coveredconditionals="5" methods="8" coveredmethods="4"/>
         <line num="195" count="1" type="stmt"/>
         <line num="196" count="1" type="stmt"/>
@@ -733,13 +733,13 @@
         <line num="261" count="0" type="stmt"/>
         <line num="262" count="0" type="stmt"/>
       </file>
-      <file name="PremiumOffer.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\PremiumOffer.vue">
+      <file name="PremiumOffer.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\views\PremiumOffer.vue">
         <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="10" count="0" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
       </file>
-      <file name="SignUp.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\SignUp.vue">
+      <file name="SignUp.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\views\SignUp.vue">
         <metrics statements="35" coveredstatements="14" conditionals="48" coveredconditionals="23" methods="16" coveredmethods="13"/>
         <line num="234" count="1" type="stmt"/>
         <line num="235" count="1" type="stmt"/>
@@ -777,7 +777,7 @@
         <line num="388" count="0" type="stmt"/>
         <line num="389" count="0" type="stmt"/>
       </file>
-      <file name="TheQueue.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\TheQueue.vue">
+      <file name="TheQueue.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\views\TheQueue.vue">
         <metrics statements="12" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="0"/>
         <line num="48" count="0" type="stmt"/>
         <line num="49" count="0" type="stmt"/>
@@ -792,7 +792,7 @@
         <line num="85" count="0" type="stmt"/>
         <line num="91" count="0" type="stmt"/>
       </file>
-      <file name="User_Settings.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\User_Settings.vue">
+      <file name="User_Settings.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\views\User_Settings.vue">
         <metrics statements="14" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="26" count="0" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
@@ -809,7 +809,7 @@
         <line num="63" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="64" count="0" type="stmt"/>
       </file>
-      <file name="WebPlayerHome.vue" path="C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\WebPlayerHome.vue">
+      <file name="WebPlayerHome.vue" path="F:\DavidWork\Projects\Symphonia-FE\src\views\WebPlayerHome.vue">
         <metrics statements="8" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
         <line num="20" count="0" type="stmt"/>
         <line num="21" count="0" type="stmt"/>

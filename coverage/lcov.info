@@ -1,5 +1,5 @@
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\App.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\App.vue
 FN:10,(anonymous_1)
 FNF:1
 FNH:0
@@ -11,7 +11,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\CreatePlaylist.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\CreatePlaylist.vue
 FN:83,(anonymous_1)
 FN:96,(anonymous_2)
 FN:113,(anonymous_3)
@@ -37,7 +37,7 @@ BRF:2
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Homepage\TheHomepageContent.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\Homepage\TheHomepageContent.vue
 FNF:0
 FNH:0
 DA:30,1
@@ -47,7 +47,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Homepage\TheHomepageFooter.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\Homepage\TheHomepageFooter.vue
 FNF:0
 FNH:0
 DA:113,1
@@ -57,7 +57,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Homepage\TheHomepageLoginContent.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\Homepage\TheHomepageLoginContent.vue
 FN:188,(anonymous_1)
 FN:195,(anonymous_2)
 FN:196,(anonymous_3)
@@ -79,7 +79,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Homepage\TheHomepageNavigationBar.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\Homepage\TheHomepageNavigationBar.vue
 FN:245,(anonymous_1)
 FN:252,(anonymous_2)
 FN:261,(anonymous_3)
@@ -101,7 +101,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Homepage\TheHomepagePremiumContent.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\Homepage\TheHomepagePremiumContent.vue
 FN:142,(anonymous_1)
 FN:175,(anonymous_2)
 FN:184,(anonymous_3)
@@ -135,7 +135,7 @@ BRF:2
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\PasswordMangement\PassChange.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\PasswordMangement\PassChange.vue
 FN:114,(anonymous_1)
 FN:125,(anonymous_2)
 FN:129,(anonymous_4)
@@ -197,7 +197,7 @@ BRF:17
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\PasswordMangement\PassReset.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\PasswordMangement\PassReset.vue
 FN:75,(anonymous_1)
 FN:78,(anonymous_2)
 FN:93,(anonymous_4)
@@ -235,7 +235,7 @@ BRF:8
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\Style guide examples\AppButton.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\Style guide examples\AppButton.vue
 FN:32,(anonymous_1)
 FN:41,(anonymous_2)
 FNF:2
@@ -252,7 +252,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\TheSoundPlayer\TheSoundPlayer.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\TheSoundPlayer\TheSoundPlayer.vue
 FN:281,(anonymous_1)
 FN:300,(anonymous_2)
 FN:305,(anonymous_3)
@@ -591,7 +591,7 @@ BRF:60
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\TheSoundPlayer\TheSoundPlayerLogout.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\TheSoundPlayer\TheSoundPlayerLogout.vue
 FN:81,(anonymous_1)
 FN:87,(anonymous_2)
 FNF:2
@@ -606,50 +606,50 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\PremiumAds.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\PremiumAds.vue
 FN:29,(anonymous_1)
 FN:33,(anonymous_2)
 FNF:2
-FNH:0
-FNDA:0,(anonymous_1)
-FNDA:0,(anonymous_2)
-DA:30,0
-DA:34,0
+FNH:2
+FNDA:3,(anonymous_1)
+FNDA:2,(anonymous_2)
+DA:30,3
+DA:34,2
 LF:2
-LH:0
+LH:2
 BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\bottomContent.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\bottomContent.vue
 FN:57,(anonymous_1)
 FN:67,(anonymous_2)
 FN:71,(anonymous_3)
 FN:78,(anonymous_4)
 FNF:4
-FNH:0
-FNDA:0,(anonymous_1)
+FNH:2
+FNDA:3,(anonymous_1)
 FNDA:0,(anonymous_2)
 FNDA:0,(anonymous_3)
-FNDA:0,(anonymous_4)
-DA:58,0
+FNDA:3,(anonymous_4)
+DA:58,3
 DA:68,0
 DA:69,0
 DA:72,0
 DA:73,0
 DA:74,0
-DA:79,0
-DA:80,0
-DA:81,0
+DA:79,3
+DA:80,3
+DA:81,3
 LF:9
-LH:0
+LH:4
 BRDA:72,0,0,0
 BRDA:72,0,1,0
 BRF:2
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\changePass.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\changePass.vue
 FN:70,(anonymous_1)
 FN:95,(anonymous_2)
 FN:133,(anonymous_3)
@@ -702,7 +702,7 @@ BRF:14
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\editProfile.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\editProfile.vue
 FN:118,(anonymous_1)
 FN:144,(anonymous_2)
 FN:148,(anonymous_3)
@@ -772,7 +772,7 @@ BRF:12
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\notification.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\notification.vue
 FN:220,(anonymous_1)
 FN:237,(anonymous_2)
 FNF:2
@@ -788,27 +788,27 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\overview.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\overview.vue
 FN:134,(anonymous_1)
 FN:150,(anonymous_2)
 FN:152,(anonymous_3)
 FNF:3
-FNH:0
-FNDA:0,(anonymous_1)
-FNDA:0,(anonymous_2)
-FNDA:0,(anonymous_3)
-DA:131,0
-DA:135,0
-DA:152,0
-DA:156,0
-DA:157,0
+FNH:3
+FNDA:3,(anonymous_1)
+FNDA:3,(anonymous_2)
+FNDA:3,(anonymous_3)
+DA:131,1
+DA:135,3
+DA:152,3
+DA:156,3
+DA:157,3
 LF:5
-LH:0
+LH:5
 BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\recoverPlaylist.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\recoverPlaylist.vue
 FN:54,(anonymous_1)
 FN:73,(anonymous_2)
 FNF:2
@@ -824,7 +824,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\User Settings\sideBar.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\User Settings\sideBar.vue
 FN:47,(anonymous_1)
 FNF:1
 FNH:0
@@ -836,7 +836,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerContent\HomeContentLogin.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerContent\HomeContentLogin.vue
 FN:29,(anonymous_1)
 FNF:1
 FNH:0
@@ -852,7 +852,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerContent\HomeContentLogout.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerContent\HomeContentLogout.vue
 FN:28,(anonymous_1)
 FNF:1
 FNH:0
@@ -866,7 +866,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerContent\HomeContentRouter.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerContent\HomeContentRouter.vue
 FNF:0
 FNH:0
 DA:9,0
@@ -877,7 +877,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerContent\Library.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerContent\Library.vue
 FN:16,(anonymous_1)
 FNF:1
 FNH:0
@@ -894,7 +894,7 @@ BRF:2
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerLayout\WebNavBar.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerLayout\WebNavBar.vue
 FN:190,(anonymous_1)
 FN:203,(anonymous_2)
 FN:208,(anonymous_3)
@@ -976,7 +976,7 @@ BRF:11
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\WebplayerLayout\WebNavDrawer.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\WebplayerLayout\WebNavDrawer.vue
 FN:114,(anonymous_1)
 FN:119,(anonymous_2)
 FN:121,(anonymous_3)
@@ -997,7 +997,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\artistUI\ArtistUI.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\artistUI\ArtistUI.vue
 FN:44,(anonymous_1)
 FN:55,(anonymous_2)
 FN:59,(anonymous_3)
@@ -1019,7 +1019,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\artistUI\Overview.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\artistUI\Overview.vue
 FN:69,(anonymous_1)
 FN:86,(anonymous_2)
 FN:162,(anonymous_3)
@@ -1074,7 +1074,7 @@ BRF:8
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\artistUI\RelatedArtists.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\artistUI\RelatedArtists.vue
 FN:17,(anonymous_1)
 FN:26,(anonymous_2)
 FN:50,(anonymous_3)
@@ -1103,7 +1103,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\collection\Albums.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\collection\Albums.vue
 FN:18,(anonymous_1)
 FN:48,(anonymous_2)
 FN:53,(anonymous_3)
@@ -1144,7 +1144,7 @@ BRF:4
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\collection\Artists.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\collection\Artists.vue
 FN:18,(anonymous_1)
 FN:48,(anonymous_2)
 FN:54,(anonymous_3)
@@ -1185,7 +1185,7 @@ BRF:4
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\collection\Playlists.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\collection\Playlists.vue
 FN:23,(anonymous_1)
 FN:54,(anonymous_2)
 FN:76,(anonymous_3)
@@ -1224,7 +1224,7 @@ BRF:2
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\general\CardGrid.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\general\CardGrid.vue
 FN:274,(anonymous_1)
 FN:283,(anonymous_2)
 FN:294,(anonymous_3)
@@ -1303,7 +1303,7 @@ BRF:19
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\general\Category.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\general\Category.vue
 FNF:0
 FNH:0
 DA:19,0
@@ -1313,7 +1313,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\general\Genre.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\general\Genre.vue
 FN:17,(anonymous_1)
 FN:22,(anonymous_2)
 FN:26,(anonymous_3)
@@ -1333,7 +1333,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\general\PlaylistView.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\general\PlaylistView.vue
 FN:210,(anonymous_1)
 FN:221,(anonymous_2)
 FN:232,(anonymous_3)
@@ -1385,7 +1385,7 @@ BRF:6
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\components\general\Song.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\components\general\Song.vue
 FN:140,(anonymous_1)
 FN:148,(anonymous_2)
 FN:158,(anonymous_3)
@@ -1428,7 +1428,7 @@ BRF:4
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\Home.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\views\Home.vue
 FN:32,(anonymous_1)
 FN:33,(anonymous_2)
 FNF:2
@@ -1448,7 +1448,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\LikedSongs.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\views\LikedSongs.vue
 FN:110,(anonymous_1)
 FN:119,(anonymous_2)
 FN:127,(anonymous_3)
@@ -1476,7 +1476,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\Login.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\views\Login.vue
 FN:203,(anonymous_1)
 FN:215,(anonymous_2)
 FN:219,(anonymous_4)
@@ -1533,7 +1533,7 @@ BRF:14
 BRH:5
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\PremiumOffer.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\views\PremiumOffer.vue
 FNF:0
 FNH:0
 DA:10,0
@@ -1545,7 +1545,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\SignUp.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\views\SignUp.vue
 FN:241,(anonymous_1)
 FN:260,(anonymous_2)
 FN:264,(anonymous_4)
@@ -1669,7 +1669,7 @@ BRF:48
 BRH:23
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\TheQueue.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\views\TheQueue.vue
 FN:59,(anonymous_1)
 FN:75,(anonymous_2)
 FN:76,(anonymous_3)
@@ -1708,7 +1708,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\User_Settings.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\views\User_Settings.vue
 FN:37,(anonymous_1)
 FN:55,(anonymous_2)
 FN:61,(anonymous_3)
@@ -1741,7 +1741,7 @@ BRF:4
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\mahmo\CMP\Second Year\Second Semester\Software\symphonia-fe\src\views\WebPlayerHome.vue
+SF:F:\DavidWork\Projects\Symphonia-FE\src\views\WebPlayerHome.vue
 FN:38,(anonymous_1)
 FN:40,(anonymous_2)
 FNF:2
