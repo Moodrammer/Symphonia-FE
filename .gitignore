@@ -22,3 +22,4 @@ yarn-error.log*
 /src/components/HelloWorld.vue
 /tests/unit/example.spec.js
 /package-lock.json
+/coverage
