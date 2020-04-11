@@ -20,7 +20,7 @@ import isLoggedIn from "../mixins/userService";
  */
 
 export default {
-  name: "App",
+  name: "Homepage",
 
   components: {
     NavigationBar,
