@@ -83,7 +83,7 @@
             :key="track.name"
             :songName="track.name"
             :artistName="track.artist"
-            :albumName="track.album"
+            :albumName="track.album.name"
             :duration="track.durationMs"
             :id="track._id"
           />

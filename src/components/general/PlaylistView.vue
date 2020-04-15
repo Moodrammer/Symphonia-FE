@@ -118,13 +118,21 @@
                           Start Radio
                         </v-list-item-title>
                       </v-list-item>
-                      <v-list-item v-if="!followed" @click="followPlaylist" id="followButton">
+                      <v-list-item
+                        v-if="!followed"
+                        @click="followPlaylist"
+                        id="followButton"
+                      >
                         <v-list-item-title class="draweritem">
                           Save to Your Library
                         </v-list-item-title>
                       </v-list-item>
 
-                      <v-list-item v-if="followed" @click="unfollowPlaylist" id="unfollowButton">
+                      <v-list-item
+                        v-if="followed"
+                        @click="unfollowPlaylist"
+                        id="unfollowButton"
+                      >
                         <v-list-item-title class="draweritem">
                           Remove from your Library
                         </v-list-item-title>
@@ -173,7 +181,7 @@
         </v-col>
       </v-row>
       <v-snackbar v-model="snackbar" style="bottom: 100px;">
-        <span>Start listening with a free Spotify account</span>
+        <span>Start listening with a free Symphonia account</span>
 
         <router-link to="/signup" style="text-decoration: none;">
           <v-btn color="green" text>

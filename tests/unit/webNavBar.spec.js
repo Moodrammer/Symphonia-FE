@@ -51,56 +51,56 @@ describe("Nav Bar", () => {
   });
 
   it("contains Log in button", () => {
-    const loginBtn=wrapper.find("#logIn");
-    expect(loginBtn.text()=="LOG IN").toBe(true);
+    const loginBtn = wrapper.find("#logIn");
+    expect(loginBtn.text() == "LOG IN").toBe(true);
   });
 
   //------------------------------------------------
   //            Test component functions
   //-----------------------------------------------
-  it("Logout function",() =>{
+  it("Logout function", () => {
     wrapper.vm.logOutAndRerender();
     expect(wrapper.vm.logOut()).toHaveBeenCalled;
   });
 
-  it("Handles searvh view tabs",() => {
+  it("Handles searvh view tabs", () => {
     wrapper.vm.handleTabs("search");
     expect(wrapper.vm.showSearch).toBe(true);
     expect(wrapper.vm.showCollection).toBe(false);
     expect(wrapper.vm.showUpgrade).toBe(false);
   });
 
-  it("Handles Home tabs", () =>{
+  it("Handles Home tabs", () => {
     wrapper.vm.handleTabs("home");
     expect(wrapper.vm.showSearch).toBe(false);
     expect(wrapper.vm.showCollection).toBe(false);
     expect(wrapper.vm.showUpgrade).toBe(true);
   });
 
-  it("Handles Library tabs", ()=>{
+  it("Handles Library tabs", () => {
     wrapper.vm.handleTabs("Playlists");
     expect(wrapper.vm.showSearch).toBe(false);
     expect(wrapper.vm.showCollection).toBe(true);
     expect(wrapper.vm.showUpgrade).toBe(false);
   });
 
-  it("Handles menu items at artist view",() =>{
-    wrapper.vm.itemChosen('Artists');
-    expect(wrapper.vm.selectedItem).toBe('Artists');
+  it("Handles menu items at artist view", () => {
+    wrapper.vm.itemChosen("Artists");
+    expect(wrapper.vm.selectedItem).toBe("Artists");
   });
 
-  it("Handles menu items at album view",() =>{
-    wrapper.vm.itemChosen('Albums');
-    expect(wrapper.vm.selectedItem).toBe('Albums');
+  it("Handles menu items at album view", () => {
+    wrapper.vm.itemChosen("Albums");
+    expect(wrapper.vm.selectedItem).toBe("Albums");
   });
 
-  it("Go forward", ()=>{
+  it("Go forward", () => {
     const icon = wrapper.find("#forward");
     icon.vm.$emit("click");
     expect("next").toBeCalled;
   });
 
-  it("Go backward", ()=>{
+  it("Go backward", () => {
     const icon = wrapper.find("#backward");
     icon.vm.$emit("click");
     expect("prev").toBeCalled;

@@ -6,7 +6,6 @@ import Vuetify from "vuetify";
 import category from "@/components/general/Category.vue";
 import cardGrid from "@/components/general/CardGrid.vue";
 
-
 describe("Category Component", () => {
   let wrapper;
   let vuetify;
@@ -22,5 +21,4 @@ describe("Category Component", () => {
   it("Has Card Grid", () => {
     expect(wrapper.contains(cardGrid)).toBe(true);
   });
-
 });

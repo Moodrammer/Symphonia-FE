@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import Vuex from 'vuex'
+import Vuex from "vuex";
 
 import CreatePlaylist from "@/components/CreatePlaylist.vue";
 
@@ -64,14 +64,14 @@ describe("CreatePlaylist", () => {
     const createBtn = wrapper.find("#create");
     expect(createBtn.text() == "Create").toBe(true);
   });
-  
+
   it("Contains close icon", () => {
     const icon = wrapper.find("#closeIcon");
     expect(icon.exists()).toBe(true);
   });
-//-------------------------------------------------------------
-//           Simulating input the playlist's name
-//-------------------------------------------------------------
+  //-------------------------------------------------------------
+  //           Simulating input the playlist's name
+  //-------------------------------------------------------------
   it("Input the playlist name", async () => {
     const textField = wrapper.find("#playlistName");
     textField.element.value = "New Symphonia Playlist";
@@ -103,7 +103,7 @@ describe("CreatePlaylist", () => {
   it("Create a playlist with name", () => {
     wrapper.vm.dialog = true;
     const btn = wrapper.find("#create");
-    wrapper.vm.name="NewPlaylist";
+    wrapper.vm.name = "NewPlaylist";
     btn.vm.$emit("click");
     expect("createPlaylist").toHaveBeenCalled;
   });
@@ -111,7 +111,7 @@ describe("CreatePlaylist", () => {
   //Test playlist creation without enter a playlist's name
   it("Create a playlist without name", () => {
     const btn = wrapper.find("#create");
-    wrapper.vm.name="";
+    wrapper.vm.name = "";
     btn.vm.$emit("click");
     expect("createPlaylist").toHaveBeenCalled;
   });

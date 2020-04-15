@@ -5,7 +5,6 @@ import Vuex from "vuex";
 import VueRouter from "vue-router";
 import soundplayer from "@/components/TheSoundplayer/TheSoundplayer.vue";
 
-
 describe("TheSoundplayer", () => {
   let wrapper;
   let vuetify;
@@ -47,17 +46,21 @@ describe("TheSoundplayer", () => {
             isCurTrkReady: false
           },
           actions: {
-            getQueueStore: () => {} 
+            getQueueStore: () => {}
           },
           mutations: {
-            setAudio: (state, audio) => {state.audio = audio},
-            setLiked: (state, liked) => {state.liked = liked}
+            setAudio: (state, audio) => {
+              state.audio = audio;
+            },
+            setLiked: (state, liked) => {
+              state.liked = liked;
+            }
           }
         },
         playlist: {
           namespaced: true,
 
-          state:{
+          state: {
             audio: "",
             isQueueOpened: false
           },
@@ -66,20 +69,21 @@ describe("TheSoundplayer", () => {
             createPlaylist: jest.fn()
           },
           mutations: {
-            setAudio: (state, audio) => {state.audio = audio} 
+            setAudio: (state, audio) => {
+              state.audio = audio;
+            }
           },
           getters: {
-            audio: (state) => {
+            audio: state => {
               return state.audio;
             },
-            isQueueOpened: (state) => {
+            isQueueOpened: state => {
               return state.isQueueOpened;
             },
-            paused: (state) => {
+            paused: state => {
               return state.paused;
-            },
+            }
           }
-
         }
       }
     });
@@ -87,7 +91,7 @@ describe("TheSoundplayer", () => {
     wrapper = shallowMount(soundplayer, {
       vuetify,
       store,
-      router,
+      router
     });
   });
 
@@ -103,33 +107,30 @@ describe("TheSoundplayer", () => {
   // test like song
   it("song is disliked", () => {
     wrapper.vm.saveToLikedSongs();
-    expect(wrapper.vm.isSongIsLiked).toEqual(false)
+    expect(wrapper.vm.isSongIsLiked).toEqual(false);
   });
 
   //test volume mute
   it("volume is muted after volumebar is 0 ", () => {
     wrapper.vm.volumeValue = 0;
-    wrapper.vm.updateVolume()
-    expect(wrapper.vm.isMuted).toEqual(true)
-  })
+    wrapper.vm.updateVolume();
+    expect(wrapper.vm.isMuted).toEqual(true);
+  });
 
   it("volume gets back after changing the volumebar", () => {
     wrapper.vm.volumeValue = 50;
     wrapper.vm.isMuted = true; //volume is muted
-    wrapper.vm.updateVolume()
-    expect(wrapper.vm.isMuted).toEqual(false)
+    wrapper.vm.updateVolume();
+    expect(wrapper.vm.isMuted).toEqual(false);
   });
 
   //mute
   it("mute the volume", () => {
     wrapper.vm.isMuted = false;
-    wrapper.vm.mute()
-    expect(wrapper.vm.isMuted).toBe(true)
+    wrapper.vm.mute();
+    expect(wrapper.vm.isMuted).toBe(true);
 
-    wrapper.vm.mute()
-    expect(wrapper.vm.isMuted).toBe(false)
-  })
-
-  
-
+    wrapper.vm.mute();
+    expect(wrapper.vm.isMuted).toBe(false);
+  });
 });

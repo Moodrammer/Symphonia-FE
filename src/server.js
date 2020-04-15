@@ -157,7 +157,17 @@ export function makeServer({ environment = "development" } = {}) {
         });
 
         let ID = schema.playlists.find(schema.playlists.all().length).id;
-        return schema.playlists.where({ id: ID }).models[0];
+        console.log(schema.playlists.where({ id: ID }).models[0]);
+        return new Response(
+          200,
+          {},
+          {
+            name: schema.playlists.where({ id: ID }).models[0].name,
+            id: ID,
+            images: schema.playlists.where({ id: ID }).models[0].images,
+            description: null
+          }
+        );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Current User's Playlists
@@ -221,21 +231,21 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/users/track/:track_id", (schema, request) => {
         let trackId = request.params.track_id;
-        return schema.tracks.where({ id: trackId }).models;
+        return schema.tracks.where({ _id: trackId }).models;
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Check user's saved tracks
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/tracks/contains", (schema, request) => {
+      this.get("/v1/me/tracks/contains/", (schema, request) => {
         let trackId = request.queryParams.ids;
-        return schema.tracks.where({ id: trackId }).models[0].liked;
+        return [schema.tracks.where({ _id: trackId }).models[0].liked];
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Remove User's Saved Tracks
       ///////////////////////////////////////////////////////////////////////////////////
       this.delete("/v1/me/tracks", (schema, request) => {
         let trackId = JSON.parse(request.requestBody)[0];
-        schema.tracks.where({ id: trackId }).update({ liked: false });
+        schema.tracks.where({ _id: trackId }).update({ liked: false });
         return new Response(200, {}, {});
       });
       ///////////////////////////////////////////////////////////////////////////////////
