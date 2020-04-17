@@ -80,6 +80,7 @@
           v-for="playlist in playlists"
           :key="playlist.id"
           class="listItem"
+          :to="'/webhome/playlist/' + playlist.id"
         >
           <v-list-item-title
             class="draweritem white--text"

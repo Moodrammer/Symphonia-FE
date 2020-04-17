@@ -182,7 +182,7 @@ const actions = {
     axios
       .get("/v1/playlists/" + playlistID)
       .then(response => {
-        let returnedPlaylist = response.data[0];
+        let returnedPlaylist = response.data;
         commit("setPlaylist", returnedPlaylist);
       })
       .catch(error => {
@@ -194,7 +194,7 @@ const actions = {
     axios
       .get("/v1/playlists/" + playlistID + "/tracks")
       .then(response => {
-        let returnedTracks = response.data[0].tracks;
+        let returnedTracks = response.data;
         commit("setTracks", returnedTracks);
       })
       .catch(error => {

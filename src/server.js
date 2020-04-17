@@ -177,7 +177,7 @@ export function makeServer({ environment = "development" } = {}) {
           200,
           {},
           {
-            ownedPlaylists: schema.playlists.where({ liked: true }).models
+            ownedPlaylists: schema.playlists.where({ active: true }).models
           }
         );
       });

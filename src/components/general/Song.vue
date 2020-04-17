@@ -34,11 +34,11 @@
         <!--Display the artist and the album/playlist name-->
         <v-row>
           <p class="subtitle mr-2" v-bind:class="{ 'disabled-2': disabled }">
-            artistName
+            {{ artistName }}
           </p>
           <p>.</p>
           <p v-bind:class="{ 'disabled-2': disabled }" class="subtitle ml-2">
-            albumName
+            {{ albumName }}
           </p>
         </v-row>
       </v-list-item-subtitle>
@@ -127,6 +127,8 @@ export default {
     songName: String,
     artistName: String,
     albumName: String,
+    albumID: String,
+    artistID: String,
     duration: Number,
     id: String,
     disabled: {

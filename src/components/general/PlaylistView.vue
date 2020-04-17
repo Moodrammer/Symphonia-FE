@@ -162,6 +162,9 @@
                 :key="track.name"
                 :songName="track.name"
                 :albumName="track.album.name"
+                :albumID="track.album._id"
+                :artistName="track.artist.name"
+                :artistID="track.artist._id"
                 :duration="track.durationMs"
                 :id="track._id"
               />
@@ -175,7 +178,7 @@
               <h1>It's a bit empty here...</h1>
             </v-row>
             <v-row justify="center" class="my-5">
-              <p>Let's find some songs for your playlis</p>
+              <p>Let's find some songs for your playlist</p>
             </v-row>
           </div>
         </v-col>
@@ -280,6 +283,16 @@ export default {
       usersID: [this.getuserID()],
       token: this.getuserToken()
     });
+  },
+  watch: {
+    "$route.params.id": function() {
+      this.$store.dispatch("playlist/getPlaylist", this.$route.params.id);
+      this.$store.dispatch("playlist/checkFollowed", {
+        playlistId: this.$route.params.id,
+        usersID: [this.getuserID()],
+        token: this.getuserToken()
+      });
+    }
   },
   computed: {
     playlist() {
