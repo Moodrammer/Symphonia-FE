@@ -13,6 +13,7 @@ import Content from "../components/Homepage/TheHomepageContent.vue";
 import Footer from "../components/Homepage/TheHomepageFooter";
 import ContentLoggedIn from "../components/Homepage/TheHomepageLoginContent.vue";
 import isLoggedIn from "../mixins/userService";
+import { mapMutations } from "vuex";
 
 /**
  * The homepage view
@@ -29,11 +30,12 @@ export default {
     ContentLoggedIn
   },
 
+  methods: {
+    ...mapMutations("homepage", ["setInstance"])
+
+  },
   mounted: function() {
-    this.$root.$on("forceUpdateContent", () => {
-      // your code goes here
-      this.$forceUpdate();
-    });
+    this.setInstance(this);
   },
 
   mixins: [isLoggedIn]
