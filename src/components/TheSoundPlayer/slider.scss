@@ -25,6 +25,13 @@ $fit-thumb-in-slider: -5px; //must be equal to -$thumb-radius
   @return $val;
 }
 
+.volume-slider {
+  max-width: 84px;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  margin-right: 0px;
+}
+
 input:hover::-webkit-slider-thumb {
   background: white;
 }

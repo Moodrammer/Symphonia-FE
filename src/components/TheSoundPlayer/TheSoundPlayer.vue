@@ -371,52 +371,12 @@ export default {
     chooseDevice: function(id) {
       this.currentDeviceId = id;
     },
-    getQueue: function() {
-      axios({
-        method: "get",
-        url: "/v1/me/player/queue",
-        headers: {
-          Authorization: this.token
-        }
-      }).then(async response => {
-        this.setQueueTracks(response.data.data.queueTracks);
-        ///////////////////////////////
-        //first time login (temporary behaviour)
 
-        if (this.queueTracks.length == 0) {
-          axios({
-            method: "post",
-            url: "/v1/me/player/tracks/" + "5e7d2ddd3429e24340ff1397",
-            headers: {
-              Authorization: this.token
-            },
-            data: {
-              contextId: "5e8a6d96d4be480ab1d91c95",
-              context_type: "playlist",
-              context_url: "https://localhost:3000/",
-              device: "Chrome"
-            },
-            responseType: "arraybuffer"
-          }).then(response => {
-            var blob = new Blob([response.data], { type: "audio/mpeg" });
-            var objectUrl = URL.createObjectURL(blob);
-            this.setTrackUrl(objectUrl);
-          });
-        }
-        ///////////////////////////////
-        if (response.data.data.previousTrack == null) {
-          this.setFirstTrackInQueue(true);
-        } else {
-          this.setFirstTrackInQueue(false);
-        }
-
-        if (response.data.data.nextTrack == null) {
-          this.setLastTrackInQueue(true);
-        } else {
-          this.setLastTrackInQueue(false);
-        }
-      });
-    },
+    /** 
+     * get the currently playing song
+     * 
+     * @public
+    */
     getCurrentlyPlaying: function() {
       if (!this.isMocking) {
         //get the currently playing track
@@ -785,29 +745,6 @@ export default {
       this.isBuffering = true;
     },
     /**
-     * This handler is invoked after
-     * pressing down the space key
-     *
-     * @public
-     */
-    _handleSpaceDown: function(e) {
-      if (e.code === "Space") {
-        e.preventDefault(); //this is just to prevent the space from scrolling
-      }
-    },
-    /**
-     * This handler is invoked after
-     * pressing up the space key
-     *
-     * @public
-     */
-    _handleSpaceUp: function(e) {
-      if (e.code === "Space") {
-        if (!this.isBuffering) return;
-        this.pauseAndPlay();
-      }
-    },
-    /**
      * This is the initialization function
      * which is executed only after the
      * soundplayer is loaded/mounted
@@ -829,10 +766,6 @@ export default {
 
       this.audio.addEventListener("waiting", this._handlerWaiting); //the song is stopped due to buffering
       this.audio.addEventListener("playing", this._handlePlayingAfterBuffering);
-
-      //space key to pause and play the song
-      document.addEventListener("keyup", this._handleSpaceUp);
-      document.addEventListener("keydown", this._handleSpaceDown);
 
       //configure the volume
       this.audio.volume = this.volumeValue / 100;
@@ -922,21 +855,6 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
-
-    document.removeEventListener("keyup", this._handleSpaceUp);
-    document.removeEventListener("keydown", this._handleSpaceDown);
-
-    // STUB
-    /*
-    var thisTemp = this;
-    axios({
-      method: "delete",
-      url: "/api/v1/me/player/devices",
-      data: {
-        deviceId: thisTemp.currentDeviceId
-      }
-    });
-    */
   }
 };
 </script>
@@ -948,11 +866,4 @@ export default {
 <style lang="scss" scoped>
 //for sliders
 @import "./slider.scss";
-
-.volume-slider {
-  max-width: 84px;
-  width: -webkit-fill-available;
-  width: -moz-available;
-  margin-right: 0px;
-}
 </style>
