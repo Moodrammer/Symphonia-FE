@@ -346,11 +346,40 @@ export function makeServer({ environment = "development" } = {}) {
         });
         return new Response(200, {}, {});
       });
-      //////////////////////////////////////////////////////////////////////////////////////
-      // this.urlPrefix = 'http://localhost:8080';
-
+      ///////////////////////////////////////////////////////////////////////////////////////
+      //Get an album
+      ///////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/albums/:ID", (schema, request) => {
+        let albumID = request.params.ID;
+        return schema.albums.find(albumID).attrs;
+      });
+      ///////////////////////////////////////////////////////////////////////////////////////
+      //Get an album's tracks
+      ///////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/albums/:ID/tracks", (schema, request) => {
+        let albumID = request.params.ID;
+        return schema.albums.where({ _id: albumID }).models[0].tracks;
+      });
+      ////////////////////////////////////////////////////////////////////////////////////////
+      //Check User's Saved Albums
+      ////////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/albums/contains", (schema, request) => {
+        let albumID = request.queryParams.ids;
+        return schema.albums.where({ _id: albumID }).models[0].liked;
+      });
+      /////////////////////////////////////////////////////////////////////////////////////////
+      //Save Albums for Current User
+      /////////////////////////////////////////////////////////////////////////////////////////
+      this.put("/v1/me/albums", (schema, request) => {
+        let albumID = JSON.parse(request.requestBody);
+        schema.playlists.where({ _id: albumID[0] }).update({ liked: true });
+        return new Response(200, {}, {});
+      });
+      /////////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/albums", schema => {
-        return { Albums: { items: schema.albums.all().models } };
+        return {
+          Albums: { items: schema.albums.where({ liked: true }).models }
+        };
       });
 
       this.delete("/v1/me/albums", (schema, request) => {

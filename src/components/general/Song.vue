@@ -36,8 +36,14 @@
           <p class="subtitle mr-2" v-bind:class="{ 'disabled-2': disabled }">
             {{ artistName }}
           </p>
-          <p>.</p>
-          <p v-bind:class="{ 'disabled-2': disabled }" class="subtitle ml-2">
+          <p v-if="!album">.</p>
+          <p
+            v-bind:class="{ 'disabled-2': disabled }"
+            class="subtitle ml-2"
+            v-if="!album"
+            @click="toAlbum"
+            id="toAlbum"
+          >
             {{ albumName }}
           </p>
         </v-row>
@@ -130,6 +136,10 @@ export default {
     albumID: String,
     artistID: String,
     duration: Number,
+    album: {
+      type: Boolean,
+      default: false
+    },
     id: String,
     disabled: {
       type: Boolean,
@@ -203,6 +213,9 @@ export default {
       } else {
         this.snackbar = true;
       }
+    },
+    toAlbum: function() {
+      this.$router.push(`/webhome/album/${this.albumID}`);
     }
   },
   computed: mapState({

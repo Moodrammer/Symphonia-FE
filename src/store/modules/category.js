@@ -234,7 +234,7 @@ const actions = {
       .then(async response => {
         let genres = response.data;
         for (let i = 0; i < 4; i++) {
-          var id = genres.data.categorys[i].id;
+          var id = genres.categories.items[i].id;
           genres_ids.push(id);
         }
         for (let index = 0; index < genres_ids.length; index++) {

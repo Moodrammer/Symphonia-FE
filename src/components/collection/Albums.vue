@@ -38,7 +38,7 @@ export default {
   },
   mixins: [getuserToken],
   methods: {
-    ...mapActions(["getAlbums", "deleteAlbums"]),
+    ...mapActions("album", ["getAlbums", "deleteAlbums"]),
     /**
      * called when the user clicks on an aption from the context menu
      * @param {string} menuItem the option chosen by user
@@ -58,7 +58,7 @@ export default {
     }
   },
 
-  computed: mapGetters(["allAlbums"]),
+  computed: mapGetters("album", ["allAlbums"]),
 
   watch: {
     contextMenuChoice: function() {
