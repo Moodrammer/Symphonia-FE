@@ -82,8 +82,10 @@
             v-for="track in tracks"
             :key="track.name"
             :songName="track.name"
-            :artistName="track.artist"
             :albumName="track.album.name"
+            :albumID="track.album._id"
+            :artistName="track.artist.name"
+            :artistID="track.artist._id"
             :duration="track.durationMs"
             :id="track._id"
           />

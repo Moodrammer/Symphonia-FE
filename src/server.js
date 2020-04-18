@@ -18,7 +18,8 @@ export function makeServer({ environment = "development" } = {}) {
       album: Model,
       artist: Model,
       soundplayer: Model,
-      category: Model
+      category: Model,
+      deletedPlaylist: Model
     },
 
     seeds(server) {
@@ -41,6 +42,11 @@ export function makeServer({ environment = "development" } = {}) {
         gender: "male",
         type: "artist",
         country: "EG"
+      });
+
+      server.create("deletedPlaylist", {
+        name: "playlist",
+        deletedAt: "2020-04-18T04:19:11.758Z"
       });
 
       //This part is just to fake mirage in order to persist the data of only one user
@@ -176,9 +182,8 @@ export function makeServer({ environment = "development" } = {}) {
         return new Response(
           200,
           {},
-          {
-            ownedPlaylists: schema.playlists.where({ active: true }).models
-          }
+
+          schema.playlists.where({ active: true }).models
         );
       });
       ///////////////////////////////////////////////////////////////////////////////////
@@ -290,18 +295,14 @@ export function makeServer({ environment = "development" } = {}) {
       ////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/playlists/:playlistId", (schema, request) => {
         let playlistID = request.params.playlistId;
-        return [schema.playlists.where({ id: playlistID }).models[0]];
+        return schema.playlists.find(playlistID).attrs;
       });
       ////////////////////////////////////////////////////////////////////////////////////
       //Get playlist's tracks
       ////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/playlists/:playlistId/tracks", (schema, request) => {
         let playlistID = request.params.playlistId;
-        return [
-          {
-            tracks: schema.playlists.where({ id: playlistID }).models[0].tracks
-          }
-        ];
+        return schema.playlists.where({ id: playlistID }).models[0].tracks;
       });
       //////////////////////////////////////////////////////////////////////////////////////
       //
@@ -331,6 +332,18 @@ export function makeServer({ environment = "development" } = {}) {
       this.delete("/v1/playlists/:playlistId/followers", (schema, request) => {
         let playlistID = request.params.playlistId;
         schema.playlists.where({ id: playlistID }).update({ liked: false });
+        return new Response(200, {}, {});
+      });
+      //////////////////////////////////////////////////////////////////////////////////////
+      //Delete a playlist
+      //////////////////////////////////////////////////////////////////////////////////////
+      this.delete("/v1/playlists/:ID", (schema, request) => {
+        let playlistID = request.params.ID;
+        schema.playlists.where({ id: playlistID }).update({ active: false });
+        server.create("deletedPlaylist", {
+          name: schema.playlists.where({ id: playlistID }).name,
+          deletedAt: "2020-04-18T04:19:11.758Z"
+        });
         return new Response(200, {}, {});
       });
       //////////////////////////////////////////////////////////////////////////////////////

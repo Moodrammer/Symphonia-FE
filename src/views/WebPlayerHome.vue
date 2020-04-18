@@ -11,6 +11,7 @@
     "
       :loggedIn="isLoggedIn()"
     ></router-view>
+    <delete-playlist v-if="deletePlaylist" />
     <sound-player v-if="isLoggedIn()" />
     <sound-player-logout v-if="!isLoggedIn()" />
   </v-app>
@@ -22,6 +23,7 @@ import NavBar from "../components/WebplayerLayout/WebNavBar";
 import isLoggedIn from "../mixins/userService";
 import SoundPlayer from "../components/TheSoundPlayer/TheSoundPlayer.vue";
 import SoundPlayerLogout from "../components/TheSoundPlayer/TheSoundPlayerLogout.vue";
+import DeletePlaylist from "../components/DeletePlaylist.vue";
 
 /**
  * The webplayer view it contains (the side bar - the navigation bar - the sound player)
@@ -33,7 +35,8 @@ export default {
     NavDrawer,
     NavBar,
     SoundPlayer,
-    SoundPlayerLogout
+    SoundPlayerLogout,
+    DeletePlaylist
   },
   mounted: function() {
     //Handle the updateContent event by force the component to update
@@ -43,6 +46,11 @@ export default {
 
     //hide the html scrollbar
     document.getElementById("html").classList.add("mystyle");
+  },
+  computed: {
+    deletePlaylist() {
+      return this.$store.state.playlist.deletePlaylist;
+    }
   },
   mixins: [isLoggedIn]
 };

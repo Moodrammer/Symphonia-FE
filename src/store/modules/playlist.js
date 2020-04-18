@@ -10,7 +10,10 @@ const state = {
   singlePlaylist: null,
   playlistTracks: [],
   followed: false,
-  isFirstSong: true
+  isFirstSong: true,
+  deletePlaylist: false,
+  deleted: false,
+  playlistID: null
 };
 
 const mutations = {
@@ -74,6 +77,15 @@ const mutations = {
   },
   unfollow(state) {
     state.followed = false;
+  },
+  changeDeleteModel(state) {
+    state.deletePlaylist = !state.deletePlaylist;
+  },
+  deleted(state) {
+    state.deleted = true;
+  },
+  setPlaylistID(state, ID) {
+    state.playlistID = ID;
   }
 };
 
@@ -133,7 +145,7 @@ const actions = {
           }
         })
         .then(response => {
-          let list = response.data.ownedPlaylists;
+          let list = response.data;
           let newList = [];
           list.forEach(element => {
             var k = {
@@ -237,6 +249,21 @@ const actions = {
       })
       .then(() => {
         commit("unfollow");
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  deletePlaylist({ commit, state }, token) {
+    axios
+      .delete("/v1/playlists/" + state.playlistID, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(() => {
+        commit("deleted");
       })
       .catch(error => {
         console.log("axios caught an error");

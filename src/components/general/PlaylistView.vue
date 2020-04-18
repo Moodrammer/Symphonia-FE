@@ -118,8 +118,29 @@
                           Start Radio
                         </v-list-item-title>
                       </v-list-item>
+
                       <v-list-item
-                        v-if="!followed"
+                        v-if="owned"
+                        @click="makeSecret"
+                        id="makeSecret"
+                      >
+                        <v-list-item-title class="draweritem">
+                          Make secret
+                        </v-list-item-title>
+                      </v-list-item>
+
+                      <v-list-item
+                        @click="changeDelete"
+                        id="deletePlaylist"
+                        v-if="owned"
+                      >
+                        <v-list-item-title class="draweritem">
+                          Delete
+                        </v-list-item-title>
+                      </v-list-item>
+
+                      <v-list-item
+                        v-else-if="!followed"
                         @click="followPlaylist"
                         id="followButton"
                       >
@@ -129,7 +150,7 @@
                       </v-list-item>
 
                       <v-list-item
-                        v-if="followed"
+                        v-else
                         @click="unfollowPlaylist"
                         id="unfollowButton"
                       >
@@ -274,7 +295,12 @@ export default {
       } else {
         this.snackbar = true;
       }
-    }
+    },
+    changeDelete: function() {
+      this.$store.commit("playlist/setPlaylistID", this.$route.params.id);
+      this.$store.commit("playlist/changeDeleteModel");
+    },
+    makeSecret: function() {}
   },
   created: function() {
     this.$store.dispatch("playlist/getPlaylist", this.$route.params.id);
@@ -306,6 +332,11 @@ export default {
     },
     emptyPlaylist() {
       return this.$store.state.playlist.playlistTracks.length == 0;
+    },
+    owned() {
+      return (
+        this.$store.state.playlist.singlePlaylist.owner == this.getuserID()
+      );
     }
   },
   mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID]

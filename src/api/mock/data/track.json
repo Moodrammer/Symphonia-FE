@@ -25,14 +25,14 @@
       "name": "Quran ALbum1",
       "type": "album"
     },
-    "artists": [
+    "artist": 
       {
         "href": "https://api.symphonia.com/v1/artists/1",
         "id": "1",
         "name": "Yasser Al-Dosari",
         "type": "artist"
       }
-    ],
+    ,
     "durationMs": 2131000,
     "explicit": false,
     "href": "https://server11.mp3quran.net/yasser/012.mp3",
@@ -58,14 +58,14 @@
       "name": "Quran ALbum2",
       "type": "album"
     },
-    "artists": [
+    "artist": 
       {
         "href": "https://api.symphonia.com/v1/artists/2",
         "id": "2",
         "name": "Nasser Al-Qatami",
         "type": "artist"
       }
-    ],
+    ,
     "durationMs": 374000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/qtm/053.mp3",
@@ -91,14 +91,14 @@
       "name": "Quran ALbum2",
       "type": "album"
     },
-    "artists": [
+    "artist": 
       {
         "href": "https://api.symphonia.com/v1/artists/3",
         "id": "3",
         "name": "Wadeea Al-Yamani",
         "type": "artist"
       }
-    ],
+    ,
     "durationMs": 1659000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/wdee3/020.mp3",
@@ -124,14 +124,14 @@
       "name": "Quran ALbum1",
       "type": "album"
     },
-    "artists": [
+    "artist": 
       {
         "href": "https://api.symphonia.com/v1/artists/2",
         "id": "2",
         "name": "Nasser Al-Qatami",
         "type": "artist"
       }
-    ],
+    ,
     "durationMs": 409000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/qtm/067.mp3",
