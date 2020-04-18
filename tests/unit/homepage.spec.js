@@ -10,6 +10,7 @@ import HomepageFooter from "@/components/Homepage/TheHomepageFooter.vue";
 import HomepageLoginContent from "@/components/Homepage/TheHomepageLoginContent.vue";
 import HomepageNavBar from "@/components/Homepage/TheHomepageNavigationBar.vue";
 import HomepagePremiumContent from "@/components/Homepage/TheHomepagePremiumContent.vue"
+import HomepagePremiumView from "@/views/PremiumOffer.vue"
 
 describe("Homepage view", () => {
   let wrapper;
@@ -202,6 +203,38 @@ describe("Homepage Navigation Bar", () => {
   })
 });
 
+describe("Homepage Premium View", () => {
+  let wrapper;
+  let vuetify;
+
+  beforeEach(() => {
+    vuetify = new Vuetify();
+    const router = new VueRouter();
+    Vue.use(Vuetify);
+    Vue.use(VueRouter);
+
+    wrapper = shallowMount(HomepagePremiumView, {
+      vuetify,
+      router,
+      mocks: {
+        $vuetify: { 
+          breakpoint: {
+            sm: true
+          }
+        }
+      }
+    });
+  });
+
+  it("renders", () => {
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it("renders a vue instance", () => {
+    expect(wrapper.isVueInstance()).toBe(true);
+  });
+});
+
 describe("Homepage Premium Content", () => {
   let wrapper;
   let vuetify;
@@ -267,3 +300,4 @@ describe("Homepage Premium Content", () => {
     expect(store.state.homepage.navigationBarColor).toEqual("rgba(0, 0, 0, 0.6)")
   })
 });
+
