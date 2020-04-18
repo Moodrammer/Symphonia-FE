@@ -173,7 +173,6 @@
 
 <script>
 import getDeviceSize from "../../mixins/getDeviceSize";
-import axios from "axios";
 
 /**
  * The homepage content after login.
@@ -190,14 +189,6 @@ export default {
       bestSixSongsLoaded: false,
       bestSixSongs: false
     };
-  },
-
-  mounted: function() {
-    axios.get("/v1/bestsongs").then(response => {
-      let list = response.data.data[0].attributes.songs;
-      this.bestSixSongsLoaded = true;
-      this.bestSixSongs = list;
-    });
   },
 
   mixins: [getDeviceSize]

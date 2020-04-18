@@ -8,6 +8,7 @@ import player from "./modules/player";
 import category from "./modules/category";
 import album from "./modules/album";
 import artist from "./modules/artist";
+import homepage from "./modules/homepage"
 
 Vue.use(Vuex);
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     player,
     category,
     album,
-    artist
+    artist,
+    homepage
   }
 });

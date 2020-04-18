@@ -166,8 +166,8 @@
             type="range"
             min="0"
             v-bind:max="totalDuration"
-            @mousedown="progressBarPressed"
-            @mouseup="progressBarReleased"
+            @mousedown="isProgressBarPressed = true"
+            @mouseup="audio.currentTime = currentTimeInSec; isProgressBarPressed = false;"
             v-model="currentTimeInSec"
           />
 
@@ -192,49 +192,12 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened
+                icons: !isQueueOpened,
               }"
             >
               mdi-format-list-numbered-rtl
             </v-icon>
           </router-link>
-
-          <!-- devices -->
-
-          <!-- <v-menu
-            offset-y
-            top
-            transition="slide-y-transition"
-            style="clear: left;"
-          >
-            <template v-slot:activator="{ on }">
-              <v-btn
-                :ripple="false"
-                id="no-background-hover"
-                text
-                v-on="on"
-                class="devices-icon"
-              >
-                <span class="mdi mdi-18px mdi-devices icons"></span>
-              </v-btn>
-            </template>
-
-            <v-list style="background-color: #282828 !important">
-              <v-list-item
-                v-for="(device, index) in devices"
-                :key="index"
-                v-on:click="chooseDevice(device._id)"
-              >
-                <v-list-item-title
-                  style="color: white;"
-                  v-bind:class="{
-                    'green-icon-w-hover': device._id == currentDeviceId
-                  }"
-                  >{{ index + 1 }} {{ device.devicesName }}</v-list-item-title
-                >
-              </v-list-item>
-            </v-list>
-          </v-menu> -->
 
           <!-- mute -->
           <a
@@ -257,8 +220,8 @@
             max="100"
             class="volume-slider"
             v-model="volumeValue"
-            v-on:mousdown="volumeBarPressed"
-            v-on:mouseup="volumeBarReleased"
+            v-on:mousdown="isVolumeBarPressed = true"
+            v-on:mouseup="updateVolume(); isVolumeBarPressed = false;"
           />
         </div>
       </v-col>
@@ -278,7 +241,7 @@ import getuserToken from "../../mixins/userService";
 
 //import io from 'socket.io-client';
 
-export const convertTimeHHMMSS = val => {
+export const convertTimeHHMMSS = (val) => {
   //-val is the time passed from the start of the sound in integer seconds
   //-new Data(val * 1000) get a date from 1970 2:00:00 and advance it with milli seconds
   //-convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
@@ -302,17 +265,17 @@ export default {
     },
 
     ...mapState({
-      isSongIsLiked: state => state.track.liked,
-      trackUrl: state => state.track.trackUrl,
-      songName: state => state.track.trackName,
-      artists: state => state.track.trackArtists,
-      imageUrl: state => state.track.imageUrl,
-      lastTrackInQueue: state => state.track.lastTrackInQueue,
-      firstTrackInQueue: state => state.track.firstTrackInQueue,
-      queueTracks: state => state.track.queueTracks,
-      isFirstSong: state => state.playlist.isFirstSong,
-      totalDuration: state => state.track.totalDuration
-    })
+      isSongIsLiked: (state) => state.track.liked,
+      trackUrl: (state) => state.track.trackUrl,
+      songName: (state) => state.track.trackName,
+      artists: (state) => state.track.trackArtists,
+      imageUrl: (state) => state.track.imageUrl,
+      lastTrackInQueue: (state) => state.track.lastTrackInQueue,
+      firstTrackInQueue: (state) => state.track.firstTrackInQueue,
+      queueTracks: (state) => state.track.queueTracks,
+      isFirstSong: (state) => state.playlist.isFirstSong,
+      totalDuration: (state) => state.track.totalDuration,
+    }),
   },
   data() {
     return {
@@ -335,7 +298,7 @@ export default {
       devices: undefined,
       currentDeviceId: undefined,
 
-      token: undefined
+      token: undefined,
     };
   },
   methods: {
@@ -343,7 +306,7 @@ export default {
       "setAudio",
       "setPaused",
       "setIsSongLoaded",
-      "setIsFirstSong"
+      "setIsFirstSong",
     ]),
     ...mapMutations("track", [
       "setLiked",
@@ -353,70 +316,21 @@ export default {
       "setFirstTrackInQueue",
       "setLastTrackInQueue",
       "setQueueTracks",
-      "setTotalDuration"
+      "setTotalDuration",
     ]),
     ...mapActions("playlist", ["pauseAndPlay"]),
     ...mapActions("track", [
       "getTrack",
       "playSongStore",
       "updateQueueNextTracksInfo",
-      "getQueueStore"
+      "getQueueStore",
     ]),
 
     /**
-     * choose the device you want.
+     * get the currently playing song
      *
      * @public
      */
-    chooseDevice: function(id) {
-      this.currentDeviceId = id;
-    },
-    getQueue: function() {
-      axios({
-        method: "get",
-        url: "/v1/me/player/queue",
-        headers: {
-          Authorization: this.token
-        }
-      }).then(async response => {
-        this.setQueueTracks(response.data.data.queueTracks);
-        ///////////////////////////////
-        //first time login (temporary behaviour)
-
-        if (this.queueTracks.length == 0) {
-          axios({
-            method: "post",
-            url: "/v1/me/player/tracks/" + "5e7d2ddd3429e24340ff1397",
-            headers: {
-              Authorization: this.token
-            },
-            data: {
-              contextId: "5e8a6d96d4be480ab1d91c95",
-              context_type: "playlist",
-              context_url: "https://localhost:3000/",
-              device: "Chrome"
-            },
-            responseType: "arraybuffer"
-          }).then(response => {
-            var blob = new Blob([response.data], { type: "audio/mpeg" });
-            var objectUrl = URL.createObjectURL(blob);
-            this.setTrackUrl(objectUrl);
-          });
-        }
-        ///////////////////////////////
-        if (response.data.data.previousTrack == null) {
-          this.setFirstTrackInQueue(true);
-        } else {
-          this.setFirstTrackInQueue(false);
-        }
-
-        if (response.data.data.nextTrack == null) {
-          this.setLastTrackInQueue(true);
-        } else {
-          this.setLastTrackInQueue(false);
-        }
-      });
-    },
     getCurrentlyPlaying: function() {
       if (!this.isMocking) {
         //get the currently playing track
@@ -424,9 +338,9 @@ export default {
           method: "get",
           url: "/v1/me/player/currently-playing",
           headers: {
-            Authorization: this.token
-          }
-        }).then(response => {
+            Authorization: this.token,
+          },
+        }).then((response) => {
           //get the track url
           var tempTrackUrl = response.data.data.currentTrack;
 
@@ -441,7 +355,7 @@ export default {
             //request the track data
             this.getTrack({
               token: this.token,
-              id: songId
+              id: songId,
             });
 
             //request the song mp3 file
@@ -449,13 +363,13 @@ export default {
               method: "post",
               url: "/v1/me/player/tracks/" + songId,
               data: {
-                device: "Chrome"
+                device: "Chrome",
               },
               headers: {
-                Authorization: this.token
+                Authorization: this.token,
               },
-              responseType: "arraybuffer"
-            }).then(response => {
+              responseType: "arraybuffer",
+            }).then((response) => {
               var blob = new Blob([response.data], { type: "audio/mpeg" });
               var objectUrl = URL.createObjectURL(blob);
               this.setTrackUrl(objectUrl);
@@ -505,16 +419,6 @@ export default {
       }
     },
     /**
-     * Play the current track
-     *
-     * @public
-     */
-    play: function() {
-      if (!this.paused) return;
-      this.setPaused(false);
-      this.audio.play();
-    },
-    /**
      * get the next song
      *
      * @public
@@ -532,8 +436,8 @@ export default {
             method: "post",
             url: "/v1/me/player/next",
             headers: {
-              Authorization: this.token
-            }
+              Authorization: this.token,
+            },
           }).then(() => {
             this.getQueueStore(this.token);
             this.getCurrentlyPlaying();
@@ -549,7 +453,7 @@ export default {
           //request the track data
           this.getTrack({
             token: this.token,
-            id: songId
+            id: songId,
           });
 
           //request the song mp3 file
@@ -560,13 +464,13 @@ export default {
               contextId: "5e8a6d96d4be480ab1d91c95",
               context_type: "playlist",
               context_url: "https://localhost:3000/",
-              device: "Chrome"
+              device: "Chrome",
             },
             headers: {
-              Authorization: this.token
+              Authorization: this.token,
             },
-            responseType: "arraybuffer"
-          }).then(response => {
+            responseType: "arraybuffer",
+          }).then((response) => {
             var blob = new Blob([response.data], { type: "audio/mpeg" });
             var objectUrl = URL.createObjectURL(blob);
             this.setTrackUrl(objectUrl);
@@ -610,8 +514,8 @@ export default {
           method: "post",
           url: "/v1/me/player/previous",
           headers: {
-            Authorization: this.token
-          }
+            Authorization: this.token,
+          },
         }).then(() => {
           this.getQueueStore(this.token);
           this.getCurrentlyPlaying();
@@ -715,7 +619,8 @@ export default {
       // (this.audio.readyState >= 2) Data is available
       if (this.audio.readyState >= 2) {
         if (!this.isFirstSong) {
-          this.play();
+          this.setPaused(false);
+          this.audio.play();
         }
 
         this.setIsSongLoaded(true);
@@ -752,22 +657,6 @@ export default {
       this.setPaused(true); //the song is paused flag
     },
     /**
-     * This handler is invoked when the track is finsihed
-     *
-     * @public
-     */
-    _handleEndedSong: function() {
-      if (this.isRepeatOnceEnabled) {
-        this.play();
-      } else if (this.isRepeatEnabled) {
-        //if (is the current song is the last song in the playlist)?
-        //change "file" to the link of the first song of the playlist,
-        //then after loading in the loaded handler: invoke play()
-      } else {
-        this.next();
-      }
-    },
-    /**
      * This handler is invoked when the track started
      * buffering.
      *
@@ -777,35 +666,12 @@ export default {
       this.isBuffering = false;
     },
     /**
-     * This handler is invoked when track insihed buffering
+     * This handler is invoked when track finsihed buffering
      *
      * @public
      */
     _handlePlayingAfterBuffering: function() {
       this.isBuffering = true;
-    },
-    /**
-     * This handler is invoked after
-     * pressing down the space key
-     *
-     * @public
-     */
-    _handleSpaceDown: function(e) {
-      if (e.code === "Space") {
-        e.preventDefault(); //this is just to prevent the space from scrolling
-      }
-    },
-    /**
-     * This handler is invoked after
-     * pressing up the space key
-     *
-     * @public
-     */
-    _handleSpaceUp: function(e) {
-      if (e.code === "Space") {
-        if (!this.isBuffering) return;
-        this.pauseAndPlay();
-      }
     },
     /**
      * This is the initialization function
@@ -825,14 +691,10 @@ export default {
       //position of the media has finished loading; often the first frame.
       this.audio.addEventListener("loadeddata", this._handleLoaded);
       this.audio.addEventListener("pause", this._handlePause);
-      this.audio.addEventListener("ended", this._handleEndedSong); //the song is ended
+      //this.audio.addEventListener("ended", this._handleEndedSong); //the song is ended
 
       this.audio.addEventListener("waiting", this._handlerWaiting); //the song is stopped due to buffering
       this.audio.addEventListener("playing", this._handlePlayingAfterBuffering);
-
-      //space key to pause and play the song
-      document.addEventListener("keyup", this._handleSpaceUp);
-      document.addEventListener("keydown", this._handleSpaceDown);
 
       //configure the volume
       this.audio.volume = this.volumeValue / 100;
@@ -846,12 +708,12 @@ export default {
           method: "patch",
           url: "/v1/me/player/devices",
           data: {
-            device: "Chrome" //TODO: get the browser name
+            device: "Chrome", 
           },
           headers: {
-            Authorization: this.token
-          }
-        }).then(response => {
+            Authorization: this.token,
+          },
+        }).then((response) => {
           this.devices = response.data.devices;
           this.currentDeviceId = this.devices[this.devices.length - 1]._id;
         });
@@ -860,84 +722,23 @@ export default {
       }
       this.getCurrentlyPlaying();
     },
-    /**
-     * returns the audio tag element.
-     *
-     * @public
-     */
-    getAudio: function() {
-      return this.$el.querySelectorAll("audio")[0];
-    },
-    /**
-     * This handler is invoked after
-     * pressing down on the progress bar
-     *
-     * @public
-     */
-    progressBarPressed: function() {
-      this.isProgressBarPressed = true;
-    },
-    /**
-     * This handler is invoked after
-     * pressing up on the progress bar
-     *
-     * @public
-     */
-    progressBarReleased: function() {
-      this.audio.currentTime = this.currentTimeInSec;
-      this.isProgressBarPressed = false;
-    },
-    /**
-     * This handler is invoked after
-     * pressing down on the volume bar
-     *
-     * @public
-     */
-    volumeBarPressed: function() {
-      this.isVolumeBarPressed = true;
-    },
-    /**
-     * This handler is invoked after
-     * pressing up on the volume bar
-     *
-     * @public
-     */
-    volumeBarReleased: function() {
-      this.updateVolume();
-      this.isVolumeBarPressed = false;
-    }
   },
   mounted: function() {
-    this.setAudio(this.getAudio());
+    this.setAudio(this.$el.querySelectorAll("audio")[0]);
     this.init();
   },
   beforeDestroy: function() {
     this.audio.removeEventListener("timeupdate", this._handlePlayingUI);
     this.audio.removeEventListener("loadeddata", this._handleLoaded);
     this.audio.removeEventListener("pause", this._handlePause);
-    this.audio.removeEventListener("ended", this._handleEndedSong);
+    //this.audio.removeEventListener("ended", this._handleEndedSong);
 
     this.audio.removeEventListener("waiting", this._handlerWaiting);
     this.audio.removeEventListener(
       "playing",
       this._handlePlayingAfterBuffering
     );
-
-    document.removeEventListener("keyup", this._handleSpaceUp);
-    document.removeEventListener("keydown", this._handleSpaceDown);
-
-    // STUB
-    /*
-    var thisTemp = this;
-    axios({
-      method: "delete",
-      url: "/api/v1/me/player/devices",
-      data: {
-        deviceId: thisTemp.currentDeviceId
-      }
-    });
-    */
-  }
+  },
 };
 </script>
 
@@ -948,11 +749,4 @@ export default {
 <style lang="scss" scoped>
 //for sliders
 @import "./slider.scss";
-
-.volume-slider {
-  max-width: 84px;
-  width: -webkit-fill-available;
-  width: -moz-available;
-  margin-right: 0px;
-}
 </style>

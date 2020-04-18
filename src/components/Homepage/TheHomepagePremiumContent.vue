@@ -4,7 +4,7 @@
       v-bind:class="{
         'hero-home-bg-cover': isLg(),
         'hero-home-md-cover': isMd(),
-        'hero-home-sm-cover': isSm() || isXs()
+        'hero-home-sm-cover': isSm() || isXs(),
       }"
     >
       <v-container>
@@ -68,7 +68,7 @@
               "
               v-bind:class="{
                 'benefits-img-sm': isSm() || isXs(),
-                'benefits-img-lg': !isSm()
+                'benefits-img-lg': !isSm(),
               }"
             >
             </v-img>
@@ -130,6 +130,7 @@
 
 <script>
 import getDeviceSize from "../../mixins/getDeviceSize";
+import { mapMutations } from "vuex";
 
 /**
  * The homepage content when pressing premium tab.
@@ -145,69 +146,54 @@ export default {
         benefit1: {
           no: 1,
           text1: "Download music.",
-          text2: "Listen anywhere."
+          text2: "Listen anywhere.",
         },
         benefit2: {
           no: 2,
           text1: "No ad interruptions.",
-          text2: "Enjoy nonstop music."
+          text2: "Enjoy nonstop music.",
         },
         benefit3: {
           no: 3,
           text1: "Play any song.",
-          text2: "Even on mobile."
+          text2: "Even on mobile.",
         },
         benefit4: {
           no: 4,
           text1: "Unlimited skips.",
-          text2: "Just hit next."
-        }
-      }
+          text2: "Just hit next.",
+        },
+      },
     };
   },
 
   methods: {
-    /**
-     * Hide the navbar when this view is loaded
-     * by adding an event listener to the window.
-     * @public
-     */
-    hideNavBackground() {
-      this.NavFunction();
-      window.addEventListener("scroll", this.NavFunction);
-    },
+    ...mapMutations("homepage", ["setNavigationBarColor"]),
 
     /**
      * Change the opacity of the Navbar after scrolling.
      * @public
      */
     NavFunction() {
-      var nav = document.getElementById("nav");
       if (window.pageYOffset > 50) {
-        nav.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
+        this.setNavigationBarColor("rgba(0, 0, 0, 0.6)");
       } else {
-        nav.style.backgroundColor = "rgba(0, 0, 0, 0)";
+        this.setNavigationBarColor("rgba(0, 0, 0, 0)");
       }
     },
-
-    /**
-     * After get out of this page, remove the scroll event listener from the window.
-     * @public
-     */
-    removeNavEventListener() {
-      window.removeEventListener("scroll", this.NavFunction);
-    }
   },
 
   mounted: function() {
-    this.hideNavBackground(); //hideNavBackground will execute at pageload
+    this.NavFunction();
+    window.addEventListener("scroll", this.NavFunction);
   },
 
   destroyed: function() {
-    this.removeNavEventListener();
+    window.removeEventListener("scroll", this.NavFunction);
+    this.setNavigationBarColor("rgba(0, 0, 0, 0.6)");
   },
 
-  mixins: [getDeviceSize]
+  mixins: [getDeviceSize],
 };
 </script>
 

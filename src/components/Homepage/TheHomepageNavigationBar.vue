@@ -4,10 +4,10 @@
     <v-app-bar
       flat
       app
-      color="rgba(0, 0, 0, 0.6)"
+      :color="navigationBarColor"
       height="80"
       class="hidden-sm-and-down"
-      id="nav"
+      ref="navBar"
     >
       <v-toolbar
         flat
@@ -15,7 +15,7 @@
         class="toolbar"
         v-bind:class="{
           'toolbar-large-width': isLg(),
-          'toolbar-medium-width': !isLg()
+          'toolbar-medium-width': !isLg(),
         }"
       >
         <router-link to="/" style="text-decoration: none;">
@@ -233,6 +233,7 @@
 import isLoggedIn from "../../mixins/userService";
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getimageUrl from "../../mixins/userService";
+import { mapState } from "vuex";
 
 /**
  * The homepage navigation bar.
@@ -242,11 +243,18 @@ import getimageUrl from "../../mixins/userService";
 export default {
   name: "TheHomepageNavBar",
 
+  computed: {
+    ...mapState({
+      homepageInstance: (state) => state.homepage.homepageInstance,
+      navigationBarColor: (state) => state.homepage.navigationBarColor,
+    }),
+  },
+
   data() {
     return {
       drawer: false,
       //The current user profile image
-      currentUserImageUrl: ""
+      currentUserImageUrl: "",
     };
   },
   created() {
@@ -261,11 +269,11 @@ export default {
     logOutAndRerender() {
       this.logOut();
       this.$forceUpdate();
-      this.$root.$emit("forceUpdateContent"); //like this
-    }
+      this.homepageInstance.$forceUpdate();
+    },
   },
 
-  mixins: [isLoggedIn, getimageUrl, getDeviceSize]
+  mixins: [isLoggedIn, getimageUrl, getDeviceSize],
 };
 </script>
 
