@@ -17,7 +17,7 @@ import Footer from "../components/Homepage/TheHomepageFooter";
  */
 
 export default {
-  name: "Homepage premium",
+  name: "HomepagePremiumView",
 
   components: {
     NavigationBar,

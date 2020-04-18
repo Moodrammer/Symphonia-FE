@@ -4,10 +4,10 @@
     <v-app-bar
       flat
       app
-      color="rgba(0, 0, 0, 0.6)"
+      :color="navigationBarColor"
       height="80"
       class="hidden-sm-and-down"
-      id="nav"
+      ref="navBar"
     >
       <v-toolbar
         flat
@@ -245,7 +245,8 @@ export default {
 
   computed: {
     ...mapState({
-      homepageViewInstance: (state) => state.homepage.instance,
+      homepageInstance: (state) => state.homepage.homepageInstance,
+      navigationBarColor: (state) => state.homepage.navigationBarColor,
     }),
   },
 
@@ -268,7 +269,7 @@ export default {
     logOutAndRerender() {
       this.logOut();
       this.$forceUpdate();
-      this.homepageViewInstance.$forceUpdate();
+      this.homepageInstance.$forceUpdate();
     },
   },
 

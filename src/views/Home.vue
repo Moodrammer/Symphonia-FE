@@ -31,11 +31,11 @@ export default {
   },
 
   methods: {
-    ...mapMutations("homepage", ["setInstance"])
+    ...mapMutations("homepage", ["setHomepageInstance"])
 
   },
   mounted: function() {
-    this.setInstance(this);
+    this.setHomepageInstance(this);
   },
 
   mixins: [isLoggedIn]

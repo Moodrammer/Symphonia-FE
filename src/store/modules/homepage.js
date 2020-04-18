@@ -1,13 +1,19 @@
 const state = {
-  instance: null
-}
+  homepageInstance: null,
+  navigationBarColor: "rgba(0, 0, 0, 0.6)",
+};
 
 const mutations = {
-  setInstance: (state, instance) => { state.instance = instance }
-}
+  setHomepageInstance: (state, homepageInstance) => {
+    state.homepageInstance = homepageInstance;
+  },
+  setNavigationBarColor: (state, navigationBarColor) => {
+    state.navigationBarColor = navigationBarColor
+  }
+};
 
 export default {
   namespaced: true,
   state,
-  mutations
+  mutations,
 };

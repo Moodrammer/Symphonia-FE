@@ -31,7 +31,7 @@ describe("Homepage view", () => {
             }
           },
           mutations: {
-            setInstance: (state, instance) => { state.instance = instance }
+            setHomepageInstance: (state, instance) => { state.instance = instance }
           }
         }
       }
@@ -165,7 +165,7 @@ describe("Homepage Navigation Bar", () => {
         homepage: {
           namespaced: true,
           state: {
-            instance: {
+            homepageInstance: {
               $forceUpdate: () => {}
             }
           },
@@ -198,6 +198,72 @@ describe("Homepage Navigation Bar", () => {
   it("force the homepage to update its contet", () => {
     wrapper.vm.logOutAndRerender()
     expect(wrapper.vm.$forceUpdate).toBeCalled
-    expect(wrapper.vm.homepageViewInstance.$forceUpdate).toBeCalled
+    expect(wrapper.vm.homepageInstance.$forceUpdate).toBeCalled
+  })
+});
+
+describe("Homepage Premium Content", () => {
+  let wrapper;
+  let vuetify;
+  let store;
+
+  beforeEach(() => {
+    vuetify = new Vuetify();
+    const router = new VueRouter();
+    Vue.use(Vuetify);
+    Vue.use(VueRouter);
+
+    Vue.use(Vuex);
+    store = new Vuex.Store({
+      modules: {
+        homepage: {
+          namespaced: true,
+          state: {
+            navigationBarColor: ""
+          },
+          mutations: {
+            setNavigationBarColor: (state, navigationBarColor) => {
+              state.navigationBarColor = navigationBarColor
+            }
+          }
+        }
+      }
+    })
+
+    wrapper = shallowMount(HomepagePremiumContent, {
+      vuetify,
+      router,
+      store,
+      mocks: {
+        $vuetify: { 
+          breakpoint: {
+            sm: true
+          }
+        }
+      }
+    });
+  });
+
+  it("renders", () => {
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it("renders a vue instance", () => {
+    expect(wrapper.isVueInstance()).toBe(true);
+  });
+
+  it("change the opacity of the navigation bar", () => {
+    window.pageYOffset = 10
+    wrapper.vm.NavFunction()
+    expect(store.state.homepage.navigationBarColor).toEqual("rgba(0, 0, 0, 0)")
+
+    window.pageYOffset = 60
+    wrapper.vm.NavFunction()
+    expect(store.state.homepage.navigationBarColor).toEqual("rgba(0, 0, 0, 0.6)")
+  })
+
+  it("destroy component", () => {
+    wrapper.destroy()
+    expect(store.state.homepage.navigationBarColor).toEqual("rgba(0, 0, 0, 0.6)")
   })
 });
