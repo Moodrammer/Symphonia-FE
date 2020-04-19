@@ -16,7 +16,6 @@ if (process.env.NODE_ENV === "development") {
 
 //configure axios base url
 axios.defaults.baseURL = "/api";
-//axios.defaults.baseURL = "https://thesymphonia.ddns.net/api";
 
 new Vue({
   router,

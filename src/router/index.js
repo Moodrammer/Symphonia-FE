@@ -19,6 +19,7 @@ import Overview from "../components/artistUI/Overview";
 import RelatedArtists from "../components/artistUI/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
 import Genre from "../components/general/Genre.vue";
+import Google from "../components/oauth/google.vue"
 
 Vue.use(VueRouter);
 
@@ -179,6 +180,12 @@ const routes = [
         component: PassChange
       }
     ]
+  },
+  
+  {
+    path: "/google/:userToken",
+    name: "googleroute",
+    component: Google
   }
 ];
 
