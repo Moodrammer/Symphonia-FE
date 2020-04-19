@@ -671,7 +671,6 @@ export default {
     this.init();
   },
   beforeDestroy: function() {
-    this.$store.track.reset();
     this.audio.removeEventListener("timeupdate", this._handlePlayingUI);
     this.audio.removeEventListener("loadeddata", this._handleLoaded);
     this.audio.removeEventListener("pause", this._handlePause);
