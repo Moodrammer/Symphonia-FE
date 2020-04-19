@@ -71,7 +71,7 @@ export default {
             //switch on all options and then execute the suitable action
             switch(action) {
                 case "Copy Artist Link": 
-                    alert("copy" + this.id + this.type);
+                    this.copyToClipboard(`https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`)
                     break;
             }
         },
@@ -80,7 +80,7 @@ export default {
             //switch on all options and then execute the suitable action
             switch(action) {
                 case "Copy Playlist Link": 
-                    alert("copy" + this.id + this.type);
+                    this.copyToClipboard(`https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`)
                     break;
             }
         },
@@ -89,7 +89,7 @@ export default {
             //switch on all options and then execute the suitable action
             switch(action) {
                 case "Copy Album Link": 
-                    alert("copy" + this.id + this.type);
+                    this.copyToClipboard(`https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`)
                     break;
             }
         },
@@ -107,7 +107,23 @@ export default {
             this.menuList = this.albumMenu;
             //checks
         },
+    
 
+        copyToClipboard(url){
+            var el = document.createElement("textarea");
+            // Set value (string to be copied)
+            el.value = url;
+            // Set non-editable to avoid focus and move outside of view
+            el.setAttribute("readonly", "");
+            el.style = { position: "absolute", left: "-9999px" };
+            document.body.appendChild(el);
+            // Select text inside element
+            el.select();
+            // Copy text to clipboard
+            document.execCommand("copy");
+            // Remove temporary element
+            document.body.removeChild(el);
+        }
     },
 
 }

@@ -266,8 +266,8 @@ export default {
   methods: {
     menuClick(e,i,t){
       this.$props.contextMenu.event = e;
-      this.$props.contextMenu.type= t;
       this.$props.contextMenu.id = i;
+      this.$props.contextMenu.type= t;
     },
     cardClicked(id, name, play) {
       if (this.playBTNFlag) {
