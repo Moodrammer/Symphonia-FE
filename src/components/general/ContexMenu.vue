@@ -131,5 +131,21 @@ export default {
 
 <style lang="scss">
 @import '~vue-context/src/sass/vue-context';
-
+.v-context {
+    padding: .5rem 0rem !important;
+    background-color: #282828 !important;
+    &, & ul {
+        > li {
+            > a {
+                color: grey !important;
+                background-color: #282828 !important;
+                &:hover,
+                &:focus {
+                    color: white !important;
+                    background-color: #333333 !important;
+               }
+            }
+        }
+    }
+}
 </style>
