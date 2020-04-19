@@ -1,15 +1,7 @@
 <template>
   <!-- adding custom context menu -->
-  <v-menu
-    absolute
-    offset-y
-    style="max-width: 600px"
-    dark
-    v-model="cardItems.showMenu"
-    :disabled="disableMenu"
-  >
-    <template v-slot:activator="{ on }">
-      <v-container dark @contextmenu.prevent="on.click">
+
+      <v-container dark>
         <!-- adding the page content: -->
         <v-list
           v-if="cardStyle === 'artistUIList'"
@@ -180,6 +172,8 @@
                 @mouseleave="cardItems.hoveredCardIndex = null"
                 dark
                 @click="cardClicked(item.id, item.type, false)"
+                @contextmenu.prevent="menuClick($event, item.id, item.type)"
+
               >
                 <!-- card image -->
 
@@ -233,18 +227,6 @@
           </v-col>
         </v-row>
       </v-container>
-    </template>
-    <!-- setting the items of the custom context menu -->
-    <v-list>
-      <v-list-item
-        v-for="(item, index) in cardItems.menuList"
-        :key="index"
-        @click="contextMenuClick(item, index === cardItems.menuList.length - 1)"
-      >
-        <v-list-item-title>{{ item.title }}</v-list-item-title>
-      </v-list-item>
-    </v-list>
-  </v-menu>
 </template>
 
 <script>
@@ -264,7 +246,8 @@ export default {
      * @values artist, artistUIList, artistUICard, none (default)
      */
     "cardStyle",
-    "name"
+    "name",
+    "contextMenu",
   ],
   data() {
     return {
@@ -281,6 +264,11 @@ export default {
     this.showMoreBtn = true;
   },
   methods: {
+    menuClick(e,i,t){
+      this.$props.contextMenu.event = e;
+      this.$props.contextMenu.type= t;
+      this.$props.contextMenu.id = i;
+    },
     cardClicked(id, name, play) {
       if (this.playBTNFlag) {
         this.playBTNFlag = false;

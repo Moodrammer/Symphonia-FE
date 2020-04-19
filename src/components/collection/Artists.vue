@@ -1,7 +1,7 @@
 <template>
   <v-content class="pa-0 mr-5">
     <h1>Artists</h1>
-    <CardGrid :cardItems="cardItems" v-on:order="menuOrder" />
+    <CardGrid :cardItems="cardItems" :contextMenu=contextMenu v-on:order="menuOrder" />
   </v-content>
 </template>
 
@@ -12,6 +12,7 @@ import getuserToken from "../../mixins/userService";
 
 export default {
   name: "Artists",
+  props:["contextMenu"],
   components: {
     CardGrid
   },

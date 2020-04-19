@@ -3,8 +3,10 @@
     <h1>Playlists</h1>
     <CardGrid
       :cardItems="cardItems"
+      :contextMenu=contextMenu
       v-on:order="menuOrder"
       cardStyle="playlist"
+      
     />
   </v-content>
 </template>
@@ -19,7 +21,7 @@ export default {
   components: {
     CardGrid
   },
-
+  props:["contextMenu"],
   data() {
     return {
       // Custom context menu data section

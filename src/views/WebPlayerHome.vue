@@ -10,13 +10,16 @@
     overflow-y: scroll;
     "
       :loggedIn="isLoggedIn()"
+      :contextMenu=contextMenu
     ></router-view>
     <sound-player v-if="isLoggedIn()" />
     <sound-player-logout v-if="!isLoggedIn()" />
+    <ContextMenu ref="context"/>
   </v-app>
 </template>
 
 <script>
+import ContextMenu from "../components/general/ContexMenu"
 import NavDrawer from "../components/WebplayerLayout/WebNavDrawer";
 import NavBar from "../components/WebplayerLayout/WebNavBar";
 import isLoggedIn from "../mixins/userService";
@@ -29,11 +32,24 @@ import SoundPlayerLogout from "../components/TheSoundPlayer/TheSoundPlayerLogout
  * @example [none]
  */
 export default {
+  data(){
+    return{contextMenu:{event:null,type:null,id:null}}
+  },
   components: {
+    ContextMenu,
     NavDrawer,
     NavBar,
     SoundPlayer,
     SoundPlayerLogout
+  },
+  watch:{
+    "contextMenu.id":function(){
+      if(this.contextMenu.id != null)
+      {
+        this.$refs.context.openMenu(this.contextMenu.event, this.contextMenu.id, this.contextMenu.type);
+        this.contextMenu.id = null
+      }
+    }
   },
   mounted: function() {
     //Handle the updateContent event by force the component to update
