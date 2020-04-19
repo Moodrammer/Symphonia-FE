@@ -132,11 +132,12 @@ describe("login", () => {
     const email_wrp = wrapper.find("#login-username");
     //simulate entering an invalid email by the user
     email_wrp.element.value = "mahmoud";
+    console.log(email_wrp.element.value);
     email_wrp.trigger("input");
     //await the next tick as vue batches the changes to the dom to prevent unnecessary re-renders
     await wrapper.vm.$nextTick();
     //assert that the validation message renders on wrong input
-    expect(wrapper.find(".v-messages__wrapper").text()).toBe(
+    expect(wrapper.find(".v-messages__message").text()).toBe(
       "E-mail must be valid"
     );
   });
