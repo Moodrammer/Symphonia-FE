@@ -12,16 +12,14 @@
           <div
             style="padding-left: 14px; padding-top: 14px; margin-right: 14px;"
           >
-            <router-link to="/" class="song-name">
+            <router-link to="#" class="song-name">
               {{ songName }}
             </router-link>
             <router-link
-              v-for="(artist, index) in artists"
-              :key="index"
-              :to="artist.href"
+              to="#"
               class="singer-name"
             >
-              {{ artist.name }}
+              {{ artist }}
             </router-link>
           </div>
           <!-- <a @click="saveToLikedSongs()" v-if="!isSongIsLiked">
@@ -167,7 +165,10 @@
             min="0"
             v-bind:max="totalDuration"
             @mousedown="isProgressBarPressed = true"
-            @mouseup="audio.currentTime = currentTimeInSec; isProgressBarPressed = false;"
+            @mouseup="
+              audio.currentTime = currentTimeInSec;
+              isProgressBarPressed = false;
+            "
             v-model="currentTimeInSec"
           />
 
@@ -221,7 +222,10 @@
             class="volume-slider"
             v-model="volumeValue"
             v-on:mousdown="isVolumeBarPressed = true"
-            v-on:mouseup="updateVolume(); isVolumeBarPressed = false;"
+            v-on:mouseup="
+              updateVolume();
+              isVolumeBarPressed = false;
+            "
           />
         </div>
       </v-col>
@@ -268,12 +272,11 @@ export default {
       isSongIsLiked: (state) => state.track.liked,
       trackUrl: (state) => state.track.trackUrl,
       songName: (state) => state.track.trackName,
-      artists: (state) => state.track.trackArtists,
+      artist: (state) => state.track.trackArtist,
       imageUrl: (state) => state.track.imageUrl,
       lastTrackInQueue: (state) => state.track.lastTrackInQueue,
       firstTrackInQueue: (state) => state.track.firstTrackInQueue,
       queueTracks: (state) => state.track.queueTracks,
-      isFirstSong: (state) => state.playlist.isFirstSong,
       totalDuration: (state) => state.track.totalDuration,
     }),
   },
@@ -293,7 +296,6 @@ export default {
       isRepeatEnabled: false,
       isShuffleEnabled: false,
       isRepeatOnceEnabled: false,
-      isMocking: false,
 
       devices: undefined,
       currentDeviceId: undefined,
@@ -306,7 +308,6 @@ export default {
       "setAudio",
       "setPaused",
       "setIsSongLoaded",
-      "setIsFirstSong",
     ]),
     ...mapMutations("track", [
       "setLiked",
@@ -320,69 +321,65 @@ export default {
     ]),
     ...mapActions("playlist", ["pauseAndPlay"]),
     ...mapActions("track", [
-      "getTrack",
+      "getTrackInformation",
       "playSongStore",
       "updateQueueNextTracksInfo",
       "getQueueStore",
     ]),
-
     /**
-     * get the currently playing song
+     * play a song in the queue
      *
      * @public
+     *
+     * @param {string} trackId the track Id to be played
      */
-    getCurrentlyPlaying: function() {
-      if (!this.isMocking) {
-        //get the currently playing track
-        axios({
-          method: "get",
-          url: "/v1/me/player/currently-playing",
-          headers: {
-            Authorization: this.token,
-          },
-        }).then((response) => {
-          //get the track url
-          var tempTrackUrl = response.data.data.currentTrack;
-
-          //If i'm not in mocking
-          if (tempTrackUrl != null) {
-            //get the track id
-            var songId = tempTrackUrl.slice(
-              tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
-              tempTrackUrl.length
-            );
-
-            //request the track data
-            this.getTrack({
-              token: this.token,
-              id: songId,
-            });
-
-            //request the song mp3 file
-            axios({
-              method: "post",
-              url: "/v1/me/player/tracks/" + songId,
-              data: {
-                device: "Chrome",
-              },
-              headers: {
-                Authorization: this.token,
-              },
-              responseType: "arraybuffer",
-            }).then((response) => {
-              var blob = new Blob([response.data], { type: "audio/mpeg" });
-              var objectUrl = URL.createObjectURL(blob);
-              this.setTrackUrl(objectUrl);
-            });
-          }
-        });
-      } else {
-        //#MOCK
-
-        this.setTrackUrl(
-          "https://www.bensound.com/bensound-music/bensound-ukulele.mp3"
+    playTrackInQueue: function(trackId) {
+      //request the song mp3 file
+      axios({
+        method: "post",
+        url: "/v1/me/player/tracks/" + trackId,
+        data: {
+          device: "Chrome",
+        },
+        headers: {
+          Authorization: this.token,
+        },
+      }).then((response) => {
+        var trackToken = response.data.data;
+        var audioSource =
+          axios.defaults.baseURL +
+          "/v1/me/player/tracks/" +
+          trackId +
+          "/" +
+          trackToken;
+        this.setTrackUrl(audioSource);
+      });
+    },
+    /**
+     * get the currently playing track id
+     *
+     * @public
+     * @returns {string} the track id
+     */
+    getCurrentlyPlayingTrackId: async function() {
+      //get the currently playing track
+      var songId;
+      await axios({
+        method: "get",
+        url: "/v1/me/player/currently-playing",
+        headers: {
+          Authorization: this.token,
+        },
+      }).then((response) => {
+        //get the track url
+        var tempTrackUrl = response.data.data.currentTrack;
+        //get the track id
+        songId = tempTrackUrl.slice(
+          tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+          tempTrackUrl.length
         );
-      }
+      });
+      return songId
     },
     /**
      * change the liked state of the song
@@ -424,79 +421,58 @@ export default {
      * @public
      */
     next: function() {
-      this.setIsFirstSong(false);
-      //////////////////////
-      if (!this.isMocking) {
-        //If i'm not in mocking
-        this.isBuffering = false;
-        this.setPaused(true); //the sound will be paused upon changing the soruce
+      this.audio.autoplay = true;
+      this.setTrackUrl("https://www.bensound.com/bensound-music/bensound-summer.mp3")
 
-        if (this.lastTrackInQueue == false) {
-          axios({
-            method: "post",
-            url: "/v1/me/player/next",
-            headers: {
-              Authorization: this.token,
-            },
-          }).then(() => {
-            this.getQueueStore(this.token);
-            this.getCurrentlyPlaying();
-          });
-        } else {
-          var tempTrackUrl = this.queueTracks[0];
+      // this.isBuffering = false;
 
-          var songId = tempTrackUrl.slice(
-            tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
-            tempTrackUrl.length
-          );
+      // if (this.lastTrackInQueue == false) {
+      //   axios({
+      //     method: "post",
+      //     url: "/v1/me/player/next",
+      //     headers: {
+      //       Authorization: this.token,
+      //     },
+      //   }).then(() => {
+      //     this.getQueueStore(this.token);
+      //     this.getCurrentlyPlaying();
+      //   });
+      // } else {
+      //   var tempTrackUrl = this.queueTracks[0];
 
-          //request the track data
-          this.getTrack({
-            token: this.token,
-            id: songId,
-          });
+      //   var songId = tempTrackUrl.slice(
+      //     tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+      //     tempTrackUrl.length
+      //   );
 
-          //request the song mp3 file
-          axios({
-            method: "post",
-            url: "/v1/me/player/tracks/" + songId,
-            data: {
-              contextId: "5e8a6d96d4be480ab1d91c95",
-              context_type: "playlist",
-              context_url: "https://localhost:3000/",
-              device: "Chrome",
-            },
-            headers: {
-              Authorization: this.token,
-            },
-            responseType: "arraybuffer",
-          }).then((response) => {
-            var blob = new Blob([response.data], { type: "audio/mpeg" });
-            var objectUrl = URL.createObjectURL(blob);
-            this.setTrackUrl(objectUrl);
+      //   //request the track data
+      //   this.getTrack({
+      //     token: this.token,
+      //     id: songId,
+      //   });
 
-            this.getQueueStore(this.token);
-          });
-          ////////////////////
-        }
-      } else {
-        //#MOCK
-        if (
-          this.trackUrl !=
-          "https://www.bensound.com/bensound-music/bensound-summer.mp3"
-        ) {
-          this.isBuffering = false;
-          this.setPaused(true); //the sound will be paused upon changing the soruce
+      //   //request the song mp3 file
+      //   axios({
+      //     method: "post",
+      //     url: "/v1/me/player/tracks/" + songId,
+      //     data: {
+      //       contextId: "5e8a6d96d4be480ab1d91c95",
+      //       context_type: "playlist",
+      //       context_url: "https://localhost:3000/",
+      //       device: "Chrome",
+      //     },
+      //     headers: {
+      //       Authorization: this.token,
+      //     },
+      //     responseType: "arraybuffer",
+      //   }).then((response) => {
+      //     var blob = new Blob([response.data], { type: "audio/mpeg" });
+      //     var objectUrl = URL.createObjectURL(blob);
+      //     this.setTrackUrl(objectUrl);
 
-          var temp = this;
-
-          setTimeout(function() {
-            temp.setTrackUrl(
-              "https://www.bensound.com/bensound-music/bensound-summer.mp3"
-            );
-          }, 1000);
-        }
-      }
+      //     this.getQueueStore(this.token);
+      //   });
+      // }
     },
     /**
      * get the previous song
@@ -504,40 +480,18 @@ export default {
      * @public
      */
     previous: function() {
-      this.setIsFirstSong(false);
+      this.isBuffering = false;
 
-      if (!this.isMocking) {
-        this.isBuffering = false;
-        this.setPaused(true); //the sound will be paused upon changing the soruce
-
-        axios({
-          method: "post",
-          url: "/v1/me/player/previous",
-          headers: {
-            Authorization: this.token,
-          },
-        }).then(() => {
-          this.getQueueStore(this.token);
-          this.getCurrentlyPlaying();
-        });
-      } else {
-        //#MOCK
-        if (
-          this.trackUrl !=
-          "https://www.bensound.com/bensound-music/bensound-ukulele.mp3"
-        ) {
-          this.isBuffering = false;
-          this.setPaused(true); //the sound will be paused upon changing the soruce
-
-          var temp = this;
-
-          setTimeout(function() {
-            temp.setTrackUrl(
-              "https://www.bensound.com/bensound-music/bensound-ukulele.mp3"
-            );
-          }, 1000);
-        }
-      }
+      axios({
+        method: "post",
+        url: "/v1/me/player/previous",
+        headers: {
+          Authorization: this.token,
+        },
+      }).then(() => {
+        this.getQueueStore(this.token);
+        this.getCurrentlyPlaying();
+      });
     },
     /**
      * Enable the shuffle.
@@ -618,11 +572,6 @@ export default {
       //The HTMLMediaElement.readyState property indicates the readiness state of the media.
       // (this.audio.readyState >= 2) Data is available
       if (this.audio.readyState >= 2) {
-        if (!this.isFirstSong) {
-          this.setPaused(false);
-          this.audio.play();
-        }
-
         this.setIsSongLoaded(true);
         this.isBuffering = true; //finished loading the next song.
 
@@ -654,7 +603,15 @@ export default {
      * @public
      */
     _handlePause: function() {
-      this.setPaused(true); //the song is paused flag
+      this.setPaused(true); 
+    },
+    /**
+     * This handler is invoked when the track is played
+     *
+     * @public
+     */
+    _handlePlay: function() {
+      this.setPaused(false); 
     },
     /**
      * This handler is invoked when the track started
@@ -680,17 +637,15 @@ export default {
      *
      * @public
      */
-    init: function() {
+    init: async function() {
       this.isBuffering = true; //I don't want a loading icon upon the loading of the page.
-      this.isMocking = process.env.NODE_ENV === "development";
-      //this.isMocking = false;
-
       //set the listeners:
       this.audio.addEventListener("timeupdate", this._handlePlayingUI);
       //The loadeddata event is fired when the frame at the current playback
       //position of the media has finished loading; often the first frame.
       this.audio.addEventListener("loadeddata", this._handleLoaded);
       this.audio.addEventListener("pause", this._handlePause);
+      this.audio.addEventListener("play", this._handlePlay)
       //this.audio.addEventListener("ended", this._handleEndedSong); //the song is ended
 
       this.audio.addEventListener("waiting", this._handlerWaiting); //the song is stopped due to buffering
@@ -702,25 +657,12 @@ export default {
 
       this.token = "Bearer " + this.getuserToken();
 
-      if (!this.isMocking) {
-        //get the device
-        axios({
-          method: "patch",
-          url: "/v1/me/player/devices",
-          data: {
-            device: "Chrome", 
-          },
-          headers: {
-            Authorization: this.token,
-          },
-        }).then((response) => {
-          this.devices = response.data.devices;
-          this.currentDeviceId = this.devices[this.devices.length - 1]._id;
-        });
-
-        this.getQueueStore(this.token);
-      }
-      this.getCurrentlyPlaying();
+      var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
+      this.getTrackInformation({
+        token: this.token,
+        trackId: CurrentlyPlayingTrackId
+      })
+      this.playTrackInQueue(CurrentlyPlayingTrackId)
     },
   },
   mounted: function() {
@@ -728,6 +670,7 @@ export default {
     this.init();
   },
   beforeDestroy: function() {
+    this.$store.track.reset()
     this.audio.removeEventListener("timeupdate", this._handlePlayingUI);
     this.audio.removeEventListener("loadeddata", this._handleLoaded);
     this.audio.removeEventListener("pause", this._handlePause);

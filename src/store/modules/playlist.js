@@ -10,7 +10,6 @@ const state = {
   singlePlaylist: null,
   playlistTracks: [],
   followed: false,
-  isFirstSong: true
 };
 
 const mutations = {
@@ -39,11 +38,9 @@ const mutations = {
     state.paused = paused;
   },
   pauseAndPlay(state) {
-    state.paused = !state.paused;
-    if (state.paused) {
+    if (!state.paused) {
       state.audio.pause();
     } else {
-      state.isFirstSong = false;
       state.audio.play();
     }
   },
@@ -58,9 +55,6 @@ const mutations = {
   },
   setPlaylist(state, playlist) {
     state.singlePlaylist = playlist;
-  },
-  setIsFirstSong(state, isFirstSong) {
-    state.isFirstSong = isFirstSong;
   },
   setTracks(state, tracks) {
     //Vue.set(state, "playlistTracks", tracks);

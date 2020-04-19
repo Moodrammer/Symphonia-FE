@@ -13,12 +13,11 @@ export function makeServer({ environment = "development" } = {}) {
     models: {
       user: Model,
       track: Model,
-      bestsong: Model,
       playlist: Model,
       album: Model,
       artist: Model,
       soundplayer: Model,
-      category: Model
+      category: Model,
     },
 
     seeds(server) {
@@ -30,7 +29,7 @@ export function makeServer({ environment = "development" } = {}) {
         dateOfBirth: "1980-12-12",
         gender: "male",
         type: "user",
-        country: "EG"
+        country: "EG",
       });
       //creating an artist for testing purposes
       server.create("user", {
@@ -40,7 +39,7 @@ export function makeServer({ environment = "development" } = {}) {
         dateOfBirth: "1995-12-18",
         gender: "male",
         type: "artist",
-        country: "EG"
+        country: "EG",
       });
 
       //This part is just to fake mirage in order to persist the data of only one user
@@ -52,69 +51,29 @@ export function makeServer({ environment = "development" } = {}) {
         );
         localStorage.removeItem("SignedUpUser");
       }
-      server.create("bestsong", {
-        songs: [
-          {
-            singerName: "Eminim",
-            songName: "changes1",
-            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            songLink: "/songlink"
-          },
-          {
-            singerName: "2Pac",
-            songName: "changes2",
-            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            songLink: "/songlink"
-          },
-          {
-            singerName: "2Pac",
-            songName: "changes3",
-            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            songLink: "/songlink"
-          },
-          {
-            singerName: "2Pac",
-            songName: "changes4",
-            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            songLink: "/songlink"
-          },
-          {
-            singerName: "2Pac",
-            songName: "changes5",
-            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            songLink: "/songlink"
-          },
-          {
-            singerName: "2Pac",
-            songName: "changes6",
-            imageLink: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            songLink: "/songlink"
-          }
-        ]
-      });
 
-      playlistJson.items.forEach(element => {
+      playlistJson.items.forEach((element) => {
         server.create("playlist", element);
       });
 
-      trackJSON.forEach(element => {
+      trackJSON.forEach((element) => {
         server.create("track", element);
       });
 
-      artistJSON.artists.items.forEach(element => {
+      artistJSON.artists.items.forEach((element) => {
         server.create("artist", element);
       });
 
-      albumsJSON.items.forEach(element => server.create("album", element));
+      albumsJSON.items.forEach((element) => server.create("album", element));
 
-      categoryJSON.data.categorys.forEach(element => {
+      categoryJSON.data.categorys.forEach((element) => {
         server.create("category", element);
       });
     },
 
     //Define serializers to format the responses
     serializers: {
-      application: JSONAPISerializer
+      application: JSONAPISerializer,
     },
     routes() {
       //namespace will be prepended to any route (it acts like the server base address)
@@ -131,7 +90,7 @@ export function makeServer({ environment = "development" } = {}) {
           description: null,
           followers: {
             href: null,
-            total: 0
+            total: 0,
           },
           href:
             "https://api.symphonia.com/v1/users/thelinmichael/playlists/" +
@@ -140,7 +99,7 @@ export function makeServer({ environment = "development" } = {}) {
           owner: {
             href: "https://api.symphonia.com/v1/users/" + user_id,
             id: user_id,
-            type: "user"
+            type: "user",
           },
           public: false,
           tracks: {
@@ -151,9 +110,9 @@ export function makeServer({ environment = "development" } = {}) {
             next: null,
             offset: 0,
             previous: null,
-            total: 0
+            total: 0,
           },
-          type: "playlist"
+          type: "playlist",
         });
 
         let ID = schema.playlists.find(schema.playlists.all().length).id;
@@ -162,39 +121,39 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Current User's Playlists
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/playlists", schema => {
+      this.get("/v1/me/playlists", (schema) => {
         return new Response(
           200,
           {},
           {
-            ownedPlaylists: schema.playlists.where({ liked: true }).models
+            ownedPlaylists: schema.playlists.where({ liked: true }).models,
           }
         );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a User's Saved Tracks                "Liked Songs"
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/tracks", schema => {
+      this.get("/v1/me/tracks", (schema) => {
         return new Response(
           200,
           {},
           {
             tracks: {
-              items: schema.tracks.where({ liked: true }).models
-            }
+              items: schema.tracks.where({ liked: true }).models,
+            },
           }
         );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Popular Playlists
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/popularPlaylists", schema => {
+      this.get("/v1/me/popularPlaylists", (schema) => {
         return schema.playlists.where({ popularity: 90 }).models;
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Popular Artists
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/popularArtists", schema => {
+      this.get("/v1/me/popularArtists", (schema) => {
         return schema.artists.where({ popularity: 90 }).models;
       });
 
@@ -210,8 +169,8 @@ export function makeServer({ environment = "development" } = {}) {
             {},
             {
               playlists: {
-                items: schema.playlists.where({ genre: id }).models
-              }
+                items: schema.playlists.where({ genre: id }).models,
+              },
             }
           );
         }
@@ -257,7 +216,7 @@ export function makeServer({ environment = "development" } = {}) {
           {
             name: schema.categories.where({ id: categoryID }).models[0].name,
             id: schema.categories.where({ id: categoryID }).models[0].id,
-            href: schema.categories.where({ id: categoryID }).models[0].href
+            href: schema.categories.where({ id: categoryID }).models[0].href,
           }
         );
       });
@@ -289,21 +248,9 @@ export function makeServer({ environment = "development" } = {}) {
         let playlistID = request.params.playlistId;
         return [
           {
-            tracks: schema.playlists.where({ id: playlistID }).models[0].tracks
-          }
+            tracks: schema.playlists.where({ id: playlistID }).models[0].tracks,
+          },
         ];
-      });
-      //////////////////////////////////////////////////////////////////////////////////////
-      //
-      //////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/player/queue", () => {
-        return new Response(200, {}, {});
-      });
-      //////////////////////////////////////////////////////////////////////////////////////
-      //
-      //////////////////////////////////////////////////////////////////////////////////////
-      this.patch("/v1/me/player/devices", () => {
-        return new Response(200, {}, {});
       });
       //////////////////////////////////////////////////////////////////////////////////////
       //Check if Users Follow a Playlist
@@ -326,7 +273,7 @@ export function makeServer({ environment = "development" } = {}) {
       //////////////////////////////////////////////////////////////////////////////////////
       // this.urlPrefix = 'http://localhost:8080';
 
-      this.get("/v1/me/albums", schema => {
+      this.get("/v1/me/albums", (schema) => {
         return { Albums: { items: schema.albums.all().models } };
       });
 
@@ -335,7 +282,7 @@ export function makeServer({ environment = "development" } = {}) {
 
         for (var i = 2; i < request.requestBody.length - 2; i++)
           x += request.requestBody[i];
-        return schema.albums.findBy(album => album._id === x).destroy();
+        return schema.albums.findBy((album) => album._id === x).destroy();
       });
 
       this.get("/v1/me/following", (schema, request) => {
@@ -346,14 +293,10 @@ export function makeServer({ environment = "development" } = {}) {
       this.delete("/v1/me/following", (schema, request) => {
         if (request.queryParams.type === "artist") {
           return schema.artists
-            .findBy(artist => artist._id === request.queryParams.ids)
+            .findBy((artist) => artist._id === request.queryParams.ids)
             .destroy();
         }
       });
-      this.get("/v1/bestsongs"),
-        schema => {
-          return schema.bestsongs.bestSixSongs;
-        };
       //Intercepting Login post requests
       this.post("/v1/users/login", (schema, request) => {
         //turn attributes to json to be able to access the data of the request
@@ -376,8 +319,8 @@ export function makeServer({ environment = "development" } = {}) {
                   name: schema.users.find(i).name,
                   type: schema.users.find(i).type,
                   imageUrl:
-                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
-                }
+                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+                },
               }
             );
           }
@@ -387,7 +330,7 @@ export function makeServer({ environment = "development" } = {}) {
           {},
           {
             status: "fail",
-            msg: "Incorrect email or password"
+            msg: "Incorrect email or password",
           }
         );
       }),
@@ -413,7 +356,7 @@ export function makeServer({ environment = "development" } = {}) {
               password: attrs.password,
               dateOfBirth: attrs.dateOfBirth,
               gender: attrs.gender,
-              type: attrs.type
+              type: attrs.type,
             });
 
             //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
@@ -435,8 +378,8 @@ export function makeServer({ environment = "development" } = {}) {
                   type: attrs.type,
                   imageUrl:
                     "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
-                  __v: 0
-                }
+                  __v: 0,
+                },
               }
             );
           } else {
@@ -446,7 +389,7 @@ export function makeServer({ environment = "development" } = {}) {
               {},
               {
                 status: "fail",
-                msg: "email address already exists"
+                msg: "email address already exists",
               }
             );
           }
@@ -486,46 +429,8 @@ export function makeServer({ environment = "development" } = {}) {
                 name: schema.users.find(resettoken).name,
                 type: schema.users.find(resettoken).type,
                 imageUrl:
-                  "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
-              }
-            }
-          );
-        }),
-        this.get("/v1/me/player/devices", () => {
-          return new Response(
-            200,
-            {},
-            {
-              data: [
-                {
-                  _id: "1",
-                  devicesName: "Chrome"
-                },
-                {
-                  _id: "2",
-                  devicesName: "Chrome"
-                },
-                {
-                  _id: "3",
-                  devicesName: "Firefox"
-                },
-                {
-                  _id: "4",
-                  devicesName: "Chrome"
-                }
-              ]
-            }
-          );
-        }),
-        this.get("/v1/me/player/currently-playing", () => {
-          return new Response(
-            200,
-            {},
-            {
-              data: {
-                currentTrack: "/track/5e7d2dc03429e24340ff1396",
-                device: "5e88ef4d54142e3db4d01ee5"
-              }
+                  "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+              },
             }
           );
         }),
@@ -587,7 +492,7 @@ export function makeServer({ environment = "development" } = {}) {
           currentUser.update({
             email: attr.email,
             gender: attr.gender,
-            dateOfBirth: attr.dateOfBirth
+            dateOfBirth: attr.dateOfBirth,
           });
 
           return new Response(201, {}, {});
@@ -595,10 +500,62 @@ export function makeServer({ environment = "development" } = {}) {
           return new Response(401, {}, {});
         }
       });
-    }
-  });
 
-  //server.shutdown();
+      // Get the current user's data to the account overview(User's Settings)
+      this.get("/v1/me", (schema, request) => {
+        // get the user's data from seed if exist
+        if (request.requestHeaders.Authorization) {
+          // return the user's data if exist in response
+          //If the user checks rememberMe his token will be found in the localStorage
+          let id;
+          if (localStorage.getItem("userToken") != null) {
+            id = localStorage.getItem("userID");
+          }
+          //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+          else if (sessionStorage.getItem("userToken") != null) {
+            id = sessionStorage.getItem("userID");
+          }
+          return new Response(200, {}, schema.users.find(id).attrs);
+        } else {
+          // if the data isn't valid so return error status(400)
+          return new Response(400, {}, {});
+        }
+      });
+
+      //////////////////////////////////////////////////////////////////////////////////////
+      //SOUNDPLAYER
+      //////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/player/queue", () => {
+        return new Response(200, {}, {});
+      });
+      //////////////////////////////////////////////////////////////////////////////////////
+      //
+      //////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/player/currently-playing", () => {
+        return new Response(
+          200,
+          {},
+          {
+            data: {
+              currentTrack: "/track/123",
+            },
+          }
+        );
+      });
+      //////////////////////////////////////////////////////////////////////////////////////
+      //
+      //////////////////////////////////////////////////////////////////////////////////////
+      this.post("/v1/me/player/tracks/:track_id", () => {
+        return new Response(
+          200,
+          {},
+          {
+            data: "123"
+          }
+        );
+      });
+    },
+  });
 
   return server;
 }
