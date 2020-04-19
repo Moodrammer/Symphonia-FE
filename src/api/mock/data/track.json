@@ -14,7 +14,8 @@
     "album": {
       "album_type": "single",
       "href": "https://api.symphonia.com/v1/albums/1",
-      "id": "1",
+      "id": "5",
+      "_id": "5",
       "images": [
         {
           "height": 640,
@@ -47,7 +48,8 @@
     "album": {
       "album_type": "single",
       "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ74PC563",
-      "id": "5GWoXPsTQylMuaZ74PC563",
+      "id": "6",
+      "_id": "6",
       "images": [
         {
           "height": 640,
@@ -80,7 +82,8 @@
     "album": {
       "album_type": "single",
       "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ74PC563",
-      "id": "5GWoXPsTQylMuaZ74PC563",
+      "id": "6",
+      "_id": "6",
       "images": [
         {
           "height": 640,
@@ -113,7 +116,8 @@
     "album": {
       "album_type": "single",
       "href": "https://api.symphonia.com/v1/albums/1",
-      "id": "1",
+      "id": "3",
+      "_id": "3",
       "images": [
         {
           "height": 640,

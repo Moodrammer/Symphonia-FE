@@ -86,22 +86,24 @@
                   </v-btn>
                 </v-row>
                 <v-row justify-lg="center" class="mt-6">
-                  <v-icon
-                    color="white"
-                    @click="followPlaylist"
-                    id="followIcon"
-                    v-if="!followed"
-                    class="mr-3"
-                    >mdi-heart-outline</v-icon
-                  >
-                  <v-icon
-                    color="success"
-                    id="unfollowIcon"
-                    @click="unfollowPlaylist"
-                    v-else
-                    class="mr-3"
-                    >mdi-heart</v-icon
-                  >
+                  <div v-if="!owned">
+                    <v-icon
+                      color="white"
+                      @click="followPlaylist"
+                      id="followIcon"
+                      v-if="!followed"
+                      class="mr-3"
+                      >mdi-heart-outline</v-icon
+                    >
+                    <v-icon
+                      color="success"
+                      id="unfollowIcon"
+                      @click="unfollowPlaylist"
+                      v-else
+                      class="mr-3"
+                      >mdi-heart</v-icon
+                    >
+                  </div>
                   <v-menu offset-x>
                     <template v-slot:activator="{ on }">
                       <!--Icon to activate the menu-->
@@ -120,12 +122,18 @@
                       </v-list-item>
 
                       <v-list-item
-                        v-if="owned"
+                        v-if="owned && playlist.public"
                         @click="makeSecret"
                         id="makeSecret"
                       >
                         <v-list-item-title class="draweritem">
                           Make secret
+                        </v-list-item-title>
+                      </v-list-item>
+
+                      <v-list-item v-else-if="owned" @click="makePublic" id="makePublic">
+                        <v-list-item-title class="draweritem">
+                          Make public
                         </v-list-item-title>
                       </v-list-item>
 
@@ -301,7 +309,20 @@ export default {
       this.$store.commit("playlist/setPlaylistID", this.$route.params.id);
       this.$store.commit("playlist/changeDeleteModel");
     },
-    makeSecret: function() {}
+    makeSecret: function() {
+      this.$store.dispatch("playlist/changeDetails", {
+        playlistID: this.$route.params.id,
+        public: false,
+        token: this.getuserToken()
+      });
+    },
+    makePublic: function() {
+      this.$store.dispatch("playlist/changeDetails", {
+        playlistID: this.$route.params.id,
+        public: true,
+        token: this.getuserToken()
+      });
+    }
   },
   created: function() {
     this.$store.dispatch("playlist/getPlaylist", this.$route.params.id);

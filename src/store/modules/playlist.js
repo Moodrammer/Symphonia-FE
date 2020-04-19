@@ -305,6 +305,28 @@ const actions = {
         console.log("axios caught an error");
         console.log(error);
       });
+  },
+  changeDetails({ commit }, payload) {
+    axios
+      .patch(
+        "/v1/playlists/" + payload.playlistID,
+        {
+          public: payload.public
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`
+          }
+        }
+      )
+      .then(response => {
+        let returnedPlaylist = response.data;
+        commit("setPlaylist", returnedPlaylist);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
   }
 };
 

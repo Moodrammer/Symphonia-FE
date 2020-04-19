@@ -373,7 +373,7 @@ export function makeServer({ environment = "development" } = {}) {
       ////////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/albums/contains", (schema, request) => {
         let albumID = request.queryParams.ids;
-        return schema.albums.where({ _id: albumID }).models[0].liked;
+        return [schema.albums.where({ _id: albumID }).models[0].liked];
       });
       /////////////////////////////////////////////////////////////////////////////////////////
       //Save Albums for Current User
@@ -386,9 +386,31 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////////////
       //Get current user followed playlists
       /////////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/following/playlists",(schema)=>{
-        return schema.playlists.where({liked: true}).models;
+      this.get("/v1/me/following/playlists", schema => {
+        return schema.playlists.where({ liked: true }).models;
       });
+      /////////////////////////////////////////////////////////////////////////////////////////
+      //Remove Albums for Current User
+      /////////////////////////////////////////////////////////////////////////////////////////
+      this.delete("/v1/me/albums", (schema, request) => {
+        let albumID = request.queryParams.ids;
+        schema.albums.where({ _id: albumID }).update({ liked: false });
+        return new Response(200, {}, {});
+      });
+      /////////////////////////////////////////////////////////////////////////////////////////
+      //Change Playlist Details
+      /////////////////////////////////////////////////////////////////////////////////////////
+      this.patch("/v1/playlists/:ID", (schema, request) => {
+        let playlistID = request.params.ID;
+        let status = schema.playlists.where({ id: playlistID }).models[0].public;
+        status = !status;
+        schema.playlists.where({ id: playlistID }).update({ public: status });
+        return schema.playlists.find(playlistID).attrs;
+      });
+      /////////////////////////////////////////////////////////////////////////////////////////
+      // Add Tracks to Playlist 
+      /////////////////////////////////////////////////////////////////////////////////////////
+
       /////////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/albums", schema => {
         return {
@@ -396,13 +418,13 @@ export function makeServer({ environment = "development" } = {}) {
         };
       });
 
-      this.delete("/v1/me/albums", (schema, request) => {
-        var x = "";
+      // this.delete("/v1/me/albums", (schema, request) => {
+      //   var x = "";
 
-        for (var i = 2; i < request.requestBody.length - 2; i++)
-          x += request.requestBody[i];
-        return schema.albums.findBy(album => album._id === x).destroy();
-      });
+      //   for (var i = 2; i < request.requestBody.length - 2; i++)
+      //     x += request.requestBody[i];
+      //   return schema.albums.findBy(album => album._id === x).destroy();
+      // });
 
       this.get("/v1/me/following", (schema, request) => {
         if (request.queryParams.type === "artist")
