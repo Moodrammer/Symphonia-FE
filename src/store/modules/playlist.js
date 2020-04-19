@@ -29,7 +29,9 @@ const mutations = {
     state.likedPlaylists.push(k);
   },
   load_likedPlaylists(state, list) {
-    state.likedPlaylists = list;
+    list.forEach(element => {
+      state.likedPlaylists.push(element);
+    });
   },
   //for Pause and Play
   load_playlists(state, list) {
@@ -86,6 +88,9 @@ const mutations = {
   },
   setPlaylistID(state, ID) {
     state.playlistID = ID;
+  },
+  emptyPlaylists(state) {
+    state.likedPlaylists = [];
   }
 };
 
@@ -136,8 +141,10 @@ const actions = {
 
   // getPlayslist works for (Get a List of Current User's Playlists) when nothing send in the parameter 'user'
   // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
-  async getPlaylists({ commit }, payload) {
+  async getPlaylists({ commit, dispatch }, payload) {
     if (payload != null) {
+      commit("emptyPlaylists");
+      dispatch("followedPlaylist", payload);
       await axios
         .get("/v1/me/playlists", {
           headers: {
@@ -264,6 +271,35 @@ const actions = {
       })
       .then(() => {
         commit("deleted");
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  followedPlaylist({ commit }, token) {
+    axios
+      .get("/v1/me/following/playlists", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        let list = response.data;
+
+        let newList = [];
+        list.forEach(element => {
+          var k = {
+            name: element.name,
+            image: element.images[0],
+            description: element.description,
+            id: element.id,
+            url: "to be added",
+            type: "playlist"
+          };
+          newList.push(k);
+        });
+        commit("load_likedPlaylists", newList);
       })
       .catch(error => {
         console.log("axios caught an error");

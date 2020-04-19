@@ -279,8 +279,16 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       //Get List of Categories
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("v1/browse/categories", () => {
-        return new Response(200, {}, categoryJSON);
+      this.get("v1/browse/categories", schema => {
+        return new Response(
+          200,
+          {},
+          {
+            categories: {
+              items: schema.categories.all().models
+            }
+          }
+        );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Follow a Playlist
@@ -323,7 +331,7 @@ export function makeServer({ environment = "development" } = {}) {
         "/v1/playlists/:playlistId/followers/contains",
         (schema, request) => {
           let playlistID = request.params.playlistId;
-          return schema.playlists.where({ id: playlistID }).models[0].liked;
+          return [schema.playlists.where({ id: playlistID }).models[0].liked];
         }
       );
       //////////////////////////////////////////////////////////////////////////////////////
@@ -374,6 +382,12 @@ export function makeServer({ environment = "development" } = {}) {
         let albumID = JSON.parse(request.requestBody);
         schema.playlists.where({ _id: albumID[0] }).update({ liked: true });
         return new Response(200, {}, {});
+      });
+      /////////////////////////////////////////////////////////////////////////////////////////
+      //Get current user followed playlists
+      /////////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/following/playlists",(schema)=>{
+        return schema.playlists.where({liked: true}).models;
       });
       /////////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/albums", schema => {

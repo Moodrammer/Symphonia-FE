@@ -96,7 +96,7 @@
 
 <script>
 import CreatePlaylist from "../CreatePlaylist";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import getuserToken from "../../mixins/userService";
 /**
  * @displayName Webplayer Navigation Drawer
@@ -110,10 +110,10 @@ export default {
     CreatePlaylist
   },
   methods: {
-    ...mapActions("playlist", ["getPlaylists"])
+    // ...mapActions("playlist", ["getPlaylists"])
   },
   mounted() {
-    this.getPlaylists(this.getuserToken());
+    //this.getPlaylists(this.getuserToken());
   },
   computed: mapState({
     //the playlists from the get request

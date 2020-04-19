@@ -65,16 +65,19 @@
                   <h1 class="mt-5">{{ album.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">
+                  <p class="mt-2" id="year">{{ album.artist.name }}</p>
+                </v-row>
+                <v-row justify-lg="center">
                   <v-btn
                     rounded
-                    class="white--text px-8"
+                    class="white--text px-8 my-4"
                     id="playBtn"
                     @click="play"
                   >
                     Play
                   </v-btn>
                 </v-row>
-                <v-row justify-lg="center" class="mt-6">
+                <v-row justify-lg="center" class="mt-4">
                   <v-icon
                     color="white"
                     @click="followAlbum"
@@ -285,7 +288,6 @@ export default {
   background-color: #1aa34a;
   border-width: 0;
   border-radius: 500px;
-  margin-top: 30px;
 }
 
 #playIcon:hover {
