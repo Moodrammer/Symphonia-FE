@@ -16,7 +16,6 @@
 
 <script>
 import Category from "../general/Category";
-import { mapGetters } from "vuex";
 import getuserToken from "../../mixins/userService";
 /**
  * The webplayer home content if the user is logged in
@@ -33,9 +32,11 @@ export default {
     //this.$store.dispatch("category/getPopularArtists");
     this.$store.dispatch("category/loadGenres");
   },
-  computed: mapGetters({
-    categories: "category/categoriesGetter"
-  }),
+  computed:{
+    categories: function(){
+    return this.$store.state.category.categories
+    }
+  },
   mixins: [getuserToken]
 };
 </script>

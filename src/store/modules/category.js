@@ -134,11 +134,9 @@ const mutations = {
     state.categories.push(state.popularArtists);
   },
   load_personalSections(state) {
-    // state.recentlyPlayed.list.items = playlistModule.state.likedPlaylists;
-    // state.categories.push(state.recentlyPlayed);
-    // state.heavyRoatation.list.items = playlistModule.state.likedPlaylists;
-    // state.categories.push(state.heavyRoatation);
     state.likedPlaylists.list.items = playlistModule.state.likedPlaylists;
+    console.log("fofk")
+    //if(state.likedPlaylists.list.items.length!=0)
     state.categories.push(state.likedPlaylists);
   },
   load_tracks(state, list) {
@@ -246,9 +244,8 @@ const actions = {
         console.log(error);
       });
   },
-  async loadUserSections({ dispatch, commit }, payload) {
+  async loadUserSections({ commit}) {
     await commit("emptyArray");
-    await dispatch("playlist/getPlaylists", payload, { root: true });
     commit("load_personalSections");
   },
   getTracks({ commit }, payload) {

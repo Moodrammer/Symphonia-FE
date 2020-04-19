@@ -12,8 +12,13 @@ const state = {
   followed: false,
   isFirstSong: true,
   deletePlaylist: false,
+  createPlaylist:false,
+  addTrack: false,
   deleted: false,
-  playlistID: null
+  playlistID: null,
+  ownedPlaylists: [],
+  flag: null,
+  tracksToAdd: []
 };
 
 const mutations = {
@@ -29,9 +34,11 @@ const mutations = {
     state.likedPlaylists.push(k);
   },
   load_likedPlaylists(state, list) {
-    list.forEach(element => {
-      state.likedPlaylists.push(element);
-    });
+    for(let i=0 ; i<list.length ;i++) {
+      var k= list[i];
+      state.likedPlaylists.push(k);
+    }
+
   },
   //for Pause and Play
   load_playlists(state, list) {
@@ -83,6 +90,12 @@ const mutations = {
   changeDeleteModel(state) {
     state.deletePlaylist = !state.deletePlaylist;
   },
+  changeCreateModel(state) {
+    state.createPlaylist=!state.createPlaylist;
+  },
+  changeAddTrackModel(state) {
+    state.addTrack=!state.addTrack;
+  },
   deleted(state) {
     state.deleted = true;
   },
@@ -91,6 +104,15 @@ const mutations = {
   },
   emptyPlaylists(state) {
     state.likedPlaylists = [];
+  },
+  setOwnedPlaylists(state, playlists) {
+    state.ownedPlaylists=playlists;
+  },
+  changeFlag(state) {
+    state.flag=true;
+  },
+  setAddedTracks(state, payload) {
+    state.tracksToAdd=payload;
   }
 };
 
@@ -143,17 +165,18 @@ const actions = {
   // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
   async getPlaylists({ commit, dispatch }, payload) {
     if (payload != null) {
-      commit("emptyPlaylists");
-      dispatch("followedPlaylist", payload);
-      await axios
+       await commit("emptyPlaylists");
+       dispatch("followedPlaylist", payload);
+       axios
         .get("/v1/me/playlists", {
           headers: {
             Authorization: `Bearer ${payload}`
           }
         })
         .then(response => {
-          let list = response.data;
+          let list = response.data.playlists.items;
           let newList = [];
+          commit("setOwnedPlaylists",list);
           list.forEach(element => {
             var k = {
               name: element.name,
@@ -165,6 +188,7 @@ const actions = {
             };
             newList.push(k);
           });
+          console.log("owned")
           commit("load_likedPlaylists", newList);
         })
         .catch(error => {
@@ -286,7 +310,6 @@ const actions = {
       })
       .then(response => {
         let list = response.data;
-
         let newList = [];
         list.forEach(element => {
           var k = {
@@ -299,6 +322,8 @@ const actions = {
           };
           newList.push(k);
         });
+        console.log("followed")
+        console.log(newList)
         commit("load_likedPlaylists", newList);
       })
       .catch(error => {
@@ -322,6 +347,23 @@ const actions = {
       .then(response => {
         let returnedPlaylist = response.data;
         commit("setPlaylist", returnedPlaylist);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  addTrackToPlaylist({commit,state}, payload) {
+    axios 
+      .post("/v1/playlists/"+payload.playlistID+"/tracks",{
+        tracks: state.tracksToAdd
+      },{
+        headers: {
+          Authorization: `Bearer ${payload.token}`
+        }
+      })
+      .then(()=> {
+        commit("changeFlag");
       })
       .catch(error => {
         console.log("axios caught an error");

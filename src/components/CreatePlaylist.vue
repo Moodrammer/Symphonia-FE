@@ -1,23 +1,5 @@
-<template slot="activator">
-  <v-dialog fullscreen v-model="dialog">
-    <!--Slot to activate the popup it will be shown in the drawer-->
-    <template v-slot:activator="{ on }">
-      <v-list-item class="temp" v-on:keyup.esc="close" v-on="on" inactive>
-        <v-btn
-          fab
-          x-small
-          color="white"
-          id="openPopup"
-          style="border-radius: 0px; margin-right: 7%"
-        >
-          <v-icon color="black">mdi-plus</v-icon>
-        </v-btn>
-        <v-list-item-title v-show="$vuetify.breakpoint.lgAndUp"
-          >Create Playlist</v-list-item-title
-        >
-      </v-list-item>
-    </template>
-
+<template>
+  <v-dialog fullscreen v-model="dialog"  @keydown.esc="close" >
     <v-card
       align="center"
       color="rgb(0,0,0,0.9)"
@@ -86,7 +68,9 @@ export default {
       name: ""
     };
   },
-
+  created() {
+    this.dialog = this.$store.state.playlist.createPlaylist;
+  },
   methods: {
     /**
      * Gets called when the user clicks on the create button or press enter
@@ -103,6 +87,7 @@ export default {
       });
       //Reset the input data and close the popup
       this.name = "";
+      this.$store.commit("playlist/changeCreateModel");
       this.dialog = false;
     },
     /**
@@ -112,6 +97,7 @@ export default {
      */
     close: function() {
       this.name = "";
+      this.$store.commit("playlist/changeCreateModel");
       this.dialog = false;
     }
   },

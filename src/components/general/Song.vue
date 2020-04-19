@@ -88,7 +88,7 @@
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item @click="addToPlaylist" id="addToPlaylist">
           <v-list-item-title class="draweritem">
             Add to Playlist
           </v-list-item-title>
@@ -216,6 +216,10 @@ export default {
     },
     toAlbum: function() {
       this.$router.push(`/webhome/album/${this.albumID}`);
+    },
+    addToPlaylist: function() {
+      this.$store.commit("playlist/setAddedTracks",[this.id])
+      this.$store.commit("playlist/changeAddTrackModel");
     }
   },
   computed: mapState({

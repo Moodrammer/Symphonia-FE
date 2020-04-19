@@ -53,7 +53,21 @@
       </v-list-item-subtitle>
 
       <!--Nesting the popup-->
-      <create-playlist v-if="loggedIn"></create-playlist>
+      <!-- <create-playlist v-if="loggedIn"></create-playlist> -->
+      <v-list-item class="temp"  @click="changeCreateModel"  inactive v-if="loggedIn">
+        <v-btn
+          fab
+          x-small
+          color="white"
+          id="openPopup"
+          style="border-radius: 0px; margin-right: 7%"
+        >
+          <v-icon color="black">mdi-plus</v-icon>
+        </v-btn>
+        <v-list-item-title v-show="$vuetify.breakpoint.lgAndUp"
+          >Create Playlist</v-list-item-title
+        >
+      </v-list-item>
 
       <!--Liked Songs button-->
       <v-list-item
@@ -95,7 +109,6 @@
 </template>
 
 <script>
-import CreatePlaylist from "../CreatePlaylist";
 import { mapState } from "vuex";
 import getuserToken from "../../mixins/userService";
 /**
@@ -106,14 +119,13 @@ export default {
   props: {
     loggedIn: Boolean
   },
-  components: {
-    CreatePlaylist
-  },
   methods: {
-    // ...mapActions("playlist", ["getPlaylists"])
+    changeCreateModel: function(){
+      this.$store.commit("playlist/changeCreateModel");
+    }
   },
   mounted() {
-    //this.getPlaylists(this.getuserToken());
+      this.$store.dispatch("playlist/getPlaylists",this.getuserToken())
   },
   computed: mapState({
     //the playlists from the get request

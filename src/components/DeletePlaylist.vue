@@ -1,5 +1,5 @@
 <template>
-  <v-dialog fullscreen v-model="dialog">
+  <v-dialog fullscreen v-model="dialog" @keydown.esc="close">
     <v-card
       align="center"
       color="rgb(0,0,0,0.9)"

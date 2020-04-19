@@ -182,8 +182,11 @@ export function makeServer({ environment = "development" } = {}) {
         return new Response(
           200,
           {},
-
-          schema.playlists.where({ active: true }).models
+          {
+            playlists: {
+              items: schema.playlists.where({ active: true }).models
+            }
+          }
         );
       });
       ///////////////////////////////////////////////////////////////////////////////////
