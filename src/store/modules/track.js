@@ -12,8 +12,8 @@ const state = {
   totalDurationMs: 0,
   trackArtist: "",
   generalLiked: null,
-  firstTrackInQueue: false,
-  lastTrackInQueue: false,
+  firstTrackInQueue: true,
+  lastTrackInQueue: true,
   queueTracks: [],
   queueNextTracks: [],
   isCurTrkReady: false,
@@ -75,7 +75,7 @@ const actions = {
         state.imageUrl = trackData.album.image;
         state.albumName = trackData.album.name;
 
-        axios
+        await axios
           .get("/v1/artists/" + trackData.artist._id, {
             headers: {
               Authorization: payload.token,
@@ -84,7 +84,7 @@ const actions = {
           .then((response) => {
             state.trackArtist = response.data.name;
           });
-         
+
         state.isCurTrkReady = true;
       })
       .catch((error) => {
@@ -149,54 +149,20 @@ const actions = {
         console.log(error);
       });
   },
-  getQueueStore({ dispatch, state }, token) {
-    axios({
+  /**
+   * update the queue
+   * @public
+   * @param {string} token the authorization token with the Bearer prefix
+   */
+  async updateQueue({ state }, token) {
+    await axios({
       method: "get",
       url: "/v1/me/player/queue",
       headers: {
         Authorization: token,
       },
-    }).then((response) => {
+    }).then(async (response) => {
       state.queueTracks = response.data.data.queueTracks;
-
-      ///////////////////////////////
-      //first time login (temporary behaviour)
-
-      if (state.queueTracks.length == 0) {
-        axios({
-          method: "post",
-          url: "/v1/me/player/tracks/" + "5e7d2ddd3429e24340ff1397",
-          headers: {
-            Authorization: token,
-          },
-          data: {
-            contextId: "5e8a6d96d4be480ab1d91c95",
-            context_type: "playlist",
-            context_url: "https://localhost:3000/",
-            device: "Chrome",
-          },
-          responseType: "arraybuffer",
-        }).then((response) => {
-          var blob = new Blob([response.data], { type: "audio/mpeg" });
-          var objectUrl = URL.createObjectURL(blob);
-          state.trackUrl = objectUrl;
-
-          //reinitialize the queue
-          dispatch("getQueueStore", token);
-        });
-      } else {
-        var tempTrackUrl = response.data.data.currentlyPlaying.currentTrack;
-        //If i'm not in mocking
-        //get the track id
-        var songId = tempTrackUrl.slice(
-          tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
-          tempTrackUrl.length
-        );
-
-        state.trackId = songId;
-
-        dispatch("updateQueueNextTracksInfo", token);
-      }
 
       if (response.data.data.previousTrack == null) {
         state.firstTrackInQueue = true;
@@ -246,7 +212,7 @@ const actions = {
   /**
    * update the queue next songs data
    */
-  async updateQueueNextTracksInfo({ state }, token) {
+  async updateQueueTracksInfo({ state }, token) {
     //get the start of next songs
     var i;
     var tempTrackUrl;

@@ -60,20 +60,19 @@ export default {
     return {
       hover: false,
       loading: true,
-
       token: undefined
     };
   },
 
   methods: {
-    ...mapActions("track", ["updateQueueNextTracksInfo"]),
+    ...mapActions("track", ["updateQueueTracksInfo"]),
     ...mapMutations("playlist", ["setIsQueueOpened"])
   },
 
   computed: {
     ...mapState({
       curTrkName: state => state.track.trackName,
-      curTrkArtistName: state => state.track.trackArtists[0].name,
+      curTrkArtistName: state => state.track.trackArtist,
       queueNextTracks: state => state.track.queueNextTracks,
       totalDurationMs: state => state.track.totalDurationMs,
       albumName: state => state.track.albumName,
@@ -83,8 +82,6 @@ export default {
 
   mounted: function() {
     this.token = "Bearer " + this.getuserToken();
-
-    //this.updateQueueNextTracksInfo(this.token);
   },
 
   beforeDestroy: function() {

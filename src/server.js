@@ -526,7 +526,13 @@ export function makeServer({ environment = "development" } = {}) {
       //SOUNDPLAYER
       //////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/player/queue", () => {
-        return new Response(200, {}, {});
+        return new Response(200, {}, {
+          data: {
+            queueTracks: [],
+            previousTrack: null,
+            nextTrack: null
+          }
+        });
       });
       //////////////////////////////////////////////////////////////////////////////////////
       //
