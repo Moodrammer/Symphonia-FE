@@ -3,10 +3,6 @@ import axios from "axios";
 const state = {
   likedPlaylists: [],
   playlists: [],
-  audio: undefined,
-  paused: true,
-  isQueueOpened: false,
-  isSongLoaded: false,
   singlePlaylist: null,
   playlistTracks: [],
   followed: false,
@@ -31,25 +27,6 @@ const mutations = {
   load_playlists(state, list) {
     state.playlists = list;
   },
-  setAudio(state, audio) {
-    state.audio = audio;
-  },
-  setPaused(state, paused) {
-    state.paused = paused;
-  },
-  pauseAndPlay(state) {
-    if (!state.paused) {
-      state.audio.pause();
-    } else {
-      state.audio.play();
-    }
-  },
-  setIsQueueOpened(state, isQueueOpened) {
-    state.isQueueOpened = isQueueOpened;
-  },
-  setIsSongLoaded(state, isSongLoaded) {
-    state.isSongLoaded = isSongLoaded;
-  },
   followed(state) {
     state.followed = true;
   },
@@ -72,18 +49,6 @@ const mutations = {
 };
 
 const getters = {
-  audio(state) {
-    return state.audio;
-  },
-  paused(state) {
-    return state.paused;
-  },
-  isQueueOpened(state) {
-    return state.isQueueOpened;
-  },
-  isSongLoaded(state) {
-    return state.isSongLoaded;
-  },
   likedPlaylists: state => state.likedPlaylists,
   playlistTracks(state) {
     return state.playlistTracks;

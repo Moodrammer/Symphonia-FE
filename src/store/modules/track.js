@@ -1,35 +1,43 @@
 import axios from "axios";
 
 const state = {
+  audioElement: undefined,
+
   trackName: "",
   trackUrl: null,
-  liked: null,
   trackId: null,
-  imageUrl: null,
+  trackArtistName: "",
+  trackTotalDuration: 0,
+  trackTotalDurationMs: 0,
+  isTrackLiked: null,
+  isTrackPaused: true,
+  isTrackLoaded: false,
+  isCurTrkReady: false,
+  isFirstTrackInQueue: true,
+  isLastTrackInQueue: true,
+
+  trackAlbumImageUrl: null,
   trackAlbumId: null,
-  albumName: "",
-  totalDuration: 0,
-  totalDurationMs: 0,
-  trackArtist: "",
-  generalLiked: null,
-  firstTrackInQueue: true,
-  lastTrackInQueue: true,
+  trackAlbumName: "",
+
+  isQueueOpened: false,
   queueTracks: [],
   queueNextTracks: [],
-  isCurTrkReady: false,
+
+  generalLiked: null,
 };
 
 const mutations = {
   setLiked(state, payload) {
-    if (payload.id == state.trackId) state.liked = payload.status[0];
+    if (payload.id == state.trackId) state.isTrackLiked = payload.status[0];
     state.generalLiked = payload.status[0];
   },
   unlikeTrack(state, id) {
-    if (id == state.trackId) state.liked = false;
+    if (id == state.trackId) state.isTrackLiked = false;
     state.generalLiked = false;
   },
   likeTrack(state, id) {
-    if (id == state.trackId) state.liked = true;
+    if (id == state.trackId) state.isTrackLiked = true;
     state.generalLiked = true;
   },
   setTrackUrl(state, trackUrl) {
@@ -39,10 +47,10 @@ const mutations = {
     state.trackId = id;
   },
   setFirstTrackInQueue(state, a) {
-    state.firstTrackInQueue = a;
+    state.isFirstTrackInQueue = a;
   },
   setLastTrackInQueue(state, a) {
-    state.lastTrackInQueue = a;
+    state.isLastTrackInQueue = a;
   },
   setQueueTracks(state, queueTracks) {
     state.queueTracks = queueTracks;
@@ -50,8 +58,20 @@ const mutations = {
   setTrackId(state, trackId) {
     state.trackId = trackId;
   },
-  setTotalDuration(state, totalDuration) {
-    state.totalDuration = totalDuration;
+  setTotalDuration(state, trackTotalDuration) {
+    state.trackTotalDuration = trackTotalDuration;
+  },
+  setAudioElement(state, audioElement) {
+    state.audioElement = audioElement;
+  },
+  setIsTrackPaused(state, isTrackPaused) {
+    state.isTrackPaused = isTrackPaused;
+  },
+  setIsQueueOpened(state, isQueueOpened) {
+    state.isQueueOpened = isQueueOpened;
+  },
+  setIsTrackLoaded(state, isTrackLoaded) {
+    state.isTrackLoaded = isTrackLoaded;
   },
 };
 
@@ -70,11 +90,11 @@ const actions = {
           let trackData = response.data;
 
           state.trackName = trackData.name;
-          state.totalDurationMs = trackData.durationMs;
+          state.trackTotalDurationMs = trackData.durationMs;
           state.trackId = trackData.trackId;
 
-          state.imageUrl = trackData.album.image;
-          state.albumName = trackData.album.name;
+          state.trackAlbumImageUrl = trackData.album.image;
+          state.trackAlbumName = trackData.album.name;
 
           await axios
             .get("/v1/artists/" + trackData.artist._id, {
@@ -83,7 +103,7 @@ const actions = {
               },
             })
             .then((response) => {
-              state.trackArtist = response.data.name;
+              state.trackArtistName = response.data.name;
             });
 
           state.isCurTrkReady = true;
@@ -105,8 +125,8 @@ const actions = {
           },
         })
         .then((response) => {
-          let liked = response.data;
-          commit("setLiked", { status: liked, id: payload.trackId });
+          let isTrackLiked = response.data;
+          commit("setLiked", { status: isTrackLiked, id: payload.trackId });
         })
         .catch((error) => {
           console.log("axios caught an error");
@@ -167,15 +187,15 @@ const actions = {
       state.queueTracks = response.data.data.queueTracks;
 
       if (response.data.data.previousTrack == null) {
-        state.firstTrackInQueue = true;
+        state.isFirstTrackInQueue = true;
       } else {
-        state.firstTrackInQueue = false;
+        state.isFirstTrackInQueue = false;
       }
 
       if (response.data.data.nextTrack == null) {
-        state.lastTrackInQueue = true;
+        state.isLastTrackInQueue = true;
       } else {
-        state.lastTrackInQueue = false;
+        state.isLastTrackInQueue = false;
       }
     });
   },
@@ -213,6 +233,7 @@ const actions = {
   },
   /**
    * update the queue next songs data
+   * @public
    */
   async updateQueueTracksInfo({ state }, token) {
     //get the start of next songs
@@ -278,12 +299,23 @@ const actions = {
               },
             })
             .then((response) => {
-              track.albumName = response.data[0].name;
+              track.trackAlbumName = response.data[0].name;
             });
         });
       tracks.push(track);
     }
     state.queueNextTracks = tracks;
+  },
+  /**
+   * toggle soundplayer pause and play
+   * @public
+   */
+  togglePauseAndPlay({ state }) {
+    if (!state.isTrackPaused) {
+      state.audioElement.pause();
+    } else {
+      state.audioElement.play();
+    }
   },
 };
 

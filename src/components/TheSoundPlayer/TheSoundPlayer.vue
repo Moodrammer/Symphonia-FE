@@ -1,30 +1,29 @@
 <template>
   <v-footer app class="sound-player">
-    <!-- audio tag -->
     <audio ref="audiofile" :src="trackUrl" style="display:none;"></audio>
     <!-- song info -->
     <v-row>
       <v-col cols="4">
         <v-toolbar flat color="rgba(0,0,0,0)">
           <v-avatar tile size="56">
-            <img :src="imageUrl" />
+            <img :src="trackAlbumImageUrl" />
           </v-avatar>
           <div
             style="padding-left: 14px; padding-top: 14px; margin-right: 14px;"
           >
             <router-link to="#" class="song-name">
-              {{ songName }}
+              {{ trackName }}
             </router-link>
             <router-link to="#" class="singer-name">
-              {{ artist }}
+              {{ trackArtistName }}
             </router-link>
           </div>
-          <!-- <a @click="saveToLikedSongs()" v-if="!isSongIsLiked">
+          <!-- <a @click="saveToLikedSongs()" v-if="!isTrackLiked">
             <v-icon small title="save your liked songs" class="icons">
               mdi-heart-outline
             </v-icon>
           </a>
-          <a @click="saveToLikedSongs()" v-if="isSongIsLiked">
+          <a @click="saveToLikedSongs()" v-if="isTrackLiked">
             <v-icon
               small
               title="save your liked songs"
@@ -61,10 +60,11 @@
               mdi-shuffle-variant
             </v-icon>
           </a> -->
+
           <!-- Previous -->
           <a
             @click="previous()"
-            v-if="!firstTrackInQueue && isNextAndPreviousFinished"
+            v-if="!isFirstTrackInQueue && isNextAndPreviousFinished"
             title="Previous"
             id="previous"
             style="margin-right: 10px;"
@@ -74,7 +74,7 @@
             </v-icon>
           </a>
           <a
-            v-if="firstTrackInQueue || !isNextAndPreviousFinished"
+            v-if="isFirstTrackInQueue || !isNextAndPreviousFinished"
             title="Previous"
             id="previous"
             style="margin-right: 10px;"
@@ -83,22 +83,22 @@
               mdi-skip-previous
             </v-icon>
           </a>
+
           <!-- Start and Pause -->
           <a
-            @click="pauseAndPlay()"
+            @click="togglePauseAndPlay()"
             v-if="!isBuffering"
             style="width: 36px; height: 36px;"
             disabled
             id="playPause"
           >
-            <v-icon v-if="paused" large class="icons" title="play">
+            <v-icon v-if="isTrackPaused" large class="icons" title="play">
               mdi-play-circle-outline
             </v-icon>
-            <v-icon v-if="!paused" large class="icons" title="pause">
+            <v-icon v-if="!isTrackPaused" large class="icons" title="pause">
               mdi-pause-circle-outline
             </v-icon>
           </a>
-
           <img
             v-if="isBuffering"
             style="width: 36px; height: 36px; vertical-align: middle;"
@@ -108,7 +108,7 @@
           <!-- Next -->
           <a
             @click="next()"
-            v-if="!lastTrackInQueue && isNextAndPreviousFinished"
+            v-if="!isLastTrackInQueue && isNextAndPreviousFinished"
             title="Next"
             id="next"
             style="margin-left: 10px;"
@@ -117,9 +117,8 @@
               mdi-skip-next
             </v-icon>
           </a>
-
           <a
-            v-if="lastTrackInQueue || !isNextAndPreviousFinished"
+            v-if="isLastTrackInQueue || !isNextAndPreviousFinished"
             title="Next"
             id="next"
             style="margin-left: 10px;"
@@ -139,7 +138,6 @@
               mdi-repeat
             </v-icon>
           </a> -->
-
           <!-- v-if="isRepeatEnabled && !isRepeatOnceEnabled" -->
           <a
             id="enRepeatOnce"
@@ -153,7 +151,6 @@
               mdi-repeat
             </v-icon>
           </a>
-
           <!-- v-if="!isRepeatEnabled && isRepeatOnceEnabled" -->
           <a
             id="disRepeatOnce"
@@ -168,26 +165,23 @@
           </a>
         </div>
 
+        <!-- progress bar -->
         <v-toolbar flat color="rgba(0,0,0,0)" height="10">
-          <!-- progress bar -->
           <span class="time" style="padding-right: 10px; margin-top:0px;">{{
             currentTime
           }}</span>
-
           <input
             id="songBar"
             type="range"
             min="0"
-            v-bind:max="totalDuration"
+            v-bind:max="trackTotalDuration"
             @mousedown="isProgressBarPressed = true"
             @mouseup="
-              audio.currentTime = currentTimeInSec;
+              audioElement.currentTime = currentTimeInSec;
               isProgressBarPressed = false;
             "
             v-model="currentTimeInSec"
           />
-
-          <!-- time -->
           <span class="time" style="padding-left: 10px; margin-top:0px;">{{
             duration
           }}</span>
@@ -195,6 +189,7 @@
       </v-col>
 
       <v-spacer></v-spacer>
+
       <v-col cols="2" style="background: rgba(0, 0, 0, 0);">
         <!-- mute or change the volume-->
         <div style="padding-top: 20px;">
@@ -214,7 +209,6 @@
               mdi-format-list-numbered-rtl
             </v-icon>
           </router-link>
-
           <!-- mute -->
           <a
             @click="mute()"
@@ -254,7 +248,7 @@
  * @version 1.0.0
  */
 
-import { mapMutations, mapGetters, mapActions, mapState } from "vuex";
+import { mapMutations, mapActions, mapState } from "vuex";
 import axios from "axios";
 import getuserToken from "../../mixins/userService";
 
@@ -277,22 +271,25 @@ export default {
   mixins: [getuserToken],
 
   computed: {
-    ...mapGetters("playlist", ["audio", "paused", "isQueueOpened"]),
-
     duration: function() {
-      return this.audio ? convertTimeHHMMSS(this.totalDuration) : "";
+      return this.audioElement
+        ? convertTimeHHMMSS(this.trackTotalDuration)
+        : "";
     },
 
     ...mapState({
-      isSongIsLiked: (state) => state.track.liked,
+      isTrackLiked: (state) => state.track.isTrackLiked,
       trackUrl: (state) => state.track.trackUrl,
-      songName: (state) => state.track.trackName,
-      artist: (state) => state.track.trackArtist,
-      imageUrl: (state) => state.track.imageUrl,
-      lastTrackInQueue: (state) => state.track.lastTrackInQueue,
-      firstTrackInQueue: (state) => state.track.firstTrackInQueue,
+      trackName: (state) => state.track.trackName,
+      trackArtistName: (state) => state.track.trackArtistName,
+      trackAlbumImageUrl: (state) => state.track.trackAlbumImageUrl,
+      isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
+      isFirstTrackInQueue: (state) => state.track.isFirstTrackInQueue,
       queueTracks: (state) => state.track.queueTracks,
-      totalDuration: (state) => state.track.totalDuration,
+      trackTotalDuration: (state) => state.track.trackTotalDuration,
+      audioElement: (state) => state.track.audioElement,
+      isTrackPaused: (state) => state.track.isTrackPaused,
+      isQueueOpened: (state) => state.track.isQueueOpened,
     }),
   },
   data() {
@@ -320,10 +317,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations("playlist", ["setAudio", "setPaused", "setIsSongLoaded"]),
-    ...mapActions("playlist", ["pauseAndPlay"]),
     ...mapMutations("track", [
-      "setLiked",
       "setTrackData",
       "setTrackUrl",
       "setTrackId",
@@ -331,8 +325,15 @@ export default {
       "setLastTrackInQueue",
       "setQueueTracks",
       "setTotalDuration",
+      "setAudioElement",
+      "setIsTrackLoaded",
+      "setIsTrackPaused",
     ]),
-    ...mapActions("track", ["getTrackInformation", "updateQueue"]),
+    ...mapActions("track", [
+      "getTrackInformation",
+      "updateQueue",
+      "togglePauseAndPlay",
+    ]),
     /**
      * play a song in the queue
      *
@@ -399,7 +400,7 @@ export default {
      * @public
      */
     saveToLikedSongs: function() {
-      if (!this.isSongIsLiked) {
+      if (!this.isTrackLiked) {
         this.setLiked(true);
         //make a request to set the current song to the like ones.
       } else {
@@ -413,7 +414,7 @@ export default {
      * @public
      */
     updateVolume: function() {
-      this.audio.volume = this.volumeValue / 100;
+      this.audioElement.volume = this.volumeValue / 100;
       if (this.volumeValue / 100 > 0) {
         if (this.isMuted) {
           this.previousVolumeValue = this.volumeValue;
@@ -433,11 +434,11 @@ export default {
      * @public
      */
     next: function() {
-      if (!this.lastTrackInQueue && this.isNextAndPreviousFinished == true) {
+      if (!this.isLastTrackInQueue && this.isNextAndPreviousFinished == true) {
         this.isNextAndPreviousFinished = false;
 
         this.isBuffering = true;
-        this.audio.autoplay = true;
+        this.audioElement.autoplay = true;
 
         axios({
           method: "post",
@@ -465,11 +466,11 @@ export default {
      * @public
      */
     previous: function() {
-      if (!this.firstTrackInQueue && this.isNextAndPreviousFinished == true) {
+      if (!this.isFirstTrackInQueue && this.isNextAndPreviousFinished == true) {
         this.isNextAndPreviousFinished = false;
 
         this.isBuffering = true;
-        this.audio.autoplay = true;
+        this.audioElement.autoplay = true;
 
         axios({
           method: "post",
@@ -551,7 +552,7 @@ export default {
      */
     mute: function() {
       this.isMuted = !this.isMuted;
-      this.audio.muted = this.isMuted;
+      this.audioElement.muted = this.isMuted;
       if (this.isMuted) {
         if (this.volumeValue == 0)
           //the case when the sound is muted due to the slider
@@ -559,7 +560,7 @@ export default {
         else this.previousVolumeValue = this.volumeValue;
       }
       this.volumeValue = this.isMuted ? 0 : this.previousVolumeValue;
-      this.audio.volume = this.volumeValue / 100; //update the volume
+      this.audioElement.volume = this.volumeValue / 100; //update the volume
     },
     /**
      * This handler is invoked after track is loaded
@@ -567,13 +568,14 @@ export default {
      * @public
      */
     _handleLoaded: function() {
-      //The HTMLMediaElement.readyState property indicates the readiness state of the media.
-      // (this.audio.readyState >= 2) Data is available
-      if (this.audio.readyState >= 2) {
-        this.setIsSongLoaded(true);
+      //The HTMLMediaElement.readyState property indicates the
+      //readiness state of the media. (this.audioElement.readyState >= 2)
+      // Data is available
+      if (this.audioElement.readyState >= 2) {
+        this.setIsTrackLoaded(true);
         this.isBuffering = false; //finished loading the next song.
 
-        this.setTotalDuration(parseInt(this.audio.duration));
+        this.setTotalDuration(parseInt(this.audioElement.duration));
       } else {
         throw new Error("Failed to load sound file");
       }
@@ -585,9 +587,9 @@ export default {
      * @public
      */
     _handlePlayingUI: function() {
-      //this.audio.currentTime gets the current time of the playing track
+      //this.audioElement.currentTime gets the current time of the playing track
       //in terms of how many seconds have been passed.
-      var currTime = parseInt(this.audio.currentTime);
+      var currTime = parseInt(this.audioElement.currentTime);
 
       if (!this.isProgressBarPressed) {
         this.currentTimeInSec = currTime;
@@ -601,7 +603,7 @@ export default {
      * @public
      */
     _handlePause: function() {
-      this.setPaused(true);
+      this.setIsTrackPaused(true);
     },
     /**
      * This handler is invoked when the track is played
@@ -609,7 +611,7 @@ export default {
      * @public
      */
     _handlePlay: function() {
-      this.setPaused(false);
+      this.setIsTrackPaused(false);
     },
     /**
      * This handler is invoked when the track started
@@ -643,20 +645,18 @@ export default {
      * @public
      */
     init: async function() {
-      //set the listeners:
-      this.audio.addEventListener("timeupdate", this._handlePlayingUI);
-      //The loadeddata event is fired when the frame at the current playback
-      //position of the media has finished loading; often the first frame.
-      this.audio.addEventListener("loadeddata", this._handleLoaded);
-      this.audio.addEventListener("pause", this._handlePause);
-      this.audio.addEventListener("play", this._handlePlay);
-      this.audio.addEventListener("ended", this._handleEndedTrack); //the song is ended
+      this.audioElement.addEventListener("timeupdate", this._handlePlayingUI);
+      this.audioElement.addEventListener("loadeddata", this._handleLoaded);
+      this.audioElement.addEventListener("pause", this._handlePause);
+      this.audioElement.addEventListener("play", this._handlePlay);
+      this.audioElement.addEventListener("ended", this._handleEndedTrack);
+      this.audioElement.addEventListener("waiting", this._handlerWaiting);
+      this.audioElement.addEventListener(
+        "playing",
+        this._handlePlayingAfterBuffering
+      );
 
-      this.audio.addEventListener("waiting", this._handlerWaiting); //the song is stopped due to buffering
-      this.audio.addEventListener("playing", this._handlePlayingAfterBuffering);
-
-      //configure the volume
-      this.audio.volume = this.volumeValue / 100;
+      this.audioElement.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
       this.token = "Bearer " + this.getuserToken();
@@ -672,18 +672,18 @@ export default {
     },
   },
   mounted: function() {
-    this.setAudio(this.$el.querySelectorAll("audio")[0]);
+    this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
     this.init();
   },
   beforeDestroy: function() {
-    this.audio.removeEventListener("timeupdate", this._handlePlayingUI);
-    this.audio.removeEventListener("loadeddata", this._handleLoaded);
-    this.audio.removeEventListener("pause", this._handlePause);
-    this.audio.removeEventListener("play", this._handlePlay);
-    this.audio.removeEventListener("ended", this._handleEndedTrack);
+    this.audioElement.removeEventListener("timeupdate", this._handlePlayingUI);
+    this.audioElement.removeEventListener("loadeddata", this._handleLoaded);
+    this.audioElement.removeEventListener("pause", this._handlePause);
+    this.audioElement.removeEventListener("play", this._handlePlay);
+    this.audioElement.removeEventListener("ended", this._handleEndedTrack);
 
-    this.audio.removeEventListener("waiting", this._handlerWaiting);
-    this.audio.removeEventListener(
+    this.audioElement.removeEventListener("waiting", this._handlerWaiting);
+    this.audioElement.removeEventListener(
       "playing",
       this._handlePlayingAfterBuffering
     );

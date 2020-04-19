@@ -171,11 +171,10 @@ describe("TheSoundplayer", () => {
       }
     })
 
-    wrapper.vm.setIsFirstSong(false);
     wrapper.vm._handleLoaded();
 
     expect(wrapper.vm.totalDuration).toEqual(3000);
-    expect(wrapper.vm.isBuffering).toEqual(true);
+    expect(wrapper.vm.isBuffering).toEqual(false);
   })
 
   it("playing handler", () => {
@@ -202,11 +201,11 @@ describe("TheSoundplayer", () => {
 
   it("started buffering", () => {
     wrapper.vm._handlerWaiting();
-    expect(wrapper.vm.isBuffering).toEqual(false);
+    expect(wrapper.vm.isBuffering).toEqual(true);
   })
 
   it("buffering is finished", () => {
     wrapper.vm._handlePlayingAfterBuffering();
-    expect(wrapper.vm.isBuffering).toEqual(true);
+    expect(wrapper.vm.isBuffering).toEqual(false);
   })
 });
