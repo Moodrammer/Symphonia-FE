@@ -57,40 +57,42 @@ const mutations = {
 
 const actions = {
   async getTrackInformation({ state }, payload) {
-    state.isCurTrkReady = false;
+    if (payload.trackId != null) {
+      state.isCurTrkReady = false;
 
-    await axios
-      .get("/v1/users/track/" + payload.trackId, {
-        headers: {
-          Authorization: payload.token,
-        },
-      })
-      .then(async (response) => {
-        let trackData = response.data;
+      await axios
+        .get("/v1/users/track/" + payload.trackId, {
+          headers: {
+            Authorization: payload.token,
+          },
+        })
+        .then(async (response) => {
+          let trackData = response.data;
 
-        state.trackName = trackData.name;
-        state.totalDurationMs = trackData.durationMs;
-        state.trackId = trackData.trackId;
+          state.trackName = trackData.name;
+          state.totalDurationMs = trackData.durationMs;
+          state.trackId = trackData.trackId;
 
-        state.imageUrl = trackData.album.image;
-        state.albumName = trackData.album.name;
+          state.imageUrl = trackData.album.image;
+          state.albumName = trackData.album.name;
 
-        await axios
-          .get("/v1/artists/" + trackData.artist._id, {
-            headers: {
-              Authorization: payload.token,
-            },
-          })
-          .then((response) => {
-            state.trackArtist = response.data.name;
-          });
+          await axios
+            .get("/v1/artists/" + trackData.artist._id, {
+              headers: {
+                Authorization: payload.token,
+              },
+            })
+            .then((response) => {
+              state.trackArtist = response.data.name;
+            });
 
-        state.isCurTrkReady = true;
-      })
-      .catch((error) => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
+          state.isCurTrkReady = true;
+        })
+        .catch((error) => {
+          console.log("axios caught an error");
+          console.log(error);
+        });
+    }
   },
   checkSaved({ commit }, payload) {
     if (payload.token == null) {

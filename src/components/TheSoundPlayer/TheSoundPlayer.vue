@@ -341,26 +341,27 @@ export default {
      * @param {string} trackId the track Id to be played
      */
     playTrackInQueue: function(trackId) {
-      //request the song mp3 file
-      axios({
-        method: "post",
-        url: "/v1/me/player/tracks/" + trackId,
-        data: {
-          device: "Chrome",
-        },
-        headers: {
-          Authorization: this.token,
-        },
-      }).then((response) => {
-        var trackToken = response.data.data;
-        var audioSource =
-          axios.defaults.baseURL +
-          "/v1/me/player/tracks/" +
-          trackId +
-          "/" +
-          trackToken;
-        this.setTrackUrl(audioSource);
-      });
+      if (trackId != null) {
+        axios({
+          method: "post",
+          url: "/v1/me/player/tracks/" + trackId,
+          data: {
+            device: "Chrome",
+          },
+          headers: {
+            Authorization: this.token,
+          },
+        }).then((response) => {
+          var trackToken = response.data.data;
+          var audioSource =
+            axios.defaults.baseURL +
+            "/v1/me/player/tracks/" +
+            trackId +
+            "/" +
+            trackToken;
+          this.setTrackUrl(audioSource);
+        });
+      }
     },
     /**
      * get the currently playing track id
@@ -381,10 +382,14 @@ export default {
         //get the track url
         var tempTrackUrl = response.data.data.currentTrack;
         //get the track id
-        songId = tempTrackUrl.slice(
-          tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
-          tempTrackUrl.length
-        );
+        if (tempTrackUrl != null) {
+          songId = tempTrackUrl.slice(
+            tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+            tempTrackUrl.length
+          );
+        } else {
+          songId = null;
+        }
       });
       return songId;
     },
