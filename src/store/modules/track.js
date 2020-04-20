@@ -1,6 +1,8 @@
 import axios from "axios";
 
 const state = {
+  token: "",
+
   audioElement: undefined,
 
   trackName: "",
@@ -15,6 +17,8 @@ const state = {
   isCurTrkReady: false,
   isFirstTrackInQueue: true,
   isLastTrackInQueue: true,
+  isNextAndPreviousFinished: true,
+  isBuffering: false,
 
   trackAlbumImageUrl: null,
   trackAlbumId: null,
@@ -23,15 +27,9 @@ const state = {
   isQueueOpened: false,
   queueTracks: [],
   queueNextTracks: [],
-
-  generalLiked: null,
 };
 
 const mutations = {
-  setLiked(state, payload) {
-    if (payload.id == state.trackId) state.isTrackLiked = payload.status[0];
-    state.generalLiked = payload.status[0];
-  },
   unlikeTrack(state, id) {
     if (id == state.trackId) state.isTrackLiked = false;
     state.generalLiked = false;
@@ -58,7 +56,7 @@ const mutations = {
   setTrackId(state, trackId) {
     state.trackId = trackId;
   },
-  setTotalDuration(state, trackTotalDuration) {
+  setTrackTotalDuration(state, trackTotalDuration) {
     state.trackTotalDuration = trackTotalDuration;
   },
   setAudioElement(state, audioElement) {
@@ -72,6 +70,15 @@ const mutations = {
   },
   setIsTrackLoaded(state, isTrackLoaded) {
     state.isTrackLoaded = isTrackLoaded;
+  },
+  setIsTrackLiked(state, isTrackLiked) {
+    state.isTrackLiked = isTrackLiked;
+  },
+  setIsBuffering(state, isBuffering) {
+    state.isBuffering = isBuffering;
+  },
+  setToken(state, token) {
+    state.token = token;
   },
 };
 
@@ -200,38 +207,6 @@ const actions = {
     });
   },
   /**
-   *
-   * @param payload object contains songId, contextId, token
-   */
-  playSongStore({ dispatch, state }, payload) {
-    //request the song mp3 file
-    axios({
-      method: "post",
-      url: "/v1/me/player/tracks/" + payload.songId,
-      data: {
-        contextId: payload.contextId,
-        context_type: "playlist",
-        context_url: "https://localhost:3000/",
-        device: "Chrome",
-      },
-      headers: {
-        Authorization: payload.token,
-      },
-      responseType: "arraybuffer",
-    }).then((response) => {
-      var blob = new Blob([response.data], { type: "audio/mpeg" });
-      var objectUrl = URL.createObjectURL(blob);
-      state.trackUrl = objectUrl;
-
-      var payloadTrack = {
-        token: payload.token,
-        id: payload.songId,
-      };
-      dispatch("getTrack", payloadTrack);
-      dispatch("getQueueStore", payload.token);
-    });
-  },
-  /**
    * update the queue next songs data
    * @public
    */
@@ -315,6 +290,134 @@ const actions = {
       state.audioElement.pause();
     } else {
       state.audioElement.play();
+    }
+  },
+  /**
+   * get the currently playing track id
+   *
+   * @public
+   * @returns {string} the track id
+   */
+  async getCurrentlyPlayingTrackId({ state }) {
+    //get the currently playing track
+    var songId;
+    await axios({
+      method: "get",
+      url: "/v1/me/player/currently-playing",
+      headers: {
+        Authorization: state.token,
+      },
+    }).then((response) => {
+      //get the track url
+      var tempTrackUrl = response.data.data.currentTrack;
+      //get the track id
+      if (tempTrackUrl != null) {
+        songId = tempTrackUrl.slice(
+          tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+          tempTrackUrl.length
+        );
+      } else {
+        songId = null;
+      }
+    });
+    return songId;
+  },
+  /**
+   * get the next song
+   *
+   * @public
+   */
+  next({ state, dispatch }) {
+    if (!state.isLastTrackInQueue && state.isNextAndPreviousFinished) {
+      state.isNextAndPreviousFinished = false;
+
+      state.isBuffering = true;
+      state.audioElement.autoplay = true;
+
+      axios({
+        method: "post",
+        url: "/v1/me/player/next",
+        headers: {
+          Authorization: state.token,
+        },
+      }).then(async () => {
+        var CurrentlyPlayingTrackId = await dispatch(
+          "getCurrentlyPlayingTrackId"
+        );
+        dispatch("getTrackInformation", {
+          token: state.token,
+          trackId: CurrentlyPlayingTrackId,
+        });
+        await dispatch("updateQueue", state.token);
+
+        dispatch("playTrackInQueue", CurrentlyPlayingTrackId);
+
+        state.isNextAndPreviousFinished = true;
+      });
+    }
+  },
+  /**
+   * get the previous song
+   *
+   * @public
+   */
+  previous({ state, dispatch }) {
+    if (!state.isFirstTrackInQueue && state.isNextAndPreviousFinished) {
+      state.isNextAndPreviousFinished = false;
+
+      state.isBuffering = true;
+      state.audioElement.autoplay = true;
+
+      axios({
+        method: "post",
+        url: "/v1/me/player/previous",
+        headers: {
+          Authorization: state.token,
+        },
+      }).then(async () => {
+        var CurrentlyPlayingTrackId = await dispatch(
+          "getCurrentlyPlayingTrackId"
+        );
+        dispatch("getTrackInformation", {
+          token: state.token,
+          trackId: CurrentlyPlayingTrackId,
+        });
+        await dispatch("updateQueue", state.token);
+
+        dispatch("playTrackInQueue", CurrentlyPlayingTrackId);
+
+        state.isNextAndPreviousFinished = true;
+      });
+    }
+  },
+  /**
+   * play a song in the queue
+   *
+   * @public
+   *
+   * @param {string} trackId the track Id to be played
+   */
+  playTrackInQueue({ state }, trackId) {
+    if (trackId != null) {
+      axios({
+        method: "post",
+        url: "/v1/me/player/tracks/" + trackId,
+        data: {
+          device: "Chrome",
+        },
+        headers: {
+          Authorization: state.token,
+        },
+      }).then((response) => {
+        var trackToken = response.data.data;
+        var audioSource =
+          axios.defaults.baseURL +
+          "/v1/me/player/tracks/" +
+          trackId +
+          "/" +
+          trackToken;
+        state.trackUrl = audioSource;
+      });
     }
   },
 };

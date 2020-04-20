@@ -249,21 +249,7 @@
  */
 
 import { mapMutations, mapActions, mapState } from "vuex";
-import axios from "axios";
 import getuserToken from "../../mixins/userService";
-
-//import io from 'socket.io-client';
-
-export const convertTimeHHMMSS = (val) => {
-  //-val is the time passed from the start of the sound in integer seconds
-  //-new Data(val * 1000) get a date from 1970 2:00:00 and advance it with milli seconds
-  //-convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
-  //-take only the HH:mm:ss part
-  let hhmmss = new Date(val * 1000).toISOString().substr(11, 8);
-  //-if the hh part is 00: then show only mm:ss part. .indexOf('a')
-  //returns the index of the first element in an array starts with 'a'
-  return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
-};
 
 export default {
   name: "soundplayer",
@@ -273,7 +259,7 @@ export default {
   computed: {
     duration: function() {
       return this.audioElement
-        ? convertTimeHHMMSS(this.trackTotalDuration)
+        ? this.convertTimeHHMMSS(this.trackTotalDuration)
         : "";
     },
 
@@ -285,11 +271,14 @@ export default {
       trackAlbumImageUrl: (state) => state.track.trackAlbumImageUrl,
       isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
       isFirstTrackInQueue: (state) => state.track.isFirstTrackInQueue,
-      queueTracks: (state) => state.track.queueTracks,
       trackTotalDuration: (state) => state.track.trackTotalDuration,
       audioElement: (state) => state.track.audioElement,
       isTrackPaused: (state) => state.track.isTrackPaused,
       isQueueOpened: (state) => state.track.isQueueOpened,
+      isNextAndPreviousFinished: (state) =>
+        state.track.isNextAndPreviousFinished,
+      isBuffering: (state) => state.track.isBuffering,
+      token: (state) => state.track.token,
     }),
   },
   data() {
@@ -302,18 +291,14 @@ export default {
 
       //Flags:
       isMuted: false,
-      isBuffering: false,
       isProgressBarPressed: false,
       isVolumePressed: false,
       isRepeatEnabled: false,
       isShuffleEnabled: false,
       isRepeatOnceEnabled: false,
-      isNextAndPreviousFinished: true,
 
       devices: undefined,
       currentDeviceId: undefined,
-
-      token: undefined,
     };
   },
   methods: {
@@ -324,75 +309,37 @@ export default {
       "setFirstTrackInQueue",
       "setLastTrackInQueue",
       "setQueueTracks",
-      "setTotalDuration",
+      "setTrackTotalDuration",
       "setAudioElement",
       "setIsTrackLoaded",
       "setIsTrackPaused",
+      "setIsTrackLiked",
+      "setIsBuffering",
+      "setToken",
     ]),
     ...mapActions("track", [
       "getTrackInformation",
       "updateQueue",
       "togglePauseAndPlay",
+      "next",
+      "previous",
+      "getCurrentlyPlayingTrackId",
+      "playTrackInQueue",
     ]),
     /**
-     * play a song in the queue
-     *
+     * convert time in seconds to MM:SS format
+     * @param {string} value the time in seconds to be converted
      * @public
-     *
-     * @param {string} trackId the track Id to be played
      */
-    playTrackInQueue: function(trackId) {
-      if (trackId != null) {
-        axios({
-          method: "post",
-          url: "/v1/me/player/tracks/" + trackId,
-          data: {
-            device: "Chrome",
-          },
-          headers: {
-            Authorization: this.token,
-          },
-        }).then((response) => {
-          var trackToken = response.data.data;
-          var audioSource =
-            axios.defaults.baseURL +
-            "/v1/me/player/tracks/" +
-            trackId +
-            "/" +
-            trackToken;
-          this.setTrackUrl(audioSource);
-        });
-      }
-    },
-    /**
-     * get the currently playing track id
-     *
-     * @public
-     * @returns {string} the track id
-     */
-    getCurrentlyPlayingTrackId: async function() {
-      //get the currently playing track
-      var songId;
-      await axios({
-        method: "get",
-        url: "/v1/me/player/currently-playing",
-        headers: {
-          Authorization: this.token,
-        },
-      }).then((response) => {
-        //get the track url
-        var tempTrackUrl = response.data.data.currentTrack;
-        //get the track id
-        if (tempTrackUrl != null) {
-          songId = tempTrackUrl.slice(
-            tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
-            tempTrackUrl.length
-          );
-        } else {
-          songId = null;
-        }
-      });
-      return songId;
+    convertTimeHHMMSS: function(value) {
+      //-val is the time passed from the start of the sound in integer seconds
+      //-new Data(val * 1000) get a date from 1970 2:00:00 and advance it with milli seconds
+      //-convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
+      //-take only the HH:mm:ss part
+      let hhmmss = new Date(value * 1000).toISOString().substr(11, 8);
+      //-if the hh part is 00: then show only mm:ss part. .indexOf('a')
+      //returns the index of the first element in an array starts with 'a'
+      return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
     },
     /**
      * change the liked state of the song
@@ -401,10 +348,10 @@ export default {
      */
     saveToLikedSongs: function() {
       if (!this.isTrackLiked) {
-        this.setLiked(true);
+        this.setIsTrackLiked(true);
         //make a request to set the current song to the like ones.
       } else {
-        this.setLiked(false);
+        this.setIsTrackLiked(false);
         //make a request to remove the current song from the like ones.
       }
     },
@@ -414,82 +361,26 @@ export default {
      * @public
      */
     updateVolume: function() {
-      this.audioElement.volume = this.volumeValue / 100;
-      if (this.volumeValue / 100 > 0) {
-        if (this.isMuted) {
-          this.previousVolumeValue = this.volumeValue;
-          this.mute();
+      if (this.volumeValue < 0 || this.volumeValue > 100) {
+        return;
+      } else {
+        this.audioElement.volume = this.volumeValue / 100;
+        if (this.volumeValue != 0) {
+          if (this.isMuted) {
+            this.previousVolumeValue = this.volumeValue;
+            this.mute();
+          } else {
+            return;
+          }
+        } else {
+          if (!this.isMuted) {
+            //the case when slide to 0 more than one time in a
+            //consecutive way
+            this.mute();
+          } else {
+            return;
+          }
         }
-      } else if (this.volumeValue / 100 === 0) {
-        if (!this.isMuted) {
-          //the case when slide to 0 more than one time in a
-          //consecutive way
-          this.mute();
-        }
-      }
-    },
-    /**
-     * get the next song
-     *
-     * @public
-     */
-    next: function() {
-      if (!this.isLastTrackInQueue && this.isNextAndPreviousFinished == true) {
-        this.isNextAndPreviousFinished = false;
-
-        this.isBuffering = true;
-        this.audioElement.autoplay = true;
-
-        axios({
-          method: "post",
-          url: "/v1/me/player/next",
-          headers: {
-            Authorization: this.token,
-          },
-        }).then(async () => {
-          var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
-          this.getTrackInformation({
-            token: this.token,
-            trackId: CurrentlyPlayingTrackId,
-          });
-          await this.updateQueue(this.token);
-
-          this.playTrackInQueue(CurrentlyPlayingTrackId);
-
-          this.isNextAndPreviousFinished = true;
-        });
-      }
-    },
-    /**
-     * get the previous song
-     *
-     * @public
-     */
-    previous: function() {
-      if (!this.isFirstTrackInQueue && this.isNextAndPreviousFinished == true) {
-        this.isNextAndPreviousFinished = false;
-
-        this.isBuffering = true;
-        this.audioElement.autoplay = true;
-
-        axios({
-          method: "post",
-          url: "/v1/me/player/previous",
-          headers: {
-            Authorization: this.token,
-          },
-        }).then(async () => {
-          var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
-          this.getTrackInformation({
-            token: this.token,
-            trackId: CurrentlyPlayingTrackId,
-          });
-          await this.updateQueue(this.token);
-
-          this.playTrackInQueue(CurrentlyPlayingTrackId);
-
-          this.isNextAndPreviousFinished = true;
-        });
       }
     },
     /**
@@ -573,11 +464,11 @@ export default {
       // Data is available
       if (this.audioElement.readyState >= 2) {
         this.setIsTrackLoaded(true);
-        this.isBuffering = false; //finished loading the next song.
+        this.setIsBuffering(false);
 
-        this.setTotalDuration(parseInt(this.audioElement.duration));
+        this.setTrackTotalDuration(parseInt(this.audioElement.duration));
       } else {
-        throw new Error("Failed to load sound file");
+        return;
       }
     },
     /**
@@ -595,7 +486,7 @@ export default {
         this.currentTimeInSec = currTime;
       }
 
-      this.currentTime = convertTimeHHMMSS(currTime);
+      this.currentTime = this.convertTimeHHMMSS(currTime);
     },
     /**
      * This handler is invoked when the track is paused
@@ -620,7 +511,7 @@ export default {
      * @public
      */
     _handlerWaiting: function() {
-      this.isBuffering = true;
+      this.setIsBuffering(true);
     },
     /**
      * This handler is invoked when track finsihed buffering
@@ -628,7 +519,7 @@ export default {
      * @public
      */
     _handlePlayingAfterBuffering: function() {
-      this.isBuffering = false;
+      this.setIsBuffering(false);
     },
     /**
      * This handler is invoked when the track is finished
@@ -659,7 +550,7 @@ export default {
       this.audioElement.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
-      this.token = "Bearer " + this.getuserToken();
+      this.setToken("Bearer " + this.getuserToken());
 
       var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
       this.getTrackInformation({
@@ -681,7 +572,6 @@ export default {
     this.audioElement.removeEventListener("pause", this._handlePause);
     this.audioElement.removeEventListener("play", this._handlePlay);
     this.audioElement.removeEventListener("ended", this._handleEndedTrack);
-
     this.audioElement.removeEventListener("waiting", this._handlerWaiting);
     this.audioElement.removeEventListener(
       "playing",
