@@ -182,12 +182,12 @@ describe("signup", () => {
   //-------------------------------------------------------------------------//
   //                        Submitting the form                             //
   //-------------------------------------------------------------------------//
-   it("submits the form on valid input", () => {
+  // it("submits the form on valid input", () => {
   //   //set the mockState so that the stub action returns the suitable promise result
   //   mockState = "fail"
   //   wrapper.vm.submitForm()
   //   expect(wrapper.vm.errorState).toBe(true)
     
-  })
+  //})
 
 });
