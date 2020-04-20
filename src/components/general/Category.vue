@@ -17,6 +17,11 @@
 
 <script>
 import cardGrid from "./CardGrid";
+/**
+ * A bar of playlists\albums cards with the name of the category
+ * @displayName Category
+ * @example [none]
+ */
 export default {
   components: {
     cardGrid

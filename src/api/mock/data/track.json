@@ -1,7 +1,7 @@
 [
   {
     "category": [],
-    "_id": "5e7d2dc03429e24340ff1396",
+    "trackId": "1",
     "name": "nigga",
     "durationMs": 21354,
     "artist": "5e7d2ad6491be620ac9ea056",
@@ -10,29 +10,25 @@
   },
   {
     "liked": true,
+    "trackId": "2",
     "album": {
       "album_type": "single",
       "href": "https://api.symphonia.com/v1/albums/1",
-      "id": "1",
-      "images": [
-        {
-          "height": 640,
-          "url": "http://source.unsplash.com/hiFpJqA4FcE",
-          "width": 640
-        }
-      ],
+      "id": "5",
+      "_id": "5",
+      "image":"http://source.unsplash.com/hiFpJqA4FcE",
       "name": "Quran ALbum1",
       "type": "album"
     },
-    "artists": [
+    "artist": 
       {
         "href": "https://api.symphonia.com/v1/artists/1",
         "id": "1",
         "name": "Yasser Al-Dosari",
         "type": "artist"
       }
-    ],
-    "duration_ms": 2131000,
+    ,
+    "durationMs": 2131000,
     "explicit": false,
     "href": "https://server11.mp3quran.net/yasser/012.mp3",
     "name": "Surah Yossef",
@@ -42,29 +38,26 @@
   },
   {
     "liked": true,
+    "trackId": "3",
+    "id": "3",
     "album": {
       "album_type": "single",
       "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ74PC563",
-      "id": "5GWoXPsTQylMuaZ74PC563",
-      "images": [
-        {
-          "height": 640,
-          "url": "http://source.unsplash.com/Gmb4U6JFyHo",
-          "width": 640
-        }
-      ],
+      "id": "6",
+      "_id": "6",
+      "images":"http://source.unsplash.com/Gmb4U6JFyHo", 
       "name": "Quran ALbum2",
       "type": "album"
     },
-    "artists": [
+    "artist": 
       {
         "href": "https://api.symphonia.com/v1/artists/2",
         "id": "2",
         "name": "Nasser Al-Qatami",
         "type": "artist"
       }
-    ],
-    "duration_ms": 374000,
+    ,
+    "durationMs": 374000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/qtm/053.mp3",
     "name": "Surah Al-Najm",
@@ -74,29 +67,26 @@
   },
   {
     "liked": true,
+    "trackId": "4",
+    "id": "4",
     "album": {
       "album_type": "single",
       "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ74PC563",
-      "id": "5GWoXPsTQylMuaZ74PC563",
-      "images": [
-        {
-          "height": 640,
-          "url": "http://source.unsplash.com/Gmb4U6JFyHo",
-          "width": 640
-        }
-      ],
+      "id": "6",
+      "_id": "6",
+      "image": "http://source.unsplash.com/Gmb4U6JFyHo",
       "name": "Quran ALbum2",
       "type": "album"
     },
-    "artists": [
+    "artist": 
       {
         "href": "https://api.symphonia.com/v1/artists/3",
         "id": "3",
         "name": "Wadeea Al-Yamani",
         "type": "artist"
       }
-    ],
-    "duration_ms": 1659000,
+    ,
+    "durationMs": 1659000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/wdee3/020.mp3",
     "name": "Surah Taha",
@@ -106,29 +96,26 @@
   },
   {
     "liked": true,
+    "trackId": "5",
+    "id": "5",
     "album": {
       "album_type": "single",
       "href": "https://api.symphonia.com/v1/albums/1",
-      "id": "1",
-      "images": [
-        {
-          "height": 640,
-          "url": "http://source.unsplash.com/hiFpJqA4FcE",
-          "width": 640
-        }
-      ],
-      "name": "Quran ALbum1",
+      "id": "3",
+      "_id": "3",
+      "image":"http://source.unsplash.com/hiFpJqA4FcE",
+      "name": "Album1",
       "type": "album"
     },
-    "artists": [
+    "artist": 
       {
         "href": "https://api.symphonia.com/v1/artists/2",
         "id": "2",
         "name": "Nasser Al-Qatami",
         "type": "artist"
       }
-    ],
-    "duration_ms": 409000,
+    ,
+    "durationMs": 409000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/qtm/067.mp3",
     "name": "Surah Al-Mulk",
@@ -138,18 +125,14 @@
   },
   {
     "liked": false,
+    "trackId": "6",
+    "id": "6",
     "album": {
       "album_type": "single",
       "href": "https://api.symphonia.com/v1/albums/1",
       "id": "1",
-      "images": [
-        {
-          "height": 640,
-          "url": "http://source.unsplash.com/hiFpJqA4FcE",
-          "width": 640
-        }
-      ],
-      "name": "Quran ALbum1",
+      "image": "http://source.unsplash.com/hiFpJqA4FcE",
+      "name": "Album1",
       "type": "album"
     },
     "artists": [
@@ -160,10 +143,38 @@
         "type": "artist"
       }
     ],
-    "duration_ms": 1129000,
+    "durationMs": 1129000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/aloosi/014.mp3",
     "name": "Surah Ibrahim",
+    "popularity": 45,
+    "track_number": 2,
+    "type": "track"
+  },
+  {
+    "liked": false,
+    "trackId": "123",
+    "id": "123",
+    "album": {
+      "album_type": "single",
+      "href": "https://api.symphonia.com/v1/albums/1",
+      "id": "1",
+      "image": "http://source.unsplash.com/FPz-Dd-xx4c",
+      "name": "Album1",
+      "type": "album"
+    },
+    "artist": 
+      {
+        "href": "https://api.symphonia.com/v1/artists/5",
+        "_id": "6",
+        "name": "Artist",
+        "type": "artist"
+      }
+    ,
+    "durationMs": 1129000,
+    "explicit": false,
+    "href": "https://server6.mp3quran.net/aloosi/014.mp3",
+    "name": "Track",
     "popularity": 45,
     "track_number": 2,
     "type": "track"

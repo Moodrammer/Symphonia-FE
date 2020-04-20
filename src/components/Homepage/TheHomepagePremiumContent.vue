@@ -35,7 +35,7 @@
           <v-col sm="1" v-if="isSm()"></v-col>
           <v-col sm="10" md="12" lg="12" xs="12">
             <router-link
-              to="/trial"
+              to="/premium"
               class="download-button-large"
               v-bind:class="{ 'download-button-xs': isXs() }"
             >
@@ -117,7 +117,7 @@
           <v-divider class="mx-4"></v-divider>
 
           <router-link
-            to="/trial"
+            to="/premium"
             class="download-button-large download-button-xs"
           >
             get premium
@@ -130,6 +130,7 @@
 
 <script>
 import getDeviceSize from "../../mixins/getDeviceSize";
+import { mapMutations } from "vuex";
 
 /**
  * The homepage content when pressing premium tab.
@@ -167,44 +168,29 @@ export default {
   },
 
   methods: {
-    /**
-     * Hide the navbar when this view is loaded
-     * by adding an event listener to the window.
-     * @public
-     */
-    hideNavBackground() {
-      this.NavFunction();
-      window.addEventListener("scroll", this.NavFunction);
-    },
+    ...mapMutations("homepage", ["setNavigationBarColor"]),
 
     /**
      * Change the opacity of the Navbar after scrolling.
      * @public
      */
     NavFunction() {
-      var nav = document.getElementById("nav");
       if (window.pageYOffset > 50) {
-        nav.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
+        this.setNavigationBarColor("rgba(0, 0, 0, 0.6)");
       } else {
-        nav.style.backgroundColor = "rgba(0, 0, 0, 0)";
+        this.setNavigationBarColor("rgba(0, 0, 0, 0)");
       }
-    },
-
-    /**
-     * After get out of this page, remove the scroll event listener from the window.
-     * @public
-     */
-    removeNavEventListener() {
-      window.removeEventListener("scroll", this.NavFunction);
     }
   },
 
   mounted: function() {
-    this.hideNavBackground(); //hideNavBackground will execute at pageload
+    this.NavFunction();
+    window.addEventListener("scroll", this.NavFunction);
   },
 
   destroyed: function() {
-    this.removeNavEventListener();
+    window.removeEventListener("scroll", this.NavFunction);
+    this.setNavigationBarColor("rgba(0, 0, 0, 0.6)");
   },
 
   mixins: [getDeviceSize]

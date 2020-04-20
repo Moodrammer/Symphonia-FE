@@ -2,7 +2,7 @@
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import VueRouter from "vue-router";
+import Vuex from "vuex";
 //Importing the component to be tested
 import login from "@/views/Login.vue";
 
@@ -11,17 +11,44 @@ import login from "@/views/Login.vue";
 describe("login", () => {
   let wrapper;
   let vuetify;
+  let actions;
+  let store;
+  let mockState = "";
 
   beforeEach(() => {
-    const router = new VueRouter();
+    //tell vue global constructor to use vuex
+    Vue.use(Vuex);
+    //define a mocking vuex store
+    actions = {
+      loginuser: jest.fn(() => {
+        if (mockState == "fail")
+          return Promise.reject({
+            status: "fail"
+          });
+        else if (mockState == "error")
+          return Promise.reject({
+            status: "error",
+            msg: "Please try again later"
+          });
+        else return Promise.resolve();
+      })
+    };
+    store = new Vuex.Store({
+      actions
+    });
+    //define the other plugins
+    //const router = new VueRouter();
     vuetify = new Vuetify();
+    //tell vue global constructor to use the other plugins
     Vue.use(Vuetify);
-    Vue.use(VueRouter);
+    const $router = [];
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
     //in order to find the elements by their ids
     wrapper = mount(login, {
-      router,
-      vuetify
+      vuetify,
+      store,
+      stubs: ["router-link"],
+      mocks: { $router }
     });
     //console.log(wrapper)
   });
@@ -102,11 +129,12 @@ describe("login", () => {
     const email_wrp = wrapper.find("#login-username");
     //simulate entering an invalid email by the user
     email_wrp.element.value = "mahmoud";
+    console.log(email_wrp.element.value);
     email_wrp.trigger("input");
     //await the next tick as vue batches the changes to the dom to prevent unnecessary re-renders
     await wrapper.vm.$nextTick();
     //assert that the validation message renders on wrong input
-    expect(wrapper.find(".v-messages__wrapper").text()).toBe(
+    expect(wrapper.find(".v-messages__message").text()).toBe(
       "E-mail must be valid"
     );
   });
@@ -133,23 +161,116 @@ describe("login", () => {
 
   //check if validation error message appears on empty input
 
-  //    //form submission tests
-  //    it("submits the form and stores the data in the localStorage" , () => {
-  //        const email_wrp = wrapper.find("#login-username");
-  //         //simulate entering the data by the user
-  //         email_wrp.element.value = "Bob@gmail.com"
-  //         email_wrp.trigger("input")
-  //        const pass_wrp = wrapper.find("#login-password");
-  //         //simulate entering the data by the user
-  //         pass_wrp.element.value = "12345678"
-  //         pass_wrp.trigger("input")
-  //         //simulate clicking the login key
-  //         const btn_wrp = wrapper.find("#login-button")
-  //         btn_wrp.trigger("click")
+  //form submission tests
+  it("dispatches the submit action data if the data is valid", () => {
+    const email_wrp = wrapper.find("#login-username");
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
+    const pass_wrp = wrapper.find("#login-password");
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate clicking the login key
+    const btn_wrp = wrapper.find("#login-button");
+    btn_wrp.trigger("click");
+    //expect the action has been dispatched
+    expect(actions.loginuser).toHaveBeenCalled();
+  });
 
-  //         //expect the userToken to be stored in the sessionStorage
-  //         expect(actions.loginuser).toHaveBeenCalled()
-  //  })
+  it("doesn't dispatch the action if the form data is invalid", () => {
+    const btn_wrp = wrapper.find("#login-button");
+    btn_wrp.trigger("click");
 
-  //routing tests (check only the route without routing as the interaction between components doesn't lie under unit testing)
+    //expect that the action has not been dispatched
+    expect(actions.loginuser).not.toHaveBeenCalled();
+  });
+
+  it("checks if the form is submitted on pressing the enter key", () => {
+    const email_wrp = wrapper.find("#login-username");
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
+    const pass_wrp = wrapper.find("#login-password");
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate pressing enter to submit the form
+    wrapper.trigger("keyup.enter");
+    //expect the action has been dispatched
+    expect(actions.loginuser).toHaveBeenCalled();
+  });
+
+  it("checks if the form is not submitted on pressing any other key than the enter key for example the space key", () => {
+    const email_wrp = wrapper.find("#login-username");
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
+    const pass_wrp = wrapper.find("#login-password");
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate pressing enter to submit the form
+    wrapper.trigger("keyup.space");
+    //expect the action has been dispatched
+    expect(actions.loginuser).not.toHaveBeenCalled();
+  });
+
+  it("checks the error state if the loginuser action promise is rejected with status fail", async () => {
+    //setting the loginuser action stub mockStatus
+    mockState = "fail";
+    const email_wrp = wrapper.find("#login-username");
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
+    const pass_wrp = wrapper.find("#login-password");
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate clicking the login key
+    const btn_wrp = wrapper.find("#login-button");
+    btn_wrp.trigger("click");
+    await wrapper.vm.$nextTick();
+    //expect the action has been dispatched
+    expect(wrapper.vm.errorState).toBe(true);
+  });
+
+  it("checks the error state and message if the loginuser action promise is rejected with status error", async () => {
+    //setting the loginuser action stub mockStatus
+    mockState = "error";
+    const email_wrp = wrapper.find("#login-username");
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
+    const pass_wrp = wrapper.find("#login-password");
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate clicking the login key
+    const btn_wrp = wrapper.find("#login-button");
+    btn_wrp.trigger("click");
+    await wrapper.vm.$nextTick();
+    //expect the action has been dispatched
+    expect(wrapper.vm.errorState).toBe(true);
+    expect(wrapper.vm.errorMessage).toBe("Please try again later");
+  });
+
+  it("checks if the router of webhome is pushed if the login action promise resolves", async () => {
+    //setting the loginuser action stub mockStatus
+    mockState = "success";
+    const email_wrp = wrapper.find("#login-username");
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
+    const pass_wrp = wrapper.find("#login-password");
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate clicking the login key
+    const btn_wrp = wrapper.find("#login-button");
+    btn_wrp.trigger("click");
+    await wrapper.vm.$nextTick();
+    //expect the action has been dispatched
+    expect(wrapper.vm.$router[0]).toBe("/webhome/home");
+  });
 });

@@ -27,12 +27,14 @@ export default {
         localStorage.removeItem("email");
         localStorage.removeItem("userID");
         localStorage.removeItem("type");
+        localStorage.removeItem("imageUrl");
       } else {
         sessionStorage.removeItem("userToken");
         sessionStorage.removeItem("username");
         sessionStorage.removeItem("email");
         sessionStorage.removeItem("userID");
         sessionStorage.removeItem("type");
+        sessionStorage.removeItem("imageUrl");
       }
     },
     /**
@@ -110,6 +112,20 @@ export default {
       //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
       else if (sessionStorage.getItem("userToken") != null) {
         return sessionStorage.getItem("email");
+      }
+    },
+    /**
+     * This function is used to get the userimageUrl from the local or session Storage
+     * @public
+     */
+    getimageUrl() {
+      //If the user checks rememberMe his token will be found in the localStorage
+      if (localStorage.getItem("userToken") != null) {
+        return localStorage.getItem("imageUrl");
+      }
+      //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+      else if (sessionStorage.getItem("userToken") != null) {
+        return sessionStorage.getItem("imageUrl");
       }
     },
     /**

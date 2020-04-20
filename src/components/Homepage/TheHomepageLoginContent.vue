@@ -24,7 +24,7 @@
 
         <v-row>
           <v-col md="10" offset-md="1" xs="12" align="center">
-            <router-link to="/download" class="download-button-large">
+            <router-link to="/" class="download-button-large">
               start free trial
             </router-link>
           </v-col>
@@ -51,7 +51,7 @@
         </p>
       </v-row>
       <v-row justify="center">
-        <router-link to="/" class="listen-button">
+        <router-link to="/webhome/home" class="listen-button">
           Listen on Symphonia
         </router-link>
       </v-row>
@@ -173,7 +173,6 @@
 
 <script>
 import getDeviceSize from "../../mixins/getDeviceSize";
-import axios from "axios";
 
 /**
  * The homepage content after login.
@@ -190,14 +189,6 @@ export default {
       bestSixSongsLoaded: false,
       bestSixSongs: false
     };
-  },
-
-  mounted: function() {
-    axios.get("/v1/bestsongs").then(response => {
-      let list = response.data.data[0].attributes.songs;
-      this.bestSixSongsLoaded = true;
-      this.bestSixSongs = list;
-    });
   },
 
   mixins: [getDeviceSize]

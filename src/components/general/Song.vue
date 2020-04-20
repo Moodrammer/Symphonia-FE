@@ -36,8 +36,14 @@
           <p class="subtitle mr-2" v-bind:class="{ 'disabled-2': disabled }">
             {{ artistName }}
           </p>
-          <p>.</p>
-          <p v-bind:class="{ 'disabled-2': disabled }" class="subtitle ml-2">
+          <p v-if="!album">.</p>
+          <p
+            v-bind:class="{ 'disabled-2': disabled }"
+            class="subtitle ml-2"
+            v-if="!album"
+            @click="toAlbum"
+            id="toAlbum"
+          >
             {{ albumName }}
           </p>
         </v-row>
@@ -49,8 +55,14 @@
     <v-menu offset-x>
       <template v-slot:activator="{ on }">
         <!--Icon to activate the menu-->
-        <div v-on="on" v-on:click="checkLiked">
-          <v-icon color="white" class="mx-2" v-if="hover">
+        <div v-on="on" v-on:click="checkLiked" id="enableMenu">
+          <v-icon
+            color="white"
+            class="mx-2"
+            v-if="hover"
+            id="menu"
+            v-bind:class="{ 'disabled-2': disabled }"
+          >
             mdi-dots-horizontal
           </v-icon>
         </div>
@@ -64,13 +76,13 @@
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item v-if="!liked" @click="likeSong">
+        <v-list-item v-if="!liked" @click="likeSong" id="saveTrack">
           <v-list-item-title class="draweritem">
             Save to your Liked Songs
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item v-if="liked" @click="deleteSong">
+        <v-list-item v-if="liked" @click="deleteSong" id="removeTrack">
           <v-list-item-title class="draweritem">
             Remove from your Liked Songs
           </v-list-item-title>
@@ -82,9 +94,19 @@
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item @click="addToPlaylist" id="addToPlaylist">
           <v-list-item-title class="draweritem">
             Add to Playlist
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-list-item
+          id="removePlaylistTrack"
+          @click="removeFromPlaylist"
+          v-if="playlist"
+        >
+          <v-list-item-title class="draweritem">
+            Remove from this Playlist
           </v-list-item-title>
         </v-list-item>
 
@@ -95,15 +117,33 @@
         </v-list-item>
       </v-list>
     </v-menu>
+    <p class="white--text ml-12" v-bind:class="{ 'disabled-2': disabled }">
+      {{ min }}:{{ sec }}
+    </p>
+    <v-snackbar v-model="snackbar" style="bottom: 100px;">
+      <span>Start listening with a free Symphonia account</span>
 
-    <p class="white--text ml-12">{{ min }}:{{ sec }}</p>
+      <router-link to="/signup" style="text-decoration: none;">
+        <v-btn color="green" text id="snackbarSignup">
+          sign up
+        </v-btn>
+      </router-link>
+
+      <router-link to="/login" style="text-decoration: none;">
+        <v-btn color="cyan" text min-width="20" id="snackbarLogin">
+          log in
+        </v-btn>
+      </router-link>
+    </v-snackbar>
   </v-list-item>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import getuserToken from "../../mixins/userService";
+import isLoggedIn from "../../mixins/userService";
 /**
+ * Song component contains the track name , duration , artist's name , album's name
  * @example [none]
  */
 export default {
@@ -111,7 +151,18 @@ export default {
     songName: String,
     artistName: String,
     albumName: String,
+    albumID: String,
+    artistID: String,
     duration: Number,
+    playlistID: String,
+    album: {
+      type: Boolean,
+      default: false
+    },
+    playlist: {
+      type: Boolean,
+      default: true
+    },
     id: String,
     disabled: {
       type: Boolean,
@@ -126,7 +177,8 @@ export default {
     return {
       hover: "false",
       min: 0,
-      sec: 0
+      sec: 0,
+      snackbar: false
     };
   },
   created() {
@@ -143,30 +195,69 @@ export default {
       this.min = Math.floor((val / 1000 / 60) << 0);
       this.sec = Math.floor((val / 1000) % 60);
     },
+    /**
+     * Function to remove this song from user's the saved tracks
+     * @public This is a public method
+     * @param {none}
+     */
     deleteSong: function() {
-      this.$store.dispatch("track/removeSavedTrack", {
-        id: [this.id],
-        token: this.getuserToken()
-      });
-      this.$root.$emit("updateContent");
+      if (this.isLoggedIn()) {
+        this.$store.dispatch("track/removeSavedTrack", {
+          id: [this.id],
+          token: this.getuserToken()
+        });
+        this.$root.$emit("updateContent");
+      } else {
+        this.snackbar = true;
+      }
     },
+    /**
+     * Function to check if the user saves this song or not , gets called at the menu click
+     * @public This is a public method
+     * @param {none}
+     */
     checkLiked: function() {
+      console.log(this.id);
       this.$store.dispatch("track/checkSaved", {
         id: this.id,
         token: this.getuserToken()
       });
     },
+    /**
+     * Function to save a track for user
+     * @public This is a public method
+     * @param {none}
+     */
     likeSong: function() {
-      this.$store.dispatch("track/saveTrack", {
-        id: [this.id],
-        token: this.getuserToken()
+      if (this.isLoggedIn()) {
+        this.$store.dispatch("track/saveTrack", {
+          id: [this.id],
+          token: this.getuserToken()
+        });
+      } else {
+        this.snackbar = true;
+      }
+    },
+    toAlbum: function() {
+      this.$router.push(`/webhome/album/${this.albumID}`);
+    },
+    addToPlaylist: function() {
+      this.$store.commit("playlist/setAddedTracks", [this.id]);
+      this.$store.commit("playlist/changeAddTrackModel");
+    },
+    removeFromPlaylist: function() {
+      this.$store.dispatch("playlist/removePlaylistTrack", {
+        token: this.getuserToken(),
+        playlistID: this.playlistID,
+        ids: [this.id]
       });
+      this.$root.$emit("update");
     }
   },
   computed: mapState({
     liked: state => state.track.generalLiked
   }),
-  mixins: [getuserToken]
+  mixins: [getuserToken, isLoggedIn]
 };
 </script>
 
@@ -191,11 +282,12 @@ export default {
 
 .disabled-1 {
   color: #b3b3b3 !important;
+  opacity: 0.6;
 }
 
 .disabled-2 {
   color: #b3b3b3 !important;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .playing {

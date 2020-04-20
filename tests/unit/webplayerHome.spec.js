@@ -1,21 +1,54 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
-import vuetify from "vuetify";
+import Vuetify from "vuetify";
+import Vuex from "vuex";
 
 import WebplayerHome from "@/views/WebPlayerHome.vue";
-import NavBar from "@/components/WebNavBar.vue";
-import NavDrawer from "@/components/WebNavDrawer.vue";
+import VueRouter from "vue-router";
+import NavBar from "@/components/WebplayerLayout/WebNavBar.vue";
+import NavDrawer from "@/components/WebplayerLayout/WebNavDrawer.vue";
 
-describe("WebplayerHome", () => {
+describe("Webplayer Home", () => {
   let wrapper;
+  let vuetify;
+  let store;
 
   beforeEach(() => {
-    Vue.use(vuetify);
-    wrapper = shallowMount(WebplayerHome);
+    vuetify = new Vuetify();
+    const router = new VueRouter();
+    Vue.use(Vuetify);
+    Vue.use(VueRouter);
+    Vue.use(Vuex);
+
+    const $forceUpdate = jest.fn();
+    const $root = {};
+    store = new Vuex.Store({
+      modules: {
+        playlist: {
+          namespaced: true,
+          state: {
+            deletePlaylist: false,
+            createPlaylist: false,
+            addTrack: false
+          }
+        }
+      }
+    });
+
+    wrapper = shallowMount(WebplayerHome, {
+      store,
+      router,
+      vuetify,
+      $forceUpdate,
+      $root
+    });
   });
 
+  //--------------------------------------------------
+  //              Test Rendering
+  //--------------------------------------------------
   it("renders a vue instance", () => {
-    expect(shallowMount(WebplayerHome).isVueInstance()).toBe(true);
+    expect(wrapper.isVueInstance()).toBe(true);
   });
 
   it("Has Navagation Bar", () => {
@@ -25,8 +58,21 @@ describe("WebplayerHome", () => {
   it("Has Navagation Drawer", () => {
     expect(wrapper.contains(NavDrawer)).toBe(true);
   });
+  //--------------------------------------------------
+  //          Test computed properties
+  //--------------------------------------------------
+  it("Get delete model state", () => {
+    wrapper.setProps({ deletePlaylist: false });
+    expect("wrapper.vm.deletePlaylist").toBe(false);
+  });
 
-  it("Contains recently played h1", () => {
-    expect(wrapper.html()).toContain('<h1 class="mb-3">Recently played</h1>');
+  it("Get create model state", () => {
+    wrapper.setProps({ createPlaylist: true });
+    expect("wrapper.vm.createPlaylist").toBe(true);
+  });
+
+  it("Get add track model state", () => {
+    wrapper.setProps({ addTrack: false });
+    expect("wrapper.vm.addTrack").toBe(false);
   });
 });

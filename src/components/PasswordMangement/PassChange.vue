@@ -94,7 +94,11 @@
           </v-form>
           <!-- Successfully updated message -->
           <v-row justify="center">
-            <p style="text-align: center" v-if="!notSubmitted">
+            <p
+              id="successful-submission"
+              style="text-align: center"
+              v-if="!notSubmitted"
+            >
               Sweet! Your new password has now been set and you are logged in.
             </p>
             <router-link to="/account" v-if="!notSubmitted"
@@ -169,6 +173,7 @@ export default {
             localStorage.setItem("email", response.data.user.email);
             localStorage.setItem("userID", response.data.user._id);
             localStorage.setItem("type", response.data.user.type);
+            localStorage.setItem("imageUrl", response.data.user.imageUrl);
             //change the page state to be submitted
             this.notSubmitted = false;
           })

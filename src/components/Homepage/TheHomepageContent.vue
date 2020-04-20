@@ -18,7 +18,7 @@
           Millions of songs. No credit card needed.
         </h4>
 
-        <router-link to="/download" class="download-button-large">
+        <router-link to="/" class="download-button-large">
           get symphonia free
         </router-link>
       </v-container>

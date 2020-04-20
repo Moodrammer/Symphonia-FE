@@ -59,7 +59,7 @@
     </v-row>
 
     <v-snackbar v-model="snackbar" style="bottom: 100px;">
-      <span>Start listening with a free Spotify account</span>
+      <span>Start listening with a free Symphonia account</span>
 
       <router-link to="/signup" style="text-decoration: none;">
         <v-btn color="green" text>

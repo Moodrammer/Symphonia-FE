@@ -10,6 +10,11 @@
 <script>
 import cardGrid from "./CardGrid";
 import { mapState } from "vuex";
+/**
+ * This component contains all the playlists\albums of this genre
+ * @displayName Genre
+ * @example [none]
+ */
 export default {
   components: {
     cardGrid

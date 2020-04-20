@@ -18,6 +18,20 @@ const state = {
       items: []
     }
   },
+  newReleases: {
+    categoryName: "Popular new releases",
+    showSeeAll: false,
+    list: {
+      menuList: [
+        { title: "Start Radio" },
+        { title: "Save to Your Library" },
+        { title: "Copy Playlist Link" }
+      ],
+      showMenu: false,
+      hoveredCardIndex: null,
+      items: []
+    }
+  },
   heavyRoatation: {
     categoryName: "Your heavy rotation",
     showSeeAll: false,
@@ -94,7 +108,8 @@ const state = {
     }
   },
   categoryNameHolder: "",
-  categoryIDHolder: ""
+  categoryIDHolder: "",
+  historyResponse: []
 };
 
 const mutations = {
@@ -134,10 +149,6 @@ const mutations = {
     state.categories.push(state.popularArtists);
   },
   load_personalSections(state) {
-    // state.recentlyPlayed.list.items = playlistModule.state.likedPlaylists;
-    // state.categories.push(state.recentlyPlayed);
-    // state.heavyRoatation.list.items = playlistModule.state.likedPlaylists;
-    // state.categories.push(state.heavyRoatation);
     state.likedPlaylists.list.items = playlistModule.state.likedPlaylists;
     state.categories.push(state.likedPlaylists);
   },
@@ -172,6 +183,19 @@ const mutations = {
     singleCategory.list.items = payload;
     state.singleCategory = singleCategory;
     state.categories.push(singleCategory);
+  },
+  history(state, payload) {
+    state.historyResponse = payload;
+  },
+  setRecentlyPlayed(state, payload) {
+    if (payload.length != 0) {
+      state.recentlyPlayed.list.items = payload;
+      state.categories.push(state.recentlyPlayed);
+    }
+  },
+  setNewReleases(state, payload) {
+    state.newReleases.list.items = payload;
+    state.categories.push(state.newReleases);
   }
 };
 
@@ -234,7 +258,7 @@ const actions = {
       .then(async response => {
         let genres = response.data;
         for (let i = 0; i < 4; i++) {
-          var id = genres.data.categorys[i].id;
+          var id = genres.categories.items[i].id;
           genres_ids.push(id);
         }
         for (let index = 0; index < genres_ids.length; index++) {
@@ -246,9 +270,8 @@ const actions = {
         console.log(error);
       });
   },
-  async loadUserSections({ dispatch, commit }, payload) {
+  async loadUserSections({ commit }) {
     await commit("emptyArray");
-    await dispatch("playlist/getPlaylists", payload, { root: true });
     commit("load_personalSections");
   },
   getTracks({ commit }, payload) {
@@ -259,7 +282,7 @@ const actions = {
         }
       })
       .then(response => {
-        let list = response.data;
+        let list = response.data.tracks.items;
         commit("load_tracks", list);
       })
       .catch(error => {
@@ -278,6 +301,55 @@ const actions = {
         console.log("axios caught an error");
         console.log(error);
       });
+  },
+  recentlyPlayed({ commit }, payload) {
+    axios
+      .get("/v1/me/recently-played", {
+        headers: {
+          Authorization: `Bearer ${payload}`
+        }
+      })
+      .then(response => {
+        let list = response.data.history;
+        commit("history");
+        let newList = [];
+        list.forEach(element => {
+          var k = {
+            name: element.contextName,
+            id: element.contextId,
+            image: element.contextImage,
+            type: element.contextType
+          };
+          newList.push(k);
+        });
+        commit("setRecentlyPlayed", newList);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  newReleases({ commit }) {
+    axios
+      .get("/v1/browse/new-releases")
+      .then(response => {
+        let list = response.data.albums.items;
+        let newList = [];
+        list.forEach(element => {
+          var album = {
+            name: element.name,
+            id: element.id,
+            image: element.image,
+            type: "album"
+          };
+          newList.push(album);
+        });
+        commit("setNewReleases", newList);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
   }
 };
 
@@ -285,7 +357,7 @@ const getters = {
   categoriesGetter: function(state) {
     return state.categories;
   },
-  tracksGetter: (state) => state.tracks
+  tracksGetter: state => state.tracks
 };
 export default {
   namespaced: true,

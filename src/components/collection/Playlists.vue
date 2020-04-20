@@ -53,21 +53,20 @@ export default {
   },
   mixins: [getuserToken],
   created() {
-    try{
-      this.getPlaylists(this.getuserToken())
-      this.getTracks(this.getuserToken())
-    }catch(error){
-      console.log(error)
+    try {
+      this.getPlaylists(this.getuserToken());
+      this.getTracks(this.getuserToken());
+    } catch (error) {
+      console.log(error);
     }
-
   },
-  computed:{
+  computed: {
     ...mapGetters("playlist", ["likedPlaylists"]),
     ...mapGetters("category", ["tracksGetter"])
-  }, 
+  },
   methods: {
     ...mapActions("playlist", ["getPlaylists"]),
-    ...mapActions( "category", ["getTracks"]),
+    ...mapActions("category", ["getTracks"]),
     /**
      * called when the user clicks on an aption from the context menu
      * @param {string} menuItem the option chosen by user
@@ -91,7 +90,7 @@ export default {
     likedPlaylists: function(newValue){
       this.cardItems.items = newValue;
     },
-    tracksGetter: function(newValue){
+    tracksGetter: function(newValue) {
       this.cardItems.likedSongs = newValue;
     }
   }

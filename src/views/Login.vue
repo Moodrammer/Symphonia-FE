@@ -41,15 +41,18 @@
         <!-- Google button -->
         <v-row>
           <v-col cols="12" class="pt-1">
-            <v-btn
-              block
-              large
-              rounded
-              color="#dd4b39"
-              class="white--text"
-              id="ggl-login"
-              >CONTINUE WITH GOOGLE
-            </v-btn>
+            <a href="https://thesymphonia.ddns.net/api/v1/users/auth/google">
+              <v-btn
+                block
+                large
+                rounded
+                color="#dd4b39"
+                class="white--text"
+                id="ggl-login"
+              >
+                CONTINUE WITH GOOGLE
+              </v-btn>
+            </a>
           </v-col>
         </v-row>
         <!-- Divider row -->

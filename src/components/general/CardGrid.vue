@@ -118,7 +118,12 @@
                       v-for="(song, index) in cardItems.likedSongs"
                       :key="index"
                     >
-                      <span v-for="(artist,index) in song.artists" :key="index"> {{ artist.name }} </span>
+                      <span
+                        v-for="(artist, index) in song.artists"
+                        :key="index"
+                      >
+                        {{ artist.name }}
+                      </span>
                       <span class="grey--text">{{ song.name }}.</span>
                     </span>
                   </v-card-text>
@@ -260,7 +265,12 @@ export default {
   },
   created() {
     this.AUIitems = this.$props.cardItems.items;
-    if (this.cardStyle==="artist" && this.AUIitems && this.AUIitems.length > 12) this.AUIitems = this.AUIitems.slice(0, 12);
+    if (
+      this.cardStyle === "artist" &&
+      this.AUIitems &&
+      this.AUIitems.length > 12
+    )
+      this.AUIitems = this.AUIitems.slice(0, 12);
     this.showMoreBtn = true;
   },
   methods: {
