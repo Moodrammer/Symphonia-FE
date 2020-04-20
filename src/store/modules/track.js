@@ -27,6 +27,8 @@ const state = {
   isQueueOpened: false,
   queueTracks: [],
   queueNextTracks: [],
+  isRepeatEnabled: false,
+  isRepeatOnceEnabled: false,
 };
 
 const mutations = {
@@ -193,6 +195,8 @@ const actions = {
     }).then(async (response) => {
       state.queueTracks = response.data.data.queueTracks;
 
+      state.isRepeatOnceEnabled = response.data.data.repeatOnce;
+
       if (response.data.data.previousTrack == null) {
         state.isFirstTrackInQueue = true;
       } else {
@@ -327,14 +331,18 @@ const actions = {
    *
    * @public
    */
-  next({ state, dispatch }) {
+  async next({ state, dispatch }) {
     if (!state.isLastTrackInQueue && state.isNextAndPreviousFinished) {
       state.isNextAndPreviousFinished = false;
 
+      if (state.isRepeatOnceEnabled) {
+        await dispatch("toggleRepeatOnce");
+      }
+      
       state.isBuffering = true;
       state.audioElement.autoplay = true;
 
-      axios({
+      await axios({
         method: "post",
         url: "/v1/me/player/next",
         headers: {
@@ -361,14 +369,18 @@ const actions = {
    *
    * @public
    */
-  previous({ state, dispatch }) {
+  async previous({ state, dispatch }) {
     if (!state.isFirstTrackInQueue && state.isNextAndPreviousFinished) {
       state.isNextAndPreviousFinished = false;
+
+      if (state.isRepeatOnceEnabled) {
+        await dispatch("toggleRepeatOnce");
+      }
 
       state.isBuffering = true;
       state.audioElement.autoplay = true;
 
-      axios({
+      await axios({
         method: "post",
         url: "/v1/me/player/previous",
         headers: {
@@ -419,6 +431,21 @@ const actions = {
         state.trackUrl = audioSource;
       });
     }
+  },
+  /**
+   * toggle repeat once
+   *
+   * @public
+   */
+  async toggleRepeatOnce({ state }) {
+    state.isRepeatOnceEnabled = !state.isRepeatOnceEnabled;
+    await axios({
+      method: "patch",
+      url: "/v1/me/player/repeatOnce",
+      headers: {
+        Authorization: state.token,
+      },
+    });
   },
 };
 

@@ -140,8 +140,8 @@
           </a> -->
           <!-- v-if="isRepeatEnabled && !isRepeatOnceEnabled" -->
           <a
-            id="enRepeatOnce"
-            @click="enableRepeatOnce()"
+            id="enableRepeatOnce"
+            @click="toggleRepeatOnceConditionally()"
             v-if="!isRepeatOnceEnabled"
             title="Enable repeat once"
             style="margin-left: 20px;"
@@ -153,8 +153,8 @@
           </a>
           <!-- v-if="!isRepeatEnabled && isRepeatOnceEnabled" -->
           <a
-            id="disRepeatOnce"
-            @click="disableRepeatOnce()"
+            id="disableRepeatOnce"
+            @click="toggleRepeatOnceConditionally()"
             v-if="isRepeatOnceEnabled"
             title="Disable repeat once"
             style="margin-left: 20px;"
@@ -279,6 +279,8 @@ export default {
         state.track.isNextAndPreviousFinished,
       isBuffering: (state) => state.track.isBuffering,
       token: (state) => state.track.token,
+      isRepeatEnabled: (state) => state.track.isRepeatEnabled,
+      isRepeatOnceEnabled: (state) => state.track.isRepeatOnceEnabled,
     }),
   },
   data() {
@@ -293,9 +295,7 @@ export default {
       isMuted: false,
       isProgressBarPressed: false,
       isVolumePressed: false,
-      isRepeatEnabled: false,
       isShuffleEnabled: false,
-      isRepeatOnceEnabled: false,
 
       devices: undefined,
       currentDeviceId: undefined,
@@ -325,6 +325,7 @@ export default {
       "previous",
       "getCurrentlyPlayingTrackId",
       "playTrackInQueue",
+      "toggleRepeatOnce",
     ]),
     /**
      * convert time in seconds to MM:SS format
@@ -340,6 +341,15 @@ export default {
       //-if the hh part is 00: then show only mm:ss part. .indexOf('a')
       //returns the index of the first element in an array starts with 'a'
       return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
+    },
+    /**
+     * invoke toggleRepeatOnce in case the next and previous
+     * procedures are finished.
+     * 
+     * @public
+     */
+    toggleRepeatOnceConditionally: function() {
+      this.toggleRepeatOnce();
     },
     /**
      * change the liked state of the song
@@ -414,25 +424,6 @@ export default {
      */
     enableRepeat: function() {
       this.isRepeatEnabled = true;
-      /* send a request to save the option on backend */
-    },
-    /**
-     * enable repeat once
-     *
-     * @public
-     */
-    enableRepeatOnce: function() {
-      this.isRepeatEnabled = false;
-      this.isRepeatOnceEnabled = true;
-      /* send a request to save the option on backend */
-    },
-    /**
-     * disable repeat once
-     *
-     * @public
-     */
-    disableRepeatOnce: function() {
-      this.isRepeatOnceEnabled = false;
       /* send a request to save the option on backend */
     },
     /**
@@ -526,7 +517,11 @@ export default {
      * @public
      */
     _handleEndedTrack: function() {
-      this.next();
+      if (this.isRepeatOnceEnabled) {
+        this.audioElement.play();
+      } else {
+        this.next();
+      }
     },
     /**
      * This is the initialization function

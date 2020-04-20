@@ -526,13 +526,17 @@ export function makeServer({ environment = "development" } = {}) {
       //SOUNDPLAYER
       //////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/player/queue", () => {
-        return new Response(200, {}, {
-          data: {
-            queueTracks: [],
-            previousTrack: null,
-            nextTrack: null
+        return new Response(
+          200,
+          {},
+          {
+            data: {
+              queueTracks: [],
+              previousTrack: null,
+              nextTrack: null,
+            },
           }
-        });
+        );
       });
       //////////////////////////////////////////////////////////////////////////////////////
       //
@@ -556,9 +560,15 @@ export function makeServer({ environment = "development" } = {}) {
           200,
           {},
           {
-            data: "123"
+            data: "123",
           }
         );
+      });
+      //////////////////////////////////////////////////////////////////////////////////////
+      //
+      //////////////////////////////////////////////////////////////////////////////////////
+      this.patch("/v1/me/player/repeatOnce", () => {
+        return new Response(200, {}, {});
       });
     },
   });
