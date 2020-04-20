@@ -179,6 +179,10 @@
                     </v-list>
                   </v-menu>
                 </v-row>
+                <v-row justify-lg="center">
+                  <h5 class="mr-2 mt-2">{{ playlist.tracksCount }}</h5>
+                  <h5 class="mr-2 mt-2">SONGS</h5>
+                </v-row>
               </v-col>
             </v-row>
           </v-container>
@@ -202,6 +206,7 @@
                 :playlist="owned"
                 :playlistID="id"
                 :id="track._id"
+                :disabled="track.premium"
               />
             </div>
           </v-list>
@@ -348,6 +353,12 @@ export default {
       });
     }
   },
+  mounted() {
+    this.$root.$on("update", () => {
+      console.log("from event");
+      this.$store.dispatch("playlist/getPlaylist", this.$route.params.id);
+    });
+  },
   computed: {
     playlist() {
       return this.$store.state.playlist.singlePlaylist;
@@ -387,10 +398,9 @@ export default {
   background-color: #1ed760;
   transform: scale(1.05, 1.05);
 }
-
-/* #followPlaylist {
-  border-radius: 0; 
-} */
+h5 {
+  opacity: 0.5;
+}
 
 .lg-img,
 .lg-card,

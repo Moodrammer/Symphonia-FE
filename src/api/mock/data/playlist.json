@@ -3,40 +3,25 @@
     "active": true,
     "description": "playlist A",
     "popularity": 90,
-    "recent": true,
     "genre": "folk",
-    "followers": {
-      "href": null,
-      "total": 143350
-    },
-    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
         "http://source.unsplash.com/PsEXbDsSlV4"
     ],
     "name": "QuranPlaylist1",
     "owner": "1",
-
     "public": true,
     "liked": false,
+    "tracksCount": "2",
     "tracks": [
         {
             "album": {
               "album_type": "single",
-              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
               "_id": "5",
-              "images": [
-                {
-                  "height": 640,
-                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
-                  "width": 640
-                }
-              ],
               "name": "Quran ALbum1",
               "type": "album"
             },
             "artist":
               {
-                "href": "https://api.symphonia.com/v1/artists/1",
                 "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
@@ -54,21 +39,12 @@
           {
             "album": {
               "album_type": "single",
-              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ74PC563",
               "_id": "6",
-              "images": [
-                  {
-                    "height": 640,
-                    "url": "http://source.unsplash.com/Gmb4U6JFyHo",
-                    "width": 640
-                  }
-                ],
               "name": "Quran ALbum2",
               "type": "album"
               },
           "artist":
                 {
-              "href": "https://api.symphonia.com/v1/artists/2",
               "id": "2",
               "name": "Nasser Al-Qatami",
               "type": "artist"
@@ -79,7 +55,7 @@
           "id": "4i9sYtSIlR81bxje5B3rUb",
           "name": "Surah Al-Najm",
           "popularity": 45,
-          "track_number": 1,
+          "track_number": 2,
           "type": "track"
             }
       ]
@@ -87,13 +63,7 @@
   {
 
     "description": "playlist B",
-    "recent": false,
     "genre": "jazz",
-    "followers": {
-    "href": null,
-    "total": 14335
-    },
-  "href": "https://api.symphonia.com/v1/users/symphonia/playlists/2",
   "images": [
        "http://source.unsplash.com/Az_mSeq7vQQ"
     ],
@@ -101,25 +71,17 @@
   "owner": "2",
   "public": true,
   "liked": false,
+  "tracksCount": "1",
   "tracks": [
         {
           "album": {
             "album_type": "single",
-            "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ74PC563",
             "_id": "6",
-            "images": [
-                {
-                  "height": 640,
-                  "url": "http://source.unsplash.com/Gmb4U6JFyHo",
-                  "width": 640
-                }
-              ],
             "name": "Quran ALbum2",
             "type": "album"
             },
         "artist":
               {
-            "href": "https://api.symphonia.com/v1/artists/2",
             "id": "2",
             "name": "Nasser Al-Qatami",
             "type": "artist"
@@ -139,12 +101,7 @@
     "description": "Playlist D",
     "popularity": 90,
     "genre": "rock",
-    "recent": true,
-    "followers": {
-    "href": null,
-    "total": 1435
-    },
-  "href": "https://api.symphonia.com/v1/users/symphonia/playlists/3",
+
   "images": [
       "http://source.unsplash.com/yrVv6pwVp78"
     ],
@@ -152,26 +109,18 @@
   "owner": "2",
   "public": true,
   "liked": false,
+  "tracksCount":"1",
   "tracks": [
         {
 
           "album": {
             "album_type": "single",
-            "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ74PC563",
             "_id": "6",
-            "images": [
-                {
-                  "height": 640,
-                  "url": "http://source.unsplash.com/Gmb4U6JFyHo",
-                  "width": 640
-                }
-              ],
             "name": "Quran ALbum2",
             "type": "album"
             },
         "artist":
               {
-            "href": "https://api.symphonia.com/v1/artists/2",
             "id": "2",
             "name": "Nasser Al-Qatami",
             "type": "artist"
@@ -192,12 +141,6 @@
     "description": "Playlist C",
     "popularity": 90,
     "genre": "pop",
-    "recent": false,
-    "followers": {
-      "href": null,
-      "total": 143350
-    },
-    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
          "http://source.unsplash.com/mp_FNJYcjBM"
     ],
@@ -205,25 +148,17 @@
     "owner": "2",
     "public": true,
     "liked": false,
+    "tracksCount":"2",
     "tracks":[
       {
         "album": {
           "album_type": "single",
-          "href": "https://api.symphonia.com/v1/albums/7",
           "_id": "6",
-          "images": [
-              {
-                "height": 640,
-                "url": "http://source.unsplash.com/Gmb4U6JFyHo",
-                "width": 640
-              }
-            ],
           "name": "Quran ALbum2",
           "type": "album"
           },
       "artist":
             {
-          "href": "https://api.symphonia.com/v1/artists/2",
           "id": "2",
           "name": "Nasser Al-Qatami",
           "type": "artist"
@@ -240,21 +175,12 @@
         {
             "album": {
               "album_type": "single",
-              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
               "_id": "5",
-              "images": [
-                {
-                  "height": 640,
-                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
-                  "width": 640
-                }
-              ],
               "name": "Quran ALbum1",
               "type": "album"
             },
             "artist":
               {
-                "href": "https://api.symphonia.com/v1/artists/1",
                 "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
@@ -275,12 +201,6 @@
     "description": "Playlist E",
     "popularity": 90,
     "genre": "folk",
-    "recent": true,
-    "followers": {
-      "href": null,
-      "total": 143350
-    },
-    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
         "http://source.unsplash.com/S4KVecxgCDo"
     ],
@@ -289,25 +209,17 @@
     "public": true,
     "liked": false,
     "active": true,
+    "tracksCount":"1",
     "tracks": [
       {
             "album": {
               "album_type": "single",
-              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
               "_id": "5",
-              "images": [
-                {
-                  "height": 640,
-                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
-                  "width": 640
-                }
-              ],
               "name": "Quran ALbum1",
               "type": "album"
             },
             "artist":
               {
-                "href": "https://api.symphonia.com/v1/artists/1",
                 "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
@@ -328,12 +240,6 @@
     "description": "Playlist G",
     "popularity": 90,
     "genre": "jazz",
-    "recent": false,
-    "followers": {
-      "href": null,
-      "total": 143350
-    },
-    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
         "http://source.unsplash.com/zm42KtKcn9c"
     ],
@@ -341,25 +247,17 @@
     "owner": "2",
     "public": true,
     "liked": true,
+    "tracksCount":"1",
     "tracks": [
          {
             "album": {
               "album_type": "single",
-              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
               "_id": "5",
-              "images": [
-                {
-                  "height": 640,
-                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
-                  "width": 640
-                }
-              ],
               "name": "Quran ALbum1",
               "type": "album"
             },
             "artist":
               {
-                "href": "https://api.symphonia.com/v1/artists/1",
                 "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
@@ -379,13 +277,6 @@
   {
     "description": "Playlist X",
     "popularity": 50,
-    "recent": true,
-    "genre": "pop",
-    "followers": {
-      "href": null,
-      "total": 143350
-    },
-    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
         "http://source.unsplash.com/wf0c0d-h2fE"
     ],
@@ -393,25 +284,17 @@
     "owner": "2",
     "public": true,
     "liked": true,
+    "tracksCount": "1",
     "tracks": [
       {
             "album": {
               "album_type": "single",
-              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
               "_id": "5",
-              "images": [
-                {
-                  "height": 640,
-                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
-                  "width": 640
-                }
-              ],
               "name": "Quran ALbum1",
               "type": "album"
             },
             "artist":
               {
-                "href": "https://api.symphonia.com/v1/artists/1",
                 "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
@@ -431,13 +314,7 @@
   {
     "description": "Playlist N",
     "popularity": 50,
-    "recent": true,
     "genre": "rock",
-    "followers": {
-      "href": null,
-      "total": 143350
-    },
-    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
         "http://source.unsplash.com/cZWZjymwI9o"
     ],
@@ -445,25 +322,17 @@
     "owner": "2",
     "public": true,
     "liked": false,
+    "tracksCount":"1",
     "tracks": [{
 
             "album": {
               "album_type": "single",
-              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
               "_id": "5",
-              "images": [
-                {
-                  "height": 640,
-                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
-                  "width": 640
-                }
-              ],
               "name": "Quran ALbum1",
               "type": "album"
             },
             "artist": 
               {
-                "href": "https://api.symphonia.com/v1/artists/1",
                 "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
@@ -484,13 +353,7 @@
   {
     "description": "Playlist M",
     "popularity": 50,
-    "recent": true,
     "genre": "folk",
-    "followers": {
-      "href": null,
-      "total": 143350
-    },
-    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
         "http://source.unsplash.com/SBIak0pKUIE"
     ],
@@ -498,25 +361,17 @@
     "owner": "2",
     "public": true,
     "liked": false,
+    "tracksCount":"1",
     "tracks": [{
 
             "album": {
               "album_type": "single",
-              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
               "_id": "5",
-              "images": [
-                {
-                  "height": 640,
-                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
-                  "width": 640
-                }
-              ],
               "name": "Quran ALbum1",
               "type": "album"
             },
             "artist":
               {
-                "href": "https://api.symphonia.com/v1/artists/1",
                 "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
@@ -536,7 +391,6 @@
   {
     "description": "Playlist K",
     "popularity": 50,
-    "recent": true,
     "genre": "pop",
     "followers": {
       "href": null,
@@ -550,24 +404,16 @@
     "owner": "2",
     "public": true,
     "liked": false,
+    "tracksCount":"1",
     "tracks": [{
             "album": {
               "album_type": "single",
-              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
               "_id": "5",
-              "images": [
-                {
-                  "height": 640,
-                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
-                  "width": 640
-                }
-              ],
               "name": "Quran ALbum1",
               "type": "album"
             },
             "artist":
               {
-                "href": "https://api.symphonia.com/v1/artists/1",
                 "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"
@@ -587,13 +433,7 @@
   {
     "description": "Playlist L",
     "popularity": 50,
-    "recent": true,
     "genre": "jazz",
-    "followers": {
-      "href": null,
-      "total": 143350
-    },
-    "href": "https://api.symphonia.com/v1/users/symphonia/playlists/1",
     "images": [
          "http://source.unsplash.com/NCNzK2vVnpI"
     ],
@@ -601,24 +441,16 @@
     "owner": "2",
     "public": true,
     "liked": false,
+    "tracksCount":"1",
     "tracks": [{
             "album": {
               "album_type": "single",
-              "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ84PC563",
               "_id": "5",
-              "images": [
-                {
-                  "height": 640,
-                  "url": "http://source.unsplash.com/hiFpJqA4FcE",
-                  "width": 640
-                }
-              ],
               "name": "Quran ALbum1",
               "type": "album"
             },
             "artist":
               {
-                "href": "https://api.symphonia.com/v1/artists/1",
                 "id": "1",
                 "name": "Yasser Al-Dosari",
                 "type": "artist"

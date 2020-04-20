@@ -41,7 +41,9 @@ describe("Webplayer Navigation Drawer", () => {
               }
             ]
           },
-
+          mutations: {
+            changeCreateModel: jest.fn()
+          },
           actions: {
             getPlaylists: jest.fn()
           }
@@ -74,5 +76,17 @@ describe("Webplayer Navigation Drawer", () => {
   //--------------------------------------------------
   it("Get user's saved playlists", () => {
     expect("getPlaylists").toHaveBeenCalled;
+  });
+
+  it("Get saved playlists", () => {
+    wrapper.setProps({ playlists: [] });
+    expect("wrapper.vm.playlists").toBe("[]");
+  });
+  //--------------------------------------------------
+  //                   Methods
+  //--------------------------------------------------
+  it("Change create playlist state", () => {
+    wrapper.vm.changeCreateModel();
+    expect("changeCreateModel").toHaveBeenCalled;
   });
 });

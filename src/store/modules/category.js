@@ -18,6 +18,20 @@ const state = {
       items: []
     }
   },
+  newReleases: {
+    categoryName: "Popular new releases",
+    showSeeAll: false,
+    list: {
+      menuList: [
+        { title: "Start Radio" },
+        { title: "Save to Your Library" },
+        { title: "Copy Playlist Link" }
+      ],
+      showMenu: false,
+      hoveredCardIndex: null,
+      items: []
+    }
+  },
   heavyRoatation: {
     categoryName: "Your heavy rotation",
     showSeeAll: false,
@@ -174,8 +188,14 @@ const mutations = {
     state.historyResponse = payload;
   },
   setRecentlyPlayed(state, payload) {
-    state.recentlyPlayed.list.items = payload;
-    state.categories.push(state.recentlyPlayed);
+    if (payload.length != 0) {
+      state.recentlyPlayed.list.items = payload;
+      state.categories.push(state.recentlyPlayed);
+    }
+  },
+  setNewReleases(state, payload) {
+    state.newReleases.list.items = payload;
+    state.categories.push(state.newReleases);
   }
 };
 
@@ -290,19 +310,41 @@ const actions = {
         }
       })
       .then(response => {
-        let list = response.data.history.items;
+        let list = response.data.history;
         commit("history");
         let newList = [];
         list.forEach(element => {
           var k = {
-            name: element.context.name,
-            id: element.context._id,
-            image: element.context.images[0],
+            name: element.contextName,
+            id: element.contextId,
+            image: element.contextImage,
             type: element.contextType
           };
           newList.push(k);
         });
         commit("setRecentlyPlayed", newList);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  newReleases({ commit }) {
+    axios
+      .get("/v1/browse/new-releases")
+      .then(response => {
+        let list = response.data.albums.items;
+        let newList = [];
+        list.forEach(element => {
+          var album = {
+            name: element.name,
+            id: element.id,
+            image: element.image,
+            type: "album"
+          };
+          newList.push(album);
+        });
+        commit("setNewReleases", newList);
       })
       .catch(error => {
         console.log("axios caught an error");

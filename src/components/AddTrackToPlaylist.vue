@@ -89,6 +89,7 @@ export default {
       this.dialog = false;
     },
     create: function() {
+      this.$store.commit("playlist/createWithTrackModel");
       this.$store.commit("playlist/changeCreateModel");
     },
     imageHover: function(index) {

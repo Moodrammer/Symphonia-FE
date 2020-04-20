@@ -18,7 +18,8 @@ const state = {
   playlistID: null,
   ownedPlaylists: [],
   flag: null,
-  tracksToAdd: []
+  tracksToAdd: [],
+  createWithTrack: false
 };
 
 const mutations = {
@@ -112,6 +113,9 @@ const mutations = {
   },
   setAddedTracks(state, payload) {
     state.tracksToAdd = payload;
+  },
+  createWithTrackModel(state) {
+    state.createWithTrack = !state.createWithTrack;
   }
 };
 
@@ -139,7 +143,7 @@ const getters = {
 
 const actions = {
   //Create a new playlist for the current user payload{Playlist's name & token}
-  createPlaylist({ commit }, payload) {
+  createPlaylist({ commit, state, dispatch }, payload) {
     axios
       .post(
         "/v1/users/" + payload.id + "/playlists",
@@ -153,6 +157,13 @@ const actions = {
       .then(response => {
         var newPlaylist = response.data;
         commit("add_playlist", newPlaylist);
+        if (state.createWithTrack == true) {
+          dispatch("addTrackToPlaylist", {
+            playlistID: newPlaylist.id,
+            token: payload.token
+          });
+          commit("changeAddTrackModel");
+        }
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -233,7 +244,7 @@ const actions = {
     axios
       .get("/v1/playlists/" + playlistID + "/tracks")
       .then(response => {
-        let returnedTracks = response.data;
+        let returnedTracks = response.data.tracks.items;
         commit("setTracks", returnedTracks);
       })
       .catch(error => {

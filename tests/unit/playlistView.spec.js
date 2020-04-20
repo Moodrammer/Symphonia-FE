@@ -49,7 +49,10 @@ describe("Playlist View", () => {
             ],
             followed: false
           },
-
+          mutations: {
+            setPlaylistID: jest.fn(),
+            changeDeleteModel: jest.fn()
+          },
           actions: {
             playSongStore: jest.fn(),
             followPlaylist: jest.fn(),

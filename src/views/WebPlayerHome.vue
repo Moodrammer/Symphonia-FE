@@ -51,7 +51,7 @@ export default {
     });
 
     //hide the html scrollbar
-    document.getElementById("html").classList.add("mystyle");
+    //document.getElementById("html").classList.add("mystyle");
   },
   computed: {
     deletePlaylist() {

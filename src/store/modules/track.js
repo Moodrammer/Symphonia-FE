@@ -133,11 +133,10 @@ const actions = {
   },
   removeSavedTrack({ commit }, payload) {
     axios
-      .delete("/v1/me/tracks", {
+      .delete("/v1/me/tracks?ids=" + payload.id, {
         headers: {
           Authorization: `Bearer ${payload.token}`
-        },
-        data: payload.id
+        }
       })
       .then(() => {
         //   if(id[0]==state.trackId)           //comment it for now

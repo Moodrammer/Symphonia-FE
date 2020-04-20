@@ -114,7 +114,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import getuserToken from "../../mixins/userService";
 /**
  * @displayName Webplayer Navigation Drawer
@@ -132,10 +131,11 @@ export default {
   mounted() {
     this.$store.dispatch("playlist/getPlaylists", this.getuserToken());
   },
-  computed: mapState({
-    //the playlists from the get request
-    playlists: state => state.playlist.likedPlaylists
-  }),
+  computed: {
+    playlists: function() {
+      return this.$store.state.playlist.likedPlaylists;
+    }
+  },
   data: function() {
     return {
       items: [

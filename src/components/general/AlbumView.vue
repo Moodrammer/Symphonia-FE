@@ -142,7 +142,7 @@
                 <v-row justify-lg="center">
                   <h5 id="year" class="mt-3 mr-2">{{ album.year }}</h5>
                   <h5 id="year" class="mt-3 mr-2">.</h5>
-                  <h5 id="year" class="mt-3 mr-2">2</h5>
+                  <h5 id="year" class="mt-3 mr-2">{{ album.tracksCount }}</h5>
                   <h5 id="year" class="mt-3 mr-2">SONGS</h5>
                 </v-row>
               </v-col>
@@ -165,6 +165,7 @@
                 :duration="track.durationMs"
                 :album="true"
                 :id="track._id"
+                :disabled="track.premium"
               />
             </div>
           </v-list>

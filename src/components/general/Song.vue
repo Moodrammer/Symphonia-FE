@@ -56,7 +56,13 @@
       <template v-slot:activator="{ on }">
         <!--Icon to activate the menu-->
         <div v-on="on" v-on:click="checkLiked" id="enableMenu">
-          <v-icon color="white" class="mx-2" v-if="hover" id="menu">
+          <v-icon
+            color="white"
+            class="mx-2"
+            v-if="hover"
+            id="menu"
+            v-bind:class="{ 'disabled-2': disabled }"
+          >
             mdi-dots-horizontal
           </v-icon>
         </div>
@@ -111,7 +117,9 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <p class="white--text ml-12">{{ min }}:{{ sec }}</p>
+    <p class="white--text ml-12" v-bind:class="{ 'disabled-2': disabled }">
+      {{ min }}:{{ sec }}
+    </p>
     <v-snackbar v-model="snackbar" style="bottom: 100px;">
       <span>Start listening with a free Symphonia account</span>
 
@@ -242,6 +250,7 @@ export default {
         playlistID: this.playlistID,
         ids: [this.id]
       });
+      this.$root.$emit("update");
     }
   },
   computed: mapState({
@@ -272,11 +281,12 @@ export default {
 
 .disabled-1 {
   color: #b3b3b3 !important;
+  opacity: 0.6;
 }
 
 .disabled-2 {
   color: #b3b3b3 !important;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .playing {

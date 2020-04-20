@@ -317,7 +317,11 @@ export function makeServer({ environment = "development" } = {}) {
       ////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/playlists/:playlistId/tracks", (schema, request) => {
         let playlistID = request.params.playlistId;
-        return schema.playlists.where({ id: playlistID }).models[0].tracks;
+        return {
+          tracks: {
+            items: schema.playlists.where({ id: playlistID }).models[0].tracks
+          }
+        };
       });
       //////////////////////////////////////////////////////////////////////////////////////
       //
@@ -373,7 +377,11 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/albums/:ID/tracks", (schema, request) => {
         let albumID = request.params.ID;
-        return schema.albums.where({ _id: albumID }).models[0].tracks;
+        return {
+          tracks: {
+            items: schema.albums.where({ _id: albumID }).models[0].tracks
+          }
+        };
       });
       ////////////////////////////////////////////////////////////////////////////////////////
       //Check User's Saved Albums
@@ -430,6 +438,16 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/recently-played", () => {
         return historyJSON;
+      });
+      /////////////////////////////////////////////////////////////////////////////////////////
+      //Get List of new-releases
+      /////////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/browse/new-releases", schema => {
+        return {
+          albums: {
+            items: schema.albums.all().models
+          }
+        };
       });
       /////////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/albums", schema => {

@@ -3,10 +3,27 @@
   "items": [
     {   
         "liked": true,
+        "tracksCount":"1",
         "tracks": [
-            "5e7d2dc03429e24340ff1396",
-            "5e7d2ddd3429e24340ff1397",
-            "5e7d2e023429e24340ff1398"
+            {
+                "liked": true,
+                "_id": "2",
+                "artist": 
+                  {
+                    "href": "https://api.symphonia.com/v1/artists/2",
+                    "_id": "2",
+                    "name": "Nasser Al-Qatami",
+                    "type": "artist"
+                  }
+                ,
+                "durationMs": 374000,
+                "explicit": false,
+                "href": "https://server6.mp3quran.net/qtm/053.mp3",
+                "name": "Surah Al-Najm",
+                "popularity": 45,
+                "track_number": 1,
+                "type": "track"
+              }
         ],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "1",
@@ -18,6 +35,7 @@
     },
     {
         "liked": false,
+        "tracksCount": "1",
         "tracks": [
           {
               "liked": true,
@@ -48,6 +66,7 @@
     },
     {
         "liked": true,
+        "tracksCount": "1",
         "tracks": [
             {
                 "liked": true,
@@ -79,6 +98,7 @@
     },
     {
         "liked": true,
+        "tracksCount":"1",
         "tracks": [
             {
                 "liked": true,
@@ -110,6 +130,7 @@
     },
     {
         "liked": false,
+        "tracksCount":"1",
         "tracks": [
             {
                 "liked": true,
@@ -141,6 +162,7 @@
     },
     {
         "liked": false,
+        "tracksCount":"1",
         "tracks": [
             {
                 "liked": true,

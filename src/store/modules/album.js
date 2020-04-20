@@ -105,7 +105,7 @@ const actions = {
     axios
       .get("/v1/albums/" + albumID + "/tracks")
       .then(response => {
-        let tracks = response.data;
+        let tracks = response.data.tracks.items;
         commit("setTracks", tracks);
       })
       .catch(error => {

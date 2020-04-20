@@ -20,14 +20,14 @@ describe("DeletePlaylist", () => {
 
     const $route = {
       name: "home"
-    }
+    };
 
     store = new Vuex.Store({
       modules: {
         playlist: {
           namespaced: true,
           state: {
-            deletePlaylist:true
+            deletePlaylist: true
           },
           mutations: {
             changeDeleteModel: jest.fn()
@@ -100,6 +100,4 @@ describe("DeletePlaylist", () => {
     btn.vm.$emit("click");
     expect("deletePlaylist").toHaveBeenCalled;
   });
-
-
 });
