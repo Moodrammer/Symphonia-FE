@@ -54,7 +54,12 @@
 
       <!--Nesting the popup-->
       <!-- <create-playlist v-if="loggedIn"></create-playlist> -->
-      <v-list-item class="temp"  @click="changeCreateModel"  inactive v-if="loggedIn">
+      <v-list-item
+        class="temp"
+        @click="changeCreateModel"
+        inactive
+        v-if="loggedIn"
+      >
         <v-btn
           fab
           x-small
@@ -120,12 +125,12 @@ export default {
     loggedIn: Boolean
   },
   methods: {
-    changeCreateModel: function(){
+    changeCreateModel: function() {
       this.$store.commit("playlist/changeCreateModel");
     }
   },
   mounted() {
-      this.$store.dispatch("playlist/getPlaylists",this.getuserToken())
+    this.$store.dispatch("playlist/getPlaylists", this.getuserToken());
   },
   computed: mapState({
     //the playlists from the get request

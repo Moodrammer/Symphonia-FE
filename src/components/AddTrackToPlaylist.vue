@@ -6,13 +6,7 @@
       class="white--text justify-content-center"
     >
       <!--A button for closing the popup-->
-      <v-btn
-        fab
-        color="rgb(0,0,0,0)"
-        @click="close"
-        id="closeIcon"
-        depressed
-      >
+      <v-btn fab color="rgb(0,0,0,0)" @click="close" id="closeIcon" depressed>
         <v-icon color="white" large>mdi-close</v-icon>
       </v-btn>
 
@@ -30,7 +24,11 @@
       </v-btn>
 
       <v-row class="ml-4">
-        <v-card  v-for="(playlist, index) in playlists" :key="playlist.id" class="ma-2 white--text" color="transparent"
+        <v-card
+          v-for="(playlist, index) in playlists"
+          :key="playlist.id"
+          class="ma-2 white--text"
+          color="transparent"
           @mouseover="imageHover(index)"
           @mouseleave="hoverIndex = null"
         >
@@ -39,18 +37,14 @@
             id="playlistPhoto"
             @click="add(playlist.id)"
           >
-            <v-overlay
-              absolute
-              opacity="0.8"
-              v-show="hoverIndex===index"
-            >
+            <v-overlay absolute opacity="0.8" v-show="hoverIndex === index">
               <v-icon large color="white">
                 mdi-music-note-plus
               </v-icon>
             </v-overlay>
           </v-img>
           <p class="mt-2 font-weight-bold">
-           {{playlist.name}}
+            {{ playlist.name }}
           </p>
         </v-card>
       </v-row>
@@ -77,9 +71,7 @@ export default {
   },
   created() {
     this.dialog = this.$store.state.playlist.addTrack;
-    if(this.$store.state.playlist.likedPlaylists.length ==0){
-      this.$store.dispatch("playlist/getPlaylists",this.getuserToken())
-    }
+    this.$store.dispatch("playlist/getOwnedPlaylists", this.getuserToken());
   },
   computed: {
     playlists() {
@@ -100,7 +92,7 @@ export default {
       this.$store.commit("playlist/changeCreateModel");
     },
     imageHover: function(index) {
-      this.hoverIndex=index;
+      this.hoverIndex = index;
     },
     add: function(id) {
       this.$store.dispatch("playlist/addTrackToPlaylist", {
@@ -116,7 +108,6 @@ export default {
 </script>
 
 <style scoped>
-
 #create {
   color: #fff;
   background-color: #1aa34a;

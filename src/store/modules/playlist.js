@@ -12,7 +12,7 @@ const state = {
   followed: false,
   isFirstSong: true,
   deletePlaylist: false,
-  createPlaylist:false,
+  createPlaylist: false,
   addTrack: false,
   deleted: false,
   playlistID: null,
@@ -34,11 +34,10 @@ const mutations = {
     state.likedPlaylists.push(k);
   },
   load_likedPlaylists(state, list) {
-    for(let i=0 ; i<list.length ;i++) {
-      var k= list[i];
+    for (let i = 0; i < list.length; i++) {
+      var k = list[i];
       state.likedPlaylists.push(k);
     }
-
   },
   //for Pause and Play
   load_playlists(state, list) {
@@ -91,10 +90,10 @@ const mutations = {
     state.deletePlaylist = !state.deletePlaylist;
   },
   changeCreateModel(state) {
-    state.createPlaylist=!state.createPlaylist;
+    state.createPlaylist = !state.createPlaylist;
   },
   changeAddTrackModel(state) {
-    state.addTrack=!state.addTrack;
+    state.addTrack = !state.addTrack;
   },
   deleted(state) {
     state.deleted = true;
@@ -106,13 +105,13 @@ const mutations = {
     state.likedPlaylists = [];
   },
   setOwnedPlaylists(state, playlists) {
-    state.ownedPlaylists=playlists;
+    state.ownedPlaylists = playlists;
   },
   changeFlag(state) {
-    state.flag=true;
+    state.flag = true;
   },
   setAddedTracks(state, payload) {
-    state.tracksToAdd=payload;
+    state.tracksToAdd = payload;
   }
 };
 
@@ -163,11 +162,10 @@ const actions = {
 
   // getPlayslist works for (Get a List of Current User's Playlists) when nothing send in the parameter 'user'
   // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
-  async getPlaylists({ commit, dispatch }, payload) {
+  async getPlaylists({ commit }, payload) {
     if (payload != null) {
-       await commit("emptyPlaylists");
-       dispatch("followedPlaylist", payload);
-       axios
+      await commit("emptyPlaylists");
+      axios
         .get("/v1/me/playlists", {
           headers: {
             Authorization: `Bearer ${payload}`
@@ -176,7 +174,6 @@ const actions = {
         .then(response => {
           let list = response.data.playlists.items;
           let newList = [];
-          commit("setOwnedPlaylists",list);
           list.forEach(element => {
             var k = {
               name: element.name,
@@ -188,7 +185,6 @@ const actions = {
             };
             newList.push(k);
           });
-          console.log("owned")
           commit("load_likedPlaylists", newList);
         })
         .catch(error => {
@@ -322,8 +318,6 @@ const actions = {
           };
           newList.push(k);
         });
-        console.log("followed")
-        console.log(newList)
         commit("load_likedPlaylists", newList);
       })
       .catch(error => {
@@ -353,16 +347,54 @@ const actions = {
         console.log(error);
       });
   },
-  addTrackToPlaylist({commit,state}, payload) {
-    axios 
-      .post("/v1/playlists/"+payload.playlistID+"/tracks",{
-        tracks: state.tracksToAdd
-      },{
+  addTrackToPlaylist({ commit, state }, payload) {
+    axios
+      .post(
+        "/v1/playlists/" + payload.playlistID + "/tracks",
+        {
+          tracks: state.tracksToAdd
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`
+          }
+        }
+      )
+      .then(() => {
+        commit("changeFlag");
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  getOwnedPlaylists({ commit }, token) {
+    axios
+      .get("/v1/me/playlists/owned", {
         headers: {
-          Authorization: `Bearer ${payload.token}`
+          Authorization: `Bearer ${token}`
         }
       })
-      .then(()=> {
+      .then(response => {
+        let owned = response.data.playlists.items;
+        commit("setOwnedPlaylists", owned);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  removePlaylistTrack({ commit }, payload) {
+    axios
+      .delete(
+        "/v1/playlists/" + payload.playlistID + "/tracks?ids=" + payload.ids,
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`
+          }
+        }
+      )
+      .then(() => {
         commit("changeFlag");
       })
       .catch(error => {

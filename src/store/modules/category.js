@@ -94,7 +94,8 @@ const state = {
     }
   },
   categoryNameHolder: "",
-  categoryIDHolder: ""
+  categoryIDHolder: "",
+  historyResponse: []
 };
 
 const mutations = {
@@ -135,8 +136,6 @@ const mutations = {
   },
   load_personalSections(state) {
     state.likedPlaylists.list.items = playlistModule.state.likedPlaylists;
-    console.log("fofk")
-    //if(state.likedPlaylists.list.items.length!=0)
     state.categories.push(state.likedPlaylists);
   },
   load_tracks(state, list) {
@@ -170,6 +169,13 @@ const mutations = {
     singleCategory.list.items = payload;
     state.singleCategory = singleCategory;
     state.categories.push(singleCategory);
+  },
+  history(state, payload) {
+    state.historyResponse = payload;
+  },
+  setRecentlyPlayed(state, payload) {
+    state.recentlyPlayed.list.items = payload;
+    state.categories.push(state.recentlyPlayed);
   }
 };
 
@@ -244,7 +250,7 @@ const actions = {
         console.log(error);
       });
   },
-  async loadUserSections({ commit}) {
+  async loadUserSections({ commit }) {
     await commit("emptyArray");
     commit("load_personalSections");
   },
@@ -270,6 +276,33 @@ const actions = {
       .then(async response => {
         let category = response.data;
         commit("setName", category);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  recentlyPlayed({ commit }, payload) {
+    axios
+      .get("/v1/me/recently-played", {
+        headers: {
+          Authorization: `Bearer ${payload}`
+        }
+      })
+      .then(response => {
+        let list = response.data.history.items;
+        commit("history");
+        let newList = [];
+        list.forEach(element => {
+          var k = {
+            name: element.context.name,
+            id: element.context._id,
+            image: element.context.images[0],
+            type: element.contextType
+          };
+          newList.push(k);
+        });
+        commit("setRecentlyPlayed", newList);
       })
       .catch(error => {
         console.log("axios caught an error");

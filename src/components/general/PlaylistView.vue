@@ -131,7 +131,11 @@
                         </v-list-item-title>
                       </v-list-item>
 
-                      <v-list-item v-else-if="owned" @click="makePublic" id="makePublic">
+                      <v-list-item
+                        v-else-if="owned"
+                        @click="makePublic"
+                        id="makePublic"
+                      >
                         <v-list-item-title class="draweritem">
                           Make public
                         </v-list-item-title>
@@ -195,6 +199,8 @@
                 :artistName="track.artist.name"
                 :artistID="track.artist._id"
                 :duration="track.durationMs"
+                :playlist="owned"
+                :playlistID="id"
                 :id="track._id"
               />
             </div>

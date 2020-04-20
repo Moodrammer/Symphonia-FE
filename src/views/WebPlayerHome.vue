@@ -13,7 +13,7 @@
     ></router-view>
     <delete-playlist v-if="deletePlaylist" />
     <add-track-to-playlist v-if="addTrack" />
-    <create-playlist v-if="createPlaylist"/>
+    <create-playlist v-if="createPlaylist" />
     <sound-player v-if="isLoggedIn()" />
     <sound-player-logout v-if="!isLoggedIn()" />
   </v-app>

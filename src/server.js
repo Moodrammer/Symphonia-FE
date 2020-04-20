@@ -4,6 +4,7 @@ import trackJSON from "./api/mock/data/track.json";
 import artistJSON from "./api/mock/data/artist.json";
 import albumsJSON from "./api/mock/data/album.json";
 import categoryJSON from "./api/mock/data/category.json";
+import historyJSON from "./api/mock/data/history.json";
 
 //The makeserver function to be used to enable Mirage to intercept your requests
 export function makeServer({ environment = "development" } = {}) {
@@ -179,12 +180,15 @@ export function makeServer({ environment = "development" } = {}) {
       //Get a List of Current User's Playlists
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/playlists", schema => {
+        let owned = schema.playlists.where({ active: true }).models;
+        let followed = schema.playlists.where({ liked: true }).models;
+        for (let i = 0; i < followed.length; i++) owned.push(followed[i]);
         return new Response(
           200,
           {},
           {
             playlists: {
-              items: schema.playlists.where({ active: true }).models
+              items: owned
             }
           }
         );
@@ -405,15 +409,28 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////////////
       this.patch("/v1/playlists/:ID", (schema, request) => {
         let playlistID = request.params.ID;
-        let status = schema.playlists.where({ id: playlistID }).models[0].public;
+        let status = schema.playlists.where({ id: playlistID }).models[0]
+          .public;
         status = !status;
         schema.playlists.where({ id: playlistID }).update({ public: status });
         return schema.playlists.find(playlistID).attrs;
       });
       /////////////////////////////////////////////////////////////////////////////////////////
-      // Add Tracks to Playlist 
+      // Get Current User Owned Playlists
+      /////////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/playlists/owned", schema => {
+        return schema.playlists.where({ active: true }).models;
+      });
+      /////////////////////////////////////////////////////////////////////////////////////////
+      // Add Tracks to Playlist
       /////////////////////////////////////////////////////////////////////////////////////////
 
+      /////////////////////////////////////////////////////////////////////////////////////////
+      //Get User's History
+      /////////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/recently-played", () => {
+        return historyJSON;
+      });
       /////////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/albums", schema => {
         return {

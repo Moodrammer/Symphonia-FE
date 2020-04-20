@@ -94,6 +94,16 @@
           </v-list-item-title>
         </v-list-item>
 
+        <v-list-item
+          id="removePlaylistTrack"
+          @click="removeFromPlaylist"
+          v-if="playlist"
+        >
+          <v-list-item-title class="draweritem">
+            Remove from this Playlist
+          </v-list-item-title>
+        </v-list-item>
+
         <v-list-item>
           <v-list-item-title class="draweritem">
             Copy Song Link
@@ -136,9 +146,14 @@ export default {
     albumID: String,
     artistID: String,
     duration: Number,
+    playlistID: String,
     album: {
       type: Boolean,
       default: false
+    },
+    playlist: {
+      type: Boolean,
+      default: true
     },
     id: String,
     disabled: {
@@ -218,8 +233,15 @@ export default {
       this.$router.push(`/webhome/album/${this.albumID}`);
     },
     addToPlaylist: function() {
-      this.$store.commit("playlist/setAddedTracks",[this.id])
+      this.$store.commit("playlist/setAddedTracks", [this.id]);
       this.$store.commit("playlist/changeAddTrackModel");
+    },
+    removeFromPlaylist: function() {
+      this.$store.dispatch("playlist/removePlaylistTrack", {
+        token: this.getuserToken(),
+        playlistID: this.playlistID,
+        ids: [this.id]
+      });
     }
   },
   computed: mapState({

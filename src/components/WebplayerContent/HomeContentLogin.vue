@@ -26,15 +26,16 @@ export default {
   components: {
     Category
   },
-  created: function() {
+  created: async function() {
+    await this.$store.dispatch("category/recentlyPlayed", this.getuserToken());
     this.$store.dispatch("category/loadUserSections", this.getuserToken());
     //this.$store.dispatch("category/getPopularPlaylists");
     //this.$store.dispatch("category/getPopularArtists");
     this.$store.dispatch("category/loadGenres");
   },
-  computed:{
-    categories: function(){
-    return this.$store.state.category.categories
+  computed: {
+    categories: function() {
+      return this.$store.state.category.categories;
     }
   },
   mixins: [getuserToken]

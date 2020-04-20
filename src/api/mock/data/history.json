@@ -1,0 +1,154 @@
+{
+  "history": {
+    "_id": "5e8c8eff4baff454840d5495",
+    "items": [
+      {
+        "_id": "5e8c8eff4baff454840d5496",
+        "track": "5e7d2ddd3429e24340ff1397",
+        "played_at": "2020-04-07T14:32:31.044Z",
+        "context": {
+          "collaborative": false,
+          "images": [
+            "http://source.unsplash.com/xMMh-VFGL9M"
+          ],
+          "public": true,
+          "tracks": [
+            "5e7d2dc03429e24340ff1396",
+            "5e7d2ddd3429e24340ff1397",
+            "5e7d2e023429e24340ff1398"
+          ],
+          "followers": [],
+          "_id": "6",
+          "name": "Quran ALbum2"
+        },
+        "contextUrl": "https://zasymphonia.ddns.net/api/v1/playlists/5e8a6d96d4be480ab1d91c95/tracks",
+        "contextType": "album"
+      },
+      {
+        "_id": "5e8298c93c8b02a9402482bd",
+        "track": "5e7d2dc03429e24340ff1396",
+        "played_at": "2020-03-31T01:11:37.361Z",
+        "contextUrl": "https://zasymphonia.ddns.net/api/v1/playlists/5e8a6d96d4be480ab1d91c95/tracks",
+        "context": {
+          "collaborative": false,
+          "images": [
+            "http://source.unsplash.com/PsEXbDsSlV4"
+          ],
+          "public": true,
+          "tracks": [
+            "5e7d2dc03429e24340ff1396",
+            "5e7d2ddd3429e24340ff1397",
+            "5e7d2e023429e24340ff1398"
+          ],
+          "followers": [],
+          "_id": "1",
+          "name": "QuranPlaylist1",
+          "owner": "5e8125dc54660672fd69987f",
+          "description": "White Noise to Drown Out the Sounds of Police Sirens, Honking Trucks, and Overnight Construction Work Because I Live Right Next to the Brooklyn-Queens Expressway Because This Is the Only Studio Apartment I Can Afford",
+          "category": "5e8072e5e478cf39b47bd1ef"
+        },
+        "contextType": "playlist"
+      },
+      {
+        "_id": "5e8298c93c8b02a9402482bd",
+        "track": "5e7d2dc03429e24340ff1396",
+        "played_at": "2020-03-31T01:11:37.361Z",
+        "contextUrl": "https://zasymphonia.ddns.net/api/v1/playlists/5e8a6d96d4be480ab1d91c95/tracks",
+        "context": {
+          "collaborative": false,
+          "images": [
+            "http://source.unsplash.com/H7sHkM9eilw"
+          ],
+          "public": true,
+          "tracks": [
+            "5e7d2dc03429e24340ff1396",
+            "5e7d2ddd3429e24340ff1397",
+            "5e7d2e023429e24340ff1398"
+          ],
+          "followers": [],
+          "_id": "4",
+          "name": "Album2",
+          "owner": "5e8125dc54660672fd69987f",
+          "description": "White Noise to Drown Out the Sounds of Police Sirens, Honking Trucks, and Overnight Construction Work Because I Live Right Next to the Brooklyn-Queens Expressway Because This Is the Only Studio Apartment I Can Afford",
+          "category": "5e8072e5e478cf39b47bd1ef"
+        },
+        "contextType": "album"
+      },
+      {
+        "_id": "5e8298c93c8b02a9402482bd",
+        "track": "5e7d2dc03429e24340ff1396",
+        "played_at": "2020-03-31T01:11:37.361Z",
+        "contextUrl": "https://zasymphonia.ddns.net/api/v1/playlists/5e8a6d96d4be480ab1d91c95/tracks",
+        "context": {
+          "collaborative": false,
+          "images": [
+            "http://source.unsplash.com/wf0c0d-h2fE"
+          ],
+          "public": true,
+          "tracks": [
+            "5e7d2dc03429e24340ff1396",
+            "5e7d2ddd3429e24340ff1397",
+            "5e7d2e023429e24340ff1398"
+          ],
+          "followers": [],
+          "_id": "7",
+          "name": "New Playlist3",
+          "owner": "5e8125dc54660672fd69987f",
+          "description": "White Noise to Drown Out the Sounds of Police Sirens, Honking Trucks, and Overnight Construction Work Because I Live Right Next to the Brooklyn-Queens Expressway Because This Is the Only Studio Apartment I Can Afford",
+          "category": "5e8072e5e478cf39b47bd1ef"
+        },
+        "contextType": "playlist"
+      },
+      {
+        "_id": "5e8298c93c8b02a9402482bd",
+        "track": "5e7d2dc03429e24340ff1396",
+        "played_at": "2020-03-31T01:11:37.361Z",
+        "contextUrl": "https://zasymphonia.ddns.net/api/v1/playlists/5e8a6d96d4be480ab1d91c95/tracks",
+        "context": {
+          "collaborative": false,
+          "images": [
+            "http://source.unsplash.com/wnd7te34T-0"
+          ],
+          "public": true,
+          "tracks": [
+            "5e7d2dc03429e24340ff1396",
+            "5e7d2ddd3429e24340ff1397",
+            "5e7d2e023429e24340ff1398"
+          ],
+          "followers": [],
+          "_id": "3",
+          "name": "Album1",
+          "owner": "5e8125dc54660672fd69987f",
+          "description": "White Noise to Drown Out the Sounds of Police Sirens, Honking Trucks, and Overnight Construction Work Because I Live Right Next to the Brooklyn-Queens Expressway Because This Is the Only Studio Apartment I Can Afford",
+          "category": "5e8072e5e478cf39b47bd1ef"
+        },
+        "contextType": "album"
+      },
+      {
+        "_id": "5e8298c93c8b02a9402482bd",
+        "track": "5e7d2dc03429e24340ff1396",
+        "played_at": "2020-03-31T01:11:37.361Z",
+        "contextUrl": "https://zasymphonia.ddns.net/api/v1/playlists/5e8a6d96d4be480ab1d91c95/tracks",
+        "context": {
+          "collaborative": false,
+          "images": [
+            "http://source.unsplash.com/2Qg4y32pdCc"
+          ],
+          "public": true,
+          "tracks": [
+            "5e7d2dc03429e24340ff1396",
+            "5e7d2ddd3429e24340ff1397",
+            "5e7d2e023429e24340ff1398"
+          ],
+          "followers": [],
+          "_id": "2",
+          "name": "TRST",
+          "owner": "5e8125dc54660672fd69987f",
+          "description": "White Noise to Drown Out the Sounds of Police Sirens, Honking Trucks, and Overnight Construction Work Because I Live Right Next to the Brooklyn-Queens Expressway Because This Is the Only Studio Apartment I Can Afford",
+          "category": "5e8072e5e478cf39b47bd1ef"
+        },
+        "contextType": "album"
+      }
+    ]
+  }
+}
