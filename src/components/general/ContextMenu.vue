@@ -73,6 +73,7 @@ export default {
                 case "Copy Artist Link": 
                     this.copyToClipboard(`https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`)
                     break;
+                    
             }
         },
 

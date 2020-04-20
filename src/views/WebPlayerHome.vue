@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import ContextMenu from "../components/general/ContexMenu"
+import ContextMenu from "../components/general/ContextMenu"
 import NavDrawer from "../components/WebplayerLayout/WebNavDrawer";
 import NavBar from "../components/WebplayerLayout/WebNavBar";
 import isLoggedIn from "../mixins/userService";

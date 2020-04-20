@@ -1,7 +1,7 @@
 <template>
   <v-content class="pa-0 mr-5">
     <h1>Albums</h1>
-    <CardGrid :cardItems="cardItems" :contextMenu=contextMenu v-on:order="menuOrder" />
+    <CardGrid :cardItems="cardItems" :contextMenu=contextMenu />
   </v-content>
 </template>
 
@@ -18,21 +18,21 @@ export default {
   },
   data() {
     return {
-      contextMenuChoice: null,
-      contextMenuCardIndex: null,
+      // contextMenuChoice: null,
+      // contextMenuCardIndex: null,
       cardItems: {
         // Custom context menu data section
         // menuList: items of the menu - disabledMenu: flag to disable menu on outside card click - showMenu: menu v-model
-        menuList: [
-          { title: "Start Radio" },
-          { title: "Remove from your Library" },
-          { title: "Add to Playlist" },
-          { title: "Copy Album link" }
-        ],
-        showMenu: false,
-        // Albums Cards data section
-        // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - items: album details
-        hoveredCardIndex: null,
+        // menuList: [
+        //   { title: "Start Radio" },
+        //   { title: "Remove from your Library" },
+        //   { title: "Add to Playlist" },
+        //   { title: "Copy Album link" }
+        // ],
+        // showMenu: false,
+        // // Albums Cards data section
+        // // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - items: album details
+        // hoveredCardIndex: null,
         items: null
       }
     };
@@ -46,10 +46,10 @@ export default {
      * @param {string} cardID the id of the card which user clicked on it
      * @param {string} name the name of the grid that containg the card
      */
-    menuOrder(menuItem, cardIndex) {
-      this.contextMenuChoice = menuItem;
-      this.contextMenuCardIndex = cardIndex;
-    }
+    // menuOrder(menuItem, cardIndex) {
+    //   this.contextMenuChoice = menuItem;
+    //   this.contextMenuCardIndex = cardIndex;
+    // }
   },
   created() {
     try {
@@ -62,22 +62,22 @@ export default {
   computed: mapGetters(["allAlbums"]),
 
   watch: {
-    contextMenuChoice: function() {
-      if (this.contextMenuChoice === null) return;
-      console.log(this.contextMenuChoice);
-      console.log(this.contextMenuCardIndex);
-      if (this.contextMenuChoice === "Remove from your Library") {
-        try {
-          this.deleteAlbums({
-            token: this.getuserToken(),
-            albums: [this.contextMenuCardIndex]
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      this.contextMenuChoice = null;
-    },
+    // contextMenuChoice: function() {
+    //   if (this.contextMenuChoice === null) return;
+    //   console.log(this.contextMenuChoice);
+    //   console.log(this.contextMenuCardIndex);
+    //   if (this.contextMenuChoice === "Remove from your Library") {
+    //     try {
+    //       this.deleteAlbums({
+    //         token: this.getuserToken(),
+    //         albums: [this.contextMenuCardIndex]
+    //       });
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   }
+    //   this.contextMenuChoice = null;
+    // },
     allAlbums(newValue) {
       this.cardItems.items = newValue;
     }

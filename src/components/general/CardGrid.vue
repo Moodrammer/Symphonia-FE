@@ -12,17 +12,17 @@
         >
           <v-list-item-group v-model="cardItems.selectedItem" color="#b3b3b3">
             <v-list-item
-              v-for="(item, i) in cardItems.items.slice(0, 5)"
-              @mouseenter="cardItems.hoveredCardIndex = i"
-              @mouseleave="cardItems.hoveredCardIndex = null"
-              :key="i"
+              v-for="(item, index) in cardItems.items.slice(0, 5)"
+              @mouseenter="hoveredCardIndex = index"
+              @mouseleave="hoveredCardIndex = null"
+              :key="index"
             >
               <v-list-item-icon>
-                <v-icon v-if="i == cardItems.selectedItem" color="white"
+                <v-icon v-if="cardItems.selectedItem === index" color="white"
                   >mdi-pause</v-icon
                 >
                 <v-icon
-                  v-else-if="i == cardItems.hoveredCardIndex"
+                  v-else-if="hoveredCardIndex === index"
                   color="white"
                   >mdi-play</v-icon
                 >
@@ -32,7 +32,7 @@
               <v-list-item-title v-text="cardItems.name"></v-list-item-title>
               <v-list-item-subtitle class="text-end"
                 ><span
-                  v-show="i == cardItems.hoveredCardIndex"
+                  v-show="hoveredCardIndex === index"
                   class="mr-5 display-1"
                   >...</span
                 >{{ item.duration }}</v-list-item-subtitle
@@ -59,15 +59,15 @@
                 flat
                 :img="item.image"
                 style="border-radius:0px"
-                @mouseover="cardHover(index, item.id)"
-                @mouseleave="cardItems.hoveredCardIndex = null"
+                @mouseover="hoveredCardIndex = index"
+                @mouseleave="hoveredCardIndex = null"
               >
                 <v-btn
                   class="ma-auto"
                   width="240"
                   height="240"
                   color="transparent"
-                  v-show="cardItems.hoveredCardIndex === index"
+                  v-show="hoveredCardIndex === index"
                   ><v-icon x-large color="white">
                     mdi-play-circle-outline</v-icon
                   >
@@ -108,7 +108,7 @@
                 width="475"
                 height="270"
                 dark
-                @mouseover="cardHover(-1)"
+                @mouseover="hoveredCardIndex = -1"
                 @mouseleave="cardItems.hoveredCardIndex = null"
               >
                 <!-- card text :liked songs artist and titles -->
@@ -138,7 +138,7 @@
                 <v-card-actions class="pr-5 pt-3">
                   <v-spacer></v-spacer>
                   <v-btn
-                    v-show="cardItems.hoveredCardIndex === -1"
+                    v-show="hoveredCardIndex === -1"
                     fab
                     color="success"
                     small
@@ -168,8 +168,8 @@
                 width="200"
                 height="270"
                 color="#282828"
-                @mouseover="cardHover(index, item.id)"
-                @mouseleave="cardItems.hoveredCardIndex = null"
+                @mouseover="hoveredCardIndex = index"
+                @mouseleave="hoveredCardIndex = null"
                 dark
                 @click="cardClicked(item.id, item.type, false)"
                 @contextmenu.prevent="menuClick($event, item.id, item.type)"
@@ -212,7 +212,7 @@
                 <v-card-actions class="pa-0">
                   <v-spacer></v-spacer>
                   <v-btn
-                    v-show="cardItems.hoveredCardIndex === index"
+                    v-show="hoveredCardIndex === index"
                     fab
                     color="success"
                     small
@@ -252,7 +252,7 @@ export default {
   data() {
     return {
       playBTNFlag: false,
-      lastHoveredCard: null,
+      hoveredCardIndex: null,
       disableMenu: false,
       AUIitems: null,
       showMoreBtn: false
@@ -292,58 +292,58 @@ export default {
      * called when card is hover to save its index, and close other context menus
      */
 
-    cardHover(index, id) {
-      this.$props.cardItems.hoveredCardIndex = index;
-      this.lastHoveredCard = id;
-      this.disableMenu = false;
-      this.$props.cardItems.showMenu = false;
-    },
+    // cardHover(index, id) {
+    //   this.$props.cardItems.hoveredCardIndex = index;
+    //   this.lastHoveredCard = id;
+    //   this.disableMenu = false;
+    //   this.$props.cardItems.showMenu = false;
+    // },
     /**
      * called when user choose option from the context menu, it copy the url to user's clipboard if he chose the last option
      */
-    contextMenuClick(item, copyToClipboard) {
-      this.$emit("order", item.title, this.lastHoveredCard, this.$props.name);
-      console.log(copyToClipboard);
-      if (copyToClipboard) {
-        var url = this.$props.cardItems.items.find(
-          item => item.id === this.lastHoveredCard
-        );
-        url = `https://zasymphonia.ddns.net/webhome/${url.type}/${url.id}`;
-        var el = document.createElement("textarea");
-        // Set value (string to be copied)
-        el.value = url;
-        // Set non-editable to avoid focus and move outside of view
-        el.setAttribute("readonly", "");
-        el.style = { position: "absolute", left: "-9999px" };
-        document.body.appendChild(el);
-        // Select text inside element
-        el.select();
-        // Copy text to clipboard
-        document.execCommand("copy");
-        // Remove temporary element
-        document.body.removeChild(el);
-      }
-    }
+    // contextMenuClick(item, copyToClipboard) {
+    //   this.$emit("order", item.title, this.lastHoveredCard, this.$props.name);
+    //   console.log(copyToClipboard);
+    //   if (copyToClipboard) {
+    //     var url = this.$props.cardItems.items.find(
+    //       item => item.id === this.lastHoveredCard
+    //     );
+    //     url = `https://zasymphonia.ddns.net/webhome/${url.type}/${url.id}`;
+    //     var el = document.createElement("textarea");
+    //     // Set value (string to be copied)
+    //     el.value = url;
+    //     // Set non-editable to avoid focus and move outside of view
+    //     el.setAttribute("readonly", "");
+    //     el.style = { position: "absolute", left: "-9999px" };
+    //     document.body.appendChild(el);
+    //     // Select text inside element
+    //     el.select();
+    //     // Copy text to clipboard
+    //     document.execCommand("copy");
+    //     // Remove temporary element
+    //     document.body.removeChild(el);
+    //   }
+    // }
   },
   watch: {
     // watching showMenu "context menu v-model" to disable the menu if the click wasn't on card
-    "cardItems.showMenu": function() {
-      if (
-        this.$props.cardItems.showMenu &&
-        this.$props.cardItems.hoveredCardIndex === null
-      )
-        this.disableMenu = true;
-      //set the suitable context menu data in case of playlist card
-      else if (
-        this.$props.cardStyle === "playlist" &&
-        this.$props.cardItems.hoveredCardIndex !== null
-      ) {
-        if (this.$props.cardItems.hoveredCardIndex === -1)
-          this.$props.cardItems.menuList = this.$props.cardItems.likedSongsMenu;
-        else
-          this.$props.cardItems.menuList = this.$props.cardItems.playlistsMenu;
-      }
-    },
+    // "cardItems.showMenu": function() {
+    //   if (
+    //     this.$props.cardItems.showMenu &&
+    //     this.$props.cardItems.hoveredCardIndex === null
+    //   )
+    //     this.disableMenu = true;
+    //   //set the suitable context menu data in case of playlist card
+    //   else if (
+    //     this.$props.cardStyle === "playlist" &&
+    //     this.$props.cardItems.hoveredCardIndex !== null
+    //   ) {
+    //     if (this.$props.cardItems.hoveredCardIndex === -1)
+    //       this.$props.cardItems.menuList = this.$props.cardItems.likedSongsMenu;
+    //     else
+    //       this.$props.cardItems.menuList = this.$props.cardItems.playlistsMenu;
+    //   }
+    // },
     "cardItems.items": function() {
       this.AUIitems = this.$props.cardItems.items;
     }

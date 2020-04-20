@@ -1,5 +1,5 @@
 <template>
-  <CardGrid :cardItems="cardItems" v-on:order="menuOrder" cardStyle="artist" />
+  <CardGrid :cardItems="cardItems" />
 </template>
 
 <script>
@@ -25,21 +25,21 @@ export default {
 
   data: function() {
     return {
-      ContextMenuChoice: null,
-      ContextMenuCardID: null,
+      // ContextMenuChoice: null,
+      // ContextMenuCardID: null,
 
       cardItems: {
         // Custom context menu data section
         // menuList: items of the menu - disabledMenu: flag to disable menu on outside card click - showMenu: menu v-model
-        menuList: [
-          { title: "Start Radio" },
-          { title: "Unfollow" },
-          { title: "Copy Artist link" }
-        ],
-        showMenu: false,
-        // Albums Cards data section
-        // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
-        hoveredCardIndex: null,
+        // menuList: [
+        //   { title: "Start Radio" },
+        //   { title: "Unfollow" },
+        //   { title: "Copy Artist link" }
+        // ],
+        // showMenu: false,
+        // // Albums Cards data section
+        // // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
+        // hoveredCardIndex: null,
         items: []
       }
     };
@@ -62,6 +62,7 @@ export default {
   watch: {
     allArtistRelatedArtists(newValue) {
       this.cardItems.items = newValue;
+      console.log(newValue);
     }
   }
 };
