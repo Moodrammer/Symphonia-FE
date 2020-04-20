@@ -34,11 +34,17 @@
         <!--Display the artist and the album/playlist name-->
         <v-row>
           <p class="subtitle mr-2" v-bind:class="{ 'disabled-2': disabled }">
-            artistName
+            {{ artistName }}
           </p>
-          <p>.</p>
-          <p v-bind:class="{ 'disabled-2': disabled }" class="subtitle ml-2">
-            albumName
+          <p v-if="!album">.</p>
+          <p
+            v-bind:class="{ 'disabled-2': disabled }"
+            class="subtitle ml-2"
+            v-if="!album"
+            @click="toAlbum"
+            id="toAlbum"
+          >
+            {{ albumName }}
           </p>
         </v-row>
       </v-list-item-subtitle>
@@ -50,7 +56,13 @@
       <template v-slot:activator="{ on }">
         <!--Icon to activate the menu-->
         <div v-on="on" v-on:click="checkLiked" id="enableMenu">
-          <v-icon color="white" class="mx-2" v-if="hover" id="menu">
+          <v-icon
+            color="white"
+            class="mx-2"
+            v-if="hover"
+            id="menu"
+            v-bind:class="{ 'disabled-2': disabled }"
+          >
             mdi-dots-horizontal
           </v-icon>
         </div>
@@ -82,9 +94,19 @@
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item @click="addToPlaylist" id="addToPlaylist">
           <v-list-item-title class="draweritem">
             Add to Playlist
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-list-item
+          id="removePlaylistTrack"
+          @click="removeFromPlaylist"
+          v-if="playlist"
+        >
+          <v-list-item-title class="draweritem">
+            Remove from this Playlist
           </v-list-item-title>
         </v-list-item>
 
@@ -95,9 +117,11 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <p class="white--text ml-12">{{ min }}:{{ sec }}</p>
+    <p class="white--text ml-12" v-bind:class="{ 'disabled-2': disabled }">
+      {{ min }}:{{ sec }}
+    </p>
     <v-snackbar v-model="snackbar" style="bottom: 100px;">
-      <span>Start listening with a free Spotify account</span>
+      <span>Start listening with a free Symphonia account</span>
 
       <router-link to="/signup" style="text-decoration: none;">
         <v-btn color="green" text id="snackbarSignup">
@@ -127,7 +151,18 @@ export default {
     songName: String,
     artistName: String,
     albumName: String,
+    albumID: String,
+    artistID: String,
     duration: Number,
+    playlistID: String,
+    album: {
+      type: Boolean,
+      default: false
+    },
+    playlist: {
+      type: Boolean,
+      default: true
+    },
     id: String,
     disabled: {
       type: Boolean,
@@ -182,6 +217,7 @@ export default {
      * @param {none}
      */
     checkLiked: function() {
+      console.log(this.id);
       this.$store.dispatch("track/checkSaved", {
         id: this.id,
         token: this.getuserToken()
@@ -201,6 +237,21 @@ export default {
       } else {
         this.snackbar = true;
       }
+    },
+    toAlbum: function() {
+      this.$router.push(`/webhome/album/${this.albumID}`);
+    },
+    addToPlaylist: function() {
+      this.$store.commit("playlist/setAddedTracks", [this.id]);
+      this.$store.commit("playlist/changeAddTrackModel");
+    },
+    removeFromPlaylist: function() {
+      this.$store.dispatch("playlist/removePlaylistTrack", {
+        token: this.getuserToken(),
+        playlistID: this.playlistID,
+        ids: [this.id]
+      });
+      this.$root.$emit("update");
     }
   },
   computed: mapState({
@@ -231,11 +282,12 @@ export default {
 
 .disabled-1 {
   color: #b3b3b3 !important;
+  opacity: 0.6;
 }
 
 .disabled-2 {
   color: #b3b3b3 !important;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .playing {

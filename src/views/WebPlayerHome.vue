@@ -4,6 +4,9 @@
     <nav-drawer :loggedIn="isLoggedIn()"></nav-drawer>
     <nav-bar></nav-bar>
     <router-view :loggedIn="isLoggedIn()"></router-view>
+    <delete-playlist v-if="deletePlaylist" />
+    <add-track-to-playlist v-if="addTrack" />
+    <create-playlist v-if="createPlaylist" />
     <sound-player v-if="isLoggedIn()" />
     <sound-player-logout v-if="!isLoggedIn()" />
   </v-app>
@@ -15,6 +18,9 @@ import NavBar from "../components/WebplayerLayout/WebNavBar";
 import isLoggedIn from "../mixins/userService";
 import SoundPlayer from "../components/TheSoundPlayer/TheSoundPlayer.vue";
 import SoundPlayerLogout from "../components/TheSoundPlayer/TheSoundPlayerLogout.vue";
+import DeletePlaylist from "../components/DeletePlaylist.vue";
+import CreatePlaylist from "../components/CreatePlaylist.vue";
+import AddTrackToPlaylist from "../components/AddTrackToPlaylist.vue";
 
 /**
  * The webplayer view it contains (the side bar - the navigation bar - the sound player)
@@ -27,6 +33,9 @@ export default {
     NavBar,
     SoundPlayer,
     SoundPlayerLogout,
+    DeletePlaylist,
+    CreatePlaylist,
+    AddTrackToPlaylist
   },
   mounted: function() {
     //Handle the updateContent event by force the component to update
@@ -34,7 +43,18 @@ export default {
       this.$forceUpdate();
     });
   },
-  mixins: [isLoggedIn],
+  computed: {
+    deletePlaylist() {
+      return this.$store.state.playlist.deletePlaylist;
+    },
+    createPlaylist() {
+      return this.$store.state.playlist.createPlaylist;
+    },
+    addTrack() {
+      return this.$store.state.playlist.addTrack;
+    }
+  },
+  mixins: [isLoggedIn]
 };
 </script>
 

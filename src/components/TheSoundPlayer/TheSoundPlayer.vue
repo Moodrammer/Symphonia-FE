@@ -203,7 +203,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened,
+                icons: !isQueueOpened
               }"
             >
               mdi-format-list-numbered-rtl
@@ -264,24 +264,23 @@ export default {
     },
 
     ...mapState({
-      isTrackLiked: (state) => state.track.isTrackLiked,
-      trackUrl: (state) => state.track.trackUrl,
-      trackName: (state) => state.track.trackName,
-      trackArtistName: (state) => state.track.trackArtistName,
-      trackAlbumImageUrl: (state) => state.track.trackAlbumImageUrl,
-      isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
-      isFirstTrackInQueue: (state) => state.track.isFirstTrackInQueue,
-      trackTotalDuration: (state) => state.track.trackTotalDuration,
-      audioElement: (state) => state.track.audioElement,
-      isTrackPaused: (state) => state.track.isTrackPaused,
-      isQueueOpened: (state) => state.track.isQueueOpened,
-      isNextAndPreviousFinished: (state) =>
-        state.track.isNextAndPreviousFinished,
-      isBuffering: (state) => state.track.isBuffering,
-      token: (state) => state.track.token,
-      isRepeatEnabled: (state) => state.track.isRepeatEnabled,
-      isRepeatOnceEnabled: (state) => state.track.isRepeatOnceEnabled,
-    }),
+      isTrackLiked: state => state.track.isTrackLiked,
+      trackUrl: state => state.track.trackUrl,
+      trackName: state => state.track.trackName,
+      trackArtistName: state => state.track.trackArtistName,
+      trackAlbumImageUrl: state => state.track.trackAlbumImageUrl,
+      isLastTrackInQueue: state => state.track.isLastTrackInQueue,
+      isFirstTrackInQueue: state => state.track.isFirstTrackInQueue,
+      trackTotalDuration: state => state.track.trackTotalDuration,
+      audioElement: state => state.track.audioElement,
+      isTrackPaused: state => state.track.isTrackPaused,
+      isQueueOpened: state => state.track.isQueueOpened,
+      isNextAndPreviousFinished: state => state.track.isNextAndPreviousFinished,
+      isBuffering: state => state.track.isBuffering,
+      token: state => state.track.token,
+      isRepeatEnabled: state => state.track.isRepeatEnabled,
+      isRepeatOnceEnabled: state => state.track.isRepeatOnceEnabled
+    })
   },
   data() {
     return {
@@ -298,7 +297,7 @@ export default {
       isShuffleEnabled: false,
 
       devices: undefined,
-      currentDeviceId: undefined,
+      currentDeviceId: undefined
     };
   },
   methods: {
@@ -315,7 +314,7 @@ export default {
       "setIsTrackPaused",
       "setIsTrackLiked",
       "setIsBuffering",
-      "setToken",
+      "setToken"
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -325,7 +324,7 @@ export default {
       "previous",
       "getCurrentlyPlayingTrackId",
       "playTrackInQueue",
-      "toggleRepeatOnce",
+      "toggleRepeatOnce"
     ]),
     /**
      * convert time in seconds to MM:SS format
@@ -345,7 +344,7 @@ export default {
     /**
      * invoke toggleRepeatOnce in case the next and previous
      * procedures are finished.
-     * 
+     *
      * @public
      */
     toggleRepeatOnceConditionally: function() {
@@ -550,12 +549,12 @@ export default {
       var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
       this.getTrackInformation({
         token: this.token,
-        trackId: CurrentlyPlayingTrackId,
+        trackId: CurrentlyPlayingTrackId
       });
       this.playTrackInQueue(CurrentlyPlayingTrackId);
 
       this.updateQueue(this.token);
-    },
+    }
   },
   mounted: function() {
     this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
@@ -572,7 +571,7 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
-  },
+  }
 };
 </script>
 

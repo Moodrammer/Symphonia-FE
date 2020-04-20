@@ -53,7 +53,26 @@
       </v-list-item-subtitle>
 
       <!--Nesting the popup-->
-      <create-playlist v-if="loggedIn"></create-playlist>
+      <!-- <create-playlist v-if="loggedIn"></create-playlist> -->
+      <v-list-item
+        class="temp"
+        @click="changeCreateModel"
+        inactive
+        v-if="loggedIn"
+      >
+        <v-btn
+          fab
+          x-small
+          color="white"
+          id="openPopup"
+          style="border-radius: 0px; margin-right: 7%"
+        >
+          <v-icon color="black">mdi-plus</v-icon>
+        </v-btn>
+        <v-list-item-title v-show="$vuetify.breakpoint.lgAndUp"
+          >Create Playlist</v-list-item-title
+        >
+      </v-list-item>
 
       <!--Liked Songs button-->
       <v-list-item
@@ -80,6 +99,7 @@
           v-for="playlist in playlists"
           :key="playlist.id"
           class="listItem"
+          :to="'/webhome/playlist/' + playlist.id"
         >
           <v-list-item-title
             class="draweritem white--text"
@@ -94,8 +114,6 @@
 </template>
 
 <script>
-import CreatePlaylist from "../CreatePlaylist";
-import { mapState, mapActions } from "vuex";
 import getuserToken from "../../mixins/userService";
 /**
  * @displayName Webplayer Navigation Drawer
@@ -105,19 +123,19 @@ export default {
   props: {
     loggedIn: Boolean
   },
-  components: {
-    CreatePlaylist
-  },
   methods: {
-    ...mapActions("playlist", ["getPlaylists"])
+    changeCreateModel: function() {
+      this.$store.commit("playlist/changeCreateModel");
+    }
   },
   mounted() {
-    this.getPlaylists(this.getuserToken());
+    this.$store.dispatch("playlist/getPlaylists", this.getuserToken());
   },
-  computed: mapState({
-    //the playlists from the get request
-    playlists: state => state.playlist.likedPlaylists
-  }),
+  computed: {
+    playlists: function() {
+      return this.$store.state.playlist.likedPlaylists;
+    }
+  },
   data: function() {
     return {
       items: [

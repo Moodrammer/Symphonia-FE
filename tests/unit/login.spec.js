@@ -2,10 +2,9 @@
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import Vuex from "vuex"
+import Vuex from "vuex";
 //Importing the component to be tested
 import login from "@/views/Login.vue";
-
 
 //const localVue = createLocalVue();
 
@@ -14,8 +13,7 @@ describe("login", () => {
   let vuetify;
   let actions;
   let store;
-  let mockState = ""
-
+  let mockState = "";
 
   beforeEach(() => {
     //tell vue global constructor to use vuex
@@ -23,35 +21,34 @@ describe("login", () => {
     //define a mocking vuex store
     actions = {
       loginuser: jest.fn(() => {
-        if(mockState == "fail")
+        if (mockState == "fail")
           return Promise.reject({
             status: "fail"
-          })
-        else if(mockState == "error")
+          });
+        else if (mockState == "error")
           return Promise.reject({
             status: "error",
             msg: "Please try again later"
-          })
-        else
-          return Promise.resolve()    
+          });
+        else return Promise.resolve();
       })
-    }
+    };
     store = new Vuex.Store({
       actions
-    })
+    });
     //define the other plugins
     //const router = new VueRouter();
     vuetify = new Vuetify();
     //tell vue global constructor to use the other plugins
     Vue.use(Vuetify);
-    const $router = []
+    const $router = [];
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
     //in order to find the elements by their ids
     wrapper = mount(login, {
       vuetify,
       store,
-      stubs: ['router-link'],
-      mocks: {$router}
+      stubs: ["router-link"],
+      mocks: { $router }
     });
     //console.log(wrapper)
   });
@@ -163,117 +160,117 @@ describe("login", () => {
   });
 
   //check if validation error message appears on empty input
-  
+
   //form submission tests
-     it("dispatches the submit action data if the data is valid" ,() => {
-         const email_wrp = wrapper.find("#login-username");
-          //simulate entering the data by the user
-          email_wrp.element.value = "Bob@gmail.com"
-          email_wrp.trigger("input")
-         const pass_wrp = wrapper.find("#login-password");
-          //simulate entering the data by the user
-          pass_wrp.element.value = "12345678"
-          pass_wrp.trigger("input")
-          //simulate clicking the login key
-          const btn_wrp = wrapper.find("#login-button")
-          btn_wrp.trigger("click")
-          //expect the action has been dispatched
-          expect(actions.loginuser).toHaveBeenCalled()
-      })
-
-      it("doesn't dispatch the action if the form data is invalid", () => {
-        const btn_wrp = wrapper.find("#login-button")
-        btn_wrp.trigger("click")
-
-        //expect that the action has not been dispatched
-        expect(actions.loginuser).not.toHaveBeenCalled()
-      })
-
-      it("checks if the form is submitted on pressing the enter key" ,() => {
-        const email_wrp = wrapper.find("#login-username");
-         //simulate entering the data by the user
-         email_wrp.element.value = "Bob@gmail.com"
-         email_wrp.trigger("input")
-        const pass_wrp = wrapper.find("#login-password");
-         //simulate entering the data by the user
-         pass_wrp.element.value = "12345678"
-         pass_wrp.trigger("input")
-         //simulate pressing enter to submit the form
-         wrapper.trigger("keyup.enter")
-         //expect the action has been dispatched
-         expect(actions.loginuser).toHaveBeenCalled()
-     })
-
-     it("checks if the form is not submitted on pressing any other key than the enter key for example the space key" ,() => {
-      const email_wrp = wrapper.find("#login-username");
-       //simulate entering the data by the user
-       email_wrp.element.value = "Bob@gmail.com"
-       email_wrp.trigger("input")
-      const pass_wrp = wrapper.find("#login-password");
-       //simulate entering the data by the user
-       pass_wrp.element.value = "12345678"
-       pass_wrp.trigger("input")
-       //simulate pressing enter to submit the form
-       wrapper.trigger("keyup.space")
-       //expect the action has been dispatched
-       expect(actions.loginuser).not.toHaveBeenCalled()
-   })
-
-      it("checks the error state if the loginuser action promise is rejected with status fail" ,async () => {
-        //setting the loginuser action stub mockStatus
-        mockState = "fail"
-        const email_wrp = wrapper.find("#login-username");
-         //simulate entering the data by the user
-         email_wrp.element.value = "Bob@gmail.com"
-         email_wrp.trigger("input")
-        const pass_wrp = wrapper.find("#login-password");
-         //simulate entering the data by the user
-         pass_wrp.element.value = "12345678"
-         pass_wrp.trigger("input")
-         //simulate clicking the login key
-         const btn_wrp = wrapper.find("#login-button")
-         btn_wrp.trigger("click")
-         await wrapper.vm.$nextTick()
-         //expect the action has been dispatched
-         expect(wrapper.vm.errorState).toBe(true)
-  })
-
-  it("checks the error state and message if the loginuser action promise is rejected with status error" ,async () => {
-    //setting the loginuser action stub mockStatus
-    mockState = "error"
+  it("dispatches the submit action data if the data is valid", () => {
     const email_wrp = wrapper.find("#login-username");
-     //simulate entering the data by the user
-     email_wrp.element.value = "Bob@gmail.com"
-     email_wrp.trigger("input")
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
     const pass_wrp = wrapper.find("#login-password");
-     //simulate entering the data by the user
-     pass_wrp.element.value = "12345678"
-     pass_wrp.trigger("input")
-     //simulate clicking the login key
-     const btn_wrp = wrapper.find("#login-button")
-     btn_wrp.trigger("click")
-     await wrapper.vm.$nextTick()
-     //expect the action has been dispatched
-     expect(wrapper.vm.errorState).toBe(true)
-     expect(wrapper.vm.errorMessage).toBe("Please try again later")
-})
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate clicking the login key
+    const btn_wrp = wrapper.find("#login-button");
+    btn_wrp.trigger("click");
+    //expect the action has been dispatched
+    expect(actions.loginuser).toHaveBeenCalled();
+  });
 
-it("checks if the router of webhome is pushed if the login action promise resolves" ,async () => {
-  //setting the loginuser action stub mockStatus
-  mockState = "success"
-  const email_wrp = wrapper.find("#login-username");
-   //simulate entering the data by the user
-   email_wrp.element.value = "Bob@gmail.com"
-   email_wrp.trigger("input")
-  const pass_wrp = wrapper.find("#login-password");
-   //simulate entering the data by the user
-   pass_wrp.element.value = "12345678"
-   pass_wrp.trigger("input")
-   //simulate clicking the login key
-   const btn_wrp = wrapper.find("#login-button")
-   btn_wrp.trigger("click")
-   await wrapper.vm.$nextTick()
-   //expect the action has been dispatched
-   expect(wrapper.vm.$router[0]).toBe("/webhome/home")
-})
+  it("doesn't dispatch the action if the form data is invalid", () => {
+    const btn_wrp = wrapper.find("#login-button");
+    btn_wrp.trigger("click");
+
+    //expect that the action has not been dispatched
+    expect(actions.loginuser).not.toHaveBeenCalled();
+  });
+
+  it("checks if the form is submitted on pressing the enter key", () => {
+    const email_wrp = wrapper.find("#login-username");
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
+    const pass_wrp = wrapper.find("#login-password");
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate pressing enter to submit the form
+    wrapper.trigger("keyup.enter");
+    //expect the action has been dispatched
+    expect(actions.loginuser).toHaveBeenCalled();
+  });
+
+  it("checks if the form is not submitted on pressing any other key than the enter key for example the space key", () => {
+    const email_wrp = wrapper.find("#login-username");
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
+    const pass_wrp = wrapper.find("#login-password");
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate pressing enter to submit the form
+    wrapper.trigger("keyup.space");
+    //expect the action has been dispatched
+    expect(actions.loginuser).not.toHaveBeenCalled();
+  });
+
+  it("checks the error state if the loginuser action promise is rejected with status fail", async () => {
+    //setting the loginuser action stub mockStatus
+    mockState = "fail";
+    const email_wrp = wrapper.find("#login-username");
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
+    const pass_wrp = wrapper.find("#login-password");
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate clicking the login key
+    const btn_wrp = wrapper.find("#login-button");
+    btn_wrp.trigger("click");
+    await wrapper.vm.$nextTick();
+    //expect the action has been dispatched
+    expect(wrapper.vm.errorState).toBe(true);
+  });
+
+  it("checks the error state and message if the loginuser action promise is rejected with status error", async () => {
+    //setting the loginuser action stub mockStatus
+    mockState = "error";
+    const email_wrp = wrapper.find("#login-username");
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
+    const pass_wrp = wrapper.find("#login-password");
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate clicking the login key
+    const btn_wrp = wrapper.find("#login-button");
+    btn_wrp.trigger("click");
+    await wrapper.vm.$nextTick();
+    //expect the action has been dispatched
+    expect(wrapper.vm.errorState).toBe(true);
+    expect(wrapper.vm.errorMessage).toBe("Please try again later");
+  });
+
+  it("checks if the router of webhome is pushed if the login action promise resolves", async () => {
+    //setting the loginuser action stub mockStatus
+    mockState = "success";
+    const email_wrp = wrapper.find("#login-username");
+    //simulate entering the data by the user
+    email_wrp.element.value = "Bob@gmail.com";
+    email_wrp.trigger("input");
+    const pass_wrp = wrapper.find("#login-password");
+    //simulate entering the data by the user
+    pass_wrp.element.value = "12345678";
+    pass_wrp.trigger("input");
+    //simulate clicking the login key
+    const btn_wrp = wrapper.find("#login-button");
+    btn_wrp.trigger("click");
+    await wrapper.vm.$nextTick();
+    //expect the action has been dispatched
+    expect(wrapper.vm.$router[0]).toBe("/webhome/home");
+  });
 });

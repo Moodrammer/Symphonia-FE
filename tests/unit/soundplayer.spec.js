@@ -46,7 +46,7 @@ describe("TheSoundplayer", () => {
 
             isQueueOpened: false,
             queueTracks: [],
-            queueNextTracks: [],
+            queueNextTracks: []
           },
           actions: {
             next({ state }) {
@@ -76,7 +76,7 @@ describe("TheSoundplayer", () => {
             updateQueueTracksInfo() {},
             togglePauseAndPlay() {},
             getCurrentlyPlayingTrackId() {},
-            playTrackInQueue() {},
+            playTrackInQueue() {}
           },
           mutations: {
             setTrackUrl(state, trackUrl) {
@@ -120,16 +120,16 @@ describe("TheSoundplayer", () => {
             },
             setToken(state, token) {
               state.token = token;
-            },
-          },
-        },
-      },
+            }
+          }
+        }
+      }
     });
 
     wrapper = shallowMount(soundplayer, {
       vuetify,
       store,
-      router,
+      router
     });
   });
 
@@ -231,7 +231,7 @@ describe("TheSoundplayer", () => {
     wrapper.vm.setAudioElement({
       readyState: 3,
       duration: 3000,
-      play: function() {},
+      play: function() {}
     });
 
     wrapper.vm._handleLoaded();
@@ -243,7 +243,7 @@ describe("TheSoundplayer", () => {
     wrapper.vm.setAudioElement({
       readyState: 1,
       duration: 2000,
-      play: function() {},
+      play: function() {}
     });
 
     wrapper.vm._handleLoaded();
@@ -254,7 +254,7 @@ describe("TheSoundplayer", () => {
 
   it("playing handler", () => {
     wrapper.vm.setAudioElement({
-      currentTime: 3000,
+      currentTime: 3000
     });
     wrapper.vm.currentTimeInSec = 10;
 
@@ -300,7 +300,7 @@ describe("TheSoundplayer", () => {
 
   it("play the next track", () => {
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     store.state.track.isLastTrackInQueue = false;
     store.state.track.isNextAndPreviousFinished = true;
@@ -311,7 +311,7 @@ describe("TheSoundplayer", () => {
 
   it("play the previous track", () => {
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     store.state.track.isLastTrackInQueue = false;
     store.state.track.isNextAndPreviousFinished = true;

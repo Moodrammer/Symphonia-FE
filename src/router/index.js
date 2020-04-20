@@ -19,7 +19,8 @@ import Overview from "../components/artistUI/Overview";
 import RelatedArtists from "../components/artistUI/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
 import Genre from "../components/general/Genre.vue";
-import Google from "../components/oauth/google.vue"
+import Google from "../components/oauth/google.vue";
+import AlbumView from "../components/general/AlbumView.vue";
 
 Vue.use(VueRouter);
 
@@ -97,9 +98,14 @@ const routes = [
         ]
       },
       {
-        name: ":type/:id",
-        path: ":type/:id",
+        name: "playlist/:id",
+        path: "playlist/:id",
         component: PlaylistView
+      },
+      {
+        name: "album/:id",
+        path: "album/:id",
+        component: AlbumView
       },
       {
         path: "/genre/:id",
@@ -181,7 +187,7 @@ const routes = [
       }
     ]
   },
-  
+
   {
     path: "/google/:userToken",
     name: "googleroute",

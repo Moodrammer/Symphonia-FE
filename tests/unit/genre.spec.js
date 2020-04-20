@@ -60,5 +60,4 @@ describe("Genre Component", () => {
   it("Has Card Grid", () => {
     expect(wrapper.contains(cardGrid)).toBe(true);
   });
-
 });

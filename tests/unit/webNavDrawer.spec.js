@@ -1,7 +1,7 @@
-import { shallowMount ,RouterLinkStub} from "@vue/test-utils";
+import { shallowMount, RouterLinkStub } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import Vuex from 'vuex'
+import Vuex from "vuex";
 
 import WebNavDrawer from "@/components/WebplayerLayout/WebNavDrawer.vue";
 
@@ -20,29 +20,30 @@ describe("Webplayer Navigation Drawer", () => {
       modules: {
         playlist: {
           namespaced: true,
-          
+
           state: {
-            likedPlaylists:[
+            likedPlaylists: [
               {
-                "collaborative": false,
-                "images": [
+                collaborative: false,
+                images: [
                   "https://zasymphonia.ddns.net/api/v1/images/playlists/playlist9.jpg"
                 ],
-                "public": true,
-                "tracks": [
-                  "5e8a39f24e11cd46c8bde654"
-                ],
-                "followers": [],
-                "_id": "5e875bd6ba6ebe663fdbb2c0",
-                "name": "Songs for Coping with Loss",
-                "owner": "5e812db054660672fd699881",
-                "description": "Songs for Coping with the Loss of My Debit Card, My Mailbox Key, and My Bike, Which I Tipsily Locked up Somewhere Two Weeks Ago",
-                "category": "5e883e48c808fd1aa40ad1f8",
-                "id": "5e875bd6ba6ebe663fdbb2c0"
+                public: true,
+                tracks: ["5e8a39f24e11cd46c8bde654"],
+                followers: [],
+                _id: "5e875bd6ba6ebe663fdbb2c0",
+                name: "Songs for Coping with Loss",
+                owner: "5e812db054660672fd699881",
+                description:
+                  "Songs for Coping with the Loss of My Debit Card, My Mailbox Key, and My Bike, Which I Tipsily Locked up Somewhere Two Weeks Ago",
+                category: "5e883e48c808fd1aa40ad1f8",
+                id: "5e875bd6ba6ebe663fdbb2c0"
               }
             ]
           },
-
+          mutations: {
+            changeCreateModel: jest.fn()
+          },
           actions: {
             getPlaylists: jest.fn()
           }
@@ -73,7 +74,19 @@ describe("Webplayer Navigation Drawer", () => {
   //--------------------------------------------------
   //         Testing created hook cycle actions
   //--------------------------------------------------
-  it("Get user's saved playlists", () =>{
+  it("Get user's saved playlists", () => {
     expect("getPlaylists").toHaveBeenCalled;
+  });
+
+  it("Get saved playlists", () => {
+    wrapper.setProps({ playlists: [] });
+    expect("wrapper.vm.playlists").toBe("[]");
+  });
+  //--------------------------------------------------
+  //                   Methods
+  //--------------------------------------------------
+  it("Change create playlist state", () => {
+    wrapper.vm.changeCreateModel();
+    expect("changeCreateModel").toHaveBeenCalled;
   });
 });

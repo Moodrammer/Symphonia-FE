@@ -1,0 +1,70 @@
+{
+  "history":[
+      {
+        "_id": "5e9d75e7c2587a3db467040b",
+        "track": "5e7d2dc03429e24340ff1396",
+        "played_at": "2020-04-20T10:13:59.257Z",
+        "contextImage": "http://source.unsplash.com/xMMh-VFGL9M",
+        "contextName": "Quran ALbum2",
+        "contextId": "6",
+        "contextDescription": "My Favorite Public Place to Pretend is My Living Room Mix",
+        "contextUrl": "https://thesymphonia.ddns.net/",
+        "contextType": "album"
+      },
+      {
+        "_id": "5e9d75e7c2587a3db467040b",
+        "track": "5e7d2dc03429e24340ff1396",
+        "played_at": "2020-04-20T10:13:59.257Z",
+        "contextImage": "http://source.unsplash.com/PsEXbDsSlV4",
+        "contextName": "QuranPlaylist1",
+        "contextId": "1",
+        "contextDescription": "My Favorite Public Place to Pretend is My Living Room Mix",
+        "contextUrl": "https://thesymphonia.ddns.net/",
+        "contextType": "playlist"
+      },
+      {
+        "_id": "5e9d75e7c2587a3db467040b",
+        "track": "5e7d2dc03429e24340ff1396",
+        "played_at": "2020-04-20T10:13:59.257Z",
+        "contextImage": "http://source.unsplash.com/H7sHkM9eilw",
+        "contextName": "Album2",
+        "contextId": "4",
+        "contextDescription": "My Favorite Public Place to Pretend is My Living Room Mix",
+        "contextUrl": "https://thesymphonia.ddns.net/",
+        "contextType": "album"
+      },
+      {
+        "_id": "5e9d75e7c2587a3db467040b",
+        "track": "5e7d2dc03429e24340ff1396",
+        "played_at": "2020-04-20T10:13:59.257Z",
+        "contextImage": "http://source.unsplash.com/wf0c0d-h2fE",
+        "contextName": "New Playlist3",
+        "contextId": "7",
+        "contextDescription": "My Favorite Public Place to Pretend is My Living Room Mix",
+        "contextUrl": "https://thesymphonia.ddns.net/",
+        "contextType": "playlist"
+      },
+      {
+        "_id": "5e9d75e7c2587a3db467040b",
+        "track": "5e7d2dc03429e24340ff1396",
+        "played_at": "2020-04-20T10:13:59.257Z",
+        "contextImage": "http://source.unsplash.com/wnd7te34T-0",
+        "contextName": "Album1",
+        "contextId": "3",
+        "contextDescription": "My Favorite Public Place to Pretend is My Living Room Mix",
+        "contextUrl": "https://thesymphonia.ddns.net/",
+        "contextType": "album"
+      },
+      {
+        "_id": "5e9d75e7c2587a3db467040b",
+        "track": "5e7d2dc03429e24340ff1396",
+        "played_at": "2020-04-20T10:13:59.257Z",
+        "contextImage": "http://source.unsplash.com/2Qg4y32pdCc",
+        "contextName": "TRST",
+        "contextId": "2",
+        "contextDescription": "My Favorite Public Place to Pretend is My Living Room Mix",
+        "contextUrl": "https://thesymphonia.ddns.net/",
+        "contextType": "album"
+      }
+    ]
+}

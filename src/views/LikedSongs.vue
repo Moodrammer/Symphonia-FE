@@ -82,10 +82,14 @@
             v-for="track in tracks"
             :key="track.name"
             :songName="track.name"
-            :artistName="track.artist"
-            :albumName="track.album"
+            :albumName="track.album.name"
+            :albumID="track.album._id"
+            :artistName="track.artist.name"
+            :artistID="track.artist._id"
             :duration="track.durationMs"
             :id="track._id"
+            :disabled="track.premium"
+            :playlist="false"
           />
         </v-list>
       </v-col>
@@ -95,7 +99,6 @@
 
 <script>
 import Song from "../components/general/Song";
-import { mapState, mapActions } from "vuex";
 import getDeviceSize from "../mixins/getDeviceSize";
 import getuserToken from "../mixins/userService";
 
@@ -113,12 +116,10 @@ export default {
       iconClick: false
     };
   },
-  methods: {
-    ...mapActions("category", ["getTracks"])
-  },
+  methods: {},
   created: function() {
     //this.$store.dispatch("track/getTrack", 1);
-    this.getTracks(this.getuserToken());
+    this.$store.dispatch("category/getTracks", this.getuserToken());
     // this.$store.dispatch("playlist/followPlaylist",{
     //   id: 2,
     //   token: this.getuserToken()
@@ -126,12 +127,14 @@ export default {
   },
   mounted() {
     this.$root.$on("updateContent", () => {
-      this.getTracks(this.getuserToken());
+      this.$store.dispatch("category/getTracks", this.getuserToken());
     });
   },
-  computed: mapState({
-    tracks: state => state.category.tracks
-  }),
+  computed: {
+    tracks() {
+      return this.$store.state.category.tracks;
+    }
+  },
   mixins: [getDeviceSize, getuserToken]
 };
 </script>

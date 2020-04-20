@@ -4,7 +4,7 @@
       v-bind:class="{
         'hero-home-bg-cover': isLg(),
         'hero-home-md-cover': isMd(),
-        'hero-home-sm-cover': isSm() || isXs(),
+        'hero-home-sm-cover': isSm() || isXs()
       }"
     >
       <v-container>
@@ -68,7 +68,7 @@
               "
               v-bind:class="{
                 'benefits-img-sm': isSm() || isXs(),
-                'benefits-img-lg': !isSm(),
+                'benefits-img-lg': !isSm()
               }"
             >
             </v-img>
@@ -146,24 +146,24 @@ export default {
         benefit1: {
           no: 1,
           text1: "Download music.",
-          text2: "Listen anywhere.",
+          text2: "Listen anywhere."
         },
         benefit2: {
           no: 2,
           text1: "No ad interruptions.",
-          text2: "Enjoy nonstop music.",
+          text2: "Enjoy nonstop music."
         },
         benefit3: {
           no: 3,
           text1: "Play any song.",
-          text2: "Even on mobile.",
+          text2: "Even on mobile."
         },
         benefit4: {
           no: 4,
           text1: "Unlimited skips.",
-          text2: "Just hit next.",
-        },
-      },
+          text2: "Just hit next."
+        }
+      }
     };
   },
 
@@ -180,7 +180,7 @@ export default {
       } else {
         this.setNavigationBarColor("rgba(0, 0, 0, 0)");
       }
-    },
+    }
   },
 
   mounted: function() {
@@ -193,7 +193,7 @@ export default {
     this.setNavigationBarColor("rgba(0, 0, 0, 0.6)");
   },
 
-  mixins: [getDeviceSize],
+  mixins: [getDeviceSize]
 };
 </script>
 

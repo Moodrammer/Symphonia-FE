@@ -15,7 +15,7 @@
         class="toolbar"
         v-bind:class="{
           'toolbar-large-width': isLg(),
-          'toolbar-medium-width': !isLg(),
+          'toolbar-medium-width': !isLg()
         }"
       >
         <router-link to="/" style="text-decoration: none;">
@@ -245,16 +245,16 @@ export default {
 
   computed: {
     ...mapState({
-      homepageInstance: (state) => state.homepage.homepageInstance,
-      navigationBarColor: (state) => state.homepage.navigationBarColor,
-    }),
+      homepageInstance: state => state.homepage.homepageInstance,
+      navigationBarColor: state => state.homepage.navigationBarColor
+    })
   },
 
   data() {
     return {
       drawer: false,
       //The current user profile image
-      currentUserImageUrl: "",
+      currentUserImageUrl: ""
     };
   },
   created() {
@@ -270,10 +270,10 @@ export default {
       this.logOut();
       this.$forceUpdate();
       this.homepageInstance.$forceUpdate();
-    },
+    }
   },
 
-  mixins: [isLoggedIn, getimageUrl, getDeviceSize],
+  mixins: [isLoggedIn, getimageUrl, getDeviceSize]
 };
 </script>
 

@@ -32,7 +32,6 @@ export default {
 
   methods: {
     ...mapMutations("homepage", ["setHomepageInstance"])
-
   },
   mounted: function() {
     this.setHomepageInstance(this);
