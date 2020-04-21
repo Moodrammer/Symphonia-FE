@@ -8,7 +8,7 @@ import player from "./modules/player";
 import category from "./modules/category";
 import album from "./modules/album";
 import artist from "./modules/artist";
-import userPubicProfile from "./modules/userPuplicProfile"
+import userPublicProfile from "./modules/userPublicProfile"
 import homepage from "./modules/homepage";
 
 Vue.use(Vuex);
@@ -17,7 +17,7 @@ export default new Vuex.Store({
   modules: {
     playlist,
     user,
-    userPubicProfile,
+    userPublicProfile,
     track,
     player,
     category,

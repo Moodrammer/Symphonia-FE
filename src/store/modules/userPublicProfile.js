@@ -1,40 +1,47 @@
 import axios from "axios";
 
 const state = {
-  albums: []
+  playlists: [],
+  userInfo: null
 };
 
 
 const mutations = {
-  delete_albums: (state, list) =>
-    (state.albums = state.albums.filter(album => !list.includes(album._id)))
+  load_playlists: (state, list) =>
+    (state.playlists = list.playlists.items.filter(e=>e.public)),
+  load_userInfo: (state, info) => {state.userInfo = info; console.log("sadasd",info)},
 };
 
 const getters = {
-  allAlbums: function(state) {
-    var newValue = state.albums;
-    var albums = [];
+  allPublicPlaylists: function(state) {
+    if(!state.playlists) return;
+    var newValue = state.playlists;
+    var playlists = [];
     newValue.forEach(element => {
       var k = {
         name: element.name,
-        image: element.image,
-        description: element.artists,
+        image: element.images[0],
+        description: `By ${element.owner.name}`,
         id: element._id,
-        type: "album"
+        type: "playlist"
       };
-      albums.push(k);
+      playlists.push(k);
     });
-    return albums;
+    return playlists;
+  },
+  allInfo: function(state){
+    if(state.userInfo)
+    return {name: state.userInfo.name, image: state.userInfo.imageUrl}
   }
 };
  
 const actions = {
   /**
-   * called to get user's saved albums
+   * called to get user's public info
    * @param {object} payload contains the token
    */
 
-  getUserProfile({ commit, dispatch }, payload) {
+  getUserInfo({ commit }, payload) {
     axios
       .get(`/v1/me/${payload.id}`, {
         headers: {
@@ -42,11 +49,10 @@ const actions = {
         }
       })
       .then(response => {
-        console.log(response);
-        response.tracks.forEach(element => dispatch("getFollowedTracks",{id: element, token: payload.token}));
+        console.log("user",response);
         // response.ownedPlaylists.forEach(element => dispatch("getPlaylists",{id: element, token: payload.token}));
         // response.followedAlbums.forEach(element => dispatch("getFollowedAlbums",{id: element, token: payload.token}));
-        commit("getFollowedAlbums",{albums: response.followedAlbums, token: payload.token});     
+        commit("load_userInfo", response.data);     
 
         
       })
@@ -56,7 +62,12 @@ const actions = {
       });
   },
 
-  getUserPlaylists({ commit }, payload) {
+  /**
+   * called to get user's public playlists
+   * @param {object} payload contains the token
+   */
+
+  getPublicPlaylists({ commit }, payload) {
     axios
       .get(`/v1/users/${payload.id}/playlists`, {
         headers: {
@@ -66,7 +77,7 @@ const actions = {
       })
       .then(response => {
         console.log(response);
-        commit("load_playlists", response);        
+        commit("load_playlists", response.data);        
       })
       .catch(error => {
         console.log("axios caught an error in getUserPlaylists");
@@ -75,30 +86,11 @@ const actions = {
 
   },
 
-  getUserAlbums({ commit }, payload) {
-    axios
-      .get(`/v1/albums`, {
-        headers: {
-          Authorization: `Bearer ${payload.token}`
-        },
-        params: { ids: payload.ids.join() }
-      })
-      .then(response => {
-        console.log(response);
-        commit("load_albums", response);        
-      })
-      .catch(error => {
-        console.log("axios caught an error in getUserAlbums");
-        console.log(error);
-      });
-      
-  },
-
-
 
 };
 
 export default {
+  namespaced:true,
   state,
   mutations,
   actions,

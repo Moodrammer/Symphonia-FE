@@ -21,6 +21,7 @@ import Queue from "../views/TheQueue.vue";
 import Genre from "../components/general/Genre.vue";
 import Google from "../components/oauth/google.vue";
 import AlbumView from "../components/general/AlbumView.vue";
+import UserUI from "../components/UserUI.vue";
 
 Vue.use(VueRouter);
 
@@ -36,6 +37,11 @@ const routes = [
     component: WebPlayerHome,
     redirect: "webhome/home",
     children: [
+      {
+        name: "UserUI",
+        path: "user/:id",
+        component: UserUI,
+      },
       {
         name: "ArtistUI",
         path: "artist/:id",
