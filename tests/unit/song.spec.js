@@ -1,9 +1,9 @@
 import { shallowMount, RouterLinkStub } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import Vuex from 'vuex'
+import Vuex from "vuex";
 
-import Song from "@/components/general/Song.vue"
+import Song from "@/components/general/Song.vue";
 
 describe("Song Component", () => {
   let wrapper;
@@ -27,7 +27,7 @@ describe("Song Component", () => {
           actions: {
             removeSavedTrack: jest.fn(),
             checkSaved: jest.fn(),
-            saveTrack: jest.fn(),
+            saveTrack: jest.fn()
           }
         }
       }
@@ -56,13 +56,13 @@ describe("Song Component", () => {
   //--------------------------------------------------
   //         Testing created hook cycle actions
   //--------------------------------------------------
-  it("Convert function",()=>{
+  it("Convert function", () => {
     wrapper.vm.convert(2000);
     expect(wrapper.vm.min).toBe(Math.floor((2000 / 1000 / 60) << 0));
     expect(wrapper.vm.sec).toBe(Math.floor((2000 / 1000) % 60));
   });
 
-  it("Check if the user saved this track", ()=>{
+  it("Check if the user saved this track", () => {
     wrapper.vm.checkLiked();
     expect("checkSaved").toHaveBeenCalled;
   });
@@ -70,17 +70,16 @@ describe("Song Component", () => {
   //---------------------------------------------------
   //       Test user functionalities (logged out)
   //---------------------------------------------------
-  it("Show snack bar when user is logged out and click save track",()=>{
-    wrapper.vm.snackbar=false;
+  it("Show snack bar when user is logged out and click save track", () => {
+    wrapper.vm.snackbar = false;
     wrapper.vm.likeSong();
     expect(wrapper.vm.snackbar).toBe(true);
   });
 
-  it("Show snack bar when user logged out at remove track click", () =>{
-    wrapper.vm.snackbar=false;
-    const item=wrapper.find("#removeTrack");
+  it("Show snack bar when user logged out at remove track click", () => {
+    wrapper.vm.snackbar = false;
+    const item = wrapper.find("#removeTrack");
     item.vm.$emit("click");
     expect(wrapper.vm.snackbar).toBe(true);
   });
-
 });

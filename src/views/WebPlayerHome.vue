@@ -26,7 +26,7 @@ export default {
     NavDrawer,
     NavBar,
     SoundPlayer,
-    SoundPlayerLogout,
+    SoundPlayerLogout
   },
   mounted: function() {
     //Handle the updateContent event by force the component to update
@@ -34,7 +34,7 @@ export default {
       this.$forceUpdate();
     });
   },
-  mixins: [isLoggedIn],
+  mixins: [isLoggedIn]
 };
 </script>
 

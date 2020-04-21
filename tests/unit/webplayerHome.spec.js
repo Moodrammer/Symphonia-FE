@@ -18,7 +18,7 @@ describe("Webplayer Home", () => {
     Vue.use(VueRouter);
     wrapper = shallowMount(WebplayerHome, {
       router,
-      vuetify,
+      vuetify
     });
   });
 
@@ -30,7 +30,7 @@ describe("Webplayer Home", () => {
   });
 
   it("Has Navagation Bar", () => {
-    expect(wrapper.contains(NavBar)). toBe(true);
+    expect(wrapper.contains(NavBar)).toBe(true);
   });
 
   it("Has Navagation Drawer", () => {

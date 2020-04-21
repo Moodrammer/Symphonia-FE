@@ -8,7 +8,7 @@ import player from "./modules/player";
 import category from "./modules/category";
 import album from "./modules/album";
 import artist from "./modules/artist";
-import homepage from "./modules/homepage"
+import homepage from "./modules/homepage";
 
 Vue.use(Vuex);
 

@@ -19,7 +19,8 @@ import Overview from "../components/artistUI/Overview";
 import RelatedArtists from "../components/artistUI/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
 import Genre from "../components/general/Genre.vue";
-import Google from "../components/oauth/google.vue"
+import Google from "../components/oauth/google.vue";
+import Facebook from "../components/oauth/facebook.vue";
 
 Vue.use(VueRouter);
 
@@ -181,11 +182,16 @@ const routes = [
       }
     ]
   },
-  
+
   {
     path: "/google/:userToken",
     name: "googleroute",
     component: Google
+  },
+  {
+    path: "/facebook/:userToken",
+    name: "facebookroute",
+    component: Facebook
   }
 ];
 

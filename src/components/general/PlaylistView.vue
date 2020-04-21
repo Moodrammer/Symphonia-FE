@@ -118,13 +118,21 @@
                           Start Radio
                         </v-list-item-title>
                       </v-list-item>
-                      <v-list-item v-if="!followed" @click="followPlaylist" id="followButton">
+                      <v-list-item
+                        v-if="!followed"
+                        @click="followPlaylist"
+                        id="followButton"
+                      >
                         <v-list-item-title class="draweritem">
                           Save to Your Library
                         </v-list-item-title>
                       </v-list-item>
 
-                      <v-list-item v-if="followed" @click="unfollowPlaylist" id="unfollowButton">
+                      <v-list-item
+                        v-if="followed"
+                        @click="unfollowPlaylist"
+                        id="unfollowButton"
+                      >
                         <v-list-item-title class="draweritem">
                           Remove from your Library
                         </v-list-item-title>

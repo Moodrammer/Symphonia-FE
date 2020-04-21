@@ -99,6 +99,7 @@ const actions = {
               localStorage.setItem("userID", response.data.user._id);
               localStorage.setItem("type", response.data.user.type);
               localStorage.setItem("imageUrl", response.data.user.imageUrl);
+              localStorage.setItem("authType", "symphonia");
             }
             //If the user choses not to remember him store his data in the session Storage
             else {
@@ -109,6 +110,7 @@ const actions = {
               sessionStorage.setItem("userID", response.data.user._id);
               sessionStorage.setItem("type", response.data.user.type);
               sessionStorage.setItem("imageUrl", response.data.user.imageUrl);
+              sessionStorage.setItem("authType", "symphonia");
             }
             resolve(true);
           }

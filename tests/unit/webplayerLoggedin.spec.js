@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import Vuex from 'vuex'
+import Vuex from "vuex";
 
 import loggedIn from "@/components/WebplayerContent/HomeContentLogin.vue";
 
@@ -20,7 +20,7 @@ describe("Webplayer Home - user logged in", () => {
         category: {
           namespaced: true,
           state: {
-            categories:[]
+            categories: []
           },
           getters: {
             categoriesGetter: state => {
@@ -32,7 +32,7 @@ describe("Webplayer Home - user logged in", () => {
             loadUserSections: jest.fn()
           }
         }
-       }
+      }
     });
 
     wrapper = shallowMount(loggedIn, {

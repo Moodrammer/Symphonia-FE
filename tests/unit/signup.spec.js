@@ -10,36 +10,35 @@ describe("signup", () => {
   let wrapper;
   let vuetify;
   //vuex variables
-  let actions
-  let mutations
-  let store
-  let mockState = ""
+  let actions;
+  let mutations;
+  let store;
+  let mockState = "";
 
   beforeEach(() => {
-    Vue.use(Vuex)
+    Vue.use(Vuex);
     //define a mock version of the store
     actions = {
       registerUser: jest.fn(() => {
-        if(mockState == "fail"){ 
+        if (mockState == "fail") {
           return Promise.reject({
             status: "fail"
-          })}
-        else if (mockState == "error")
+          });
+        } else if (mockState == "error")
           return Promise.reject({
             status: "error",
             msg: "Please try again later"
-          })  
-        else
-          return Promise.resolve()  
+          });
+        else return Promise.resolve();
       })
-    }
+    };
     mutations = {
       setuserDOB: jest.fn()
-    }
+    };
     store = new Vuex.Store({
       actions,
       mutations
-    })
+    });
 
     vuetify = new Vuetify();
     Vue.use(Vuetify);
@@ -48,7 +47,7 @@ describe("signup", () => {
     wrapper = mount(signup, {
       vuetify,
       store,
-      stubs: ['router-link']
+      stubs: ["router-link"]
     });
   });
   //-------------------------------------------------------------------------//
@@ -187,7 +186,6 @@ describe("signup", () => {
   //   mockState = "fail"
   //   wrapper.vm.submitForm()
   //   expect(wrapper.vm.errorState).toBe(true)
-    
-  //})
 
+  //})
 });

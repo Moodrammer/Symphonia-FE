@@ -27,32 +27,33 @@
         <!-- Facebook button  -->
         <v-row>
           <v-col cols="12" class="py-0 pb-1">
-            <v-btn
-              block
-              large
-              rounded
-              color="#3B5998"
-              class="white--text"
-              id="fb-login"
-              >CONTINUE WITH FACEBOOK</v-btn
-            >
+            <a href="https://thesymphonia.ddns.net/api/v1/users/auth/facebook">
+              <v-btn
+                block
+                large
+                rounded
+                color="#3B5998"
+                class="white--text"
+                id="fb-login"
+                >CONTINUE WITH FACEBOOK</v-btn
+              >
+            </a>
           </v-col>
         </v-row>
         <!-- Google button -->
         <v-row>
           <v-col cols="12" class="pt-1">
             <a href="https://thesymphonia.ddns.net/api/v1/users/auth/google">
-            <v-btn
-              block
-              large
-              rounded
-              color="#dd4b39"
-              class="white--text"
-              id="ggl-login"
+              <v-btn
+                block
+                large
+                rounded
+                color="#dd4b39"
+                class="white--text"
+                id="ggl-login"
               >
-              
-            CONTINUE WITH GOOGLE  
-            </v-btn>
+                CONTINUE WITH GOOGLE
+              </v-btn>
             </a>
           </v-col>
         </v-row>
@@ -267,8 +268,7 @@ export default {
             }
           });
       }
-    },
-
+    }
   }
 };
 </script>

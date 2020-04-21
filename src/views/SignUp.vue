@@ -13,31 +13,39 @@
             <v-row justify="center" class="mb-5">
               <v-col cols="6">
                 <!-- Facebook button -->
-                <v-row justify="center" class="mb-2">
-                  <v-btn
-                    id="fb-sign-btn"
-                    rounded
-                    color="#3B5998"
-                    class="white--text"
-                    style="font-size: 14px"
-                    large
-                    block
-                    >Sign up with Facebook</v-btn
-                  >
-                </v-row>
+                <a
+                  href="https://thesymphonia.ddns.net/api/v1/users/auth/facebook"
+                >
+                  <v-row justify="center" class="mb-2">
+                    <v-btn
+                      id="fb-sign-btn"
+                      rounded
+                      color="#3B5998"
+                      class="white--text"
+                      style="font-size: 14px"
+                      large
+                      block
+                      >Sign up with Facebook</v-btn
+                    >
+                  </v-row>
+                </a>
                 <!-- Google button -->
-                <v-row justify="center" class="my-0">
-                  <v-btn
-                    id="ggl-sign-btn"
-                    rounded
-                    color="#dd4b39"
-                    class="white--text"
-                    style="font-size: 14px"
-                    large
-                    block
-                    ><div class="px-2">Sign up with Google</div></v-btn
-                  >
-                </v-row>
+                <a
+                  href="https://thesymphonia.ddns.net/api/v1/users/auth/google"
+                >
+                  <v-row justify="center" class="my-0">
+                    <v-btn
+                      id="ggl-sign-btn"
+                      rounded
+                      color="#dd4b39"
+                      class="white--text"
+                      style="font-size: 14px"
+                      large
+                      block
+                      ><div class="px-2">Sign up with Google</div></v-btn
+                    >
+                  </v-row>
+                </a>
               </v-col>
             </v-row>
 

@@ -15,7 +15,7 @@
         class="toolbar"
         v-bind:class="{
           'toolbar-large-width': isLg(),
-          'toolbar-medium-width': !isLg(),
+          'toolbar-medium-width': !isLg()
         }"
       >
         <router-link to="/" style="text-decoration: none;">
@@ -233,6 +233,7 @@
 import isLoggedIn from "../../mixins/userService";
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getimageUrl from "../../mixins/userService";
+import logOut from "../../mixins/userService";
 import { mapState } from "vuex";
 
 /**
@@ -245,16 +246,16 @@ export default {
 
   computed: {
     ...mapState({
-      homepageInstance: (state) => state.homepage.homepageInstance,
-      navigationBarColor: (state) => state.homepage.navigationBarColor,
-    }),
+      homepageInstance: state => state.homepage.homepageInstance,
+      navigationBarColor: state => state.homepage.navigationBarColor
+    })
   },
 
   data() {
     return {
       drawer: false,
       //The current user profile image
-      currentUserImageUrl: "",
+      currentUserImageUrl: ""
     };
   },
   created() {
@@ -269,11 +270,15 @@ export default {
     logOutAndRerender() {
       this.logOut();
       this.$forceUpdate();
+      
+      console.log(this.homepageInstance);
+      
       this.homepageInstance.$forceUpdate();
-    },
+      
+    }
   },
 
-  mixins: [isLoggedIn, getimageUrl, getDeviceSize],
+  mixins: [isLoggedIn, getimageUrl, getDeviceSize, logOut]
 };
 </script>
 

@@ -14,14 +14,11 @@ describe("Library.vue", () => {
     wrapper = shallowMount(library, { router, vuetify });
   });
 
-/////////////////////////////////////////////////////////
-/////////////     RENDERING TESTS     ///////////////////
-/////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
+  /////////////     RENDERING TESTS     ///////////////////
+  /////////////////////////////////////////////////////////
 
-it("renders", () => expect(wrapper.exists()).toBe(true));
+  it("renders", () => expect(wrapper.exists()).toBe(true));
 
-it("renders vue instance", () => expect(wrapper.isVueInstance()).toBe(true));
-
+  it("renders vue instance", () => expect(wrapper.isVueInstance()).toBe(true));
 });
-
-

@@ -11,7 +11,7 @@ import getuserToken from "../../mixins/userService";
 
 export default {
   name: "Library",
-  mixins: [getuserToken],
+  mixins: [getuserToken]
 
   // created() {
   //   if (!this.getuserToken()) {

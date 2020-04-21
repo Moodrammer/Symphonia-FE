@@ -28,6 +28,7 @@ export default {
         localStorage.removeItem("userID");
         localStorage.removeItem("type");
         localStorage.removeItem("imageUrl");
+        localStorage.removeItem("authType");
       } else {
         sessionStorage.removeItem("userToken");
         sessionStorage.removeItem("username");
@@ -35,6 +36,9 @@ export default {
         sessionStorage.removeItem("userID");
         sessionStorage.removeItem("type");
         sessionStorage.removeItem("imageUrl");
+        sessionStorage.removeItem("imageGoogleUrl");
+        sessionStorage.removeItem("imageFacebookUrl");
+        sessionStorage.removeItem("authType");
       }
     },
     /**
@@ -125,8 +129,23 @@ export default {
       }
       //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
       else if (sessionStorage.getItem("userToken") != null) {
-        return sessionStorage.getItem("imageUrl");
+        //If the user is logged in with google get his google image
+        let gglImg = sessionStorage.getItem("imageGoogleUrl");
+        let fbImg = sessionStorage.getItem("imageFacebookUrl");
+        if (gglImg != null) return gglImg;
+        else if (fbImg != null) return fbImg;
+        else return sessionStorage.getItem("imageUrl");
       }
+    },
+    /**
+     * returns the user authentication type which is either: facebook | google | Symphonia
+     * @public
+     */
+    getauthType() {
+      if (localStorage.userToken != null)
+        return localStorage.getItem("authType");
+      else if (sessionStorage.userToken != null)
+        return sessionStorage.getItem("authType");
     },
     /**
      * This function is used to replace the already existing token in either the localStorage or the sessionStorage with

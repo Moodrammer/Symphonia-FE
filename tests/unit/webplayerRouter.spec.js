@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import Vuex from 'vuex'
+import Vuex from "vuex";
 
 import WebplayerRouter from "@/components/WebplayerContent/HomeContentRouter.vue";
 
