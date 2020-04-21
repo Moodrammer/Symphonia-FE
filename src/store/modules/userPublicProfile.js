@@ -8,14 +8,20 @@ const state = {
 
 const mutations = {
   load_playlists: (state, list) =>
-    (state.playlists = list.playlists.items.filter(e=>e.public)),
-  load_userInfo: (state, info) => {state.userInfo = info; console.log("sadasd",info)},
+    {
+      // console.log("aywaaa",list)
+      state.playlists = list.playlists.items.filter(e=>e.public);
+      // console.log("saadd", list.playlists.items.filter(e=>e.public))
+    },
+  load_userInfo: (state, info) => state.userInfo = info,
 };
 
 const getters = {
   allPublicPlaylists: function(state) {
     if(!state.playlists) return;
+
     var newValue = state.playlists;
+    // console.log("haha",newValue)
     var playlists = [];
     newValue.forEach(element => {
       var k = {
@@ -26,6 +32,7 @@ const getters = {
         type: "playlist"
       };
       playlists.push(k);
+      // console.log("haha",k)
     });
     return playlists;
   },
@@ -49,7 +56,7 @@ const actions = {
         }
       })
       .then(response => {
-        console.log("user",response);
+        console.log("user info",response);
         // response.ownedPlaylists.forEach(element => dispatch("getPlaylists",{id: element, token: payload.token}));
         // response.followedAlbums.forEach(element => dispatch("getFollowedAlbums",{id: element, token: payload.token}));
         commit("load_userInfo", response.data);     
@@ -76,7 +83,7 @@ const actions = {
         params: { limit: 50, offset: 0 }
       })
       .then(response => {
-        console.log(response);
+        console.log("user_playlists",response.data);
         commit("load_playlists", response.data);        
       })
       .catch(error => {
