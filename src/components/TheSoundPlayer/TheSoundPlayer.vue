@@ -63,8 +63,8 @@
 
           <!-- Previous -->
           <a
-            @click="previous()"
-            v-if="!isFirstTrackInQueue && isNextAndPreviousFinished"
+            @click="previousConditionally()"
+            v-if="!isFirstTrackInQueue"
             title="Previous"
             id="previous"
             style="margin-right: 10px;"
@@ -74,7 +74,7 @@
             </v-icon>
           </a>
           <a
-            v-if="isFirstTrackInQueue || !isNextAndPreviousFinished"
+            v-if="isFirstTrackInQueue"
             title="Previous"
             id="previous"
             style="margin-right: 10px;"
@@ -107,23 +107,12 @@
 
           <!-- Next -->
           <a
-            @click="next()"
-            v-if="!isLastTrackInQueue && isNextAndPreviousFinished"
+            @click="nextConditionally()"
             title="Next"
             id="next"
             style="margin-left: 10px;"
           >
             <v-icon medium class="icons">
-              mdi-skip-next
-            </v-icon>
-          </a>
-          <a
-            v-if="isLastTrackInQueue || !isNextAndPreviousFinished"
-            title="Next"
-            id="next"
-            style="margin-left: 10px;"
-          >
-            <v-icon medium>
               mdi-skip-next
             </v-icon>
           </a>
@@ -203,7 +192,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened
+                icons: !isQueueOpened,
               }"
             >
               mdi-format-list-numbered-rtl
@@ -264,23 +253,26 @@ export default {
     },
 
     ...mapState({
-      isTrackLiked: state => state.track.isTrackLiked,
-      trackUrl: state => state.track.trackUrl,
-      trackName: state => state.track.trackName,
-      trackArtistName: state => state.track.trackArtistName,
-      trackAlbumImageUrl: state => state.track.trackAlbumImageUrl,
-      isLastTrackInQueue: state => state.track.isLastTrackInQueue,
-      isFirstTrackInQueue: state => state.track.isFirstTrackInQueue,
-      trackTotalDuration: state => state.track.trackTotalDuration,
-      audioElement: state => state.track.audioElement,
-      isTrackPaused: state => state.track.isTrackPaused,
-      isQueueOpened: state => state.track.isQueueOpened,
-      isNextAndPreviousFinished: state => state.track.isNextAndPreviousFinished,
-      isBuffering: state => state.track.isBuffering,
-      token: state => state.track.token,
-      isRepeatEnabled: state => state.track.isRepeatEnabled,
-      isRepeatOnceEnabled: state => state.track.isRepeatOnceEnabled
-    })
+      isTrackLiked: (state) => state.track.isTrackLiked,
+      trackUrl: (state) => state.track.trackUrl,
+      trackName: (state) => state.track.trackName,
+      trackArtistName: (state) => state.track.trackArtistName,
+      trackAlbumImageUrl: (state) => state.track.trackAlbumImageUrl,
+      isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
+      isFirstTrackInQueue: (state) => state.track.isFirstTrackInQueue,
+      trackTotalDuration: (state) => state.track.trackTotalDuration,
+      audioElement: (state) => state.track.audioElement,
+      isTrackPaused: (state) => state.track.isTrackPaused,
+      isQueueOpened: (state) => state.track.isQueueOpened,
+      isNextAndPreviousFinished: (state) =>
+        state.track.isNextAndPreviousFinished,
+      isBuffering: (state) => state.track.isBuffering,
+      token: (state) => state.track.token,
+      isRepeatEnabled: (state) => state.track.isRepeatEnabled,
+      isRepeatOnceEnabled: (state) => state.track.isRepeatOnceEnabled,
+
+      historyResponse: (state) => state.category.historyResponse,
+    }),
   },
   data() {
     return {
@@ -297,7 +289,7 @@ export default {
       isShuffleEnabled: false,
 
       devices: undefined,
-      currentDeviceId: undefined
+      currentDeviceId: undefined,
     };
   },
   methods: {
@@ -314,7 +306,10 @@ export default {
       "setIsTrackPaused",
       "setIsTrackLiked",
       "setIsBuffering",
-      "setToken"
+      "setToken",
+      "setContextType",
+      "setContextId",
+      "setContextUrl",
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -324,8 +319,9 @@ export default {
       "previous",
       "getCurrentlyPlayingTrackId",
       "playTrackInQueue",
-      "toggleRepeatOnce"
+      "toggleRepeatOnce",
     ]),
+    ...mapActions("category", ["recentlyPlayed"]),
     /**
      * convert time in seconds to MM:SS format
      * @param {string} value the time in seconds to be converted
@@ -349,6 +345,24 @@ export default {
      */
     toggleRepeatOnceConditionally: function() {
       this.toggleRepeatOnce();
+    },
+    /**
+     * play the next track in case previous and next are finished
+     * @public
+     */
+    nextConditionally: function() {
+      if (this.isNextAndPreviousFinished) {
+        this.next();
+      }
+    },
+    /**
+     * play the previous track in case previous and next are finished
+     * @public
+     */
+    previousConditionally: function() {
+      if (this.isNextAndPreviousFinished) {
+        this.previous();
+      }
     },
     /**
      * change the liked state of the song
@@ -549,12 +563,18 @@ export default {
       var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
       this.getTrackInformation({
         token: this.token,
-        trackId: CurrentlyPlayingTrackId
+        trackId: CurrentlyPlayingTrackId,
       });
+
+      await this.recentlyPlayed(this.getuserToken());
+      this.setContextId(this.historyResponse[0].contextId);
+      this.setContextType(this.historyResponse[0].contextType);
+      this.setContextUrl(this.historyResponse[0].contextUrl);
+
       this.playTrackInQueue(CurrentlyPlayingTrackId);
 
       this.updateQueue(this.token);
-    }
+    },
   },
   mounted: function() {
     this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
@@ -571,7 +591,7 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
-  }
+  },
 };
 </script>
 
