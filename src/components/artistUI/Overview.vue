@@ -85,30 +85,30 @@ export default {
   },
   data: function() {
     return {
-      albumsContextMenuChoice: null,
-      albumsContextMenuCardID: null,
+      // albumsContextMenuChoice: null,
+      // albumsContextMenuCardID: null,
 
-      popularContextMenuChoice: null,
-      popularContextMenuCardID: null,
+      // popularContextMenuChoice: null,
+      // popularContextMenuCardID: null,
 
-      singlesContextMenuChoice: null,
-      singlesContextMenuCardID: null,
+      // singlesContextMenuChoice: null,
+      // singlesContextMenuCardID: null,
 
-      appearsOnContextMenuChoice: null,
-      appearsOnContextMenuCardID: null,
+      // appearsOnContextMenuChoice: null,
+      // appearsOnContextMenuCardID: null,
 
       popularCardItems: {
         // Custom context menu data section
         // menuList: items of the menu - disabledMenu: flag to disable menu on outside card click - showMenu: menu v-model
-        menuList: [
-          { title: "Start Radio" },
-          { title: "Unfollow" },
-          { title: "Copy Artist link" }
-        ],
-        showMenu: false,
-        // Albums Cards data section
-        // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
-        hoveredCardIndex: null,
+        // menuList: [
+        //   { title: "Start Radio" },
+        //   { title: "Unfollow" },
+        //   { title: "Copy Artist link" }
+        // ],
+        // showMenu: false,
+        // // Albums Cards data section
+        // // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
+        // hoveredCardIndex: null,
         items: [],
         selectedItem: null
       },
@@ -116,44 +116,44 @@ export default {
       singlesCardItems: {
         // Custom context menu data section
         // menuList: items of the menu - disabledMenu: flag to disable menu on outside card click - showMenu: menu v-model
-        menuList: [
-          { title: "Start Radio" },
-          { title: "Unfollow" },
-          { title: "Copy Artist link" }
-        ],
-        showMenu: false,
+        // menuList: [
+        //   { title: "Start Radio" },
+        //   { title: "Unfollow" },
+        //   { title: "Copy Artist link" }
+        // ],
+        // showMenu: false,
         // Albums Cards data section
         // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
-        hoveredCardIndex: null,
+        // hoveredCardIndex: null,
         items: []
       },
       albumsCardItems: {
         // Custom context menu data section
         // menuList: items of the menu - disabledMenu: flag to disable menu on outside card click - showMenu: menu v-model
-        menuList: [
-          { title: "Start Radio" },
-          { title: "Unfollow" },
-          { title: "Copy Artist link" }
-        ],
-        showMenu: false,
-        // Albums Cards data section
-        // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
-        hoveredCardIndex: null,
+        // menuList: [
+        //   { title: "Start Radio" },
+        //   { title: "Unfollow" },
+        //   { title: "Copy Artist link" }
+        // ],
+        // showMenu: false,
+        // // Albums Cards data section
+        // // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
+        // hoveredCardIndex: null,
         items: []
       },
 
       appearsOnCardItems: {
         // Custom context menu data section
         // menuList: items of the menu - disabledMenu: flag to disable menu on outside card click - showMenu: menu v-model
-        menuList: [
-          { title: "Start Radio" },
-          { title: "Unfollow" },
-          { title: "Copy Artist link" }
-        ],
-        showMenu: false,
-        // Albums Cards data section
-        // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
-        hoveredCardIndex: null,
+        // menuList: [
+        //   { title: "Start Radio" },
+        //   { title: "Unfollow" },
+        //   { title: "Copy Artist link" }
+        // ],
+        // showMenu: false,
+        // // Albums Cards data section
+        // // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered album visable - albums: hardcoded data "placeholders"
+        // hoveredCardIndex: null,
         items: []
       }
     };

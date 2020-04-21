@@ -3,7 +3,7 @@
     <h1>Playlists</h1>
     <CardGrid
       :cardItems="cardItems"
-      v-on:order="menuOrder"
+      :contextMenu="contextMenu"
       cardStyle="playlist"
     />
   </v-content>
@@ -19,23 +19,23 @@ export default {
   components: {
     CardGrid
   },
-
+  props: ["contextMenu"],
   data() {
     return {
       // Custom context menu data section
       // menuList: items of the menu to be displayed "set to likedSongsMenu or playlistsMenu"
       // disabledMenu: flag to disable menu on outside card click - showMenu: menu v-model
       cardItems: {
-        menuList: null,
-        disableMenu: false,
-        showMenu: false,
-        likedSongsMenu: [{ title: "Copy Link" }],
-        playlistsMenu: [
-          { title: "Start Radio" },
-          { title: "Make Secret" },
-          { title: "Delete" },
-          { title: "Copy Playlist link" }
-        ],
+        // menuList: null,
+        // disableMenu: false,
+        // showMenu: false,
+        // likedSongsMenu: [{ title: "Copy Link" }],
+        // playlistsMenu: [
+        //   { title: "Start Radio" },
+        //   { title: "Make Secret" },
+        //   { title: "Delete" },
+        //   { title: "Copy Playlist link" }
+        // ],
 
         // Liked Songs Cards data section
         // likedSongs: hardcoded data "placeholders"
@@ -43,7 +43,7 @@ export default {
 
         // Playlists Cards data section
         // hoveredCardIndex: index of the hovered card, used to make the play button of the hovered playlist visable - playlists: hardcoded data "placeholders"
-        hoveredCardIndex: null,
+        // hoveredCardIndex: null,
         items: []
       },
       contextMenuChoice: null,
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     ...mapActions("playlist", ["getPlaylists"]),
-    ...mapActions("category", ["getTracks"]),
+    ...mapActions("category", ["getTracks"])
     /**
      * called when the user clicks on an aption from the context menu
      * @param {string} menuItem the option chosen by user
@@ -73,19 +73,19 @@ export default {
      * @param {string} name the name of the grid that containg the card
      */
 
-    menuOrder(menuItem, cardIndex) {
-      this.contextMenuChoice = menuItem;
-      this.contextMenuCardIndex = cardIndex;
-    }
+    // menuOrder(menuItem, cardIndex) {
+    //   this.contextMenuChoice = menuItem;
+    //   this.contextMenuCardIndex = cardIndex;
+    // }
   },
   watch: {
-    contextMenuChoice: function() {
-      if (this.contextMenuChoice === null) return;
-      console.log(this.contextMenuChoice);
-      console.log(this.contextMenuCardIndex);
+    // contextMenuChoice: function() {
+    //   if (this.contextMenuChoice === null) return;
+    //   console.log(this.contextMenuChoice);
+    //   console.log(this.contextMenuCardIndex);
 
-      this.contextMenuChoice = null;
-    },
+    //   this.contextMenuChoice = null;
+    // },
     likedPlaylists: function(newValue) {
       this.cardItems.items = newValue;
     },

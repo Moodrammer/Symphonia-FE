@@ -1,13 +1,17 @@
 <template>
   <v-content
     :style="{
-      backgroundImage: 'url(' + image + ')',
+      backgroundImage: 'url(' + artist.imageUrl + ')',
       backgroundSize: '100% Auto'
     }"
   >
     <div class="pl-10 pt-12 mt-12 gradient-body py-7">
-      <p class="caption grey--text">638,490 MONTHLY LISTENERS</p>
-      <h1 class="display-3 font-weight-bold white--text my-5">Amr Diab</h1>
+      <p class="caption grey--text">
+        {{ artist.followedUsers.length }} MONTHLY LISTENERS
+      </p>
+      <h1 class="display-3 font-weight-bold white--text my-5">
+        {{ artist.name }}
+      </h1>
       <v-btn rounded color="success" min-width="110" min-height="40" dark
         >Play</v-btn
       >
@@ -16,7 +20,7 @@
       >
       <span class="display-2 white--text">...</span>
     </div>
-    <div style="background:#1a1a1a" class="pl-3" fill-height>
+    <div class="pl-3 content-container">
       <div class="pl-9 mb-10">
         <v-btn text color="white" class="mx-2" :to="{ name: 'Overview' }">
           <span class="text-capitalize white--text">Overview</span>
@@ -39,21 +43,28 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   computed: mapGetters(["currentArtistGetter"]),
   methods: {
-    ...mapActions(["getCurrentArtist"])
+    ...mapActions(["getCurrentArtist"]),
+    updateArtist() {
+      try {
+        this.getCurrentArtist({
+          token: this.getuserToken(),
+          id: this.$route.params.id
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
   created() {
-    try {
-      this.getCurrentArtist({
-        token: this.getuserToken(),
-        id: this.$route.params.id
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    this.updateArtist();
   },
   watch: {
     currentArtistGetter: function(newValue) {
+      console.log(newValue);
       this.artist = newValue;
+    },
+    "$route.params.id": function() {
+      this.updateArtist();
     }
   },
   data: function() {
@@ -75,5 +86,9 @@ export default {
     rgba(26, 26, 26, 1) 0%,
     rgba(26, 26, 26, 0) 100%
   );
+}
+.content-container {
+  background: #1a1a1a;
+  height: 100%;
 }
 </style>

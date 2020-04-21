@@ -63,8 +63,8 @@
 
           <!-- Previous -->
           <a
-            @click="previous()"
-            v-if="!isFirstTrackInQueue && isNextAndPreviousFinished"
+            @click="previousConditionally()"
+            v-if="!isFirstTrackInQueue"
             title="Previous"
             id="previous"
             style="margin-right: 10px;"
@@ -74,7 +74,7 @@
             </v-icon>
           </a>
           <a
-            v-if="isFirstTrackInQueue || !isNextAndPreviousFinished"
+            v-if="isFirstTrackInQueue"
             title="Previous"
             id="previous"
             style="margin-right: 10px;"
@@ -107,23 +107,12 @@
 
           <!-- Next -->
           <a
-            @click="next()"
-            v-if="!isLastTrackInQueue && isNextAndPreviousFinished"
+            @click="nextConditionally()"
             title="Next"
             id="next"
             style="margin-left: 10px;"
           >
             <v-icon medium class="icons">
-              mdi-skip-next
-            </v-icon>
-          </a>
-          <a
-            v-if="isLastTrackInQueue || !isNextAndPreviousFinished"
-            title="Next"
-            id="next"
-            style="margin-left: 10px;"
-          >
-            <v-icon medium>
               mdi-skip-next
             </v-icon>
           </a>
@@ -269,17 +258,18 @@ export default {
       trackName: state => state.track.trackName,
       trackArtistName: state => state.track.trackArtistName,
       trackAlbumImageUrl: state => state.track.trackAlbumImageUrl,
-      isLastTrackInQueue: state => state.track.isLastTrackInQueue,
       isFirstTrackInQueue: state => state.track.isFirstTrackInQueue,
       trackTotalDuration: state => state.track.trackTotalDuration,
+      trackId: state => state.track.trackId,
       audioElement: state => state.track.audioElement,
       isTrackPaused: state => state.track.isTrackPaused,
       isQueueOpened: state => state.track.isQueueOpened,
       isNextAndPreviousFinished: state => state.track.isNextAndPreviousFinished,
       isBuffering: state => state.track.isBuffering,
       token: state => state.track.token,
-      isRepeatEnabled: state => state.track.isRepeatEnabled,
-      isRepeatOnceEnabled: state => state.track.isRepeatOnceEnabled
+      isRepeatOnceEnabled: state => state.track.isRepeatOnceEnabled,
+
+      historyResponse: state => state.category.historyResponse
     })
   },
   data() {
@@ -314,7 +304,10 @@ export default {
       "setIsTrackPaused",
       "setIsTrackLiked",
       "setIsBuffering",
-      "setToken"
+      "setToken",
+      "setContextType",
+      "setContextId",
+      "setContextUrl"
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -326,6 +319,7 @@ export default {
       "playTrackInQueue",
       "toggleRepeatOnce"
     ]),
+    ...mapActions("category", ["recentlyPlayed"]),
     /**
      * convert time in seconds to MM:SS format
      * @param {string} value the time in seconds to be converted
@@ -348,7 +342,27 @@ export default {
      * @public
      */
     toggleRepeatOnceConditionally: function() {
-      this.toggleRepeatOnce();
+      if (this.isNextAndPreviousFinished) {
+        this.toggleRepeatOnce();
+      }
+    },
+    /**
+     * play the next track in case previous and next are finished
+     * @public
+     */
+    nextConditionally: function() {
+      if (this.isNextAndPreviousFinished) {
+        this.next();
+      }
+    },
+    /**
+     * play the previous track in case previous and next are finished
+     * @public
+     */
+    previousConditionally: function() {
+      if (this.isNextAndPreviousFinished) {
+        this.previous();
+      }
     },
     /**
      * change the liked state of the song
@@ -391,39 +405,6 @@ export default {
           }
         }
       }
-    },
-    /**
-     * Enable the shuffle.
-     * Invoked after pressing shuffle button
-     * while it's disabled
-     *
-     * @public
-     */
-    enableShuffle: function() {
-      this.isShuffleEnabled = true;
-      //make a request to get a shuffled song
-      /* send a request to save the option on backend */
-    },
-    /**
-     * Disable the shuffle.
-     * Invoked after pressing shuffle button
-     * while it's enabled
-     *
-     * @public
-     */
-    disableShuffle: function() {
-      this.isShuffleEnabled = false;
-      //make a request to get a shuffled song
-      /* send a request to save the option on backend */
-    },
-    /**
-     * enable repeat
-     *
-     * @public
-     */
-    enableRepeat: function() {
-      this.isRepeatEnabled = true;
-      /* send a request to save the option on backend */
     },
     /**
      * mute the sound. Invoked when the sound icon
@@ -522,6 +503,15 @@ export default {
         this.next();
       }
     },
+    _handleAudioError: function() {
+      let errorCode = this.audioElement.error.code;
+      if (errorCode == 4) {
+        //song token expired
+        this.playTrackInQueue(this.trackId);
+      } else {
+        console.log(this.audioElement.error.code);
+      }
+    },
     /**
      * This is the initialization function
      * which is executed only after the
@@ -540,6 +530,12 @@ export default {
         "playing",
         this._handlePlayingAfterBuffering
       );
+      // Add event to detect error and display error code
+      this.audioElement.addEventListener(
+        "error",
+        this._handleAudioError,
+        false
+      );
 
       this.audioElement.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
@@ -551,6 +547,12 @@ export default {
         token: this.token,
         trackId: CurrentlyPlayingTrackId
       });
+
+      await this.recentlyPlayed(this.getuserToken());
+      this.setContextId(this.historyResponse[0].contextId);
+      this.setContextType(this.historyResponse[0].contextType);
+      this.setContextUrl(this.historyResponse[0].contextUrl);
+
       this.playTrackInQueue(CurrentlyPlayingTrackId);
 
       this.updateQueue(this.token);

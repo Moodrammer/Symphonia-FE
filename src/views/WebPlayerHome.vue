@@ -3,16 +3,21 @@
     <!--Sending a prop to the drawer to be updated after logout-->
     <nav-drawer :loggedIn="isLoggedIn()"></nav-drawer>
     <nav-bar></nav-bar>
-    <router-view :loggedIn="isLoggedIn()"></router-view>
+    <router-view
+      :loggedIn="isLoggedIn()"
+      :contextMenu="contextMenu"
+    ></router-view>
     <delete-playlist v-if="deletePlaylist" />
     <add-track-to-playlist v-if="addTrack" />
     <create-playlist v-if="createPlaylist" />
     <sound-player v-if="isLoggedIn()" />
     <sound-player-logout v-if="!isLoggedIn()" />
+    <ContextMenu ref="context" />
   </v-app>
 </template>
 
 <script>
+import ContextMenu from "../components/general/ContextMenu";
 import NavDrawer from "../components/WebplayerLayout/WebNavDrawer";
 import NavBar from "../components/WebplayerLayout/WebNavBar";
 import isLoggedIn from "../mixins/userService";
@@ -28,7 +33,11 @@ import AddTrackToPlaylist from "../components/AddTrackToPlaylist.vue";
  * @example [none]
  */
 export default {
+  data() {
+    return { contextMenu: { event: null, type: null, id: null } };
+  },
   components: {
+    ContextMenu,
     NavDrawer,
     NavBar,
     SoundPlayer,
@@ -36,6 +45,18 @@ export default {
     DeletePlaylist,
     CreatePlaylist,
     AddTrackToPlaylist
+  },
+  watch: {
+    "contextMenu.id": function() {
+      if (this.contextMenu.id != null) {
+        this.$refs.context.openMenu(
+          this.contextMenu.event,
+          this.contextMenu.id,
+          this.contextMenu.type
+        );
+        this.contextMenu.id = null;
+      }
+    }
   },
   mounted: function() {
     //Handle the updateContent event by force the component to update

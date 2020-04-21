@@ -5,6 +5,7 @@ import artistJSON from "./api/mock/data/artist.json";
 import albumsJSON from "./api/mock/data/album.json";
 import categoryJSON from "./api/mock/data/category.json";
 import historyJSON from "./api/mock/data/history.json";
+// import usersJSON from "./api/mock/data/users.json";
 
 //The makeserver function to be used to enable Mirage to intercept your requests
 export function makeServer({ environment = "development" } = {}) {
@@ -31,7 +32,9 @@ export function makeServer({ environment = "development" } = {}) {
         dateOfBirth: "1980-12-12",
         gender: "male",
         type: "user",
-        country: "EG"
+        country: "EG",
+        imageUrl:
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
       });
       //creating an artist for testing purposes
       server.create("user", {
@@ -41,7 +44,9 @@ export function makeServer({ environment = "development" } = {}) {
         dateOfBirth: "1995-12-18",
         gender: "male",
         type: "artist",
-        country: "EG"
+        country: "EG",
+        imageUrl:
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
       });
 
       server.create("deletedPlaylist", {
@@ -72,6 +77,7 @@ export function makeServer({ environment = "development" } = {}) {
       });
 
       albumsJSON.items.forEach(element => server.create("album", element));
+      // usersJSON.data.forEach(element => server.create("user", element));
 
       categoryJSON.data.categorys.forEach(element => {
         server.create("category", element);
@@ -389,6 +395,7 @@ export function makeServer({ environment = "development" } = {}) {
       //   return schema.albums.findBy(album => album._id === x).destroy();
       // });
 
+      //////////////  Artist /////////////////////////////////////////////////////////
       this.get("/v1/me/following", (schema, request) => {
         if (request.queryParams.type === "artist")
           return { artists: { items: schema.artists.all().models } };
@@ -401,6 +408,30 @@ export function makeServer({ environment = "development" } = {}) {
             .destroy();
         }
       });
+      ///////////////////////////////////////////////////////////////////////////////
+
+      ///////////////////////USER UI/////////////////////////////////////////////////
+      this.get("/v1/users/:id/playlists", schema => {
+        let x = schema.playlists.all().models;
+        let z = [];
+        x.forEach(element => {
+          let y = {
+            name: x.name,
+            images: element.images,
+            _id: element.id,
+            owner: { name: "user" },
+            public: true
+          };
+          z.push(y);
+        });
+        console.log(z);
+        return { playlists: { items: z } };
+      });
+      this.get("/v1/me/:id", (schema, request) => {
+        let x = schema.users.findBy(user => user.id === request.params.id);
+        return { name: x.name, imageUrl: x.imageUrl };
+      });
+      //////////////////////////////////////////////////////////////////////////////
       //Intercepting Login post requests
       this.post("/v1/users/login", (schema, request) => {
         //turn attributes to json to be able to access the data of the request
@@ -637,21 +668,8 @@ export function makeServer({ environment = "development" } = {}) {
             data: {
               queueTracks: [],
               previousTrack: null,
-              nextTrack: null
-            }
-          }
-        );
-      });
-      //////////////////////////////////////////////////////////////////////////////////////
-      //
-      //////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/player/currently-playing", () => {
-        return new Response(
-          200,
-          {},
-          {
-            data: {
-              currentTrack: "/track/123"
+              nextTrack:
+                "http://thesymphonia.ddns.net/api/v1/me/player/tracks/123"
             }
           }
         );
@@ -673,6 +691,34 @@ export function makeServer({ environment = "development" } = {}) {
       //////////////////////////////////////////////////////////////////////////////////////
       this.patch("/v1/me/player/repeatOnce", () => {
         return new Response(200, {}, {});
+      });
+      //////////////////////////////////////////////////////////////////////////////////////
+      //
+      //////////////////////////////////////////////////////////////////////////////////////
+      const mockTracks = ["/track/123", "/track/456"];
+      var currentlyPlaying = mockTracks[0];
+
+      this.post("/v1/me/player/next", () => {
+        if (currentlyPlaying == mockTracks[0]) {
+          currentlyPlaying = mockTracks[1];
+        } else {
+          currentlyPlaying = mockTracks[0];
+        }
+        return new Response(200, {}, {});
+      });
+      //////////////////////////////////////////////////////////////////////////////////////
+      //
+      //////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/player/currently-playing", () => {
+        return new Response(
+          200,
+          {},
+          {
+            data: {
+              currentTrack: currentlyPlaying
+            }
+          }
+        );
       });
     }
   });
