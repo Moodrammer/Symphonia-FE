@@ -660,21 +660,7 @@ export function makeServer({ environment = "development" } = {}) {
             data: {
               queueTracks: [],
               previousTrack: null,
-              nextTrack: null
-            }
-          }
-        );
-      });
-      //////////////////////////////////////////////////////////////////////////////////////
-      //
-      //////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/player/currently-playing", () => {
-        return new Response(
-          200,
-          {},
-          {
-            data: {
-              currentTrack: "/track/123"
+              nextTrack: "http://thesymphonia.ddns.net/api/v1/me/player/tracks/123"
             }
           }
         );
@@ -696,6 +682,35 @@ export function makeServer({ environment = "development" } = {}) {
       //////////////////////////////////////////////////////////////////////////////////////
       this.patch("/v1/me/player/repeatOnce", () => {
         return new Response(200, {}, {});
+      });
+      //////////////////////////////////////////////////////////////////////////////////////
+      //
+      //////////////////////////////////////////////////////////////////////////////////////
+      const mockTracks = ["/track/123", "/track/456"];
+      var currentlyPlaying = mockTracks[0];
+
+      this.post("/v1/me/player/next", () => {
+        if(currentlyPlaying == mockTracks[0])
+        {
+          currentlyPlaying = mockTracks[1]
+        } else {
+          currentlyPlaying = mockTracks[0]  
+        }
+        return new Response(200, {}, {});
+      });
+      //////////////////////////////////////////////////////////////////////////////////////
+      //
+      //////////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/player/currently-playing", () => {
+        return new Response(
+          200,
+          {},
+          {
+            data: {
+              currentTrack: currentlyPlaying
+            }
+          }
+        );
       });
     }
   });
