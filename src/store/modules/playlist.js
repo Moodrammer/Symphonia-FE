@@ -30,12 +30,8 @@ const mutations = {
     state.likedPlaylists.push(k);
   },
   load_likedPlaylists(state, list) {
-    for (let i = 0; i < list.length; i++) {
-      var k = list[i];
-      state.likedPlaylists.push(k);
-    }
+    state.likedPlaylists = list;
   },
-  //for Pause and Play
   load_playlists(state, list) {
     state.playlists = list;
   },
@@ -46,7 +42,6 @@ const mutations = {
     state.singlePlaylist = playlist;
   },
   setTracks(state, tracks) {
-    //Vue.set(state, "playlistTracks", tracks);
     state.playlistTracks = tracks;
   },
   emptyTracks(state) {
@@ -134,8 +129,8 @@ const actions = {
   // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
   async getPlaylists({ commit }, payload) {
     if (payload != null) {
-      await commit("emptyPlaylists");
-      axios
+      // await commit("emptyPlaylists");
+      await axios
         .get("/v1/me/playlists", {
           headers: {
             Authorization: `Bearer ${payload}`
@@ -267,34 +262,34 @@ const actions = {
         console.log(error);
       });
   },
-  followedPlaylist({ commit }, token) {
-    axios
-      .get("/v1/me/following/playlists", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(response => {
-        let list = response.data;
-        let newList = [];
-        list.forEach(element => {
-          var k = {
-            name: element.name,
-            image: element.images[0],
-            description: element.description,
-            id: element.id,
-            url: "to be added",
-            type: "playlist"
-          };
-          newList.push(k);
-        });
-        commit("load_likedPlaylists", newList);
-      })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
-  },
+  // followedPlaylist({ commit }, token) {
+  //   axios
+  //     .get("/v1/me/following/playlists", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     })
+  //     .then(response => {
+  //       let list = response.data;
+  //       let newList = [];
+  //       list.forEach(element => {
+  //         var k = {
+  //           name: element.name,
+  //           image: element.images[0],
+  //           description: element.description,
+  //           id: element.id,
+  //           url: "to be added",
+  //           type: "playlist"
+  //         };
+  //         newList.push(k);
+  //       });
+  //       commit("load_likedPlaylists", newList);
+  //     })
+  //     .catch(error => {
+  //       console.log("axios caught an error");
+  //       console.log(error);
+  //     });
+  // },
   changeDetails({ commit }, payload) {
     axios
       .patch(

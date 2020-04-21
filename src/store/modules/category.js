@@ -270,8 +270,8 @@ const actions = {
         console.log(error);
       });
   },
-  async loadUserSections({ commit }) {
-    await commit("emptyArray");
+  async loadUserSections({ commit, dispatch }, payload) {
+    await dispatch("playlist/getPlaylists", payload, { root: true });
     commit("load_personalSections");
   },
   getTracks({ commit }, payload) {
@@ -302,8 +302,8 @@ const actions = {
         console.log(error);
       });
   },
-  recentlyPlayed({ commit }, payload) {
-    axios
+  async recentlyPlayed({ commit }, payload) {
+    await axios
       .get("/v1/me/recently-played", {
         headers: {
           Authorization: `Bearer ${payload}`
@@ -311,7 +311,7 @@ const actions = {
       })
       .then(response => {
         let list = response.data.history;
-        commit("history");
+        commit("history", list);
         let newList = [];
         list.forEach(element => {
           var k = {
