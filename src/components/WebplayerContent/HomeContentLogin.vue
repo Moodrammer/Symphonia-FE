@@ -9,6 +9,7 @@
         :seeAll="category.showSeeAll"
         :gridItems="category.list"
         :gridStyle="category.style"
+        :contextMenu="contextMenu"
       ></category>
     </v-container>
   </v-content>
@@ -39,6 +40,7 @@ export default {
       return this.$store.state.category.categories;
     }
   },
-  mixins: [getuserToken]
+  mixins: [getuserToken],
+  props: ["contextMenu"]
 };
 </script>

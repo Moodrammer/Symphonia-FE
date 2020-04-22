@@ -166,6 +166,7 @@
                 :album="true"
                 :id="track._id"
                 :disabled="track.premium"
+                :contextMenu="contextMenu"
               />
             </div>
           </v-list>
@@ -280,6 +281,7 @@ export default {
       return this.$store.state.album.followed;
     }
   },
+  props: ["contextMenu"],
   mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID]
 };
 </script>

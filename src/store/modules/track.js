@@ -133,7 +133,6 @@ const actions = {
     }
   },
   checkSaved({ commit }, payload) {
-    console.log(payload.id);
     if (payload.token == null) {
       commit("unlikeTrack", payload.id);
     } else {

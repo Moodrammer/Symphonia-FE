@@ -4,6 +4,7 @@ const state = {
   likedPlaylists: [],
   playlists: [],
   singlePlaylist: null,
+  playlistOwner: null,
   playlistTracks: [],
   followed: false,
   deletePlaylist: false,
@@ -40,6 +41,7 @@ const mutations = {
   },
   setPlaylist(state, playlist) {
     state.singlePlaylist = playlist;
+    state.playlistOwner = playlist.owner;
   },
   setTracks(state, tracks) {
     state.playlistTracks = tracks;

@@ -3,6 +3,7 @@
     class="my-2 songItem pa-3"
     @mouseover="hover = true"
     @mouseleave="hover = false"
+    @contextmenu.prevent="menuClick($event, id)"
   >
     <v-icon
       class="mr-2 pb-9"
@@ -52,71 +53,17 @@
       <v-spacer></v-spacer>
     </v-list-item-title>
 
-    <v-menu offset-x>
-      <template v-slot:activator="{ on }">
-        <!--Icon to activate the menu-->
-        <div v-on="on" v-on:click="checkLiked" id="enableMenu">
-          <v-icon
-            color="white"
-            class="mx-2"
-            v-if="hover"
-            id="menu"
-            v-bind:class="{ 'disabled-2': disabled }"
-          >
-            mdi-dots-horizontal
-          </v-icon>
-        </div>
-      </template>
+    <v-icon
+      color="white"
+      class="mx-2"
+      v-if="hover"
+      id="menu"
+      v-bind:class="{ 'disabled-2': disabled }"
+      @click="menuClick($event, id)"
+    >
+      mdi-dots-horizontal
+    </v-icon>
 
-      <!--Menu list-->
-      <v-list color="#282828" dark class="mt-3 white--text">
-        <v-list-item>
-          <v-list-item-title class="draweritem">
-            Start Radio
-          </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item v-if="!liked" @click="likeSong" id="saveTrack">
-          <v-list-item-title class="draweritem">
-            Save to your Liked Songs
-          </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item v-if="liked" @click="deleteSong" id="removeTrack">
-          <v-list-item-title class="draweritem">
-            Remove from your Liked Songs
-          </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item>
-          <v-list-item-title class="draweritem">
-            Add to Queue
-          </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item @click="addToPlaylist" id="addToPlaylist">
-          <v-list-item-title class="draweritem">
-            Add to Playlist
-          </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item
-          id="removePlaylistTrack"
-          @click="removeFromPlaylist"
-          v-if="playlist"
-        >
-          <v-list-item-title class="draweritem">
-            Remove from this Playlist
-          </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item>
-          <v-list-item-title class="draweritem">
-            Copy Song Link
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
     <p class="white--text ml-12" v-bind:class="{ 'disabled-2': disabled }">
       {{ min }}:{{ sec }}
     </p>
@@ -171,7 +118,8 @@ export default {
     playing: {
       type: Boolean,
       default: false
-    }
+    },
+    contextMenu: {}
   },
   data: function() {
     return {
@@ -217,7 +165,6 @@ export default {
      * @param {none}
      */
     checkLiked: function() {
-      console.log(this.id);
       this.$store.dispatch("track/checkSaved", {
         id: this.id,
         token: this.getuserToken()
@@ -252,6 +199,11 @@ export default {
         ids: [this.id]
       });
       this.$root.$emit("update");
+    },
+    menuClick(event, trackID) {
+      this.$props.contextMenu.event = event;
+      this.$props.contextMenu.id = trackID;
+      this.$props.contextMenu.type = "track";
     }
   },
   computed: mapState({

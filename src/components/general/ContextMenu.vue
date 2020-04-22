@@ -10,6 +10,9 @@
 
 <script>
 import { VueContext } from "vue-context";
+import getuserToken from "../../mixins/userService";
+import getuserID from "../../mixins/userService";
+import isLoggedIn from "../../mixins/userService";
 
 export default {
   name: "ContextMenu",
@@ -20,15 +23,12 @@ export default {
       menuList: null,
       //initial data to be manipulated after the user make a right click
       artistMenu: ["Follow", "Copy Artist Link"],
-      playlistMenu: ["Save to Your Library", "Copy Playlist Link"],
-      albumMenu: [
-        "Remove from Your Library",
-        "Add to Playlist",
-        "Copy Album Link"
-      ]
+      playlistMenu: [],
+      albumMenu: [],
+      trackMenu: []
     };
   },
-
+  mixins: [getuserToken, isLoggedIn, getuserID],
   components: {
     VueContext
   },
@@ -48,6 +48,10 @@ export default {
         case "album":
           this.album();
           break;
+        case "track":
+          console.log("t");
+          this.track();
+          break;
       }
       this.$refs.menu.open($event);
     },
@@ -62,6 +66,10 @@ export default {
           break;
         case "album":
           this.albumAction(option);
+          break;
+        case "track":
+          console.log("fr");
+          this.trackAction(option);
           break;
       }
     },
@@ -98,6 +106,32 @@ export default {
           break;
       }
     },
+    trackAction(action) {
+      console.log("track action");
+      switch (action) {
+        case "Save to your Liked Songs":
+          this.saveTrack();
+          break;
+
+        case "Remove from your Liked Songs":
+          this.removeTrackForUser();
+          break;
+
+        case "Add to Playlist":
+          this.addToPlaylist();
+          break;
+
+        case "Remove from this Playlist":
+          this.removeTrackFromPlaylist();
+          break;
+
+        case "Copy Album Link":
+          this.copyToClipboard(
+            `https://zasymphonia.ddns.net/webhome/album/${this.id}`
+          );
+          break;
+      }
+    },
 
     artist() {
       this.menuList = this.artistMenu;
@@ -109,9 +143,29 @@ export default {
     },
     album() {
       this.menuList = this.albumMenu;
-      //checks
     },
+    track() {
+      this.$store.dispatch("track/checkSaved", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+      this.trackMenu = [];
 
+      this.trackMenu.push("Start Radio");
+
+      if (this.isTrackSaved)
+        this.trackMenu.push("Remove from your Liked Songs");
+      else this.trackMenu.push("Save to your Liked Songs");
+
+      this.trackMenu.push("Add to Queue");
+      this.trackMenu.push("Add to Playlist");
+
+      if (this.inUserPlaylist) this.trackMenu.push("Remove from this Playlist");
+
+      this.trackMenu.push("Copy Song Link");
+
+      this.menuList = this.trackMenu;
+    },
     copyToClipboard(url) {
       var el = document.createElement("textarea");
       // Set value (string to be copied)
@@ -126,6 +180,47 @@ export default {
       document.execCommand("copy");
       // Remove temporary element
       document.body.removeChild(el);
+    },
+    //-----------------------------------------------------------------
+    //                        Track's FUnction
+    //-----------------------------------------------------------------
+    //Save a track to the current user's saved tracks
+    saveTrack() {
+      this.$store.dispatch("track/saveTrack", {
+        id: [this.id],
+        token: this.getuserToken()
+      });
+    },
+    //Remove track from user's saved tracks
+    removeTrackForUser() {
+      this.$store.dispatch("track/removeSavedTrack", {
+        id: [this.id],
+        token: this.getuserToken()
+      });
+    },
+    //Add this track to a playlist
+    addToPlaylist() {
+      this.$store.commit("playlist/setAddedTracks", [this.id]);
+      this.$store.commit("playlist/changeAddTrackModel");
+    },
+    //Remove this track from this playlist (for owned playlists only)
+    removeTrackFromPlaylist() {
+      this.$store.dispatch("playlist/removePlaylistTrack", {
+        token: this.getuserToken(),
+        playlistID: this.$route.params.id,
+        ids: [this.id]
+      });
+      this.$root.$emit("update");
+    }
+  },
+  computed: {
+    isTrackSaved() {
+      return this.$store.state.track.generalLiked;
+    },
+    inUserPlaylist() {
+      if (this.$route.name == "playlist/:id") {
+        return this.$store.state.playlist.playlistOwner == this.getuserID();
+      } else return false;
     }
   }
 };

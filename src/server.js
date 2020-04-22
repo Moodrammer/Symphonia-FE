@@ -358,7 +358,11 @@ export function makeServer({ environment = "development" } = {}) {
       // Get Current User Owned Playlists
       /////////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/playlists/owned", schema => {
-        return schema.playlists.where({ active: true }).models;
+        return {
+          playlists: {
+            items: schema.playlists.where({ active: true }).models
+          }
+        };
       });
       /////////////////////////////////////////////////////////////////////////////////////////
       // Add Tracks to Playlist

@@ -207,6 +207,7 @@
                 :playlistID="id"
                 :id="track._id"
                 :disabled="track.premium"
+                :contextMenu="contextMenu"
               />
             </div>
           </v-list>
@@ -375,6 +376,7 @@ export default {
       );
     }
   },
+  props: ["contextMenu"],
   mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID]
 };
 </script>
