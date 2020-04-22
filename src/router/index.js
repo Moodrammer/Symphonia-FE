@@ -22,10 +22,15 @@ import Genre from "../components/general/Genre.vue";
 import Google from "../components/oauth/google.vue";
 import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
-
+import x from "../components/artistUI/Forms.vue"
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/x",
+    name: "x",
+    component: x
+  },
   {
     path: "/",
     name: "Home",
