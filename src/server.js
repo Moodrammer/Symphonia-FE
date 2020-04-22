@@ -34,7 +34,7 @@ export function makeServer({ environment = "development" } = {}) {
         type: "user",
         country: "EG",
         imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
       });
       //creating an artist for testing purposes
       server.create("user", {
@@ -46,7 +46,7 @@ export function makeServer({ environment = "development" } = {}) {
         type: "artist",
         country: "EG",
         imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
       });
 
       server.create("deletedPlaylist", {
@@ -106,7 +106,7 @@ export function makeServer({ environment = "development" } = {}) {
           tracks: [],
           tracksCount: 0,
           owner: user_id,
-          active: true
+          active: true,
         });
         console.log(schema.playlists.all().length);
         let ID = schema.playlists.all().length;
@@ -262,8 +262,8 @@ export function makeServer({ environment = "development" } = {}) {
         }
         return {
           tracks: {
-            items: tracksList
-          }
+            items: tracksList,
+          },
         };
       });
       //////////////////////////////////////////////////////////////////////////////////////
@@ -411,16 +411,16 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////
 
       ///////////////////////USER UI/////////////////////////////////////////////////
-      this.get("/v1/users/:id/playlists", schema => {
+      this.get("/v1/users/:id/playlists", (schema) => {
         let x = schema.playlists.all().models;
         let z = [];
-        x.forEach(element => {
+        x.forEach((element) => {
           let y = {
             name: x.name,
             images: element.images,
             _id: element.id,
             owner: { name: "user" },
-            public: true
+            public: true,
           };
           z.push(y);
         });
@@ -428,7 +428,7 @@ export function makeServer({ environment = "development" } = {}) {
         return { playlists: { items: z } };
       });
       this.get("/v1/me/:id", (schema, request) => {
-        let x = schema.users.findBy(user => user.id === request.params.id);
+        let x = schema.users.findBy((user) => user.id === request.params.id);
         return { name: x.name, imageUrl: x.imageUrl };
       });
       //////////////////////////////////////////////////////////////////////////////
