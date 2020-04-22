@@ -1,7 +1,7 @@
 <template>
   <!--This component to handle the home content of the webplayer according to user state-->
-  <HomeConentLogout v-if="!loggedIn" />
-  <HomeContentLogin v-else />
+  <HomeConentLogout v-if="!loggedIn" :contextMenu="contextMenu"/>
+  <HomeContentLogin v-else :contextMenu="contextMenu"/>
 </template>
 
 <script>
@@ -15,7 +15,12 @@ import HomeConentLogout from "./HomeContentLogout.vue";
  */
 export default {
   props: {
-    loggedIn: Boolean
+    loggedIn: Boolean,
+    contextMenu: {
+      event: null,
+      type: null,
+      id: null
+    }
   },
   components: {
     HomeContentLogin,

@@ -11,7 +11,7 @@
         <p id="seeAll">SEE ALL</p>
       </router-link>
     </v-row>
-    <cardGrid :cardItems="gridItems" :cardStyle="gridStyle" />
+    <cardGrid :cardItems="gridItems" :contextMenu="contextMenu"/>
   </v-container>
 </template>
 
@@ -31,7 +31,12 @@ export default {
     id: String,
     seeAll: Boolean,
     gridItems: Object,
-    gridStyle: String
+    gridStyle: String,
+    contextMenu: {
+      event: null,
+      type: null,
+      id: null
+    }
   }
 };
 </script>

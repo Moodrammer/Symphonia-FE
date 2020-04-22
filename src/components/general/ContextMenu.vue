@@ -168,7 +168,7 @@ export default {
     },
     playlist() {
       this.$store.dispatch("playlist/checkFollowed", {
-        playlistId: this.$route.params.id,
+        playlistId: this.id,
         usersID: [this.getuserID()],
         token: this.getuserToken()
       });
@@ -302,20 +302,20 @@ export default {
     //----------------------------------------------------------------
     makePlaylistSecret() {
       this.$store.dispatch("playlist/changeDetails", {
-        playlistID: this.$route.params.id,
+        playlistID: this.id,
         public: false,
         token: this.getuserToken()
       });
     },
     makePlaylistPublic() {
       this.$store.dispatch("playlist/changeDetails", {
-        playlistID: this.$route.params.id,
+        playlistID: this.id,
         public: true,
         token: this.getuserToken()
       });
     },
     deleteUserPlaylist() {
-      this.$store.commit("playlist/setPlaylistID", this.$route.params.id);
+      this.$store.commit("playlist/setPlaylistID", this.id);
       this.$store.commit("playlist/changeDeleteModel");
     },
     followPlaylist() {

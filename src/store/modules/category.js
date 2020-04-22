@@ -8,13 +8,6 @@ const state = {
     categoryName: "Recently Played",
     showSeeAll: false,
     list: {
-      menuList: [
-        { title: "Start Radio" },
-        { title: "Save to Your Library" },
-        { title: "Copy Playlist Link" }
-      ],
-      showMenu: false,
-      hoveredCardIndex: null,
       items: []
     }
   },
@@ -22,13 +15,6 @@ const state = {
     categoryName: "Popular new releases",
     showSeeAll: false,
     list: {
-      menuList: [
-        { title: "Start Radio" },
-        { title: "Save to Your Library" },
-        { title: "Copy Playlist Link" }
-      ],
-      showMenu: false,
-      hoveredCardIndex: null,
       items: []
     }
   },
@@ -36,13 +22,6 @@ const state = {
     categoryName: "Your heavy rotation",
     showSeeAll: false,
     list: {
-      menuList: [
-        { title: "Start Radio" },
-        { title: "Save to Your Library" },
-        { title: "Copy Playlist Link" }
-      ],
-      showMenu: false,
-      hoveredCardIndex: null,
       items: []
     }
   },
@@ -50,13 +29,6 @@ const state = {
     categoryName: "Your playlists",
     showSeeAll: false,
     list: {
-      menuList: [
-        { title: "Start Radio" },
-        { title: "Save to Your Library" },
-        { title: "Copy Playlist Link" }
-      ],
-      showMenu: false,
-      hoveredCardIndex: null,
       items: []
     }
   },
@@ -64,13 +36,6 @@ const state = {
     categoryName: "Popular playlists",
     showSeeAll: false,
     list: {
-      menuList: [
-        { title: "Start Radio" },
-        { title: "Save to Your Library" },
-        { title: "Copy Playlist Link" }
-      ],
-      showMenu: false,
-      hoveredCardIndex: null,
       items: []
     }
   },
@@ -78,13 +43,6 @@ const state = {
     categoryName: "Popular Artists",
     showSeeAll: false,
     list: {
-      menuList: [
-        { title: "Start Radio" },
-        { title: "Follow" },
-        { title: "Copy Artist Link" }
-      ],
-      showMenu: false,
-      hoveredCardIndex: null,
       items: []
     }
   },
@@ -94,15 +52,7 @@ const state = {
     categoryID: "",
     //Used in home
     showSeeAll: true,
-    //To provide the card grid with the menu which appear @right click
     list: {
-      menuList: [
-        { title: "Start Radio" },
-        { title: "Save to Your Library" },
-        { title: "Copy Playlist Link" }
-      ],
-      showMenu: false,
-      hoveredCardIndex: null,
       //items:the playlists to be shown
       items: []
     }
@@ -167,13 +117,6 @@ const mutations = {
       showSeeAll: true,
       //To provide the card grid with the menu which appear @right click
       list: {
-        menuList: [
-          { title: "Start Radio" },
-          { title: "Save to Your Library" },
-          { title: "Copy Playlist Link" }
-        ],
-        showMenu: false,
-        hoveredCardIndex: null,
         //items:the playlists to be shown
         items: []
       }

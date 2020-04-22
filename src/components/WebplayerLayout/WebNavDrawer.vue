@@ -100,6 +100,7 @@
           :key="playlist.id"
           class="listItem"
           :to="'/webhome/playlist/' + playlist.id"
+          @contextmenu.prevent="menuClick($event,playlist.id)"
         >
           <v-list-item-title
             class="draweritem white--text"
@@ -121,11 +122,21 @@ import getuserToken from "../../mixins/userService";
  */
 export default {
   props: {
-    loggedIn: Boolean
+    loggedIn: Boolean,
+    contextMenu: {
+      event: null,
+      type: null,
+      id: null
+    }
   },
   methods: {
     changeCreateModel: function() {
       this.$store.commit("playlist/changeCreateModel");
+    },
+    menuClick(event,playlistID) {
+      this.$props.contextMenu.event = event;
+      this.$props.contextMenu.id = playlistID;
+      this.$props.contextMenu.type = "playlist";
     }
   },
   mounted() {

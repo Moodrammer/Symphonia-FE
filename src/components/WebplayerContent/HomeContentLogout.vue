@@ -9,6 +9,7 @@
         :id="category.categoryID"
         :gridItems="category.list"
         :gridStyle="category.style"
+        :contextMenu="contextMenu"
       ></category>
     </v-container>
   </v-content>
@@ -27,10 +28,12 @@ export default {
     Category
   },
   created: function() {
+    this.$store.dispatch("category/newReleases");
     this.$store.dispatch("category/loadGenres");
   },
   computed: mapGetters({
     categories: "category/categoriesGetter"
-  })
+  }),
+  props: ["contextMenu"]
 };
 </script>
