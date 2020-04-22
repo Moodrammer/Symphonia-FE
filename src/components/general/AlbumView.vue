@@ -30,6 +30,7 @@
                     id="playPhoto"
                     @mouseover="hover = true"
                     @mouseleave="hover = false"
+                    @contextmenu.prevent="menuClick($event)"
                     elevation="12"
                     v-bind:class="{
                       'lg-img': isLg(),
@@ -61,7 +62,7 @@
               </v-col>
 
               <v-col lg="12" md="8" sm="7" xs="1" cols="12">
-                <v-row justify-lg="center">
+                <v-row justify-lg="center" @contextmenu.prevent="menuClick($event)">
                   <h1 class="mt-5">{{ album.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">
@@ -261,6 +262,11 @@ export default {
       } else {
         this.snackbar = true;
       }
+    },
+    menuClick(event) {
+      this.$props.contextMenu.event = event;
+      this.$props.contextMenu.id = this.$route.params.id;
+      this.$props.contextMenu.type = "album";
     }
   },
   created: function() {

@@ -325,7 +325,7 @@ export function makeServer({ environment = "development" } = {}) {
       //Save Albums for Current User
       /////////////////////////////////////////////////////////////////////////////////////////
       this.put("/v1/me/albums", (schema, request) => {
-        let albumID = JSON.parse(request.requestBody);
+        let albumID = request.queryParams.ids[0];
         schema.albums.where({ _id: albumID[0] }).update({ liked: true });
         return new Response(200, {}, {});
       });
@@ -339,7 +339,7 @@ export function makeServer({ environment = "development" } = {}) {
       //Remove Albums for Current User
       /////////////////////////////////////////////////////////////////////////////////////////
       this.delete("/v1/me/albums", (schema, request) => {
-        let albumID = request.queryParams.ids;
+        let albumID = request.queryParams.ids[0];
         schema.albums.where({ _id: albumID }).update({ liked: false });
         return new Response(200, {}, {});
       });

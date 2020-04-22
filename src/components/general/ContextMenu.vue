@@ -49,7 +49,6 @@ export default {
           this.album();
           break;
         case "track":
-          console.log("t");
           this.track();
           break;
       }
@@ -68,7 +67,6 @@ export default {
           this.albumAction(option);
           break;
         case "track":
-          console.log("fr");
           this.trackAction(option);
           break;
       }
@@ -99,15 +97,26 @@ export default {
     albumAction(action) {
       //switch on all options and then execute the suitable action
       switch (action) {
+        case "Save to Your Library":
+          this.followAlbum();
+          break;
+
+        case "Remove from your Library":
+          this.unfollowAlbum();
+          break;
+
+        case "Add to Playlist":
+          this.addAlbumTracksToPlaylist();
+          break;
+
         case "Copy Album Link":
           this.copyToClipboard(
-            `https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`
+            `https://zasymphonia.ddns.net/webhome/album/${this.id}`
           );
           break;
       }
     },
     trackAction(action) {
-      console.log("track action");
       switch (action) {
         case "Save to your Liked Songs":
           this.saveTrack();
@@ -142,6 +151,23 @@ export default {
       //checks
     },
     album() {
+      this.$store.dispatch("album/checkFollowed", {
+        albumID: [this.id],
+        token: this.getuserToken()
+      });
+
+      this.albumMenu=[];
+      this.albumMenu.push("Start Radio");
+
+      if(this.isAlbumSaved)
+        this.albumMenu.push("Remove from your Library");
+      else
+        this.albumMenu.push("Save to Your Library");
+
+      this.albumMenu.push("Add to Playlist");
+
+      this.albumMenu.push("Copy Album Link");
+
       this.menuList = this.albumMenu;
     },
     track() {
@@ -211,6 +237,25 @@ export default {
         ids: [this.id]
       });
       this.$root.$emit("update");
+    },
+    //-----------------------------------------------------------------
+    //                     Album Functions
+    //-----------------------------------------------------------------
+    followAlbum() {
+      this.$store.dispatch("album/followAlbum", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+    },
+    async unfollowAlbum() {
+      await this.$store.dispatch("album/unfollowAlbum", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+    },
+    addAlbumTracksToPlaylist() {
+      this.$store.commit("playlist/setAddedTracks", this.$store.state.album.singleAlbum.tracks);
+      this.$store.commit("playlist/changeAddTrackModel");
     }
   },
   computed: {
@@ -221,6 +266,9 @@ export default {
       if (this.$route.name == "playlist/:id") {
         return this.$store.state.playlist.playlistOwner == this.getuserID();
       } else return false;
+    },
+    isAlbumSaved() {
+      return this.$store.state.album.followed;
     }
   }
 };
