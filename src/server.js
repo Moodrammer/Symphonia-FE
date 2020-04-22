@@ -669,10 +669,17 @@ export function makeServer({ environment = "development" } = {}) {
           {},
           {
             data: {
-              queueTracks: [],
-              previousTrack: null,
-              nextTrack:
+              currentlyPlaying: {
+                currentTrack: "http://thesymphonia.ddns.net/api/v1/me/player/tracks/456"
+              },
+              queueTracks: [
                 "http://thesymphonia.ddns.net/api/v1/me/player/tracks/123",
+                "http://thesymphonia.ddns.net/api/v1/me/player/tracks/456",
+                "finalTrack",
+              ],
+              previousTrack: "http://thesymphonia.ddns.net/api/v1/me/player/tracks/123",
+              nextTrack:
+                "http://thesymphonia.ddns.net/api/v1/me/player/tracks/456",
               repeat: repeat,
               repeatOnce: repeatOnce,
               shuffle: shuffle,

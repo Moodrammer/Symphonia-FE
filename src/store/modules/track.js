@@ -53,6 +53,7 @@ const mutations = {
     state.generalLiked = true;
   },
   setTrackUrl(state, trackUrl) {
+    state.audioElement.load();
     state.trackUrl = trackUrl;
   },
   setId(state, id) {
@@ -373,7 +374,7 @@ const actions = {
    *
    * @public
    */
-  async next({ state, dispatch }) {
+  async next({ state, dispatch, commit }) {
     state.isNextAndPreviousFinished = false;
 
     if (state.isRepeatOnceEnabled) {
@@ -432,7 +433,7 @@ const actions = {
           "/" +
           state.trackToken;
 
-        state.trackUrl = audioSource;
+        commit("setTrackUrl", audioSource)
 
         state.isNextAndPreviousFinished = true;
       });
@@ -443,7 +444,7 @@ const actions = {
    *
    * @public
    */
-  async previous({ state, dispatch }) {
+  async previous({ state, dispatch, commit }) {
     state.isNextAndPreviousFinished = false;
 
     if (state.isRepeatOnceEnabled) {
@@ -502,7 +503,7 @@ const actions = {
           "/" +
           state.trackToken;
 
-        state.trackUrl = audioSource;
+          commit("setTrackUrl", audioSource)
 
         state.isNextAndPreviousFinished = true;
       });
@@ -515,7 +516,7 @@ const actions = {
    *
    * @param {string} trackId the track Id to be played
    */
-  async playTrackInQueue({ state, dispatch }, trackId) {
+  async playTrackInQueue({ state, dispatch, commit }, trackId) {
     if (trackId != null) {
       await axios({
         method: "post",
@@ -558,7 +559,7 @@ const actions = {
           trackId +
           "/" +
           state.trackToken;
-        state.trackUrl = audioSource;
+        commit("setTrackUrl", audioSource)
       });
     }
   },
@@ -583,7 +584,7 @@ const actions = {
    *
    * @public
    */
-  async toggleRepeat({ state, dispatch }) {
+  async toggleRepeat({ state }) {
     await axios({
       method: "patch",
       url: "/v1/me/player/repeat",
@@ -592,8 +593,6 @@ const actions = {
       },
     }).then(() => {
       state.isRepeatEnabled = !state.isRepeatEnabled;
-
-      dispatch("playTrackInQueue", state.trackId);
     });
   },
   /**
