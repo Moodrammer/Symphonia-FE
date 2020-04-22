@@ -62,7 +62,10 @@
               </v-col>
 
               <v-col lg="12" md="8" sm="7" xs="1" cols="12">
-                <v-row justify-lg="center" @contextmenu.prevent="menuClick($event)">
+                <v-row
+                  justify-lg="center"
+                  @contextmenu.prevent="menuClick($event)"
+                >
                   <h1 class="mt-5">{{ album.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">

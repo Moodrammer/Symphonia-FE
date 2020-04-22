@@ -86,6 +86,26 @@ export default {
     playlistAction(action) {
       //switch on all options and then execute the suitable action
       switch (action) {
+        case "Make secret":
+          this.makePlaylistSecret();
+          break;
+
+        case "Make public":
+          this.makePlaylistPublic();
+          break;
+
+        case "Delete":
+          this.deleteUserPlaylist();
+          break;
+
+        case "Save to Your Library":
+          this.followPlaylist();
+          break;
+
+        case "Remove from your Library":
+          this.unfollowPlaylist();
+          break;
+
         case "Copy Playlist Link":
           this.copyToClipboard(
             `https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`
@@ -134,7 +154,7 @@ export default {
           this.removeTrackFromPlaylist();
           break;
 
-        case "Copy Album Link":
+        case "Copy Song Link":
           this.copyToClipboard(
             `https://zasymphonia.ddns.net/webhome/album/${this.id}`
           );
@@ -147,8 +167,27 @@ export default {
       //add checks like follow/unfollow and modify menuList
     },
     playlist() {
+      this.$store.dispatch("playlist/checkFollowed", {
+        playlistId: this.$route.params.id,
+        usersID: [this.getuserID()],
+        token: this.getuserToken()
+      });
+      this.playlistMenu = [];
+      this.playlistMenu.push("Start Radio");
+
+      if (this.inUserPlaylist) {
+        if (this.isPublicPlaylist) this.playlistMenu.push("Make secret");
+        else this.playlistMenu.push("Make public");
+
+        this.playlistMenu.push("Delete");
+      } else {
+        if (this.isPlaylistSaved)
+          this.playlistMenu.push("Remove from your Library");
+        else this.playlistMenu.push("Save to Your Library");
+      }
+      this.playlistMenu.push("Copy Playlist Link");
+
       this.menuList = this.playlistMenu;
-      //checks
     },
     album() {
       this.$store.dispatch("album/checkFollowed", {
@@ -156,13 +195,11 @@ export default {
         token: this.getuserToken()
       });
 
-      this.albumMenu=[];
+      this.albumMenu = [];
       this.albumMenu.push("Start Radio");
 
-      if(this.isAlbumSaved)
-        this.albumMenu.push("Remove from your Library");
-      else
-        this.albumMenu.push("Save to Your Library");
+      if (this.isAlbumSaved) this.albumMenu.push("Remove from your Library");
+      else this.albumMenu.push("Save to Your Library");
 
       this.albumMenu.push("Add to Playlist");
 
@@ -254,8 +291,44 @@ export default {
       });
     },
     addAlbumTracksToPlaylist() {
-      this.$store.commit("playlist/setAddedTracks", this.$store.state.album.singleAlbum.tracks);
+      this.$store.commit(
+        "playlist/setAddedTracks",
+        this.$store.state.album.singleAlbum.tracks
+      );
       this.$store.commit("playlist/changeAddTrackModel");
+    },
+    //----------------------------------------------------------------
+    //                       Playlist Functions
+    //----------------------------------------------------------------
+    makePlaylistSecret() {
+      this.$store.dispatch("playlist/changeDetails", {
+        playlistID: this.$route.params.id,
+        public: false,
+        token: this.getuserToken()
+      });
+    },
+    makePlaylistPublic() {
+      this.$store.dispatch("playlist/changeDetails", {
+        playlistID: this.$route.params.id,
+        public: true,
+        token: this.getuserToken()
+      });
+    },
+    deleteUserPlaylist() {
+      this.$store.commit("playlist/setPlaylistID", this.$route.params.id);
+      this.$store.commit("playlist/changeDeleteModel");
+    },
+    followPlaylist() {
+      this.$store.dispatch("playlist/followPlaylist", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+    },
+    async unfollowPlaylist() {
+      await this.$store.dispatch("playlist/unfollowPlaylist", {
+        id: this.id,
+        token: this.getuserToken()
+      });
     }
   },
   computed: {
@@ -269,6 +342,12 @@ export default {
     },
     isAlbumSaved() {
       return this.$store.state.album.followed;
+    },
+    isPublicPlaylist() {
+      return this.$store.state.playlist.singlePlaylist.public;
+    },
+    isPlaylistSaved() {
+      return this.$store.state.playlist.followed;
     }
   }
 };
