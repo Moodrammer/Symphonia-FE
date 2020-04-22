@@ -20,7 +20,7 @@ export function makeServer({ environment = "development" } = {}) {
       artist: Model,
       soundplayer: Model,
       category: Model,
-      deletedPlaylist: Model
+      deletedPlaylist: Model,
     },
 
     seeds(server) {
@@ -33,8 +33,8 @@ export function makeServer({ environment = "development" } = {}) {
         gender: "male",
         type: "user",
         country: "EG",
-        imageUrl: "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
-
+        imageUrl:
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
       });
       //creating an artist for testing purposes
       server.create("user", {
@@ -45,13 +45,13 @@ export function makeServer({ environment = "development" } = {}) {
         gender: "male",
         type: "artist",
         country: "EG",
-        imageUrl: "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
-
+        imageUrl:
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
       });
 
       server.create("deletedPlaylist", {
         name: "playlist",
-        deletedAt: "2020-04-18T04:19:11.758Z"
+        deletedAt: "2020-04-18T04:19:11.758Z",
       });
 
       //This part is just to fake mirage in order to persist the data of only one user
@@ -64,29 +64,29 @@ export function makeServer({ environment = "development" } = {}) {
         localStorage.removeItem("SignedUpUser");
       }
 
-      playlistJson.items.forEach(element => {
+      playlistJson.items.forEach((element) => {
         server.create("playlist", element);
       });
 
-      trackJSON.forEach(element => {
+      trackJSON.forEach((element) => {
         server.create("track", element);
       });
 
-      artistJSON.artists.items.forEach(element => {
+      artistJSON.artists.items.forEach((element) => {
         server.create("artist", element);
       });
 
-      albumsJSON.items.forEach(element => server.create("album", element));
+      albumsJSON.items.forEach((element) => server.create("album", element));
       // usersJSON.data.forEach(element => server.create("user", element));
 
-      categoryJSON.data.categorys.forEach(element => {
+      categoryJSON.data.categorys.forEach((element) => {
         server.create("category", element);
       });
     },
 
     //Define serializers to format the responses
     serializers: {
-      application: JSONAPISerializer
+      application: JSONAPISerializer,
     },
     routes() {
       //namespace will be prepended to any route (it acts like the server base address)
@@ -103,7 +103,7 @@ export function makeServer({ environment = "development" } = {}) {
           description: null,
           followers: {
             href: null,
-            total: 0
+            total: 0,
           },
           href:
             "https://api.symphonia.com/v1/users/thelinmichael/playlists/" +
@@ -112,7 +112,7 @@ export function makeServer({ environment = "development" } = {}) {
           owner: {
             href: "https://api.symphonia.com/v1/users/" + user_id,
             id: user_id,
-            type: "user"
+            type: "user",
           },
           public: false,
           tracks: {
@@ -123,9 +123,9 @@ export function makeServer({ environment = "development" } = {}) {
             next: null,
             offset: 0,
             previous: null,
-            total: 0
+            total: 0,
           },
-          type: "playlist"
+          type: "playlist",
         });
 
         let ID = schema.playlists.find(schema.playlists.all().length).id;
@@ -137,14 +137,14 @@ export function makeServer({ environment = "development" } = {}) {
             name: schema.playlists.where({ id: ID }).models[0].name,
             id: ID,
             images: schema.playlists.where({ id: ID }).models[0].images,
-            description: null
+            description: null,
           }
         );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Current User's Playlists
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/playlists", schema => {
+      this.get("/v1/me/playlists", (schema) => {
         let owned = schema.playlists.where({ active: true }).models;
         let followed = schema.playlists.where({ liked: true }).models;
         for (let i = 0; i < followed.length; i++) owned.push(followed[i]);
@@ -153,35 +153,35 @@ export function makeServer({ environment = "development" } = {}) {
           {},
           {
             playlists: {
-              items: owned
-            }
+              items: owned,
+            },
           }
         );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a User's Saved Tracks                "Liked Songs"
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/tracks", schema => {
+      this.get("/v1/me/tracks", (schema) => {
         return new Response(
           200,
           {},
           {
             tracks: {
-              items: schema.tracks.where({ liked: true }).models
-            }
+              items: schema.tracks.where({ liked: true }).models,
+            },
           }
         );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Popular Playlists
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/popularPlaylists", schema => {
+      this.get("/v1/me/popularPlaylists", (schema) => {
         return schema.playlists.where({ popularity: 90 }).models;
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Popular Artists
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/popularArtists", schema => {
+      this.get("/v1/me/popularArtists", (schema) => {
         return schema.artists.where({ popularity: 90 }).models;
       });
 
@@ -197,8 +197,8 @@ export function makeServer({ environment = "development" } = {}) {
             {},
             {
               playlists: {
-                items: schema.playlists.where({ genre: id }).models
-              }
+                items: schema.playlists.where({ genre: id }).models,
+              },
             }
           );
         }
@@ -245,21 +245,21 @@ export function makeServer({ environment = "development" } = {}) {
           {
             name: schema.categories.where({ id: categoryID }).models[0].name,
             id: schema.categories.where({ id: categoryID }).models[0].id,
-            href: schema.categories.where({ id: categoryID }).models[0].href
+            href: schema.categories.where({ id: categoryID }).models[0].href,
           }
         );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get List of Categories
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("v1/browse/categories", schema => {
+      this.get("v1/browse/categories", (schema) => {
         return new Response(
           200,
           {},
           {
             categories: {
-              items: schema.categories.all().models
-            }
+              items: schema.categories.all().models,
+            },
           }
         );
       });
@@ -285,8 +285,8 @@ export function makeServer({ environment = "development" } = {}) {
         let playlistID = request.params.playlistId;
         return {
           tracks: {
-            items: schema.playlists.where({ id: playlistID }).models[0].tracks
-          }
+            items: schema.playlists.where({ id: playlistID }).models[0].tracks,
+          },
         };
       });
       //////////////////////////////////////////////////////////////////////////////////////
@@ -315,7 +315,7 @@ export function makeServer({ environment = "development" } = {}) {
         schema.playlists.where({ id: playlistID }).update({ active: false });
         server.create("deletedPlaylist", {
           name: schema.playlists.where({ id: playlistID }).name,
-          deletedAt: "2020-04-18T04:19:11.758Z"
+          deletedAt: "2020-04-18T04:19:11.758Z",
         });
         return new Response(200, {}, {});
       });
@@ -333,8 +333,8 @@ export function makeServer({ environment = "development" } = {}) {
         let albumID = request.params.ID;
         return {
           tracks: {
-            items: schema.albums.where({ _id: albumID }).models[0].tracks
-          }
+            items: schema.albums.where({ _id: albumID }).models[0].tracks,
+          },
         };
       });
       ////////////////////////////////////////////////////////////////////////////////////////
@@ -355,7 +355,7 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////////////
       //Get current user followed playlists
       /////////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/following/playlists", schema => {
+      this.get("/v1/me/following/playlists", (schema) => {
         return schema.playlists.where({ liked: true }).models;
       });
       /////////////////////////////////////////////////////////////////////////////////////////
@@ -380,7 +380,7 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////////////
       // Get Current User Owned Playlists
       /////////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/playlists/owned", schema => {
+      this.get("/v1/me/playlists/owned", (schema) => {
         return schema.playlists.where({ active: true }).models;
       });
       /////////////////////////////////////////////////////////////////////////////////////////
@@ -396,17 +396,17 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////////////
       //Get List of new-releases
       /////////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/browse/new-releases", schema => {
+      this.get("/v1/browse/new-releases", (schema) => {
         return {
           albums: {
-            items: schema.albums.all().models
-          }
+            items: schema.albums.all().models,
+          },
         };
       });
       /////////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/albums", schema => {
+      this.get("/v1/me/albums", (schema) => {
         return {
-          Albums: { items: schema.albums.where({ liked: true }).models }
+          Albums: { items: schema.albums.where({ liked: true }).models },
         };
       });
 
@@ -427,7 +427,7 @@ export function makeServer({ environment = "development" } = {}) {
       this.delete("/v1/me/following", (schema, request) => {
         if (request.queryParams.type === "artist") {
           return schema.artists
-            .findBy(artist => artist._id === request.queryParams.ids)
+            .findBy((artist) => artist._id === request.queryParams.ids)
             .destroy();
         }
       });
@@ -437,23 +437,22 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/users/:id/playlists", (schema) => {
         let x = schema.playlists.all().models;
         let z = [];
-        x.forEach(element => {
-        
-        let y =  {
-          name:x.name,
-          images: element.images,
-          _id: element.id,
-          owner: {name:"user"},
-          public:true
+        x.forEach((element) => {
+          let y = {
+            name: x.name,
+            images: element.images,
+            _id: element.id,
+            owner: { name: "user" },
+            public: true,
           };
           z.push(y);
         });
-        console.log(z)
-        return {playlists:{items:z}};
+        console.log(z);
+        return { playlists: { items: z } };
       });
-      this.get("/v1/me/:id", (schema,request) => {
-        let x = schema.users.findBy(user => user.id === request.params.id);
-        return  {name: x.name, imageUrl: x.imageUrl};
+      this.get("/v1/me/:id", (schema, request) => {
+        let x = schema.users.findBy((user) => user.id === request.params.id);
+        return { name: x.name, imageUrl: x.imageUrl };
       });
       //////////////////////////////////////////////////////////////////////////////
       //Intercepting Login post requests
@@ -478,8 +477,8 @@ export function makeServer({ environment = "development" } = {}) {
                   name: schema.users.find(i).name,
                   type: schema.users.find(i).type,
                   imageUrl:
-                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
-                }
+                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+                },
               }
             );
           }
@@ -489,7 +488,7 @@ export function makeServer({ environment = "development" } = {}) {
           {},
           {
             status: "fail",
-            msg: "Incorrect email or password"
+            msg: "Incorrect email or password",
           }
         );
       }),
@@ -515,7 +514,7 @@ export function makeServer({ environment = "development" } = {}) {
               password: attrs.password,
               dateOfBirth: attrs.dateOfBirth,
               gender: attrs.gender,
-              type: attrs.type
+              type: attrs.type,
             });
 
             //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
@@ -537,8 +536,8 @@ export function makeServer({ environment = "development" } = {}) {
                   type: attrs.type,
                   imageUrl:
                     "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
-                  __v: 0
-                }
+                  __v: 0,
+                },
               }
             );
           } else {
@@ -548,7 +547,7 @@ export function makeServer({ environment = "development" } = {}) {
               {},
               {
                 status: "fail",
-                msg: "email address already exists"
+                msg: "email address already exists",
               }
             );
           }
@@ -588,8 +587,8 @@ export function makeServer({ environment = "development" } = {}) {
                 name: schema.users.find(resettoken).name,
                 type: schema.users.find(resettoken).type,
                 imageUrl:
-                  "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
-              }
+                  "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+              },
             }
           );
         }),
@@ -651,7 +650,7 @@ export function makeServer({ environment = "development" } = {}) {
           currentUser.update({
             email: attr.email,
             gender: attr.gender,
-            dateOfBirth: attr.dateOfBirth
+            dateOfBirth: attr.dateOfBirth,
           });
 
           return new Response(201, {}, {});
@@ -684,6 +683,9 @@ export function makeServer({ environment = "development" } = {}) {
       //////////////////////////////////////////////////////////////////////////////////////
       //SOUNDPLAYER
       //////////////////////////////////////////////////////////////////////////////////////
+      var repeat = false;
+      var repeatOnce = false;
+      var shuffle = false;
       this.get("/v1/me/player/queue", () => {
         return new Response(
           200,
@@ -692,8 +694,12 @@ export function makeServer({ environment = "development" } = {}) {
             data: {
               queueTracks: [],
               previousTrack: null,
-              nextTrack: "http://thesymphonia.ddns.net/api/v1/me/player/tracks/123"
-            }
+              nextTrack:
+                "http://thesymphonia.ddns.net/api/v1/me/player/tracks/123",
+              repeat: repeat,
+              repeatOnce: repeatOnce,
+              shuffle: shuffle,
+            },
           }
         );
       });
@@ -705,7 +711,7 @@ export function makeServer({ environment = "development" } = {}) {
           200,
           {},
           {
-            data: "123"
+            data: "123",
           }
         );
       });
@@ -713,6 +719,15 @@ export function makeServer({ environment = "development" } = {}) {
       //
       //////////////////////////////////////////////////////////////////////////////////////
       this.patch("/v1/me/player/repeatOnce", () => {
+        repeatOnce = !repeatOnce;
+        return new Response(200, {}, {});
+      });
+      this.patch("/v1/me/player/repeat", () => {
+        repeat = !repeat;
+        return new Response(200, {}, {});
+      });
+      this.patch("/v1/me/player/shuffle", () => {
+        shuffle = !shuffle;
         return new Response(200, {}, {});
       });
       //////////////////////////////////////////////////////////////////////////////////////
@@ -722,11 +737,19 @@ export function makeServer({ environment = "development" } = {}) {
       var currentlyPlaying = mockTracks[0];
 
       this.post("/v1/me/player/next", () => {
-        if(currentlyPlaying == mockTracks[0])
-        {
-          currentlyPlaying = mockTracks[1]
+        if (currentlyPlaying == mockTracks[0]) {
+          currentlyPlaying = mockTracks[1];
         } else {
-          currentlyPlaying = mockTracks[0]  
+          currentlyPlaying = mockTracks[0];
+        }
+        return new Response(200, {}, {});
+      });
+
+      this.post("/v1/me/player/previous", () => {
+        if (currentlyPlaying == mockTracks[0]) {
+          currentlyPlaying = mockTracks[1];
+        } else {
+          currentlyPlaying = mockTracks[0];
         }
         return new Response(200, {}, {});
       });
@@ -739,12 +762,12 @@ export function makeServer({ environment = "development" } = {}) {
           {},
           {
             data: {
-              currentTrack: currentlyPlaying
-            }
+              currentTrack: currentlyPlaying,
+            },
           }
         );
       });
-    }
+    },
   });
 
   return server;
