@@ -26,10 +26,10 @@ export default {
   components: {
     Category
   },
-  created: async function() {
-    await this.$store.dispatch("category/recentlyPlayed", this.getuserToken());
-    this.$store.dispatch("category/loadUserSections", this.getuserToken());
+  created: function() {
+    this.$store.dispatch("category/recentlyPlayedSection", this.getuserToken());
     this.$store.dispatch("category/newReleases");
+    this.$store.dispatch("category/loadUserSections", this.getuserToken());
     //this.$store.dispatch("category/getPopularPlaylists");
     //this.$store.dispatch("category/getPopularArtists");
     this.$store.dispatch("category/loadGenres");

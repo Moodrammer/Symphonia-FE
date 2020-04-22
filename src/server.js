@@ -34,7 +34,7 @@ export function makeServer({ environment = "development" } = {}) {
         type: "user",
         country: "EG",
         imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
       });
       //creating an artist for testing purposes
       server.create("user", {
@@ -46,7 +46,7 @@ export function makeServer({ environment = "development" } = {}) {
         type: "artist",
         country: "EG",
         imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
       });
 
       server.create("deletedPlaylist", {
@@ -99,47 +99,18 @@ export function makeServer({ environment = "development" } = {}) {
         let newPlaylist = JSON.parse(request.requestBody);
         schema.create("playlist", {
           name: newPlaylist.name,
-          id: schema.playlists.find(schema.playlists.all().length).id,
+          id: schema.playlists.all().length + 1,
           description: null,
-          followers: {
-            href: null,
-            total: 0,
-          },
-          href:
-            "https://api.symphonia.com/v1/users/thelinmichael/playlists/" +
-            schema.playlists.find(schema.playlists.all().length).id,
           images: ["http://source.unsplash.com/mp_FNJYcjBM"],
-          owner: {
-            href: "https://api.symphonia.com/v1/users/" + user_id,
-            id: user_id,
-            type: "user",
-          },
           public: false,
-          tracks: {
-            href:
-              "https://api.symphonia.com/v1/users/thelinmichael/playlists/7d2D2S200NyUE5KYs80PwO/tracks",
-            items: [],
-            limit: 100,
-            next: null,
-            offset: 0,
-            previous: null,
-            total: 0,
-          },
-          type: "playlist",
+          tracks: [],
+          tracksCount: 0,
+          owner: user_id,
+          active: true
         });
-
-        let ID = schema.playlists.find(schema.playlists.all().length).id;
-        console.log(schema.playlists.where({ id: ID }).models[0]);
-        return new Response(
-          200,
-          {},
-          {
-            name: schema.playlists.where({ id: ID }).models[0].name,
-            id: ID,
-            images: schema.playlists.where({ id: ID }).models[0].images,
-            description: null,
-          }
-        );
+        console.log(schema.playlists.all().length);
+        let ID = schema.playlists.all().length;
+        return schema.playlists.find(ID).attrs;
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Current User's Playlists
@@ -216,13 +187,13 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/tracks/contains/", (schema, request) => {
         let trackId = request.queryParams.ids;
-        return [schema.tracks.where({ _id: trackId }).models[0].liked];
+        return [schema.tracks.where({ id: trackId }).models[0].liked];
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Remove User's Saved Tracks
       ///////////////////////////////////////////////////////////////////////////////////
       this.delete("/v1/me/tracks", (schema, request) => {
-        let trackId = JSON.parse(request.requestBody)[0];
+        let trackId = request.queryParams.ids;
         schema.tracks.where({ _id: trackId }).update({ liked: false });
         return new Response(200, {}, {});
       });
@@ -230,7 +201,7 @@ export function makeServer({ environment = "development" } = {}) {
       //Save Tracks for User
       ///////////////////////////////////////////////////////////////////////////////////
       this.put("/v1/me/tracks", (schema, request) => {
-        let trackId = JSON.parse(request.requestBody).data[0];
+        let trackId = request.queryParams.ids;
         schema.tracks.where({ id: trackId }).update({ liked: true });
         return new Response(200, {}, {});
       });
@@ -283,10 +254,16 @@ export function makeServer({ environment = "development" } = {}) {
       ////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/playlists/:playlistId/tracks", (schema, request) => {
         let playlistID = request.params.playlistId;
+        let tracksID = schema.playlists.where({ id: playlistID }).models[0]
+          .tracks;
+        let tracksList = [];
+        for (let i = 0; i < tracksID.length; i++) {
+          tracksList.push(schema.tracks.where({ id: tracksID[i] }).models[0]);
+        }
         return {
           tracks: {
-            items: schema.playlists.where({ id: playlistID }).models[0].tracks,
-          },
+            items: tracksList
+          }
         };
       });
       //////////////////////////////////////////////////////////////////////////////////////
@@ -434,16 +411,16 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////
 
       ///////////////////////USER UI/////////////////////////////////////////////////
-      this.get("/v1/users/:id/playlists", (schema) => {
+      this.get("/v1/users/:id/playlists", schema => {
         let x = schema.playlists.all().models;
         let z = [];
-        x.forEach((element) => {
+        x.forEach(element => {
           let y = {
             name: x.name,
             images: element.images,
             _id: element.id,
             owner: { name: "user" },
-            public: true,
+            public: true
           };
           z.push(y);
         });
@@ -451,7 +428,7 @@ export function makeServer({ environment = "development" } = {}) {
         return { playlists: { items: z } };
       });
       this.get("/v1/me/:id", (schema, request) => {
-        let x = schema.users.findBy((user) => user.id === request.params.id);
+        let x = schema.users.findBy(user => user.id === request.params.id);
         return { name: x.name, imageUrl: x.imageUrl };
       });
       //////////////////////////////////////////////////////////////////////////////

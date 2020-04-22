@@ -40,7 +40,7 @@ const routes = [
       {
         name: "UserUI",
         path: "user/:id",
-        component: UserUI,
+        component: UserUI
       },
       {
         name: "ArtistUI",

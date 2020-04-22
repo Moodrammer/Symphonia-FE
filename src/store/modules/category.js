@@ -187,9 +187,20 @@ const mutations = {
   history(state, payload) {
     state.historyResponse = payload;
   },
-  setRecentlyPlayed(state, payload) {
-    if (payload.length != 0) {
-      state.recentlyPlayed.list.items = payload;
+  setRecentlyPlayed(state) {
+    let list = state.historyResponse;
+    let newList = [];
+    list.forEach(element => {
+      var k = {
+        name: element.contextName,
+        id: element.contextId,
+        image: element.contextImage,
+        type: element.contextType
+      };
+      newList.push(k);
+    });
+    if (newList.length != 0) {
+      state.recentlyPlayed.list.items = newList;
       state.categories.push(state.recentlyPlayed);
     }
   },
@@ -270,8 +281,8 @@ const actions = {
         console.log(error);
       });
   },
-  async loadUserSections({ commit }) {
-    await commit("emptyArray");
+  async loadUserSections({ commit, dispatch }, payload) {
+    await dispatch("playlist/getPlaylists", payload, { root: true });
     commit("load_personalSections");
   },
   getTracks({ commit }, payload) {
@@ -312,17 +323,6 @@ const actions = {
       .then(response => {
         let list = response.data.history;
         commit("history", list);
-        let newList = [];
-        list.forEach(element => {
-          var k = {
-            name: element.contextName,
-            id: element.contextId,
-            image: element.contextImage,
-            type: element.contextType
-          };
-          newList.push(k);
-        });
-        commit("setRecentlyPlayed", newList);
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -350,6 +350,10 @@ const actions = {
         console.log("axios caught an error");
         console.log(error);
       });
+  },
+  async recentlyPlayedSection({ commit, dispatch }, payload) {
+    await dispatch("recentlyPlayed", payload);
+    commit("setRecentlyPlayed");
   }
 };
 

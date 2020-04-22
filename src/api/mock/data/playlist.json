@@ -12,56 +12,9 @@
     "public": true,
     "liked": false,
     "tracksCount": "2",
-    "tracks": [
-        {
-            "album": {
-              "album_type": "single",
-              "_id": "5",
-              "name": "Quran ALbum1",
-              "type": "album"
-            },
-            "artist":
-              {
-                "id": "1",
-                "name": "Yasser Al-Dosari",
-                "type": "artist"
-              },
-            "durationMs": 2131000,
-            "_id": "2",
-            "explicit": false,
-            "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
-            "id": "2",
-            "name": "Surah Yossef",
-            "popularity": 45,
-            "track_number": 1,
-            "type": "track"
-          },
-          {
-            "album": {
-              "album_type": "single",
-              "_id": "6",
-              "name": "Quran ALbum2",
-              "type": "album"
-              },
-          "artist":
-                {
-              "id": "2",
-              "name": "Nasser Al-Qatami",
-              "type": "artist"
-                },
-          "durationMs": 374000,
-          "explicit": false,
-          "trackPath": "https://server6.mp3quran.net/qtm/053.mp3",
-          "id": "4i9sYtSIlR81bxje5B3rUb",
-          "name": "Surah Al-Najm",
-          "popularity": 45,
-          "track_number": 2,
-          "type": "track"
-            }
-      ]
+    "tracks": ["2","3"]
   },
   {
-
     "description": "playlist B",
     "genre": "jazz",
   "images": [
@@ -72,30 +25,7 @@
   "public": true,
   "liked": false,
   "tracksCount": "1",
-  "tracks": [
-        {
-          "album": {
-            "album_type": "single",
-            "_id": "6",
-            "name": "Quran ALbum2",
-            "type": "album"
-            },
-        "artist":
-              {
-            "id": "2",
-            "name": "Nasser Al-Qatami",
-            "type": "artist"
-              },
-        "durationMs": 374000,
-        "explicit": false,
-        "trackPath": "https://server6.mp3quran.net/qtm/053.mp3",
-        "id": "4i9sYtSIlR81bxje5B3rUb",
-        "name": "Surah Al-Najm",
-        "popularity": 45,
-        "track_number": 1,
-        "type": "track"
-          }
-      ]
+  "tracks": ["3"]
   },
   {
     "description": "Playlist D",
@@ -110,32 +40,7 @@
   "public": true,
   "liked": false,
   "tracksCount":"1",
-  "tracks": [
-        {
-
-          "album": {
-            "album_type": "single",
-            "_id": "6",
-            "name": "Quran ALbum2",
-            "type": "album"
-            },
-        "artist":
-              {
-            "id": "2",
-            "name": "Nasser Al-Qatami",
-            "type": "artist"
-              }
-            ,
-        "durationMs": 374000,
-        "explicit": false,
-        "trackPath": "https://server6.mp3quran.net/qtm/053.mp3",
-        "id": "4i9sYtSIlR81bxje5B3rUb",
-        "name": "Surah Al-Najm",
-        "popularity": 45,
-        "track_number": 1,
-        "type": "track"
-          }
-  ]
+  "tracks": ["3"]
   },
   {
     "description": "Playlist C",
@@ -148,54 +53,8 @@
     "owner": "2",
     "public": true,
     "liked": false,
-    "tracksCount":"2",
-    "tracks":[
-      {
-        "album": {
-          "album_type": "single",
-          "_id": "6",
-          "name": "Quran ALbum2",
-          "type": "album"
-          },
-      "artist":
-            {
-          "id": "2",
-          "name": "Nasser Al-Qatami",
-          "type": "artist"
-            },
-      "durationMs": 374000,
-      "explicit": false,
-      "trackPath": "https://server6.mp3quran.net/qtm/053.mp3",
-      "id": "4i9sYtSIlR81bxje5B3rUb",
-      "name": "Surah Al-Najm",
-      "popularity": 45,
-      "track_number": 1,
-      "type": "track"
-        },
-        {
-            "album": {
-              "album_type": "single",
-              "_id": "5",
-              "name": "Quran ALbum1",
-              "type": "album"
-            },
-            "artist":
-              {
-                "id": "1",
-                "name": "Yasser Al-Dosari",
-                "type": "artist"
-              },
-            "durationMs": 2131000,
-            "explicit": false,
-            "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
-            "_id": "2",
-            "id": "2",
-            "name": "Surah Yossef",
-            "popularity": 45,
-            "track_number": 1,
-            "type": "track"
-          }
-      ]
+    "tracksCount":"3",
+    "tracks":["3","2","5"]
   },
   {
     "description": "Playlist E",
@@ -209,32 +68,8 @@
     "public": true,
     "liked": false,
     "active": true,
-    "tracksCount":"1",
-    "tracks": [
-      {
-            "album": {
-              "album_type": "single",
-              "_id": "5",
-              "name": "Quran ALbum1",
-              "type": "album"
-            },
-            "artist":
-              {
-                "id": "1",
-                "name": "Yasser Al-Dosari",
-                "type": "artist"
-              },
-            "durationMs": 2131000,
-            "explicit": false,
-            "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
-            "id": "2",
-            "_id": "2",
-            "name": "Surah Yossef",
-            "popularity": 45,
-            "track_number": 1,
-            "type": "track"
-          }
-      ]
+    "tracksCount":"3",
+    "tracks": ["6","3","5"]
   },
   {
     "description": "Playlist G",
@@ -248,31 +83,7 @@
     "public": true,
     "liked": true,
     "tracksCount":"1",
-    "tracks": [
-         {
-            "album": {
-              "album_type": "single",
-              "_id": "5",
-              "name": "Quran ALbum1",
-              "type": "album"
-            },
-            "artist":
-              {
-                "id": "1",
-                "name": "Yasser Al-Dosari",
-                "type": "artist"
-              },
-            "durationMs": 2131000,
-            "explicit": false,
-            "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
-            "id": "2",
-            "_id": "2",
-            "name": "Surah Yossef",
-            "popularity": 45,
-            "track_number": 1,
-            "type": "track"
-          }
-      ]
+    "tracks": ["6"]
   },
   {
     "description": "Playlist X",
@@ -284,32 +95,8 @@
     "owner": "2",
     "public": true,
     "liked": true,
-    "tracksCount": "1",
-    "tracks": [
-      {
-            "album": {
-              "album_type": "single",
-              "_id": "5",
-              "name": "Quran ALbum1",
-              "type": "album"
-            },
-            "artist":
-              {
-                "id": "1",
-                "name": "Yasser Al-Dosari",
-                "type": "artist"
-              },
-            "durationMs": 2131000,
-            "explicit": false,
-            "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
-            "id": "2",
-            "_id": "2",
-            "name": "Surah Yossef",
-            "popularity": 45,
-            "track_number": 1,
-            "type": "track"
-          }
-      ]
+    "tracksCount": "3",
+    "tracks": ["4","2","6"]
   },
   {
     "description": "Playlist N",
@@ -322,33 +109,8 @@
     "owner": "2",
     "public": true,
     "liked": false,
-    "tracksCount":"1",
-    "tracks": [{
-
-            "album": {
-              "album_type": "single",
-              "_id": "5",
-              "name": "Quran ALbum1",
-              "type": "album"
-            },
-            "artist": 
-              {
-                "id": "1",
-                "name": "Yasser Al-Dosari",
-                "type": "artist"
-              }
-            ,
-            "durationMs": 2131000,
-            "explicit": false,
-            "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
-            "id": "2",
-            "_id": "2",
-            "name": "Surah Yossef",
-            "popularity": 45,
-            "track_number": 1,
-            "type": "track"
-          }
-      ]
+    "tracksCount":"3",
+    "tracks": ["5","6","2"]
   },
   {
     "description": "Playlist M",
@@ -361,32 +123,8 @@
     "owner": "2",
     "public": true,
     "liked": false,
-    "tracksCount":"1",
-    "tracks": [{
-
-            "album": {
-              "album_type": "single",
-              "_id": "5",
-              "name": "Quran ALbum1",
-              "type": "album"
-            },
-            "artist":
-              {
-                "id": "1",
-                "name": "Yasser Al-Dosari",
-                "type": "artist"
-              },
-            "durationMs": 2131000,
-            "explicit": false,
-            "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
-            "id": "2",
-            "_id": "2",
-            "name": "Surah Yossef",
-            "popularity": 45,
-            "track_number": 1,
-            "type": "track"
-          }
-      ]
+    "tracksCount":"5",
+    "tracks": ["6","5","2","3","4"]
   },
   {
     "description": "Playlist K",
@@ -404,31 +142,8 @@
     "owner": "2",
     "public": true,
     "liked": false,
-    "tracksCount":"1",
-    "tracks": [{
-            "album": {
-              "album_type": "single",
-              "_id": "5",
-              "name": "Quran ALbum1",
-              "type": "album"
-            },
-            "artist":
-              {
-                "id": "1",
-                "name": "Yasser Al-Dosari",
-                "type": "artist"
-              },
-            "durationMs": 2131000,
-            "explicit": false,
-            "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
-            "id": "2",
-            "_id": "2",
-            "name": "Surah Yossef",
-            "popularity": 45,
-            "track_number": 1,
-            "type": "track"
-          }
-      ]
+    "tracksCount":"2",
+    "tracks": ["5","3"]
   },
   {
     "description": "Playlist L",
@@ -441,31 +156,8 @@
     "owner": "2",
     "public": true,
     "liked": false,
-    "tracksCount":"1",
-    "tracks": [{
-            "album": {
-              "album_type": "single",
-              "_id": "5",
-              "name": "Quran ALbum1",
-              "type": "album"
-            },
-            "artist":
-              {
-                "id": "1",
-                "name": "Yasser Al-Dosari",
-                "type": "artist"
-              },
-            "durationMs": 2131000,
-            "explicit": false,
-            "trackPath": "https://server11.mp3quran.net/yasser/012.mp3",
-            "id": "2",
-            "_id": "2",
-            "name": "Surah Yossef",
-            "popularity": 45,
-            "track_number": 1,
-            "type": "track"
-          }
-      ]
+    "tracksCount":"2",
+    "tracks": ["3","6"]
     }
  ]
 }

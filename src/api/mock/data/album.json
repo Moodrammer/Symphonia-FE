@@ -22,16 +22,20 @@
                 "name": "Surah Al-Najm",
                 "popularity": 45,
                 "track_number": 1,
-                "type": "track"
+                "type": "track",
+                "premium": false
               }
         ],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "1",
         "id": "1",
-        "name": "The Slow Rush",
+        "name": "Album 3",
         "year": 2020,
         "image": "http://source.unsplash.com/eSYCRwJEzO8",
-        "artist": "5e8137aa54660672fd699882"
+        "artist": {
+          "name":"Nasser Al-Qatami",
+          "_id": "2"
+        }
     },
     {
         "liked": false,
@@ -54,7 +58,8 @@
               "name": "Surah Al-Najm",
               "popularity": 45,
               "track_number": 1,
-              "type": "track"
+              "type": "track",
+              "premium": false
             }],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "2",
@@ -62,7 +67,10 @@
         "name": "TRST",
         "year": 2012,
         "image": "http://source.unsplash.com/2Qg4y32pdCc",
-        "artist": "5e8b6d866253cb184eaac150"
+        "artist": {
+          "name": "Nasser Al-Qatami",
+          "_id": "2"
+        }
     },
     {
         "liked": true,
@@ -85,7 +93,7 @@
                 "name": "Surah Al-Mulk",
                 "popularity": 45,
                 "track_number": 2,
-                "type": "track"
+                "premium": true
             }
         ],
         "releaseDate": "2020-04-07T16:49:46.442Z",
@@ -94,7 +102,10 @@
         "name": "Album1",
         "year": 2018,
         "image": "http://source.unsplash.com/wnd7te34T-0",
-        "artist": "5e8b6d866253cb184eaac150"
+        "artist": {
+          "name": "Nasser Al-Qatami",
+          "_id": "2"
+        }
     },
     {
         "liked": true,
@@ -117,7 +128,8 @@
                 "name": "Surah Yossef",
                 "popularity": 45,
                 "track_number": 1,
-                "type": "track"
+                "type": "track",
+                "premium": true
               }
         ],
         "releaseDate": "2020-04-07T16:49:46.442Z",
@@ -126,7 +138,10 @@
         "name": "Album2",
         "year": 2015,
         "image": "http://source.unsplash.com/H7sHkM9eilw",
-        "artist": "5e8b6d866253cb184eaac150"
+        "artist": {
+          "_id": "1",
+          "name": "Yasser Al-Dosari"
+        }
     },
     {
         "liked": false,
@@ -149,7 +164,8 @@
                 "name": "Surah Yossef",
                 "popularity": 45,
                 "track_number": 1,
-                "type": "track"
+                "type": "track",
+                "premium": false
               }
         ],
         "releaseDate": "2020-04-07T16:49:46.442Z",
@@ -158,7 +174,10 @@
         "name": "Quran ALbum1",
         "year": 2014,
         "image": "http://source.unsplash.com/7xP5BJ34ybg",
-        "artist": "5e8b6d866253cb184eaac150"
+        "artist": {
+          "_id": "1",
+          "name": "Yasser Al-Dosari"
+        }
     },
     {
         "liked": false,
@@ -181,7 +200,8 @@
                 "name": "Surah Al-Najm",
                 "popularity": 45,
                 "track_number": 1,
-                "type": "track"
+                "type": "track",
+                "premium": false
               }
         ],
         "releaseDate": "2020-04-07T16:49:46.442Z",
@@ -190,7 +210,10 @@
         "name": "Quran ALbum2",
         "year": 2014,
         "image": "http://source.unsplash.com/xMMh-VFGL9M",
-        "artist": "5e8b6d866253cb184eaac150"
+        "artist": {
+          "name": "Nasser Al-Qatami",
+          "_id": "2"
+        }
     }
 
 ],

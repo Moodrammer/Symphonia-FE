@@ -196,7 +196,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened,
+                icons: !isQueueOpened
               }"
             >
               mdi-format-list-numbered-rtl
@@ -293,7 +293,7 @@ export default {
       isVolumePressed: false,
 
       devices: undefined,
-      currentDeviceId: undefined,
+      currentDeviceId: undefined
     };
   },
   methods: {
@@ -312,7 +312,7 @@ export default {
       "setToken",
       "setContextType",
       "setContextId",
-      "setContextUrl",
+      "setContextUrl"
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -568,7 +568,7 @@ export default {
       var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
       this.getTrackInformation({
         token: this.token,
-        trackId: CurrentlyPlayingTrackId,
+        trackId: CurrentlyPlayingTrackId
       });
 
       await this.initQueueStatus(this.token);
@@ -597,7 +597,7 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
-  },
+  }
 };
 </script>
 
