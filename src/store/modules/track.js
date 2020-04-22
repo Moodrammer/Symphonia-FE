@@ -2,6 +2,7 @@ import axios from "axios";
 
 const state = {
   token: "",
+  trackToken: "",
 
   audioElement: undefined,
 
@@ -33,6 +34,7 @@ const state = {
   queueNextTracks: [],
   isRepeatEnabled: false,
   isRepeatOnceEnabled: false,
+  isShuffleEnabled: false,
 
   generalLiked: null,
 };
@@ -201,22 +203,53 @@ const actions = {
       headers: {
         Authorization: token,
       },
-    }).then(async (response) => {
+    }).then((response) => {
+      state.queueTracks = response.data.data.queueTracks;
+
+      if (state.queueTracks.length == 0) {
+        state.isLastTrackInQueue = false;
+        state.isFirstTrackInQueue = false;
+      } else {
+        if (
+          response.data.data.previousTrack == null ||
+          state.queueTracks[0] ==
+            response.data.data.currentlyPlaying.currentTrack
+        ) {
+          state.isFirstTrackInQueue = true;
+        } else {
+          state.isFirstTrackInQueue = false;
+        }
+
+        if (
+          response.data.data.nextTrack == null ||
+          state.queueTracks[state.queueTracks.length - 1] ==
+            response.data.data.currentlyPlaying.currentTrack
+        ) {
+          state.isLastTrackInQueue = true;
+        } else {
+          state.isLastTrackInQueue = false;
+        }
+      }
+    });
+  },
+  /**
+   * initialize the queue status (repeat, repeatOnce, shuffle)
+   * @public
+   * @param {string} token the authorization token with the Bearer prefix
+   */
+  async initQueueStatus({ state }, token) {
+    await axios({
+      method: "get",
+      url: "/v1/me/player/queue",
+      headers: {
+        Authorization: token,
+      },
+    }).then((response) => {
       state.queueTracks = response.data.data.queueTracks;
 
       state.isRepeatOnceEnabled = response.data.data.repeatOnce;
-
-      if (response.data.data.previousTrack == null) {
-        state.isFirstTrackInQueue = true;
-      } else {
-        state.isFirstTrackInQueue = false;
-      }
-
-      if (response.data.data.nextTrack == null) {
-        state.isLastTrackInQueue = true;
-      } else {
-        state.isLastTrackInQueue = false;
-      }
+      state.isRepeatEnabled = response.data.data.repeat;
+      state.isShuffleEnabled = response.data.data.shuffle;
     });
   },
   /**
@@ -383,7 +416,14 @@ const actions = {
         });
         await dispatch("updateQueue", state.token);
 
-        dispatch("playTrackInQueue", CurrentlyPlayingTrackId);
+        var audioSource =
+          axios.defaults.baseURL +
+          "/v1/me/player/tracks/" +
+          CurrentlyPlayingTrackId +
+          "/" +
+          state.trackToken;
+
+        state.trackUrl = audioSource;
 
         state.isNextAndPreviousFinished = true;
       });
@@ -404,26 +444,52 @@ const actions = {
     state.isBuffering = true;
     state.audioElement.autoplay = true;
 
-    await axios({
-      method: "post",
-      url: "/v1/me/player/previous",
-      headers: {
-        Authorization: state.token,
-      },
-    }).then(async () => {
-      var CurrentlyPlayingTrackId = await dispatch(
-        "getCurrentlyPlayingTrackId"
+    if (state.isFirstTrackInQueue) {
+      var tempTrackUrl = state.queueTracks[state.queueTracks.length - 1];
+
+      var trackId = tempTrackUrl.slice(
+        tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+        tempTrackUrl.length
       );
+
       dispatch("getTrackInformation", {
         token: state.token,
-        trackId: CurrentlyPlayingTrackId,
+        trackId: trackId,
       });
+
+      await dispatch("playTrackInQueue", trackId);
       await dispatch("updateQueue", state.token);
 
-      dispatch("playTrackInQueue", CurrentlyPlayingTrackId);
-
       state.isNextAndPreviousFinished = true;
-    });
+    } else {
+      await axios({
+        method: "post",
+        url: "/v1/me/player/previous",
+        headers: {
+          Authorization: state.token,
+        },
+      }).then(async () => {
+        var CurrentlyPlayingTrackId = await dispatch(
+          "getCurrentlyPlayingTrackId"
+        );
+        dispatch("getTrackInformation", {
+          token: state.token,
+          trackId: CurrentlyPlayingTrackId,
+        });
+        await dispatch("updateQueue", state.token);
+
+        var audioSource =
+          axios.defaults.baseURL +
+          "/v1/me/player/tracks/" +
+          CurrentlyPlayingTrackId +
+          "/" +
+          state.trackToken;
+
+        state.trackUrl = audioSource;
+
+        state.isNextAndPreviousFinished = true;
+      });
+    }
   },
   /**
    * play a song in the queue
@@ -432,7 +498,7 @@ const actions = {
    *
    * @param {string} trackId the track Id to be played
    */
-  async playTrackInQueue({ state }, trackId) {
+  async playTrackInQueue({ state, dispatch }, trackId) {
     if (trackId != null) {
       await axios({
         method: "post",
@@ -447,13 +513,34 @@ const actions = {
           Authorization: state.token,
         },
       }).then((response) => {
-        var trackToken = response.data.data;
+        axios({
+          method: "get",
+          url: "/v1/me/player/queue",
+          headers: {
+            Authorization: state.token,
+          },
+        }).then((response) => {
+          if (response.data.data.repeat != state.isRepeatEnabled) {
+            state.isRepeatEnabled = false;
+            dispatch("toggleRepeat");
+          } else if (response.data.data.repeat != state.isRepeatEnabled) {
+            state.isRepeatEnabled = false;
+            dispatch("toggleRepeatOnce");
+          }
+
+          if (response.data.data.shuffle != state.isShuffleEnabled) {
+            state.isShuffleEnabled = false;
+            dispatch("toggleShuffle");
+          }
+        });
+
+        state.trackToken = response.data.data;
         var audioSource =
           axios.defaults.baseURL +
           "/v1/me/player/tracks/" +
           trackId +
           "/" +
-          trackToken;
+          state.trackToken;
         state.trackUrl = audioSource;
       });
     }
@@ -464,13 +551,47 @@ const actions = {
    * @public
    */
   async toggleRepeatOnce({ state }) {
-    state.isRepeatOnceEnabled = !state.isRepeatOnceEnabled;
     await axios({
       method: "patch",
       url: "/v1/me/player/repeatOnce",
       headers: {
         Authorization: state.token,
       },
+    }).then(() => {
+      state.isRepeatOnceEnabled = !state.isRepeatOnceEnabled;
+    });
+  },
+  /**
+   * toggle repeat
+   *
+   * @public
+   */
+  async toggleRepeat({ state, dispatch }) {
+    await axios({
+      method: "patch",
+      url: "/v1/me/player/repeat",
+      headers: {
+        Authorization: state.token,
+      },
+    }).then(() => {
+      state.isRepeatEnabled = !state.isRepeatEnabled;
+
+      dispatch("playTrackInQueue", state.trackId);
+    });
+  },
+  /**
+   * enable the shuffle feature
+   * @public
+   */
+  toggleShuffle({ state }) {
+    axios({
+      method: "patch",
+      url: "/v1/me/player/shuffle",
+      headers: {
+        Authorization: state.token,
+      },
+    }).then(() => {
+      state.isShuffleEnabled = !state.isShuffleEnabled;
     });
   },
 };

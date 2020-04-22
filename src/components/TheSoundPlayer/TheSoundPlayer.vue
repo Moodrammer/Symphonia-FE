@@ -39,8 +39,8 @@
       <v-col cols="5">
         <div class="audio-controls">
           <!-- shuffle -->
-          <!-- <a
-            @click="enableShuffle()"
+          <a
+            @click="toggleShuffle()"
             v-if="!isShuffleEnabled"
             title="shuffle"
             style="margin-right: 20px;"
@@ -51,7 +51,7 @@
           </a>
 
           <a
-            @click="disableShuffle()"
+            @click="toggleShuffle()"
             v-if="isShuffleEnabled"
             title="shuffle"
             style="margin-right: 20px;"
@@ -59,12 +59,12 @@
             <v-icon small color="green">
               mdi-shuffle-variant
             </v-icon>
-          </a> -->
+          </a>
 
           <!-- Previous -->
           <a
             @click="previousConditionally()"
-            v-if="!isFirstTrackInQueue"
+            v-if="!isFirstTrackInQueue || isRepeatEnabled"
             title="Previous"
             id="previous"
             style="margin-right: 10px;"
@@ -74,7 +74,7 @@
             </v-icon>
           </a>
           <a
-            v-if="isFirstTrackInQueue"
+            v-if="isFirstTrackInQueue && !isRepeatEnabled"
             title="Previous"
             id="previous"
             style="margin-right: 10px;"
@@ -117,8 +117,9 @@
             </v-icon>
           </a>
 
-          <!-- <a
-            @click="enableRepeat()"
+          <!-- Repeat -->
+          <a
+            @click="toggleRepeatConditionally()"
             v-if="!isRepeatEnabled && !isRepeatOnceEnabled"
             title="Enable repeat"
             style="margin-left: 20px;"
@@ -126,17 +127,20 @@
             <v-icon small class="icons">
               mdi-repeat
             </v-icon>
-          </a> -->
-          <!-- v-if="isRepeatEnabled && !isRepeatOnceEnabled" -->
+          </a>
+
           <a
             id="enableRepeatOnce"
-            @click="toggleRepeatOnceConditionally()"
-            v-if="!isRepeatOnceEnabled"
+            @click="
+              toggleRepeatConditionally();
+              toggleRepeatOnceConditionally();
+            "
+            v-if="isRepeatEnabled && !isRepeatOnceEnabled"
             title="Enable repeat once"
             style="margin-left: 20px;"
           >
             <!-- <v-icon small class="icons" color="green"> -->
-            <v-icon small class="icons">
+            <v-icon small class="icons" color="green">
               mdi-repeat
             </v-icon>
           </a>
@@ -144,7 +148,7 @@
           <a
             id="disableRepeatOnce"
             @click="toggleRepeatOnceConditionally()"
-            v-if="isRepeatOnceEnabled"
+            v-if="!isRepeatEnabled && isRepeatOnceEnabled"
             title="Disable repeat once"
             style="margin-left: 20px;"
           >
@@ -269,7 +273,9 @@ export default {
       isBuffering: (state) => state.track.isBuffering,
       token: (state) => state.track.token,
       isRepeatOnceEnabled: (state) => state.track.isRepeatOnceEnabled,
-
+      isRepeatEnabled: (state) => state.track.isRepeatEnabled,
+      isShuffleEnabled: (state) => state.track.isShuffleEnabled,
+      isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
       historyResponse: (state) => state.category.historyResponse,
     }),
   },
@@ -285,7 +291,6 @@ export default {
       isMuted: false,
       isProgressBarPressed: false,
       isVolumePressed: false,
-      isShuffleEnabled: false,
 
       devices: undefined,
       currentDeviceId: undefined,
@@ -297,7 +302,6 @@ export default {
       "setTrackUrl",
       "setTrackId",
       "setFirstTrackInQueue",
-      "setLastTrackInQueue",
       "setQueueTracks",
       "setTrackTotalDuration",
       "setAudioElement",
@@ -312,6 +316,7 @@ export default {
     ]),
     ...mapActions("track", [
       "getTrackInformation",
+      "initQueueStatus",
       "updateQueue",
       "togglePauseAndPlay",
       "next",
@@ -319,6 +324,8 @@ export default {
       "getCurrentlyPlayingTrackId",
       "playTrackInQueue",
       "toggleRepeatOnce",
+      "toggleRepeat",
+      "toggleShuffle"
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -345,6 +352,17 @@ export default {
     toggleRepeatOnceConditionally: function() {
       if (this.isNextAndPreviousFinished) {
         this.toggleRepeatOnce();
+      }
+    },
+    /**
+     * invoke toggleRepeat in case the next and previous
+     * procedures are finished.
+     *
+     * @public
+     */
+    toggleRepeatConditionally: function() {
+      if (this.isNextAndPreviousFinished) {
+        this.toggleRepeat();
       }
     },
     /**
@@ -500,8 +518,12 @@ export default {
     _handleEndedTrack: function() {
       if (this.isRepeatOnceEnabled) {
         this.audioElement.play();
-      } else {
+      } else if (this.isLastTrackInQueue && this.isRepeatEnabled) {
         this.next();
+      } else if (!this.isLastTrackInQueue) {
+        this.next();
+      } else {
+        return;
       }
     },
     _handleAudioError: function() {
@@ -549,14 +571,15 @@ export default {
         trackId: CurrentlyPlayingTrackId,
       });
 
+      await this.initQueueStatus(this.token);
+      await this.updateQueue(this.token);
+
       await this.recentlyPlayed(this.getuserToken());
       this.setContextId(this.historyResponse[0].contextId);
       this.setContextType(this.historyResponse[0].contextType);
       this.setContextUrl(this.historyResponse[0].contextUrl);
 
       this.playTrackInQueue(CurrentlyPlayingTrackId);
-
-      this.updateQueue(this.token);
     },
   },
   mounted: function() {
