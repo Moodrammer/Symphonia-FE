@@ -22,7 +22,8 @@
                 "name": "Surah Al-Najm",
                 "popularity": 45,
                 "track_number": 1,
-                "type": "track"
+                "type": "track",
+                "premium": false
               }
         ],
         "releaseDate": "2020-04-07T16:49:46.442Z",
@@ -57,7 +58,8 @@
               "name": "Surah Al-Najm",
               "popularity": 45,
               "track_number": 1,
-              "type": "track"
+              "type": "track",
+              "premium": false
             }],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "2",
@@ -91,7 +93,7 @@
                 "name": "Surah Al-Mulk",
                 "popularity": 45,
                 "track_number": 2,
-                "type": "track"
+                "premium": true
             }
         ],
         "releaseDate": "2020-04-07T16:49:46.442Z",
@@ -126,7 +128,8 @@
                 "name": "Surah Yossef",
                 "popularity": 45,
                 "track_number": 1,
-                "type": "track"
+                "type": "track",
+                "premium": true
               }
         ],
         "releaseDate": "2020-04-07T16:49:46.442Z",
@@ -161,7 +164,8 @@
                 "name": "Surah Yossef",
                 "popularity": 45,
                 "track_number": 1,
-                "type": "track"
+                "type": "track",
+                "premium": false
               }
         ],
         "releaseDate": "2020-04-07T16:49:46.442Z",
@@ -196,7 +200,8 @@
                 "name": "Surah Al-Najm",
                 "popularity": 45,
                 "track_number": 1,
-                "type": "track"
+                "type": "track",
+                "premium": false
               }
         ],
         "releaseDate": "2020-04-07T16:49:46.442Z",

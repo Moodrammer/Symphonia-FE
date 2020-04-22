@@ -26,10 +26,12 @@
     "durationMs": 2131000,
     "explicit": false,
     "name": "Surah Yossef",
+    "premium": true,
     "_id": "2"
   },
   {
     "liked": true,
+    "premium": false,
     "trackId": "3",
     "id": "3",
     "_id": "3",
@@ -50,6 +52,7 @@
   },
   {
     "liked": true,
+    "premium": false,
     "trackId": "4",
     "id": "4",
     "_id": "4",
@@ -71,6 +74,7 @@
   },
   {
     "liked": true,
+    "premium": true,
     "trackId": "5",
     "id": "5",
     "_id":"5",
@@ -92,6 +96,7 @@
   },
   {
     "liked": false,
+    "premium": false,
     "trackId": "6",
     "id": "6",
     "_id":"6",
