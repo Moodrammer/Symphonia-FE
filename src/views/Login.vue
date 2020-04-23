@@ -258,7 +258,6 @@ export default {
             this.$router.push("/webhome/home");
           })
           .catch(err => {
-            // console.log(err)
             if (err.status == "fail") {
               this.errorMessage = err.msg;
               this.errorState = true;

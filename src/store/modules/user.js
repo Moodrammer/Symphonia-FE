@@ -59,15 +59,17 @@ const actions = {
         })
         .then(response => {
           //if a response returned
-          //Store the current user token in the local storage
-          localStorage.setItem("userToken", response.data.token);
-          //Store the frequently needed user data in the localStorage
-          localStorage.setItem("username", response.data.user.name);
-          localStorage.setItem("email", response.data.user.email);
-          localStorage.setItem("userID", response.data.user._id);
-          localStorage.setItem("type", response.data.user.type);
-          localStorage.setItem("imageUrl", response.data.user.imageUrl);
-          //Resolve to direct the user to the application
+          if(response.data.user.type == 'user'){
+            //Store the current user token in the local storage
+            localStorage.setItem("userToken", response.data.token);
+            //Store the frequently needed user data in the localStorage
+            localStorage.setItem("username", response.data.user.name);
+            localStorage.setItem("email", response.data.user.email);
+            localStorage.setItem("userID", response.data.user._id);
+            localStorage.setItem("type", response.data.user.type);
+            localStorage.setItem("imageUrl", response.data.user.imageUrl);
+            //Resolve to direct the user to the application
+          }
           resolve(true);
         })
         .catch(error => {

@@ -21,6 +21,7 @@ import Queue from "../views/TheQueue.vue";
 import Genre from "../components/general/Genre.vue";
 import Google from "../components/oauth/google.vue";
 import Facebook from "../components/oauth/facebook.vue";
+import ArtistActivation from "../views/ArtistActivation.vue"
 
 Vue.use(VueRouter);
 
@@ -167,7 +168,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/ForgetPass.vue"),
+      import("../views/ForgetPass.vue"),
     redirect: "/password-reset/reset",
     children: [
       {
@@ -192,6 +193,11 @@ const routes = [
     path: "/facebook/:userToken",
     name: "facebookroute",
     component: Facebook
+  },
+  {
+    path: "/artist-activation/:activationToken",
+    name: "artistActivation",
+    component: ArtistActivation
   }
 ];
 
