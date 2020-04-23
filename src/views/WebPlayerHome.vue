@@ -1,7 +1,10 @@
 <template>
   <v-app>
     <!--Sending a prop to the drawer to be updated after logout-->
-    <nav-drawer :loggedIn="isLoggedIn()" :contextMenu="contextMenu"></nav-drawer>
+    <nav-drawer
+      :loggedIn="isLoggedIn()"
+      :contextMenu="contextMenu"
+    ></nav-drawer>
     <nav-bar></nav-bar>
     <router-view
       :loggedIn="isLoggedIn()"

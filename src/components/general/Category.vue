@@ -11,7 +11,7 @@
         <p id="seeAll">SEE ALL</p>
       </router-link>
     </v-row>
-    <cardGrid :cardItems="gridItems" :contextMenu="contextMenu"/>
+    <cardGrid :cardItems="gridItems" :contextMenu="contextMenu" />
   </v-container>
 </template>
 

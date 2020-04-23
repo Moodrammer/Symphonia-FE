@@ -100,7 +100,7 @@
           :key="playlist.id"
           class="listItem"
           :to="'/webhome/playlist/' + playlist.id"
-          @contextmenu.prevent="menuClick($event,playlist.id)"
+          @contextmenu.prevent="menuClick($event, playlist.id)"
         >
           <v-list-item-title
             class="draweritem white--text"
@@ -133,7 +133,7 @@ export default {
     changeCreateModel: function() {
       this.$store.commit("playlist/changeCreateModel");
     },
-    menuClick(event,playlistID) {
+    menuClick(event, playlistID) {
       this.$props.contextMenu.event = event;
       this.$props.contextMenu.id = playlistID;
       this.$props.contextMenu.type = "playlist";

@@ -664,16 +664,36 @@ export function makeServer({ environment = "development" } = {}) {
       //////////////////////////////////////////////////////////////////////////////////////
       //SOUNDPLAYER
       //////////////////////////////////////////////////////////////////////////////////////
+      var repeat = false;
+      var repeatOnce = false;
+      var shuffle = false;
+
+      const mockTracks = [
+        "http://thesymphonia.ddns.net/api/v1/me/player/tracks/123",
+        "http://thesymphonia.ddns.net/api/v1/me/player/tracks/456",
+        "http://thesymphonia.ddns.net/api/v1/me/player/tracks/789"
+      ];
+      var currentlyPlaying = mockTracks[1];
+      var currentlyPlayingIndex = 1;
+
+      var previousTrack = mockTracks[0];
+      var nextTrack = mockTracks[2];
+
       this.get("/v1/me/player/queue", () => {
         return new Response(
           200,
           {},
           {
             data: {
-              queueTracks: [],
-              previousTrack: null,
-              nextTrack:
-                "http://thesymphonia.ddns.net/api/v1/me/player/tracks/123"
+              currentlyPlaying: {
+                currentTrack: currentlyPlaying
+              },
+              queueTracks: mockTracks,
+              previousTrack: previousTrack,
+              nextTrack: nextTrack,
+              repeat: repeat,
+              repeatOnce: repeatOnce,
+              shuffle: shuffle
             }
           }
         );
@@ -681,7 +701,23 @@ export function makeServer({ environment = "development" } = {}) {
       //////////////////////////////////////////////////////////////////////////////////////
       //
       //////////////////////////////////////////////////////////////////////////////////////
-      this.post("/v1/me/player/tracks/:track_id", () => {
+      this.post("/v1/me/player/tracks/:track_id", (schema, request) => {
+        var link =
+          "http://thesymphonia.ddns.net/api/v1/me/player/tracks/" +
+          request.params.track_id;
+
+        currentlyPlayingIndex = mockTracks.indexOf(link);
+
+        currentlyPlaying = mockTracks[currentlyPlayingIndex];
+
+        var nextPlayingIndex = (currentlyPlayingIndex + 1) % 3;
+        nextTrack = mockTracks[nextPlayingIndex];
+
+        var previousPlayingIndex;
+        if (currentlyPlayingIndex == 0) previousPlayingIndex = 2;
+        else previousPlayingIndex = currentlyPlayingIndex - 1;
+        previousTrack = mockTracks[previousPlayingIndex];
+
         return new Response(
           200,
           {},
@@ -694,20 +730,49 @@ export function makeServer({ environment = "development" } = {}) {
       //
       //////////////////////////////////////////////////////////////////////////////////////
       this.patch("/v1/me/player/repeatOnce", () => {
+        repeatOnce = !repeatOnce;
+        return new Response(200, {}, {});
+      });
+      this.patch("/v1/me/player/repeat", () => {
+        repeat = !repeat;
+        return new Response(200, {}, {});
+      });
+      this.patch("/v1/me/player/shuffle", () => {
+        shuffle = !shuffle;
         return new Response(200, {}, {});
       });
       //////////////////////////////////////////////////////////////////////////////////////
       //
       //////////////////////////////////////////////////////////////////////////////////////
-      const mockTracks = ["/track/123", "/track/456"];
-      var currentlyPlaying = mockTracks[0];
-
       this.post("/v1/me/player/next", () => {
-        if (currentlyPlaying == mockTracks[0]) {
-          currentlyPlaying = mockTracks[1];
-        } else {
-          currentlyPlaying = mockTracks[0];
-        }
+        currentlyPlayingIndex = (currentlyPlayingIndex + 1) % 3;
+
+        var nextPlayingIndex = (currentlyPlayingIndex + 1) % 3;
+
+        previousTrack = currentlyPlaying;
+
+        currentlyPlaying = nextTrack;
+
+        nextTrack = mockTracks[nextPlayingIndex];
+
+        return new Response(200, {}, {});
+      });
+
+      this.post("/v1/me/player/previous", () => {
+        nextTrack = currentlyPlaying;
+
+        currentlyPlaying = previousTrack;
+
+        if (currentlyPlayingIndex == 0) currentlyPlayingIndex = 2;
+        else currentlyPlayingIndex = currentlyPlayingIndex - 1;
+
+        var previousPlayingIndex;
+
+        if (currentlyPlayingIndex == 0) previousPlayingIndex = 2;
+        else previousPlayingIndex = currentlyPlayingIndex - 1;
+
+        previousTrack = mockTracks[previousPlayingIndex];
+
         return new Response(200, {}, {});
       });
       //////////////////////////////////////////////////////////////////////////////////////

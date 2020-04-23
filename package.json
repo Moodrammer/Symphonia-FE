@@ -12,10 +12,12 @@
         "unit": "jest --watch"
     },
     "dependencies": {
+        "@types/stripe-v3": "^3.1.17",
         "axios": "^0.19.2",
         "bourbon": "^7.0.0",
         "core-js": "^3.6.4",
         "socket.io": "^2.3.0",
+        "stripe": "^8.46.0",
         "vue": "^2.6.11",
         "vue-context": "^5.1.0",
         "vue-router": "^3.1.5",

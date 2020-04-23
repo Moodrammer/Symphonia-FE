@@ -1,7 +1,7 @@
 <template>
   <!--This component to handle the home content of the webplayer according to user state-->
-  <HomeConentLogout v-if="!loggedIn" :contextMenu="contextMenu"/>
-  <HomeContentLogin v-else :contextMenu="contextMenu"/>
+  <HomeConentLogout v-if="!loggedIn" :contextMenu="contextMenu" />
+  <HomeContentLogin v-else :contextMenu="contextMenu" />
 </template>
 
 <script>
