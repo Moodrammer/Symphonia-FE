@@ -107,7 +107,7 @@ const mutations = {
 };
 
 const actions = {
-  async getTrackInformation({ state }, payload) {
+  async getTrackInformation({ state, dispatch }, payload) {
     if (payload.trackId != null) {
       state.isCurTrkReady = false;
 
@@ -122,10 +122,20 @@ const actions = {
 
           state.trackName = trackData.name;
           state.trackTotalDurationMs = trackData.durationMs;
-          state.trackId = trackData.trackId;
+          state.trackId = trackData._id;
           state.trackAlbumImageUrl = trackData.album.image;
           state.trackAlbumName = trackData.album.name;
           state.trackArtistName = trackData.artist.name;
+
+          var token = payload.token.slice(
+            payload.token.indexOf("Bearer ") + "Bearer ".length,
+            payload.token.length
+          );
+
+          dispatch("checkSaved",{
+            token: token,
+            id: state.trackId,
+          });
 
           state.isCurTrkReady = true;
         })

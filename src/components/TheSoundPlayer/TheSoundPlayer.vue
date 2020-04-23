@@ -18,7 +18,9 @@
               {{ trackArtistName }}
             </router-link>
           </div>
-          <!-- <a @click="saveToLikedSongs()" v-if="!isTrackLiked">
+
+          <!-- Like -->
+          <a @click="saveToLikedSongs()" v-if="!isTrackLiked">
             <v-icon small title="save your liked songs" class="icons">
               mdi-heart-outline
             </v-icon>
@@ -32,7 +34,7 @@
             >
               mdi-heart
             </v-icon>
-          </a> -->
+          </a>
         </v-toolbar>
       </v-col>
 
@@ -196,7 +198,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened
+                icons: !isQueueOpened,
               }"
             >
               mdi-format-list-numbered-rtl
@@ -293,7 +295,7 @@ export default {
       isVolumePressed: false,
 
       devices: undefined,
-      currentDeviceId: undefined
+      currentDeviceId: undefined,
     };
   },
   methods: {
@@ -312,7 +314,7 @@ export default {
       "setToken",
       "setContextType",
       "setContextId",
-      "setContextUrl"
+      "setContextUrl",
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -325,7 +327,9 @@ export default {
       "playTrackInQueue",
       "toggleRepeatOnce",
       "toggleRepeat",
-      "toggleShuffle"
+      "toggleShuffle",
+      "saveTrack",
+      "removeSavedTrack"
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -390,11 +394,15 @@ export default {
      */
     saveToLikedSongs: function() {
       if (!this.isTrackLiked) {
-        this.setIsTrackLiked(true);
-        //make a request to set the current song to the like ones.
+        this.saveTrack({
+          token: this.getuserToken(),
+          id: this.trackId,
+        });
       } else {
-        this.setIsTrackLiked(false);
-        //make a request to remove the current song from the like ones.
+        this.removeSavedTrack({
+          token: this.getuserToken(),
+          id: this.trackId,
+        });
       }
     },
     /**
@@ -568,7 +576,7 @@ export default {
       var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
       this.getTrackInformation({
         token: this.token,
-        trackId: CurrentlyPlayingTrackId
+        trackId: CurrentlyPlayingTrackId,
       });
 
       await this.initQueueStatus(this.token);
@@ -597,7 +605,7 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
-  }
+  },
 };
 </script>
 
