@@ -4,7 +4,7 @@
       v-bind:class="{
         'hero-home-bg-cover': isLg(),
         'hero-home-md-cover': isMd(),
-        'hero-home-sm-cover': isSm() || isXs()
+        'hero-home-sm-cover': isSm() || isXs(),
       }"
     >
       <v-container>
@@ -34,13 +34,13 @@
         <v-row>
           <v-col sm="1" v-if="isSm()"></v-col>
           <v-col sm="10" md="12" lg="12" xs="12">
-            <router-link
-              to="/premium"
+            <a
+              v-on:click="premium"
               class="download-button-large"
               v-bind:class="{ 'download-button-xs': isXs() }"
             >
               get premium
-            </router-link>
+            </a>
           </v-col>
           <v-col sm="1" v-if="isSm()"></v-col>
         </v-row>
@@ -68,7 +68,7 @@
               "
               v-bind:class="{
                 'benefits-img-sm': isSm() || isXs(),
-                'benefits-img-lg': !isSm()
+                'benefits-img-lg': !isSm(),
               }"
             >
             </v-img>
@@ -116,21 +116,27 @@
 
           <v-divider class="mx-4"></v-divider>
 
-          <router-link
-            to="/premium"
+          <a
+            v-on:click="premium"
             class="download-button-large download-button-xs"
           >
             get premium
-          </router-link>
+          </a>
         </v-card-text>
       </v-card>
     </v-content>
   </div>
 </template>
 
+<script src="https://js.stripe.com/v3/"></script>
+
 <script>
 import getDeviceSize from "../../mixins/getDeviceSize";
+import getuserToken from "../../mixins/userService";
+
 import { mapMutations } from "vuex";
+
+import axios from "axios";
 
 /**
  * The homepage content when pressing premium tab.
@@ -146,24 +152,26 @@ export default {
         benefit1: {
           no: 1,
           text1: "Download music.",
-          text2: "Listen anywhere."
+          text2: "Listen anywhere.",
         },
         benefit2: {
           no: 2,
           text1: "No ad interruptions.",
-          text2: "Enjoy nonstop music."
+          text2: "Enjoy nonstop music.",
         },
         benefit3: {
           no: 3,
           text1: "Play any song.",
-          text2: "Even on mobile."
+          text2: "Even on mobile.",
         },
         benefit4: {
           no: 4,
           text1: "Unlimited skips.",
-          text2: "Just hit next."
-        }
-      }
+          text2: "Just hit next.",
+        },
+      },
+      stripe: undefined,
+      userToken: undefined,
     };
   },
 
@@ -180,12 +188,30 @@ export default {
       } else {
         this.setNavigationBarColor("rgba(0, 0, 0, 0)");
       }
-    }
+    },
+    /**
+     * get premium
+     * @public
+     */
+    async premium() {
+      const session = await axios.get("/v1/me/checkout-session", {
+        headers: {
+          Authorization: this.userToken,
+        },
+      });
+      await this.stripe.redirectToCheckout({
+        sessionId: session.data.session.id,
+      });
+    },
   },
 
   mounted: function() {
     this.NavFunction();
     window.addEventListener("scroll", this.NavFunction);
+
+    this.userToken = "Bearer " + this.getuserToken();
+
+    this.stripe = Stripe("pk_test_RqCR6gpy5RMhclg6bDCNZriV00z3bugPaY");
   },
 
   destroyed: function() {
@@ -193,7 +219,7 @@ export default {
     this.setNavigationBarColor("rgba(0, 0, 0, 0.6)");
   },
 
-  mixins: [getDeviceSize]
+  mixins: [getDeviceSize, getuserToken],
 };
 </script>
 
