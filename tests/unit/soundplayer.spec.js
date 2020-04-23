@@ -5,8 +5,6 @@ import Vuex from "vuex";
 import VueRouter from "vue-router";
 import soundplayer from "@/components/TheSoundplayer/TheSoundplayer.vue";
 
-console.log("////////////////////////////////////////////////////////");
-
 describe("TheSoundplayer", () => {
   let wrapper;
   let vuetify;
