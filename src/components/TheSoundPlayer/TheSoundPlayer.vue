@@ -329,7 +329,7 @@ export default {
       "toggleRepeat",
       "toggleShuffle",
       "saveTrack",
-      "removeSavedTrack"
+      "removeSavedTrack",
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -374,7 +374,7 @@ export default {
      * @public
      */
     nextConditionally: function() {
-      if (this.isNextAndPreviousFinished) {
+      if (this.isNextAndPreviousFinished && this.trackId != null) {
         this.next();
       }
     },
@@ -383,7 +383,7 @@ export default {
      * @public
      */
     previousConditionally: function() {
-      if (this.isNextAndPreviousFinished) {
+      if (this.isNextAndPreviousFinished && this.trackId != null) {
         this.previous();
       }
     },
@@ -393,16 +393,18 @@ export default {
      * @public
      */
     saveToLikedSongs: function() {
-      if (!this.isTrackLiked) {
-        this.saveTrack({
-          token: this.getuserToken(),
-          id: this.trackId,
-        });
-      } else {
-        this.removeSavedTrack({
-          token: this.getuserToken(),
-          id: this.trackId,
-        });
+      if (this.trackId != null) {
+        if (!this.isTrackLiked) {
+          this.saveTrack({
+            token: this.getuserToken(),
+            id: this.trackId,
+          });
+        } else {
+          this.removeSavedTrack({
+            token: this.getuserToken(),
+            id: this.trackId,
+          });
+        }
       }
     },
     /**
@@ -583,9 +585,11 @@ export default {
       await this.updateQueue(this.token);
 
       await this.recentlyPlayed(this.getuserToken());
-      this.setContextId(this.historyResponse[0].contextId);
-      this.setContextType(this.historyResponse[0].contextType);
-      this.setContextUrl(this.historyResponse[0].contextUrl);
+      if (this.historyResponse.length != 0) {
+        this.setContextId(this.historyResponse[0].contextId);
+        this.setContextType(this.historyResponse[0].contextType);
+        this.setContextUrl(this.historyResponse[0].contextUrl);
+      }
 
       this.playTrackInQueue(CurrentlyPlayingTrackId);
     },
