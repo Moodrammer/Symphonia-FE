@@ -165,8 +165,8 @@ const actions = {
         });
     }
   },
-  removeSavedTrack({ commit }, payload) {
-    axios
+  async removeSavedTrack({ commit }, payload) {
+    await axios
       .delete("/v1/me/tracks?ids=" + payload.id, {
         headers: {
           Authorization: `Bearer ${payload.token}`
@@ -181,8 +181,8 @@ const actions = {
         console.log(error);
       });
   },
-  saveTrack({ commit }, payload) {
-    axios
+  async saveTrack({ commit }, payload) {
+    await axios
       .put(
         "/v1/me/tracks?ids=" + payload.id,
         {},

@@ -391,18 +391,20 @@ export default {
      *
      * @public
      */
-    saveToLikedSongs: function() {
+    saveToLikedSongs: async function() {
       if (this.trackId != null) {
         if (!this.isTrackLiked) {
-          this.saveTrack({
+          await this.saveTrack({
             token: this.getuserToken(),
             id: this.trackId
           });
+          this.$root.$emit("updateContent");
         } else {
-          this.removeSavedTrack({
+          await this.removeSavedTrack({
             token: this.getuserToken(),
             id: this.trackId
           });
+          this.$root.$emit("updateContent");
         }
       }
     },

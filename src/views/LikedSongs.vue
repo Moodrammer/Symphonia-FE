@@ -68,6 +68,10 @@
                   Play
                 </v-btn>
               </v-row>
+              <v-row class="mt-2" justify-lg="center">
+                <h5 class="mr-2">{{numOfTracks}}</h5>
+                <h5>SONGS</h5>
+              </v-row>
             </v-col>
           </v-row>
         </v-container>
@@ -90,6 +94,7 @@
             :id="track._id"
             :disabled="track.premium"
             :playlist="false"
+            :contextMenu="contextMenu"
           />
         </v-list>
       </v-col>
@@ -123,13 +128,18 @@ export default {
   mounted() {
     this.$root.$on("updateContent", () => {
       this.$store.dispatch("category/getTracks", this.getuserToken());
+      console.log("from event")
     });
   },
   computed: {
     tracks() {
       return this.$store.state.category.tracks;
+    },
+    numOfTracks() {
+      return this.$store.state.category.savedTracksNum;
     }
   },
+  props: ["contextMenu"],
   mixins: [getDeviceSize, getuserToken]
 };
 </script>
@@ -168,5 +178,9 @@ export default {
 .small-col {
   width: 157px;
   height: 157px;
+}
+
+h5 {
+  opacity: 0.5;
 }
 </style>
