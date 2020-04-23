@@ -346,7 +346,8 @@ export default {
     inUserPlaylist() {
       if (this.$route.name == "playlist/:id") {
         return (
-          this.$store.state.playlist.singlePlaylist.owner == this.getuserID()
+          this.$store.state.playlist.singlePlaylist.owner._id ==
+          this.getuserID()
         );
       } else return false;
     },
@@ -360,7 +361,9 @@ export default {
       return this.$store.state.playlist.followed;
     },
     isOwnedPlaylist() {
-      return this.$store.state.playlist.menuPlaylist.owner == this.getuserID();
+      return (
+        this.$store.state.playlist.menuPlaylist.owner._id == this.getuserID()
+      );
     }
   }
 };

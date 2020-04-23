@@ -105,7 +105,7 @@ export function makeServer({ environment = "development" } = {}) {
           public: false,
           tracks: [],
           tracksCount: 0,
-          owner: user_id,
+          owner: { _id: user_id, name: "Bob" },
           active: true
         });
         console.log(schema.playlists.all().length);

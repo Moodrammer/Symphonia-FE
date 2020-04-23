@@ -69,6 +69,11 @@
                   <h1 class="mt-5">{{ playlist.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">
+                  <p class="mt-1" style="opacity:0.4">
+                    {{ playlist.owner.name }}
+                  </p>
+                </v-row>
+                <v-row justify-lg="center" class="mt-1">
                   <v-btn
                     rounded
                     class="white--text px-8"
@@ -89,7 +94,7 @@
                     Play
                   </v-btn>
                 </v-row>
-                <v-row justify-lg="center" class="mt-6">
+                <v-row justify-lg="center" class="mt-4">
                   <div v-if="!owned">
                     <v-icon
                       color="white"
@@ -396,7 +401,7 @@ export default {
     },
     owned() {
       return (
-        this.$store.state.playlist.singlePlaylist.owner == this.getuserID()
+        this.$store.state.playlist.singlePlaylist.owner._id == this.getuserID()
       );
     }
   },
@@ -410,7 +415,6 @@ export default {
   background-color: #1aa34a;
   border-width: 0;
   border-radius: 500px;
-  margin-top: 30px;
 }
 
 #playIcon:hover {

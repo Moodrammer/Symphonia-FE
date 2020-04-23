@@ -106,8 +106,8 @@ const mutations = {
   load_tracks(state, list) {
     state.tracks = list;
   },
-  setTracksNum(state,num) {
-    state.savedTracksNum=num;
+  setTracksNum(state, num) {
+    state.savedTracksNum = num;
   },
   setName(state, payload) {
     state.categoryNameHolder = payload.name;
@@ -241,7 +241,7 @@ const actions = {
       })
       .then(response => {
         let list = response.data.tracks.items;
-        commit("setTracksNum",response.data.tracks.total);
+        commit("setTracksNum", response.data.tracks.total);
         commit("load_tracks", list);
       })
       .catch(error => {

@@ -69,7 +69,7 @@
                 </v-btn>
               </v-row>
               <v-row class="mt-2" justify-lg="center">
-                <h5 class="mr-2">{{numOfTracks}}</h5>
+                <h5 class="mr-2">{{ numOfTracks }}</h5>
                 <h5>SONGS</h5>
               </v-row>
             </v-col>
@@ -128,7 +128,7 @@ export default {
   mounted() {
     this.$root.$on("updateContent", () => {
       this.$store.dispatch("category/getTracks", this.getuserToken());
-      console.log("from event")
+      console.log("from event");
     });
   },
   computed: {
