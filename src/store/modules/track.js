@@ -109,7 +109,6 @@ const mutations = {
 const actions = {
   async getTrackInformation({ state, dispatch }, payload) {
     if (payload.trackId != null) {
-      state.isCurTrkReady = false;
 
       await axios
         .get("/v1/users/track/" + payload.trackId, {
@@ -137,7 +136,6 @@ const actions = {
             id: state.trackId,
           });
 
-          state.isCurTrkReady = true;
         })
         .catch((error) => {
           console.log("axios caught an error");
@@ -323,6 +321,8 @@ const actions = {
       tracks.push(track);
     }
     state.queueNextTracks = tracks;
+
+    state.isCurTrkReady = true;
   },
   /**
    * toggle soundplayer pause and play
@@ -372,6 +372,7 @@ const actions = {
    */
   async next({ state, dispatch, commit }) {
     state.isNextAndPreviousFinished = false;
+    state.isCurTrkReady = false;
 
     if (state.isRepeatOnceEnabled) {
       await dispatch("toggleRepeatOnce");
@@ -442,6 +443,7 @@ const actions = {
    */
   async previous({ state, dispatch, commit }) {
     state.isNextAndPreviousFinished = false;
+    state.isCurTrkReady = false;
 
     if (state.isRepeatOnceEnabled) {
       await dispatch("toggleRepeatOnce");
