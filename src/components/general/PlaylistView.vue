@@ -344,7 +344,11 @@ export default {
     }
   },
   created: function() {
-    this.$store.dispatch("playlist/getPlaylist", this.$route.params.id);
+    this.$store.dispatch("playlist/getPlaylist", {
+      playlistID: this.$route.params.id,
+      isMenu: false
+    });
+    this.$store.dispatch("playlist/getPlaylistTracks", this.$route.params.id);
     this.$store.dispatch("playlist/checkFollowed", {
       playlistId: this.$route.params.id,
       usersID: [this.getuserID()],
@@ -353,7 +357,14 @@ export default {
   },
   watch: {
     "$route.params.id": function() {
-      this.$store.dispatch("playlist/getPlaylist", this.$route.params.id);
+      this.$store.dispatch("playlist/getPlaylist", {
+        playlistID: this.$route.params.id,
+        isMenu: false
+      });
+      this.$store.dispatch(
+        "playllist/getPlaylistTracks",
+        this.$route.params.id
+      );
       this.$store.dispatch("playlist/checkFollowed", {
         playlistId: this.$route.params.id,
         usersID: [this.getuserID()],
@@ -363,7 +374,11 @@ export default {
   },
   mounted() {
     this.$root.$on("update", () => {
-      this.$store.dispatch("playlist/getPlaylist", this.$route.params.id);
+      this.$store.dispatch("playlist/getPlaylist", {
+        playlistID: this.$route.params.id,
+        isMenu: false
+      });
+      this.$store.dispatch("playlist/getPlaylistTracks", this.$route.params.id);
     });
   },
   computed: {

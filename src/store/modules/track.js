@@ -145,11 +145,11 @@ const actions = {
         });
     }
   },
-  checkSaved({ commit }, payload) {
+  async checkSaved({ commit }, payload) {
     if (payload.token == null) {
       commit("unlikeTrack", payload.id);
     } else {
-      axios
+      await axios
         .get("/v1/me/tracks/contains?ids=" + payload.id, {
           headers: {
             Authorization: `Bearer ${payload.token}`

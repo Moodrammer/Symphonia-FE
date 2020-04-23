@@ -166,8 +166,12 @@ export default {
       this.menuList = this.artistMenu;
       //add checks like follow/unfollow and modify menuList
     },
-    playlist() {
-      this.$store.dispatch("playlist/checkFollowed", {
+    async playlist() {
+      await this.$store.dispatch("playlist/getPlaylist", {
+        playlistID: this.id,
+        isMenu: true
+      });
+      await this.$store.dispatch("playlist/checkFollowed", {
         playlistId: this.id,
         usersID: [this.getuserID()],
         token: this.getuserToken()
@@ -175,7 +179,7 @@ export default {
       this.playlistMenu = [];
       this.playlistMenu.push("Start Radio");
 
-      if (this.inUserPlaylist) {
+      if (this.isOwnedPlaylist) {
         if (this.isPublicPlaylist) this.playlistMenu.push("Make secret");
         else this.playlistMenu.push("Make public");
 
@@ -189,8 +193,8 @@ export default {
 
       this.menuList = this.playlistMenu;
     },
-    album() {
-      this.$store.dispatch("album/checkFollowed", {
+    async album() {
+      await this.$store.dispatch("album/checkFollowed", {
         albumID: [this.id],
         token: this.getuserToken()
       });
@@ -207,8 +211,8 @@ export default {
 
       this.menuList = this.albumMenu;
     },
-    track() {
-      this.$store.dispatch("track/checkSaved", {
+    async track() {
+      await this.$store.dispatch("track/checkSaved", {
         id: this.id,
         token: this.getuserToken()
       });
@@ -290,10 +294,14 @@ export default {
         token: this.getuserToken()
       });
     },
-    addAlbumTracksToPlaylist() {
+    async addAlbumTracksToPlaylist() {
+      await this.$store.dispatch("album/getAlbum", {
+        albumID: this.id,
+        isMenu: true
+      });
       this.$store.commit(
         "playlist/setAddedTracks",
-        this.$store.state.album.singleAlbum.tracks
+        this.$store.state.album.menuAlbum.tracks
       );
       this.$store.commit("playlist/changeAddTrackModel");
     },
@@ -337,17 +345,22 @@ export default {
     },
     inUserPlaylist() {
       if (this.$route.name == "playlist/:id") {
-        return this.$store.state.playlist.playlistOwner == this.getuserID();
+        return (
+          this.$store.state.playlist.singlePlaylist.owner == this.getuserID()
+        );
       } else return false;
     },
     isAlbumSaved() {
       return this.$store.state.album.followed;
     },
     isPublicPlaylist() {
-      return this.$store.state.playlist.singlePlaylist.public;
+      return this.$store.state.playlist.menuPlaylist.public;
     },
     isPlaylistSaved() {
       return this.$store.state.playlist.followed;
+    },
+    isOwnedPlaylist() {
+      return this.$store.state.playlist.menuPlaylist.owner == this.getuserID();
     }
   }
 };

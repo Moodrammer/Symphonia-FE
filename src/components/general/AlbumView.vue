@@ -273,7 +273,10 @@ export default {
     }
   },
   created: function() {
-    this.$store.dispatch("album/getAlbum", this.$route.params.id);
+    this.$store.dispatch("album/getAlbum", {
+      albumID: this.$route.params.id,
+      isMenu: false
+    });
     this.$store.dispatch("album/checkFollowed", {
       albumID: [this.$route.params.id],
       token: this.getuserToken()

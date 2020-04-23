@@ -15,7 +15,8 @@ const state = {
   ownedPlaylists: [],
   flag: null,
   tracksToAdd: [],
-  createWithTrack: false
+  createWithTrack: false,
+  menuPlaylist: null
 };
 
 const mutations = {
@@ -39,9 +40,9 @@ const mutations = {
   followed(state) {
     state.followed = true;
   },
-  setPlaylist(state, playlist) {
-    state.singlePlaylist = playlist;
-    state.playlistOwner = playlist.owner;
+  setPlaylist(state, payload) {
+    if (payload.isMenu) state.menuPlaylist = payload.playlist;
+    else state.singlePlaylist = payload.playlist;
   },
   setTracks(state, tracks) {
     state.playlistTracks = tracks;
@@ -183,13 +184,15 @@ const actions = {
         console.log(error);
       });
   },
-  getPlaylist({ commit, dispatch }, playlistID) {
-    dispatch("getPlaylistTracks", playlistID);
-    axios
-      .get("/v1/playlists/" + playlistID)
+  async getPlaylist({ commit }, payload) {
+    await axios
+      .get("/v1/playlists/" + payload.playlistID)
       .then(response => {
         let returnedPlaylist = response.data;
-        commit("setPlaylist", returnedPlaylist);
+        commit("setPlaylist", {
+          playlist: returnedPlaylist,
+          isMenu: payload.isMenu
+        });
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -208,11 +211,11 @@ const actions = {
         console.log(error);
       });
   },
-  checkFollowed({ commit }, payload) {
+  async checkFollowed({ commit }, payload) {
     if (payload.token == null) {
       commit("unfollow");
     } else {
-      axios
+      await axios
         .get(
           "/v1/playlists/" +
             payload.playlistId +

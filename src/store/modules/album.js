@@ -4,7 +4,8 @@ const state = {
   albums: [],
   singleAlbum: null,
   followed: false,
-  albumTracks: []
+  albumTracks: [],
+  menuAlbum: null
 };
 
 const mutations = {
@@ -12,13 +13,15 @@ const mutations = {
   delete_albums: (state, list) =>
     (state.albums = state.albums.filter(album => !list.includes(album._id))),
   setAlbum(state, payload) {
-    state.singleAlbum = payload;
+    if (payload.isMenu) state.menuAlbum = payload.album;
+    else state.singleAlbum = payload.album;
   },
   setTracks(state, payload) {
     state.albumTracks = payload;
   },
   setFollowed(state, payload) {
     state.followed = payload[0];
+    console.log(state.followed);
   },
   unfollow(state) {
     state.followed = false;
@@ -88,13 +91,13 @@ const actions = {
         console.log(error);
       });
   },
-  getAlbum({ commit, dispatch }, albumID) {
-    dispatch("getAlbumTracks", albumID);
-    axios
-      .get("/v1/albums/" + albumID)
+  async getAlbum({ commit, dispatch }, payload) {
+    dispatch("getAlbumTracks", payload.albumID);
+    await axios
+      .get("/v1/albums/" + payload.albumID)
       .then(response => {
         let album = response.data;
-        commit("setAlbum", album);
+        commit("setAlbum", { album: album, isMenu: payload.isMenu });
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -113,11 +116,12 @@ const actions = {
         console.log(error);
       });
   },
-  checkFollowed({ commit }, payload) {
+  async checkFollowed({ commit }, payload) {
+    console.log(payload.albumID);
     if (payload.token == null) {
       commit("unfollow");
     } else {
-      axios
+      await axios
         .get("/v1/me/albums/contains?ids=" + payload.albumID, {
           headers: {
             Authorization: `Bearer ${payload.token}`
