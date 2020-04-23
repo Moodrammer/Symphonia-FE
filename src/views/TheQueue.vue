@@ -14,7 +14,7 @@
             :songName="curTrkName"
             :artistName="curTrkArtistName"
             :albumName="albumName"
-            :duration="totalDurationMs"
+            :duration="trackTotalDurationMs"
             v-if="isCurTrkReady"
           />
         </v-list>
@@ -36,7 +36,7 @@
             :songName="track.name"
             :artistName="track.artistName"
             :duration="track.durationMs"
-            :albumName="track.albumName"
+            :albumName="track.trackAlbumName"
           />
         </v-list>
       </v-col>
@@ -66,21 +66,23 @@ export default {
 
   methods: {
     ...mapActions("track", ["updateQueueTracksInfo"]),
-    ...mapMutations("playlist", ["setIsQueueOpened"])
+    ...mapMutations("track", ["setIsQueueOpened"])
   },
 
   computed: {
     ...mapState({
       curTrkName: state => state.track.trackName,
-      curTrkArtistName: state => state.track.trackArtist,
+      curTrkArtistName: state => state.track.trackArtistName,
       queueNextTracks: state => state.track.queueNextTracks,
-      totalDurationMs: state => state.track.totalDurationMs,
-      albumName: state => state.track.albumName,
+      trackTotalDurationMs: state => state.track.trackTotalDurationMs,
+      albumName: state => state.track.trackAlbumName,
       isCurTrkReady: state => state.track.isCurTrkReady
     })
   },
 
   mounted: function() {
+    this.setIsQueueOpened(true);
+
     this.token = "Bearer " + this.getuserToken();
   },
 
