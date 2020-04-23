@@ -698,8 +698,10 @@ export function makeServer({ environment = "development" } = {}) {
       //
       //////////////////////////////////////////////////////////////////////////////////////
       this.post("/v1/me/player/tracks/:track_id", (schema, request) => {
-        var link = "http://thesymphonia.ddns.net/api/v1/me/player/tracks/" + request.params.track_id;
-        
+        var link =
+          "http://thesymphonia.ddns.net/api/v1/me/player/tracks/" +
+          request.params.track_id;
+
         currentlyPlayingIndex = mockTracks.indexOf(link);
 
         currentlyPlaying = mockTracks[currentlyPlayingIndex];
@@ -712,7 +714,6 @@ export function makeServer({ environment = "development" } = {}) {
         else previousPlayingIndex = currentlyPlayingIndex - 1;
         previousTrack = mockTracks[previousPlayingIndex];
 
-        
         return new Response(
           200,
           {},
@@ -783,6 +784,14 @@ export function makeServer({ environment = "development" } = {}) {
             },
           }
         );
+      });
+
+      this.get("/v1/me/checkout-session", () => {
+        return new Response(200, {}, {
+          session: {
+            id: "12"
+          }
+        });
       });
     },
   });
