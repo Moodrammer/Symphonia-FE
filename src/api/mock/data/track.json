@@ -13,168 +13,128 @@
     "trackId": "2",
     "album": {
       "album_type": "single",
-      "href": "https://api.symphonia.com/v1/albums/1",
       "id": "5",
       "_id": "5",
       "image":"http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "Quran ALbum1",
-      "type": "album"
+      "name": "Quran ALbum1"
     },
     "artist": 
       {
-        "href": "https://api.symphonia.com/v1/artists/1",
         "id": "1",
-        "name": "Yasser Al-Dosari",
-        "type": "artist"
-      }
-    ,
+        "name": "Yasser Al-Dosari"
+      },
     "durationMs": 2131000,
     "explicit": false,
-    "href": "https://server11.mp3quran.net/yasser/012.mp3",
     "name": "Surah Yossef",
-    "popularity": 45,
-    "track_number": 1,
-    "type": "track"
+    "premium": true,
+    "_id": "2"
   },
   {
     "liked": true,
+    "premium": false,
     "trackId": "3",
     "id": "3",
+    "_id": "3",
     "album": {
       "album_type": "single",
-      "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ74PC563",
       "id": "6",
       "_id": "6",
-      "images":"http://source.unsplash.com/Gmb4U6JFyHo", 
-      "name": "Quran ALbum2",
-      "type": "album"
+      "name": "Quran ALbum2"
     },
     "artist": 
       {
-        "href": "https://api.symphonia.com/v1/artists/2",
         "id": "2",
-        "name": "Nasser Al-Qatami",
-        "type": "artist"
-      }
-    ,
+        "name": "Nasser Al-Qatami"
+      },
     "durationMs": 374000,
     "explicit": false,
-    "href": "https://server6.mp3quran.net/qtm/053.mp3",
-    "name": "Surah Al-Najm",
-    "popularity": 45,
-    "track_number": 1,
-    "type": "track"
+    "name": "Surah Al-Najm"
   },
   {
     "liked": true,
+    "premium": false,
     "trackId": "4",
     "id": "4",
+    "_id": "4",
     "album": {
       "album_type": "single",
-      "href": "https://api.symphonia.com/v1/albums/5GWoXPsTQylMuaZ74PC563",
       "id": "6",
       "_id": "6",
       "image": "http://source.unsplash.com/Gmb4U6JFyHo",
-      "name": "Quran ALbum2",
-      "type": "album"
+      "name": "Quran ALbum2"
     },
     "artist": 
       {
-        "href": "https://api.symphonia.com/v1/artists/3",
         "id": "3",
-        "name": "Wadeea Al-Yamani",
-        "type": "artist"
-      }
-    ,
+        "name": "Wadeea Al-Yamani"
+      },
     "durationMs": 1659000,
     "explicit": false,
-    "href": "https://server6.mp3quran.net/wdee3/020.mp3",
-    "name": "Surah Taha",
-    "popularity": 45,
-    "track_number": 2,
-    "type": "track"
+    "name": "Surah Taha"
   },
   {
     "liked": true,
+    "premium": true,
     "trackId": "5",
     "id": "5",
+    "_id":"5",
     "album": {
       "album_type": "single",
-      "href": "https://api.symphonia.com/v1/albums/1",
       "id": "3",
       "_id": "3",
       "image":"http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "Album1",
-      "type": "album"
+      "name": "Album1"
     },
     "artist": 
       {
-        "href": "https://api.symphonia.com/v1/artists/2",
         "id": "2",
-        "name": "Nasser Al-Qatami",
-        "type": "artist"
-      }
-    ,
+        "name": "Nasser Al-Qatami"
+      },
     "durationMs": 409000,
     "explicit": false,
-    "href": "https://server6.mp3quran.net/qtm/067.mp3",
-    "name": "Surah Al-Mulk",
-    "popularity": 45,
-    "track_number": 2,
-    "type": "track"
+    "name": "Surah Al-Mulk"
   },
   {
     "liked": false,
+    "premium": false,
     "trackId": "6",
     "id": "6",
+    "_id":"6",
     "album": {
       "album_type": "single",
-      "href": "https://api.symphonia.com/v1/albums/1",
       "id": "1",
       "image": "http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "Album1",
-      "type": "album"
+      "name": "Album1"
     },
-    "artists": [
+    "artist":
       {
-        "href": "https://api.symphonia.com/v1/artists/5",
         "id": "5",
-        "name": "Abd Al-Rahman Al-Aoosi",
-        "type": "artist"
-      }
-    ],
+        "name": "Abd Al-Rahman Al-Aoosi"
+      },
     "durationMs": 1129000,
     "explicit": false,
-    "href": "https://server6.mp3quran.net/aloosi/014.mp3",
-    "name": "Surah Ibrahim",
-    "popularity": 45,
-    "track_number": 2,
-    "type": "track"
+    "name": "Surah Ibrahim"
   },
   {
     "liked": false,
     "trackId": "123",
     "id": "123",
+    "_id": "123",
     "album": {
       "album_type": "single",
-      "href": "https://api.symphonia.com/v1/albums/1",
       "id": "1",
       "image": "http://source.unsplash.com/FPz-Dd-xx4c",
-      "name": "Album1",
-      "type": "album"
+      "name": "Album1"
     },
     "artist": 
       {
-        "href": "https://api.symphonia.com/v1/artists/5",
         "_id": "6",
-        "name": "Artist",
-        "type": "artist"
-      }
-    ,
+        "name": "Artist"
+      },
     "durationMs": 1129000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/aloosi/014.mp3",
-    "name": "remember the name",
+    "name": "Game of Thrones I",
     "popularity": 45,
     "track_number": 2,
     "type": "track"
@@ -183,6 +143,7 @@
     "liked": false,
     "trackId": "456",
     "id": "456",
+    "_id": "456",
     "album": {
       "album_type": "single",
       "href": "https://api.symphonia.com/v1/albums/1",
@@ -202,7 +163,36 @@
     "durationMs": 1129000,
     "explicit": false,
     "href": "https://server6.mp3quran.net/aloosi/014.mp3",
-    "name": "Game Of Thrones",
+    "name": "Game Of Thrones II",
+    "popularity": 45,
+    "track_number": 2,
+    "type": "track"
+  },
+  {
+    "liked": false,
+    "trackId": "789",
+    "id": "789",
+    "_id": "789",
+    "album": {
+      "album_type": "single",
+      "href": "https://api.symphonia.com/v1/albums/1",
+      "id": "1",
+      "image": "http://source.unsplash.com/FPz-Dd-xx4c",
+      "name": "Album1",
+      "type": "album"
+    },
+    "artist": 
+      {
+        "href": "https://api.symphonia.com/v1/artists/5",
+        "_id": "6",
+        "name": "Artist",
+        "type": "artist"
+      }
+    ,
+    "durationMs": 1129000,
+    "explicit": false,
+    "href": "https://server6.mp3quran.net/aloosi/014.mp3",
+    "name": "Game Of Thrones III",
     "popularity": 45,
     "track_number": 2,
     "type": "track"

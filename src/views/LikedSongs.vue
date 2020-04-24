@@ -118,12 +118,7 @@ export default {
   },
   methods: {},
   created: function() {
-    //this.$store.dispatch("track/getTrack", 1);
     this.$store.dispatch("category/getTracks", this.getuserToken());
-    // this.$store.dispatch("playlist/followPlaylist",{
-    //   id: 2,
-    //   token: this.getuserToken()
-    // }) 5e7d2dc03429e24340ff1396
   },
   mounted() {
     this.$root.$on("updateContent", () => {

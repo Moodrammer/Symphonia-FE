@@ -6,8 +6,12 @@
     }"
   >
     <div class="pl-10 pt-12 mt-12 gradient-body py-7">
-      <p class="caption grey--text">{{artist.followedUsers.length}} MONTHLY LISTENERS</p>
-      <h1 class="display-3 font-weight-bold white--text my-5">{{artist.name}}</h1>
+      <p class="caption grey--text">
+        {{ artist.followedUsers.length }} MONTHLY LISTENERS
+      </p>
+      <h1 class="display-3 font-weight-bold white--text my-5">
+        {{ artist.name }}
+      </h1>
       <v-btn rounded color="success" min-width="110" min-height="40" dark
         >Play</v-btn
       >
@@ -16,7 +20,7 @@
       >
       <span class="display-2 white--text">...</span>
     </div>
-    <div class="pl-3 content-container" >
+    <div class="pl-3 content-container">
       <div class="pl-9 mb-10">
         <v-btn text color="white" class="mx-2" :to="{ name: 'Overview' }">
           <span class="text-capitalize white--text">Overview</span>
@@ -40,16 +44,15 @@ export default {
   computed: mapGetters(["currentArtistGetter"]),
   methods: {
     ...mapActions(["getCurrentArtist"]),
-    updateArtist(){
-          try {
-      this.getCurrentArtist({
-        token: this.getuserToken(),
-        id: this.$route.params.id
-      });
-    } catch (error) {
-      console.log(error);
-    }
-
+    updateArtist() {
+      try {
+        this.getCurrentArtist({
+          token: this.getuserToken(),
+          id: this.$route.params.id
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
   created() {
@@ -60,7 +63,7 @@ export default {
       console.log(newValue);
       this.artist = newValue;
     },
-    '$route.params.id':function(){
+    "$route.params.id": function() {
       this.updateArtist();
     }
   },
@@ -84,9 +87,8 @@ export default {
     rgba(26, 26, 26, 0) 100%
   );
 }
-  .content-container{
-    background:#1a1a1a;
-    height: 100%
-  }
-
+.content-container {
+  background: #1a1a1a;
+  height: 100%;
+}
 </style>

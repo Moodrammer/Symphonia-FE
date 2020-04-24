@@ -233,6 +233,7 @@
 import isLoggedIn from "../../mixins/userService";
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getimageUrl from "../../mixins/userService";
+import logOut from "../../mixins/userService";
 import { mapState } from "vuex";
 
 /**
@@ -269,11 +270,15 @@ export default {
     logOutAndRerender() {
       this.logOut();
       this.$forceUpdate();
+      
+      console.log(this.homepageInstance);
+      
       this.homepageInstance.$forceUpdate();
+      
     }
   },
 
-  mixins: [isLoggedIn, getimageUrl, getDeviceSize]
+  mixins: [isLoggedIn, getimageUrl, getDeviceSize, logOut]
 };
 </script>
 

@@ -5,8 +5,6 @@ import Vuex from "vuex";
 import VueRouter from "vue-router";
 import soundplayer from "@/components/TheSoundplayer/TheSoundplayer.vue";
 
-console.log("////////////////////////////////////////////////////////")
-
 describe("TheSoundplayer", () => {
   let wrapper;
   let vuetify;
@@ -53,7 +51,7 @@ describe("TheSoundplayer", () => {
 
             isQueueOpened: false,
             queueTracks: [],
-            queueNextTracks: [],
+            queueNextTracks: []
           },
           actions: {
             next({ state }) {
@@ -63,10 +61,10 @@ describe("TheSoundplayer", () => {
               state.audioElement.autoplay = true;
             },
             previous({ state }) {
-                state.isNextAndPreviousFinished = false;
+              state.isNextAndPreviousFinished = false;
 
-                state.isBuffering = true;
-                state.audioElement.autoplay = true;
+              state.isBuffering = true;
+              state.audioElement.autoplay = true;
             },
             getTrackInformation() {},
             updateQueue() {},
@@ -76,7 +74,7 @@ describe("TheSoundplayer", () => {
             playTrackInQueue() {},
             toggleRepeatOnce({ state }) {
               state.isRepeatOnceEnabled = !state.isRepeatOnceEnabled;
-            },
+            }
           },
           mutations: {
             setTrackUrl(state, trackUrl) {
@@ -129,30 +127,32 @@ describe("TheSoundplayer", () => {
             },
             setContextUrl(state, contextUrl) {
               state.contextUrl = contextUrl;
-            },
-          },
+            }
+          }
         },
         category: {
           namespaced: true,
 
           state: {
-            historyResponse: [{
-              contextType: "",
-              contextId: "",
-              contextUrl: "",
-            }]
+            historyResponse: [
+              {
+                contextType: "",
+                contextId: "",
+                contextUrl: ""
+              }
+            ]
           },
           actions: {
-            recentlyPlayed(){}
+            recentlyPlayed() {}
           }
         }
-      },
+      }
     });
 
     wrapper = shallowMount(soundplayer, {
       vuetify,
       store,
-      router,
+      router
     });
   });
 
@@ -225,13 +225,13 @@ describe("TheSoundplayer", () => {
   it("toggle RepeatOnce Conditionally", () => {
     store.state.track.isRepeatOnceEnabled = true;
     store.state.track.isNextAndPreviousFinished = true;
-    wrapper.vm.toggleRepeatOnceConditionally()
+    wrapper.vm.toggleRepeatOnceConditionally();
     expect(wrapper.vm.isRepeatOnceEnabled).toBe(false);
 
     store.state.track.isNextAndPreviousFinished = false;
-    wrapper.vm.toggleRepeatOnceConditionally()
+    wrapper.vm.toggleRepeatOnceConditionally();
     expect(wrapper.vm.isRepeatOnceEnabled).toBe(false);
-  })
+  });
 
   //mute
   it("mute the volume", () => {
@@ -247,7 +247,7 @@ describe("TheSoundplayer", () => {
     wrapper.vm.setAudioElement({
       readyState: 3,
       duration: 3000,
-      play: function() {},
+      play: function() {}
     });
 
     wrapper.vm._handleLoaded();
@@ -259,7 +259,7 @@ describe("TheSoundplayer", () => {
     wrapper.vm.setAudioElement({
       readyState: 1,
       duration: 2000,
-      play: function() {},
+      play: function() {}
     });
 
     wrapper.vm._handleLoaded();
@@ -270,7 +270,7 @@ describe("TheSoundplayer", () => {
 
   it("playing handler", () => {
     wrapper.vm.setAudioElement({
-      currentTime: 3000,
+      currentTime: 3000
     });
     wrapper.vm.currentTimeInSec = 10;
 
@@ -316,7 +316,7 @@ describe("TheSoundplayer", () => {
 
   it("play the next track", () => {
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     wrapper.vm.next();
 
@@ -325,23 +325,23 @@ describe("TheSoundplayer", () => {
 
   it("play the next track conditionally", () => {
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     store.state.track.isNextAndPreviousFinished = true;
-    wrapper.vm.nextConditionally()
+    wrapper.vm.nextConditionally();
     expect(wrapper.vm.audioElement.autoplay).toEqual(true);
 
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     store.state.track.isNextAndPreviousFinished = false;
-    wrapper.vm.nextConditionally()
+    wrapper.vm.nextConditionally();
     expect(wrapper.vm.audioElement.autoplay).toEqual(false);
-  })
+  });
 
   it("play the previous track", () => {
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     wrapper.vm.previous();
 
@@ -350,19 +350,19 @@ describe("TheSoundplayer", () => {
 
   it("play the previous track conditionally", () => {
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     store.state.track.isNextAndPreviousFinished = true;
-    wrapper.vm.previousConditionally()
+    wrapper.vm.previousConditionally();
     expect(wrapper.vm.audioElement.autoplay).toEqual(true);
 
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     store.state.track.isNextAndPreviousFinished = false;
-    wrapper.vm.previousConditionally()
+    wrapper.vm.previousConditionally();
     expect(wrapper.vm.audioElement.autoplay).toEqual(false);
-  })
+  });
 
   it("converts time in seconds to HH:MM:SS", () => {
     var result = wrapper.vm.convertTimeHHMMSS(60);

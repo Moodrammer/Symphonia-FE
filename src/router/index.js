@@ -22,6 +22,8 @@ import Genre from "../components/general/Genre.vue";
 import Google from "../components/oauth/google.vue";
 import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
+import Facebook from "../components/oauth/facebook.vue";
+import ArtistActivation from "../views/ArtistActivation.vue"
 
 Vue.use(VueRouter);
 
@@ -40,7 +42,7 @@ const routes = [
       {
         name: "UserUI",
         path: "user/:id",
-        component: UserUI,
+        component: UserUI
       },
       {
         name: "ArtistUI",
@@ -178,7 +180,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/ForgetPass.vue"),
+      import("../views/ForgetPass.vue"),
     redirect: "/password-reset/reset",
     children: [
       {
@@ -198,6 +200,16 @@ const routes = [
     path: "/google/:userToken",
     name: "googleroute",
     component: Google
+  },
+  {
+    path: "/facebook/:userToken",
+    name: "facebookroute",
+    component: Facebook
+  },
+  {
+    path: "/artist-activation/:activationToken",
+    name: "artistActivation",
+    component: ArtistActivation
   }
 ];
 

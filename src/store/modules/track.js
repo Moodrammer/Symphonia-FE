@@ -2,6 +2,7 @@ import axios from "axios";
 
 const state = {
   token: "",
+  trackToken: "",
 
   audioElement: undefined,
 
@@ -33,6 +34,7 @@ const state = {
   queueNextTracks: [],
   isRepeatEnabled: false,
   isRepeatOnceEnabled: false,
+  isShuffleEnabled: false,
 
   generalLiked: null,
 };
@@ -51,6 +53,7 @@ const mutations = {
     state.generalLiked = true;
   },
   setTrackUrl(state, trackUrl) {
+    state.audioElement.load();
     state.trackUrl = trackUrl;
   },
   setId(state, id) {
@@ -104,9 +107,8 @@ const mutations = {
 };
 
 const actions = {
-  async getTrackInformation({ state }, payload) {
+  async getTrackInformation({ state, dispatch }, payload) {
     if (payload.trackId != null) {
-      state.isCurTrkReady = false;
 
       await axios
         .get("/v1/users/track/" + payload.trackId, {
@@ -119,12 +121,21 @@ const actions = {
 
           state.trackName = trackData.name;
           state.trackTotalDurationMs = trackData.durationMs;
-          state.trackId = trackData.trackId;
+          state.trackId = trackData._id;
           state.trackAlbumImageUrl = trackData.album.image;
           state.trackAlbumName = trackData.album.name;
           state.trackArtistName = trackData.artist.name;
 
-          state.isCurTrkReady = true;
+          var token = payload.token.slice(
+            payload.token.indexOf("Bearer ") + "Bearer ".length,
+            payload.token.length
+          );
+
+          dispatch("checkSaved",{
+            token: token,
+            id: state.trackId,
+          });
+
         })
         .catch((error) => {
           console.log("axios caught an error");
@@ -194,29 +205,62 @@ const actions = {
    * @public
    * @param {string} token the authorization token with the Bearer prefix
    */
-  async updateQueue({ state }, token) {
+  async updateQueue({ state, dispatch }, token) {
     await axios({
       method: "get",
       url: "/v1/me/player/queue",
       headers: {
         Authorization: token,
       },
-    }).then(async (response) => {
+    }).then((response) => {
+      state.queueTracks = response.data.data.queueTracks;
+
+      dispatch("updateQueueTracksInfo", token);
+
+      if (state.queueTracks.length == 0) {
+        state.isLastTrackInQueue = false;
+        state.isFirstTrackInQueue = false;
+      } else {
+        if (
+          response.data.data.previousTrack == null ||
+          state.queueTracks[0] ==
+            response.data.data.currentlyPlaying.currentTrack
+        ) {
+          state.isFirstTrackInQueue = true;
+        } else {
+          state.isFirstTrackInQueue = false;
+        }
+
+        if (
+          response.data.data.nextTrack == null ||
+          state.queueTracks[state.queueTracks.length - 1] ==
+            response.data.data.currentlyPlaying.currentTrack
+        ) {
+          state.isLastTrackInQueue = true;
+        } else {
+          state.isLastTrackInQueue = false;
+        }
+      }
+    });
+  },
+  /**
+   * initialize the queue status (repeat, repeatOnce, shuffle)
+   * @public
+   * @param {string} token the authorization token with the Bearer prefix
+   */
+  async initQueueStatus({ state }, token) {
+    await axios({
+      method: "get",
+      url: "/v1/me/player/queue",
+      headers: {
+        Authorization: token,
+      },
+    }).then((response) => {
       state.queueTracks = response.data.data.queueTracks;
 
       state.isRepeatOnceEnabled = response.data.data.repeatOnce;
-
-      if (response.data.data.previousTrack == null) {
-        state.isFirstTrackInQueue = true;
-      } else {
-        state.isFirstTrackInQueue = false;
-      }
-
-      if (response.data.data.nextTrack == null) {
-        state.isLastTrackInQueue = true;
-      } else {
-        state.isLastTrackInQueue = false;
-      }
+      state.isRepeatEnabled = response.data.data.repeat;
+      state.isShuffleEnabled = response.data.data.shuffle;
     });
   },
   /**
@@ -224,7 +268,8 @@ const actions = {
    * @public
    */
   async updateQueueTracksInfo({ state }, token) {
-    //get the start of next songs
+    state.queueNextTracks = []
+
     var i;
     var tempTrackUrl;
     var songId;
@@ -263,36 +308,21 @@ const actions = {
             Authorization: token,
           },
         })
-        .then(async (response) => {
+        .then((response) => {
           let trackData = response.data;
 
           track.name = trackData.name;
           track.durationMs = trackData.durationMs;
-
-          //get the artist name
-          await axios
-            .get("/v1/artists/" + trackData.artist, {
-              headers: {
-                Authorization: token,
-              },
-            })
-            .then((response) => {
-              track.artistName = response.data.name;
-            });
-
-          await axios
-            .get("/v1/albums/" + trackData.album, {
-              headers: {
-                Authorization: token,
-              },
-            })
-            .then((response) => {
-              track.trackAlbumName = response.data[0].name;
-            });
+        
+          track.artistName = trackData.artist.name;
+          
+          track.trackAlbumName = trackData.album.name;  
         });
       tracks.push(track);
     }
     state.queueNextTracks = tracks;
+
+    state.isCurTrkReady = true;
   },
   /**
    * toggle soundplayer pause and play
@@ -340,8 +370,9 @@ const actions = {
    *
    * @public
    */
-  async next({ state, dispatch }) {
+  async next({ state, dispatch, commit }) {
     state.isNextAndPreviousFinished = false;
+    state.isCurTrkReady = false;
 
     if (state.isRepeatOnceEnabled) {
       await dispatch("toggleRepeatOnce");
@@ -350,14 +381,23 @@ const actions = {
     state.isBuffering = true;
     state.audioElement.autoplay = true;
 
-    if (state.isLastTrackInQueue) {
-      var tempTrackUrl = state.queueTracks[0];
+    var tempTrackUrl;
+
+    if (state.isShuffleEnabled) {
+      var randomTrackNo = Math.floor(Math.random() * state.queueTracks.length);
+      tempTrackUrl = state.queueTracks[randomTrackNo];
+    }
+    else if (state.isLastTrackInQueue) {
+      tempTrackUrl = state.queueTracks[0];
+    } 
+
+    if (state.isLastTrackInQueue || state.isShuffleEnabled) {
       var trackId = tempTrackUrl.slice(
         tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
         tempTrackUrl.length
       );
 
-      dispatch("getTrackInformation", {
+      await dispatch("getTrackInformation", {
         token: state.token,
         trackId: trackId,
       });
@@ -377,13 +417,20 @@ const actions = {
         var CurrentlyPlayingTrackId = await dispatch(
           "getCurrentlyPlayingTrackId"
         );
-        dispatch("getTrackInformation", {
+        await dispatch("getTrackInformation", {
           token: state.token,
           trackId: CurrentlyPlayingTrackId,
         });
         await dispatch("updateQueue", state.token);
 
-        dispatch("playTrackInQueue", CurrentlyPlayingTrackId);
+        var audioSource =
+          axios.defaults.baseURL +
+          "/v1/me/player/tracks/" +
+          CurrentlyPlayingTrackId +
+          "/" +
+          state.trackToken;
+
+        commit("setTrackUrl", audioSource)
 
         state.isNextAndPreviousFinished = true;
       });
@@ -394,8 +441,9 @@ const actions = {
    *
    * @public
    */
-  async previous({ state, dispatch }) {
+  async previous({ state, dispatch, commit }) {
     state.isNextAndPreviousFinished = false;
+    state.isCurTrkReady = false;
 
     if (state.isRepeatOnceEnabled) {
       await dispatch("toggleRepeatOnce");
@@ -404,26 +452,60 @@ const actions = {
     state.isBuffering = true;
     state.audioElement.autoplay = true;
 
-    await axios({
-      method: "post",
-      url: "/v1/me/player/previous",
-      headers: {
-        Authorization: state.token,
-      },
-    }).then(async () => {
-      var CurrentlyPlayingTrackId = await dispatch(
-        "getCurrentlyPlayingTrackId"
+    var tempTrackUrl;
+
+    if (state.isShuffleEnabled) {
+      var randomTrackNo = Math.floor(Math.random() * state.queueTracks.length);
+      tempTrackUrl = state.queueTracks[randomTrackNo];
+    }
+    else if (state.isFirstTrackInQueue) {
+      tempTrackUrl = state.queueTracks[state.queueTracks.length - 1];
+    } 
+
+    if (state.isFirstTrackInQueue || state.isShuffleEnabled) {
+      var trackId = tempTrackUrl.slice(
+        tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
+        tempTrackUrl.length
       );
-      dispatch("getTrackInformation", {
+
+      await dispatch("getTrackInformation", {
         token: state.token,
-        trackId: CurrentlyPlayingTrackId,
+        trackId: trackId,
       });
+
+      await dispatch("playTrackInQueue", trackId);
       await dispatch("updateQueue", state.token);
 
-      dispatch("playTrackInQueue", CurrentlyPlayingTrackId);
-
       state.isNextAndPreviousFinished = true;
-    });
+    } else {
+      await axios({
+        method: "post",
+        url: "/v1/me/player/previous",
+        headers: {
+          Authorization: state.token,
+        },
+      }).then(async () => {
+        var CurrentlyPlayingTrackId = await dispatch(
+          "getCurrentlyPlayingTrackId"
+        );
+        await dispatch("getTrackInformation", {
+          token: state.token,
+          trackId: CurrentlyPlayingTrackId,
+        });
+        await dispatch("updateQueue", state.token);
+
+        var audioSource =
+          axios.defaults.baseURL +
+          "/v1/me/player/tracks/" +
+          CurrentlyPlayingTrackId +
+          "/" +
+          state.trackToken;
+
+          commit("setTrackUrl", audioSource)
+
+        state.isNextAndPreviousFinished = true;
+      });
+    }
   },
   /**
    * play a song in the queue
@@ -432,7 +514,7 @@ const actions = {
    *
    * @param {string} trackId the track Id to be played
    */
-  async playTrackInQueue({ state }, trackId) {
+  async playTrackInQueue({ state, dispatch, commit }, trackId) {
     if (trackId != null) {
       await axios({
         method: "post",
@@ -447,14 +529,35 @@ const actions = {
           Authorization: state.token,
         },
       }).then((response) => {
-        var trackToken = response.data.data;
+        axios({
+          method: "get",
+          url: "/v1/me/player/queue",
+          headers: {
+            Authorization: state.token,
+          },
+        }).then((response) => {
+          if (response.data.data.repeat != state.isRepeatEnabled) {
+            state.isRepeatEnabled = false;
+            dispatch("toggleRepeat");
+          } else if (response.data.data.repeat != state.isRepeatEnabled) {
+            state.isRepeatEnabled = false;
+            dispatch("toggleRepeatOnce");
+          }
+
+          if (response.data.data.shuffle != state.isShuffleEnabled) {
+            state.isShuffleEnabled = false;
+            dispatch("toggleShuffle");
+          }
+        });
+
+        state.trackToken = response.data.data;
         var audioSource =
           axios.defaults.baseURL +
           "/v1/me/player/tracks/" +
           trackId +
           "/" +
-          trackToken;
-        state.trackUrl = audioSource;
+          state.trackToken;
+        commit("setTrackUrl", audioSource)
       });
     }
   },
@@ -464,13 +567,45 @@ const actions = {
    * @public
    */
   async toggleRepeatOnce({ state }) {
-    state.isRepeatOnceEnabled = !state.isRepeatOnceEnabled;
     await axios({
       method: "patch",
       url: "/v1/me/player/repeatOnce",
       headers: {
         Authorization: state.token,
       },
+    }).then(() => {
+      state.isRepeatOnceEnabled = !state.isRepeatOnceEnabled;
+    });
+  },
+  /**
+   * toggle repeat
+   *
+   * @public
+   */
+  async toggleRepeat({ state }) {
+    await axios({
+      method: "patch",
+      url: "/v1/me/player/repeat",
+      headers: {
+        Authorization: state.token,
+      },
+    }).then(() => {
+      state.isRepeatEnabled = !state.isRepeatEnabled;
+    });
+  },
+  /**
+   * enable the shuffle feature
+   * @public
+   */
+  toggleShuffle({ state }) {
+    axios({
+      method: "patch",
+      url: "/v1/me/player/shuffle",
+      headers: {
+        Authorization: state.token,
+      },
+    }).then(() => {
+      state.isShuffleEnabled = !state.isShuffleEnabled;
     });
   },
 };

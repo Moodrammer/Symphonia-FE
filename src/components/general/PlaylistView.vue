@@ -245,7 +245,6 @@
 
 <script>
 import Song from "./Song";
-//import { mapState } from "vuex";
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getuserToken from "../../mixins/userService";
 import getuserID from "../../mixins/userService";
@@ -264,7 +263,6 @@ export default {
       hover: false,
       iconClick: false,
       id: this.$route.params.id,
-      type: this.$route.params.type,
       disable: false,
       snackbar: false
     };

@@ -5,20 +5,18 @@ const state = {
   userInfo: null
 };
 
-
 const mutations = {
-  load_playlists: (state, list) =>
-    {
-      // console.log("aywaaa",list)
-      state.playlists = list.playlists.items.filter(e=>e.public);
-      // console.log("saadd", list.playlists.items.filter(e=>e.public))
-    },
-  load_userInfo: (state, info) => state.userInfo = info,
+  load_playlists: (state, list) => {
+    // console.log("aywaaa",list)
+    state.playlists = list.playlists.items.filter(e => e.public);
+    // console.log("saadd", list.playlists.items.filter(e=>e.public))
+  },
+  load_userInfo: (state, info) => (state.userInfo = info)
 };
 
 const getters = {
   allPublicPlaylists: function(state) {
-    if(!state.playlists) return;
+    if (!state.playlists) return;
 
     var newValue = state.playlists;
     // console.log("haha",newValue)
@@ -36,12 +34,12 @@ const getters = {
     });
     return playlists;
   },
-  allInfo: function(state){
-    if(state.userInfo)
-    return {name: state.userInfo.name, image: state.userInfo.imageUrl}
+  allInfo: function(state) {
+    if (state.userInfo)
+      return { name: state.userInfo.name, image: state.userInfo.imageUrl };
   }
 };
- 
+
 const actions = {
   /**
    * called to get user's public info
@@ -56,12 +54,10 @@ const actions = {
         }
       })
       .then(response => {
-        console.log("user info",response);
+        console.log("user info", response);
         // response.ownedPlaylists.forEach(element => dispatch("getPlaylists",{id: element, token: payload.token}));
         // response.followedAlbums.forEach(element => dispatch("getFollowedAlbums",{id: element, token: payload.token}));
-        commit("load_userInfo", response.data);     
-
-        
+        commit("load_userInfo", response.data);
       })
       .catch(error => {
         console.log("axios caught an error in getAlbums");
@@ -83,21 +79,18 @@ const actions = {
         params: { limit: 50, offset: 0 }
       })
       .then(response => {
-        console.log("user_playlists",response.data);
-        commit("load_playlists", response.data);        
+        console.log("user_playlists", response.data);
+        commit("load_playlists", response.data);
       })
       .catch(error => {
         console.log("axios caught an error in getUserPlaylists");
         console.log(error);
       });
-
-  },
-
-
+  }
 };
 
 export default {
-  namespaced:true,
+  namespaced: true,
   state,
   mutations,
   actions,

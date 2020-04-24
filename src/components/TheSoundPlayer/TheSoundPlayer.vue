@@ -18,7 +18,9 @@
               {{ trackArtistName }}
             </router-link>
           </div>
-          <!-- <a @click="saveToLikedSongs()" v-if="!isTrackLiked">
+
+          <!-- Like -->
+          <a @click="saveToLikedSongs()" v-if="!isTrackLiked">
             <v-icon small title="save your liked songs" class="icons">
               mdi-heart-outline
             </v-icon>
@@ -32,15 +34,15 @@
             >
               mdi-heart
             </v-icon>
-          </a> -->
+          </a>
         </v-toolbar>
       </v-col>
 
       <v-col cols="5">
         <div class="audio-controls">
           <!-- shuffle -->
-          <!-- <a
-            @click="enableShuffle()"
+          <a
+            @click="toggleShuffle()"
             v-if="!isShuffleEnabled"
             title="shuffle"
             style="margin-right: 20px;"
@@ -51,7 +53,7 @@
           </a>
 
           <a
-            @click="disableShuffle()"
+            @click="toggleShuffle()"
             v-if="isShuffleEnabled"
             title="shuffle"
             style="margin-right: 20px;"
@@ -59,12 +61,12 @@
             <v-icon small color="green">
               mdi-shuffle-variant
             </v-icon>
-          </a> -->
+          </a>
 
           <!-- Previous -->
           <a
             @click="previousConditionally()"
-            v-if="!isFirstTrackInQueue"
+            v-if="!isFirstTrackInQueue || isRepeatEnabled"
             title="Previous"
             id="previous"
             style="margin-right: 10px;"
@@ -74,7 +76,7 @@
             </v-icon>
           </a>
           <a
-            v-if="isFirstTrackInQueue"
+            v-if="isFirstTrackInQueue && !isRepeatEnabled"
             title="Previous"
             id="previous"
             style="margin-right: 10px;"
@@ -117,8 +119,9 @@
             </v-icon>
           </a>
 
-          <!-- <a
-            @click="enableRepeat()"
+          <!-- Repeat -->
+          <a
+            @click="toggleRepeatConditionally()"
             v-if="!isRepeatEnabled && !isRepeatOnceEnabled"
             title="Enable repeat"
             style="margin-left: 20px;"
@@ -126,17 +129,20 @@
             <v-icon small class="icons">
               mdi-repeat
             </v-icon>
-          </a> -->
-          <!-- v-if="isRepeatEnabled && !isRepeatOnceEnabled" -->
+          </a>
+
           <a
             id="enableRepeatOnce"
-            @click="toggleRepeatOnceConditionally()"
-            v-if="!isRepeatOnceEnabled"
+            @click="
+              toggleRepeatConditionally();
+              toggleRepeatOnceConditionally();
+            "
+            v-if="isRepeatEnabled && !isRepeatOnceEnabled"
             title="Enable repeat once"
             style="margin-left: 20px;"
           >
             <!-- <v-icon small class="icons" color="green"> -->
-            <v-icon small class="icons">
+            <v-icon small class="icons" color="green">
               mdi-repeat
             </v-icon>
           </a>
@@ -144,7 +150,7 @@
           <a
             id="disableRepeatOnce"
             @click="toggleRepeatOnceConditionally()"
-            v-if="isRepeatOnceEnabled"
+            v-if="!isRepeatEnabled && isRepeatOnceEnabled"
             title="Disable repeat once"
             style="margin-left: 20px;"
           >
@@ -192,7 +198,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened,
+                icons: !isQueueOpened
               }"
             >
               mdi-format-list-numbered-rtl
@@ -269,7 +275,9 @@ export default {
       isBuffering: (state) => state.track.isBuffering,
       token: (state) => state.track.token,
       isRepeatOnceEnabled: (state) => state.track.isRepeatOnceEnabled,
-
+      isRepeatEnabled: (state) => state.track.isRepeatEnabled,
+      isShuffleEnabled: (state) => state.track.isShuffleEnabled,
+      isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
       historyResponse: (state) => state.category.historyResponse,
     }),
   },
@@ -285,7 +293,6 @@ export default {
       isMuted: false,
       isProgressBarPressed: false,
       isVolumePressed: false,
-      isShuffleEnabled: false,
 
       devices: undefined,
       currentDeviceId: undefined,
@@ -297,7 +304,6 @@ export default {
       "setTrackUrl",
       "setTrackId",
       "setFirstTrackInQueue",
-      "setLastTrackInQueue",
       "setQueueTracks",
       "setTrackTotalDuration",
       "setAudioElement",
@@ -312,6 +318,7 @@ export default {
     ]),
     ...mapActions("track", [
       "getTrackInformation",
+      "initQueueStatus",
       "updateQueue",
       "togglePauseAndPlay",
       "next",
@@ -319,6 +326,10 @@ export default {
       "getCurrentlyPlayingTrackId",
       "playTrackInQueue",
       "toggleRepeatOnce",
+      "toggleRepeat",
+      "toggleShuffle",
+      "saveTrack",
+      "removeSavedTrack",
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -348,11 +359,22 @@ export default {
       }
     },
     /**
+     * invoke toggleRepeat in case the next and previous
+     * procedures are finished.
+     *
+     * @public
+     */
+    toggleRepeatConditionally: function() {
+      if (this.isNextAndPreviousFinished) {
+        this.toggleRepeat();
+      }
+    },
+    /**
      * play the next track in case previous and next are finished
      * @public
      */
     nextConditionally: function() {
-      if (this.isNextAndPreviousFinished) {
+      if (this.isNextAndPreviousFinished && this.trackId != null) {
         this.next();
       }
     },
@@ -361,7 +383,7 @@ export default {
      * @public
      */
     previousConditionally: function() {
-      if (this.isNextAndPreviousFinished) {
+      if (this.isNextAndPreviousFinished && this.trackId != null) {
         this.previous();
       }
     },
@@ -371,12 +393,18 @@ export default {
      * @public
      */
     saveToLikedSongs: function() {
-      if (!this.isTrackLiked) {
-        this.setIsTrackLiked(true);
-        //make a request to set the current song to the like ones.
-      } else {
-        this.setIsTrackLiked(false);
-        //make a request to remove the current song from the like ones.
+      if (this.trackId != null) {
+        if (!this.isTrackLiked) {
+          this.saveTrack({
+            token: this.getuserToken(),
+            id: this.trackId,
+          });
+        } else {
+          this.removeSavedTrack({
+            token: this.getuserToken(),
+            id: this.trackId,
+          });
+        }
       }
     },
     /**
@@ -500,8 +528,12 @@ export default {
     _handleEndedTrack: function() {
       if (this.isRepeatOnceEnabled) {
         this.audioElement.play();
-      } else {
+      } else if (this.isLastTrackInQueue && this.isRepeatEnabled) {
         this.next();
+      } else if (!this.isLastTrackInQueue) {
+        this.next();
+      } else {
+        return;
       }
     },
     _handleAudioError: function() {
@@ -549,14 +581,17 @@ export default {
         trackId: CurrentlyPlayingTrackId,
       });
 
+      await this.initQueueStatus(this.token);
+      await this.updateQueue(this.token);
+
       await this.recentlyPlayed(this.getuserToken());
-      this.setContextId(this.historyResponse[0].contextId);
-      this.setContextType(this.historyResponse[0].contextType);
-      this.setContextUrl(this.historyResponse[0].contextUrl);
+      if (this.historyResponse.length != 0) {
+        this.setContextId(this.historyResponse[0].contextId);
+        this.setContextType(this.historyResponse[0].contextType);
+        this.setContextUrl(this.historyResponse[0].contextUrl);
+      }
 
       this.playTrackInQueue(CurrentlyPlayingTrackId);
-
-      this.updateQueue(this.token);
     },
   },
   mounted: function() {
@@ -574,7 +609,7 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
-  },
+  }
 };
 </script>
 
