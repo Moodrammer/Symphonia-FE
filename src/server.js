@@ -547,11 +547,8 @@ export function makeServer({ environment = "development" } = {}) {
           let attrs = JSON.parse(request.requestBody);
           //for the sake of mocking only , treat the reset token as the user id
           let resettoken = parseInt(request.params.resettoken);
-          console.log(request.params);
           //change the password of the first user for testing only
           schema.users.find(resettoken).update("password", attrs.password);
-          console.log(schema.users.find(resettoken));
-          console.log(attrs.password);
           return new Response(
             200,
             {},
@@ -564,8 +561,78 @@ export function makeServer({ environment = "development" } = {}) {
                 name: schema.users.find(resettoken).name,
                 type: schema.users.find(resettoken).type,
                 imageUrl:
-                  "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
-              },
+                  "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+              }
+            }
+          );
+        }),
+        //route for activating the artist account
+        this.patch("/v1/users/activate/:artistActivationToken", (schema, request) => {
+            /*To simulate mocking backend acceptance of refusal let
+              artistActivationToken: 1 => acceptance
+              artistActivationToken: 0 => refusal
+            */
+           let isAccountActivated = parseInt(request.params.artistActivationToken);
+           if(isAccountActivated) {
+            return new Response(201, {}, 
+              {
+                token:
+                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
+                user: {
+                  _id: schema.users.find(2).id,
+                  email: schema.users.find(2).email,
+                  name: schema.users.find(2).name,
+                  type: schema.users.find(2).type,
+                  imageUrl:
+                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+                }
+              })
+           }
+           else {
+              return new Response(400,{},
+                {
+                  status: "fail",
+                  msg: "Your activation link is invalid , make sure to check the link sent by email"
+                })
+           }
+        }, 
+        {timing: 2000}),
+        //route for the currently used device
+        this.get("/v1/me/player/devices", () => {
+          return new Response(
+            200,
+            {},
+            {
+              data: [
+                {
+                  _id: "1",
+                  devicesName: "Chrome"
+                },
+                {
+                  _id: "2",
+                  devicesName: "Chrome"
+                },
+                {
+                  _id: "3",
+                  devicesName: "Firefox"
+                },
+                {
+                  _id: "4",
+                  devicesName: "Chrome"
+                }
+              ]
+            }
+          );
+        }),
+        this.get("/v1/me/player/currently-playing", () => {
+          return new Response(
+            200,
+            {},
+            {
+              data: {
+                currentTrack: "/track/5e7d2dc03429e24340ff1396",
+                device: "5e88ef4d54142e3db4d01ee5"
+              }
             }
           );
         }),
