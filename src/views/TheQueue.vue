@@ -1,7 +1,7 @@
 <template>
   <v-container class="pt-0">
     <h1 style="font-size: 28px;">Play Queue</h1>
-    <v-row justify="center">
+    <v-row justify="center" v-if="isCurTrkReady">
       <!--Display the Now player -->
       <v-col lg="12" sm="12" md="12">
         <h2 style="font-size: 18px;">Now Playing</h2>
@@ -15,13 +15,12 @@
             :artistName="curTrkArtistName"
             :albumName="albumName"
             :duration="trackTotalDurationMs"
-            v-if="isCurTrkReady"
           />
         </v-list>
       </v-col>
     </v-row>
 
-    <v-row justify="center">
+    <v-row justify="center" v-if="isCurTrkReady">
       <!--Display the Now player -->
       <v-col lg="12" sm="12" md="12">
         <h2 style="font-size: 18px;">Next Up</h2>
@@ -53,31 +52,31 @@ export default {
   name: "TheQueue",
 
   components: {
-    Song
+    Song,
   },
 
   data: function() {
     return {
       hover: false,
       loading: true,
-      token: undefined
+      token: undefined,
     };
   },
 
   methods: {
     ...mapActions("track", ["updateQueueTracksInfo"]),
-    ...mapMutations("track", ["setIsQueueOpened"])
+    ...mapMutations("track", ["setIsQueueOpened"]),
   },
 
   computed: {
     ...mapState({
-      curTrkName: state => state.track.trackName,
-      curTrkArtistName: state => state.track.trackArtistName,
-      queueNextTracks: state => state.track.queueNextTracks,
-      trackTotalDurationMs: state => state.track.trackTotalDurationMs,
-      albumName: state => state.track.trackAlbumName,
-      isCurTrkReady: state => state.track.isCurTrkReady
-    })
+      curTrkName: (state) => state.track.trackName,
+      curTrkArtistName: (state) => state.track.trackArtistName,
+      queueNextTracks: (state) => state.track.queueNextTracks,
+      trackTotalDurationMs: (state) => state.track.trackTotalDurationMs,
+      albumName: (state) => state.track.trackAlbumName,
+      isCurTrkReady: (state) => state.track.isCurTrkReady,
+    }),
   },
 
   mounted: function() {
@@ -89,7 +88,7 @@ export default {
   beforeDestroy: function() {
     this.setIsQueueOpened(false);
   },
-  mixins: [getuserToken]
+  mixins: [getuserToken],
 };
 </script>
 
