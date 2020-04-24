@@ -1,6 +1,6 @@
 <template>
   <v-footer app class="sound-player">
-    <audio ref="audiofile" :src="trackUrl" style="display:none;"></audio>
+    <audio ref="audiofile" :src="trackUrl" style="display:none;" preload="auto"></audio>
     <!-- song info -->
     <v-row>
       <v-col cols="4">

@@ -19,7 +19,7 @@ const state = {
   isFirstTrackInQueue: true,
   isLastTrackInQueue: true,
   isNextAndPreviousFinished: true,
-  isBuffering: false,
+  isBuffering: true,
 
   contextType: "",
   contextId: "",
@@ -132,7 +132,7 @@ const actions = {
             payload.token.length
           );
 
-          dispatch("checkSaved",{
+          dispatch("checkSaved", {
             token: token,
             id: state.trackId,
           });
@@ -270,7 +270,7 @@ const actions = {
    * @public
    */
   async updateQueueTracksInfo({ state }, token) {
-    state.queueNextTracks = []
+    state.queueNextTracks = [];
 
     var i;
     var tempTrackUrl;
@@ -315,10 +315,10 @@ const actions = {
 
           track.name = trackData.name;
           track.durationMs = trackData.durationMs;
-        
+
           track.artistName = trackData.artist.name;
-          
-          track.trackAlbumName = trackData.album.name;  
+
+          track.trackAlbumName = trackData.album.name;
         });
       tracks.push(track);
     }
@@ -329,10 +329,12 @@ const actions = {
    * @public
    */
   togglePauseAndPlay({ state }) {
-    if (!state.isTrackPaused) {
-      state.audioElement.pause();
-    } else {
-      state.audioElement.play();
+    if (!state.isBuffering) {
+      if (!state.isTrackPaused) {
+        state.audioElement.pause();
+      } else {
+        state.audioElement.play();
+      }
     }
   },
   /**
@@ -385,10 +387,9 @@ const actions = {
     if (state.isShuffleEnabled) {
       var randomTrackNo = Math.floor(Math.random() * state.queueTracks.length);
       tempTrackUrl = state.queueTracks[randomTrackNo];
-    }
-    else if (state.isLastTrackInQueue) {
+    } else if (state.isLastTrackInQueue) {
       tempTrackUrl = state.queueTracks[0];
-    } 
+    }
 
     if (state.isLastTrackInQueue || state.isShuffleEnabled) {
       var trackId = tempTrackUrl.slice(
@@ -429,7 +430,7 @@ const actions = {
           "/" +
           state.trackToken;
 
-        commit("setTrackUrl", audioSource)
+        commit("setTrackUrl", audioSource);
 
         state.isNextAndPreviousFinished = true;
       });
@@ -455,10 +456,9 @@ const actions = {
     if (state.isShuffleEnabled) {
       var randomTrackNo = Math.floor(Math.random() * state.queueTracks.length);
       tempTrackUrl = state.queueTracks[randomTrackNo];
-    }
-    else if (state.isFirstTrackInQueue) {
+    } else if (state.isFirstTrackInQueue) {
       tempTrackUrl = state.queueTracks[state.queueTracks.length - 1];
-    } 
+    }
 
     if (state.isFirstTrackInQueue || state.isShuffleEnabled) {
       var trackId = tempTrackUrl.slice(
@@ -499,7 +499,7 @@ const actions = {
           "/" +
           state.trackToken;
 
-          commit("setTrackUrl", audioSource)
+        commit("setTrackUrl", audioSource);
 
         state.isNextAndPreviousFinished = true;
       });
@@ -555,7 +555,7 @@ const actions = {
           trackId +
           "/" +
           state.trackToken;
-        commit("setTrackUrl", audioSource)
+        commit("setTrackUrl", audioSource);
       });
     }
   },
