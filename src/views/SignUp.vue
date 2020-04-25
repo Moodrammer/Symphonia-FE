@@ -13,31 +13,39 @@
             <v-row justify="center" class="mb-5">
               <v-col cols="6">
                 <!-- Facebook button -->
-                <v-row justify="center" class="mb-2">
-                  <v-btn
-                    id="fb-sign-btn"
-                    rounded
-                    color="#3B5998"
-                    class="white--text"
-                    style="font-size: 14px"
-                    large
-                    block
-                    >Sign up with Facebook</v-btn
-                  >
-                </v-row>
+                <a
+                  href="https://thesymphonia.ddns.net/api/v1/users/auth/facebook"
+                >
+                  <v-row justify="center" class="mb-2">
+                    <v-btn
+                      id="fb-sign-btn"
+                      rounded
+                      color="#3B5998"
+                      class="white--text"
+                      style="font-size: 14px"
+                      large
+                      block
+                      >Sign up with Facebook</v-btn
+                    >
+                  </v-row>
+                </a>
                 <!-- Google button -->
-                <v-row justify="center" class="my-0">
-                  <v-btn
-                    id="ggl-sign-btn"
-                    rounded
-                    color="#dd4b39"
-                    class="white--text"
-                    style="font-size: 14px"
-                    large
-                    block
-                    ><div class="px-2">Sign up with Google</div></v-btn
-                  >
-                </v-row>
+                <a
+                  href="https://thesymphonia.ddns.net/api/v1/users/auth/google"
+                >
+                  <v-row justify="center" class="my-0">
+                    <v-btn
+                      id="ggl-sign-btn"
+                      rounded
+                      color="#dd4b39"
+                      class="white--text"
+                      style="font-size: 14px"
+                      large
+                      block
+                      ><div class="px-2">Sign up with Google</div></v-btn
+                    >
+                  </v-row>
+                </a>
               </v-col>
             </v-row>
 
@@ -193,11 +201,23 @@
                   <v-radio
                     label="Artist"
                     value="artist"
-                    color="red"
+                    color="indigo lighten-1"
                     id="artist-select"
                   ></v-radio>
                 </v-radio-group>
               </v-row>
+              <v-alert
+                v-if="userData.type == 'artist'"
+                outlined
+                color="indigo"
+                class="white--text"
+              >
+                <div style="text-align: center;">
+                  An email with an attached activation link will be sent to the
+                  email address you provided inorder to activate your artist
+                  account
+                </div>
+              </v-alert>
               <!-- Sign up button -->
               <v-row justify="center">
                 <v-col cols="8" class="py-2">
@@ -377,7 +397,7 @@ export default {
         this.$store
           .dispatch("registerUser", this.userData)
           .then(() => {
-            this.$router.push("/Login");
+            this.$router.push("/webhome/home");
           })
           //if an error object was caught temporarily display it in the console
           .catch(error => {

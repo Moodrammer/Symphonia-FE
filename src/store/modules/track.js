@@ -19,7 +19,7 @@ const state = {
   isFirstTrackInQueue: true,
   isLastTrackInQueue: true,
   isNextAndPreviousFinished: true,
-  isBuffering: false,
+  isBuffering: true,
 
   contextType: "",
   contextId: "",
@@ -109,8 +109,6 @@ const mutations = {
 const actions = {
   async getTrackInformation({ state, dispatch }, payload) {
     if (payload.trackId != null) {
-      state.isCurTrkReady = false;
-
       await axios
         .get("/v1/users/track/" + payload.trackId, {
           headers: {
@@ -136,8 +134,6 @@ const actions = {
             token: token,
             id: state.trackId
           });
-
-          state.isCurTrkReady = true;
         })
         .catch(error => {
           console.log("axios caught an error");
@@ -206,7 +202,7 @@ const actions = {
    * @public
    * @param {string} token the authorization token with the Bearer prefix
    */
-  async updateQueue({ state }, token) {
+  async updateQueue({ state, dispatch }, token) {
     await axios({
       method: "get",
       url: "/v1/me/player/queue",
@@ -215,6 +211,8 @@ const actions = {
       }
     }).then(response => {
       state.queueTracks = response.data.data.queueTracks;
+
+      dispatch("updateQueueTracksInfo", token);
 
       if (state.queueTracks.length == 0) {
         state.isLastTrackInQueue = false;
@@ -267,7 +265,8 @@ const actions = {
    * @public
    */
   async updateQueueTracksInfo({ state }, token) {
-    //get the start of next songs
+    state.queueNextTracks = [];
+
     var i;
     var tempTrackUrl;
     var songId;
@@ -306,46 +305,33 @@ const actions = {
             Authorization: token
           }
         })
-        .then(async response => {
+        .then(response => {
           let trackData = response.data;
 
           track.name = trackData.name;
           track.durationMs = trackData.durationMs;
 
-          //get the artist name
-          await axios
-            .get("/v1/artists/" + trackData.artist, {
-              headers: {
-                Authorization: token
-              }
-            })
-            .then(response => {
-              track.artistName = response.data.name;
-            });
+          track.artistName = trackData.artist.name;
 
-          await axios
-            .get("/v1/albums/" + trackData.album, {
-              headers: {
-                Authorization: token
-              }
-            })
-            .then(response => {
-              track.trackAlbumName = response.data[0].name;
-            });
+          track.trackAlbumName = trackData.album.name;
         });
       tracks.push(track);
     }
     state.queueNextTracks = tracks;
+
+    state.isCurTrkReady = true;
   },
   /**
    * toggle soundplayer pause and play
    * @public
    */
   togglePauseAndPlay({ state }) {
-    if (!state.isTrackPaused) {
-      state.audioElement.pause();
-    } else {
-      state.audioElement.play();
+    if (!state.isBuffering) {
+      if (!state.isTrackPaused) {
+        state.audioElement.pause();
+      } else {
+        state.audioElement.play();
+      }
     }
   },
   /**
@@ -385,6 +371,7 @@ const actions = {
    */
   async next({ state, dispatch, commit }) {
     state.isNextAndPreviousFinished = false;
+    state.isCurTrkReady = false;
 
     if (state.isRepeatOnceEnabled) {
       await dispatch("toggleRepeatOnce");
@@ -408,7 +395,7 @@ const actions = {
         tempTrackUrl.length
       );
 
-      dispatch("getTrackInformation", {
+      await dispatch("getTrackInformation", {
         token: state.token,
         trackId: trackId
       });
@@ -428,7 +415,7 @@ const actions = {
         var CurrentlyPlayingTrackId = await dispatch(
           "getCurrentlyPlayingTrackId"
         );
-        dispatch("getTrackInformation", {
+        await dispatch("getTrackInformation", {
           token: state.token,
           trackId: CurrentlyPlayingTrackId
         });
@@ -454,6 +441,7 @@ const actions = {
    */
   async previous({ state, dispatch, commit }) {
     state.isNextAndPreviousFinished = false;
+    state.isCurTrkReady = false;
 
     if (state.isRepeatOnceEnabled) {
       await dispatch("toggleRepeatOnce");
@@ -477,7 +465,7 @@ const actions = {
         tempTrackUrl.length
       );
 
-      dispatch("getTrackInformation", {
+      await dispatch("getTrackInformation", {
         token: state.token,
         trackId: trackId
       });
@@ -497,7 +485,7 @@ const actions = {
         var CurrentlyPlayingTrackId = await dispatch(
           "getCurrentlyPlayingTrackId"
         );
-        dispatch("getTrackInformation", {
+        await dispatch("getTrackInformation", {
           token: state.token,
           trackId: CurrentlyPlayingTrackId
         });
