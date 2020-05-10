@@ -251,26 +251,46 @@ export default {
     //-----------------------------------------------------------------
     //                        Track's FUnction
     //-----------------------------------------------------------------
-    //Save a track to the current user's saved tracks
+    /**
+     * Function to save a track for user
+     * @public This is a public method
+     * @param {none}
+     */
     saveTrack() {
       this.$store.dispatch("track/saveTrack", {
         id: [this.id],
         token: this.getuserToken()
       });
     },
-    //Remove track from user's saved tracks
-    removeTrackForUser() {
-      this.$store.dispatch("track/removeSavedTrack", {
+
+    /**
+     * Function to remove this song from user's the saved tracks
+     * @public This is a public method
+     * @param {none}
+     */
+    async removeTrackForUser() {
+      await this.$store.dispatch("track/removeSavedTrack", {
         id: [this.id],
         token: this.getuserToken()
       });
+      this.$root.$emit("updateContent");
     },
-    //Add this track to a playlist
+
+    /**
+     * Function to add this track to a user's playlist(already existing playlist or new playlist)
+     * @public This is a public method
+     * @param {none}
+     */
     addToPlaylist() {
       this.$store.commit("playlist/setAddedTracks", [this.id]);
       this.$store.commit("playlist/changeAddTrackModel");
     },
-    //Remove this track from this playlist (for owned playlists only)
+
+    /**
+     * Function to remove this track from this playlist , get called only from user's playlists
+     * @public This is a public method
+     * @param {none}
+     */
     removeTrackFromPlaylist() {
       this.$store.dispatch("playlist/removePlaylistTrack", {
         token: this.getuserToken(),
@@ -340,6 +360,11 @@ export default {
     }
   },
   computed: {
+    /**
+     * Function to check if the user saves this song or not , gets called at the menu click
+     * @public This is a public method
+     * @param {none}
+     */
     isTrackSaved() {
       return this.$store.state.track.generalLiked;
     },

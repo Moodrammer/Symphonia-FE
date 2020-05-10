@@ -9,12 +9,12 @@
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
         <v-list color="transparent">
           <!--Nesting the song component-->
-          <song
-            :playing="true"
+          <SongItem
+            :isPlaying="true"
             :songName="curTrkName"
             :artistName="curTrkArtistName"
             :albumName="albumName"
-            :duration="trackTotalDurationMs"
+            :songDuration="trackTotalDurationMs"
           />
         </v-list>
       </v-col>
@@ -28,13 +28,13 @@
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
         <v-list color="transparent">
           <!--Nesting the song component-->
-          <song
+          <SongItem
             v-for="track in queueNextTracks"
             :key="track.name"
-            :disabled="true"
+            :isDisabled="true"
             :songName="track.name"
             :artistName="track.artistName"
-            :duration="track.durationMs"
+            :songDuration="track.durationMs"
             :albumName="track.trackAlbumName"
           />
         </v-list>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import Song from "../components/general/Song";
+import SongItem from "../components/general/SongItem";
 import { mapState, mapActions, mapMutations } from "vuex";
 import getuserToken from "../mixins/userService";
 
@@ -52,7 +52,7 @@ export default {
   name: "TheQueue",
 
   components: {
-    Song
+    SongItem
   },
 
   data: function() {

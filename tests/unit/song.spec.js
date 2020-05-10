@@ -3,7 +3,7 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import Song from "@/components/general/Song.vue";
+import SongItem from "@/components/general/SongItem.vue";
 
 describe("Song Component", () => {
   let wrapper;
@@ -33,7 +33,7 @@ describe("Song Component", () => {
       }
     });
 
-    wrapper = shallowMount(Song, {
+    wrapper = shallowMount(SongItem, {
       vuetify,
       store,
       stubs: {

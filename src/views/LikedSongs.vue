@@ -82,7 +82,7 @@
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
         <v-list color="transparent">
           <!--Nesting the song component-->
-          <song
+          <SongItem
             v-for="track in tracks"
             :key="track.name"
             :songName="track.name"
@@ -90,10 +90,10 @@
             :albumID="track.album._id"
             :artistName="track.artist.name"
             :artistID="track.artist._id"
-            :duration="track.durationMs"
-            :id="track._id"
-            :disabled="track.premium"
-            :playlist="false"
+            :songDuration="track.durationMs"
+            :ID="track._id"
+            :isDisabled="track.premium"
+            :ownedPlaylist="false"
             :contextMenu="contextMenu"
           />
         </v-list>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import Song from "../components/general/Song";
+import SongItem from "../components/general/SongItem";
 import getDeviceSize from "../mixins/getDeviceSize";
 import getuserToken from "../mixins/userService";
 
@@ -113,7 +113,7 @@ import getuserToken from "../mixins/userService";
  */
 export default {
   components: {
-    Song
+    SongItem
   },
   data: function() {
     return {

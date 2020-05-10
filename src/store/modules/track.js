@@ -171,6 +171,7 @@ const actions = {
       .then(() => {
         //   if(id[0]==state.trackId)           //comment it for now
         commit("unlikeTrack", payload.id);
+        console.log("from track");
       })
       .catch(error => {
         console.log("axios caught an error");
