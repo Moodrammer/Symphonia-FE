@@ -68,6 +68,7 @@
       v-if="hover"
       id="menu"
       v-bind:class="{ 'disabled-2': isDisabled }"
+      @mousedown.prevent="menuClick($event, ID)"
     >
       mdi-dots-horizontal
     </v-icon>
@@ -84,6 +85,7 @@ import getuserToken from "../../mixins/userService";
 import isLoggedIn from "../../mixins/userService";
 /**
  * Song component contains the track name , duration , artist's name , album's name
+ * @displayName Song Item
  * @example [none]
  */
 export default {

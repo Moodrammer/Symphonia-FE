@@ -291,8 +291,8 @@ export default {
      * @public This is a public method
      * @param {none}
      */
-    removeTrackFromPlaylist() {
-      this.$store.dispatch("playlist/removePlaylistTrack", {
+    async removeTrackFromPlaylist() {
+      await this.$store.dispatch("playlist/removePlaylistTrack", {
         token: this.getuserToken(),
         playlistID: this.$route.params.id,
         ids: [this.id]
@@ -328,6 +328,11 @@ export default {
     //----------------------------------------------------------------
     //                       Playlist Functions
     //----------------------------------------------------------------
+    /**
+     * Function to make an owned playlist secret from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     makePlaylistSecret() {
       this.$store.dispatch("playlist/changeDetails", {
         playlistID: this.id,
@@ -335,6 +340,12 @@ export default {
         token: this.getuserToken()
       });
     },
+
+    /**
+     * Function to make an owned playlist public from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     makePlaylistPublic() {
       this.$store.dispatch("playlist/changeDetails", {
         playlistID: this.id,
@@ -342,16 +353,34 @@ export default {
         token: this.getuserToken()
       });
     },
+
+    /**
+     * Function to delete an owned playlist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     deleteUserPlaylist() {
       this.$store.commit("playlist/setPlaylistID", this.id);
       this.$store.commit("playlist/changeDeleteModel");
     },
+
+    /**
+     * Function to follow a playlist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     followPlaylist() {
       this.$store.dispatch("playlist/followPlaylist", {
         id: this.id,
         token: this.getuserToken()
       });
     },
+
+    /**
+     * Function to unfollow a playlist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     async unfollowPlaylist() {
       await this.$store.dispatch("playlist/unfollowPlaylist", {
         id: this.id,
