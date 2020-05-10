@@ -16,11 +16,7 @@ import HomeConentLogout from "./HomeContentLogout.vue";
 export default {
   props: {
     loggedIn: Boolean,
-    contextMenu: {
-      event: null,
-      type: null,
-      id: null
-    }
+    contextMenu: {}
   },
   components: {
     HomeContentLogin,

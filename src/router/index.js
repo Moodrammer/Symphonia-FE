@@ -18,7 +18,7 @@ import ArtistUI from "../components/artistUI/ArtistUI";
 import Overview from "../components/artistUI/Overview";
 import RelatedArtists from "../components/artistUI/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
-import Genre from "../components/general/Genre.vue";
+import GenreView from "../components/general/GenreView.vue";
 import Google from "../components/oauth/google.vue";
 import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
@@ -117,7 +117,7 @@ const routes = [
       },
       {
         path: "/genre/:id",
-        component: Genre
+        component: GenreView
       }
     ]
   },

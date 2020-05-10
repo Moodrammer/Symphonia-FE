@@ -1,16 +1,16 @@
 <template>
   <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
     <v-container class="ma-5">
-      <category
+      <!--Display the webplayer home sections if the user logged in-->
+      <Category
         v-for="category in categories"
         :key="category.categoryName"
-        :name="category.categoryName"
-        :id="category.categoryID"
+        :categoryName="category.categoryName"
+        :genreID="category.categoryID"
         :seeAll="category.showSeeAll"
         :gridItems="category.list"
-        :gridStyle="category.style"
         :contextMenu="contextMenu"
-      ></category>
+      />
     </v-container>
   </v-content>
 </template>
@@ -31,8 +31,6 @@ export default {
     this.$store.dispatch("category/recentlyPlayedSection", this.getuserToken());
     this.$store.dispatch("category/newReleases");
     this.$store.dispatch("category/loadUserSections", this.getuserToken());
-    //this.$store.dispatch("category/getPopularPlaylists");
-    //this.$store.dispatch("category/getPopularArtists");
     this.$store.dispatch("category/loadGenres");
   },
   computed: {
@@ -41,6 +39,8 @@ export default {
     }
   },
   mixins: [getuserToken],
-  props: ["contextMenu"]
+  props: {
+    contextMenu: {}
+  }
 };
 </script>
