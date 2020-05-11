@@ -36,12 +36,15 @@
                 id="premium"
                 class="white--text px-6 mt-5 mb-5 mr-6"
                 rounded
+                to="/premium/?checkout=false"
                 >Get Premium</v-btn
               >
             </v-col>
           </v-row>
           <v-row justify="center">
-            <v-btn outlined class="white--text mb-2" id="close">Close</v-btn>
+            <v-btn outlined class="white--text mb-2" id="close" @click="close"
+              >Close</v-btn
+            >
           </v-row>
         </v-card>
       </v-container>
@@ -55,6 +58,17 @@ export default {
     return {
       dialog: true
     };
+  },
+  methods: {
+    /**
+     * Gets called when the user clicks on the close button or press esc
+     * @public This is a public method
+     * @param {none}
+     */
+    close: function() {
+      this.$store.commit("playlist/changeAdsPopup");
+      this.dialog = false;
+    }
   }
 };
 </script>

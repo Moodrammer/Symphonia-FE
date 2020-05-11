@@ -9,6 +9,7 @@ const state = {
   followed: false,
   deletePlaylist: false,
   createPlaylist: false,
+  adsPopup: false,
   addTrack: false,
   deleted: false,
   playlistID: null,
@@ -64,6 +65,9 @@ const mutations = {
   },
   changeAddTrackModel(state) {
     state.addTrack = !state.addTrack;
+  },
+  changeAdsPopup(state) {
+    state.adsPopup = !state.adsPopup;
   },
   deleted(state) {
     state.deleted = true;

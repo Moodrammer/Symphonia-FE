@@ -1,5 +1,5 @@
 <template>
-  <!--The Liked Songs view wil be modified-->
+  <!--The Liked Songs view-->
   <v-container class="pt-0">
     <v-row justify="center">
       <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">
@@ -16,6 +16,7 @@
                 'lg-col': isLg()
               }"
             >
+              <!--Liked songs' image-->
               <v-card
                 elevation="9"
                 color="trasparent"
@@ -76,10 +77,12 @@
           </v-row>
         </v-container>
       </v-col>
+
       <!--Display the Songs -->
       <v-col lg="8" sm="12" md="12">
         <!--this divider will be shown at the small screen sizes only-->
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
+
         <v-list color="transparent">
           <!--Nesting the song component-->
           <SongItem

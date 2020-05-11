@@ -288,6 +288,9 @@ export default {
       });
     }
   },
+  beforeCreate: function() {
+    this.$store.commit("playlist/changeAdsPopup");
+  },
   created: function() {
     this.getPlaylistData();
     this.getPlaylistTracks();
@@ -295,6 +298,7 @@ export default {
   },
   watch: {
     "$route.params.id": function() {
+      this.$store.commit("playlist/changeAdsPopup");
       this.getPlaylistData();
       this.getPlaylistTracks();
       this.isFollowedPlaylist();

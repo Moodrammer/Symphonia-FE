@@ -14,7 +14,7 @@
         Add to playlist
       </h1>
 
-      <!--The actions of the popup cancel-create-->
+      <!--Create playlist to add the track to it-->
       <v-btn
         class="white--text popbutton px-8 mb-12"
         rounded
@@ -23,6 +23,7 @@
         >New Playlist
       </v-btn>
 
+      <!--Display the user's owned playlists-->
       <v-row class="ml-4">
         <v-card
           v-for="(playlist, index) in playlists"
@@ -65,7 +66,6 @@ export default {
   data: function() {
     return {
       dialog: null,
-      hover: false,
       hoverIndex: null
     };
   },
@@ -88,16 +88,32 @@ export default {
       this.$store.commit("playlist/changeAddTrackModel");
       this.dialog = false;
     },
+    /**
+     * Gets called when the user clicks on create playlist to add the track to a new playlist
+     * @public This is a public method
+     * @param {none}
+     */
     create: function() {
       this.$store.commit("playlist/createWithTrackModel");
       this.$store.commit("playlist/changeCreateModel");
     },
-    imageHover: function(index) {
-      this.hoverIndex = index;
+
+    /**
+     * Set the index of the hovered playlist
+     * @public This is a public method
+     * @param {Number} itemIndex
+     */
+    imageHover: function(itemIndex) {
+      this.hoverIndex = itemIndex;
     },
-    add: function(id) {
+    /**
+     * Gets called when the user choose a playlist to add the track to
+     * @public This is a public method
+     * @param {String} choosedPlaylistID the ID of the playlist to which the user adds the track
+     */
+    add: function(choosedPlaylistID) {
       this.$store.dispatch("playlist/addTrackToPlaylist", {
-        playlistID: id,
+        playlistID: choosedPlaylistID,
         token: this.getuserToken()
       });
       this.$store.commit("playlist/changeAddTrackModel");

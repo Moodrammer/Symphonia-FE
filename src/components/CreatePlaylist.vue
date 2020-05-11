@@ -18,8 +18,8 @@
       </v-btn>
 
       <h1 class="font-weight-bold display-2 mb-9">Create new playlist</h1>
-      <!--take the playlist name from here-->
 
+      <!--take the playlist name from here-->
       <p class="playlist">Playlist Name</p>
       <input
         class="input"
@@ -124,9 +124,6 @@ export default {
 #create:hover {
   background-color: #1ed760;
 }
-.v-text-field {
-  font-size: 32px;
-}
 
 #closeIcon {
   padding-top: 180px;
@@ -162,15 +159,5 @@ export default {
   padding-top: 20px;
   text-align: start;
   padding-left: 50px;
-}
-
-.temp {
-  opacity: 0.6;
-}
-
-.temp:hover {
-  opacity: 1;
-  cursor: pointer;
-  background-color: transparent;
 }
 </style>
