@@ -124,7 +124,6 @@ export default {
       iconClick: false
     };
   },
-  methods: {},
   created: function() {
     this.$store.dispatch("category/getTracks", this.getuserToken());
   },

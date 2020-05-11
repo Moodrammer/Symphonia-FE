@@ -13,7 +13,10 @@ import { VueContext } from "vue-context";
 import getuserToken from "../../mixins/userService";
 import getuserID from "../../mixins/userService";
 import isLoggedIn from "../../mixins/userService";
-
+/**
+ * @displayName Context Menu
+ * @example [none]
+ */
 export default {
   name: "ContextMenu",
   data() {
@@ -273,6 +276,9 @@ export default {
         id: [this.id],
         token: this.getuserToken()
       });
+      /**
+       * Update the playlist tracks event.
+       */
       this.$root.$emit("updateContent");
     },
 
@@ -304,7 +310,7 @@ export default {
     //-----------------------------------------------------------------
     followAlbum() {
       this.$store.dispatch("album/followAlbum", {
-        id: this.id,
+        albumID: this.id,
         token: this.getuserToken()
       });
     },
@@ -316,12 +322,11 @@ export default {
     },
     async addAlbumTracksToPlaylist() {
       await this.$store.dispatch("album/getAlbum", {
-        albumID: this.id,
-        isMenu: true
+        albumID: this.id
       });
       this.$store.commit(
         "playlist/setAddedTracks",
-        this.$store.state.album.menuAlbum.tracks
+        this.$store.state.album.singleAlbum.tracks
       );
       this.$store.commit("playlist/changeAddTrackModel");
     },
@@ -406,7 +411,7 @@ export default {
       } else return false;
     },
     isAlbumSaved() {
-      return this.$store.state.album.followed;
+      return this.$store.state.album.isFollowdAlbum;
     },
     isPublicPlaylist() {
       return this.$store.state.playlist.menuPlaylist.public;
