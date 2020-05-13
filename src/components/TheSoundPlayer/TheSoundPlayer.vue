@@ -79,10 +79,11 @@
 
               <v-list-item>
                 <a @click="copyLink">
-                  <v-icon color="white" title="copy link">mdi-content-copy</v-icon>
+                  <v-icon color="white" title="copy link"
+                    >mdi-content-copy</v-icon
+                  >
                 </a>
               </v-list-item>
-
             </v-list>
           </v-menu>
         </v-toolbar>
@@ -382,7 +383,7 @@ export default {
       "toggleShuffle",
       "saveTrack",
       "removeSavedTrack",
-      "copyLink"
+      "copyLink",
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -436,7 +437,11 @@ export default {
      * @public
      */
     previousConditionally: function() {
-      if (this.isNextAndPreviousFinished && this.trackId != null) {
+      if (
+        (!this.isFirstTrackInQueue || this.isRepeatEnabled) &&
+        this.isNextAndPreviousFinished &&
+        this.trackId != null
+      ) {
         this.previous();
       }
     },
@@ -624,6 +629,13 @@ export default {
         this._handleAudioError,
         false
       );
+
+      //keysocket feature
+      //add this extension to google chrome to enable this feature
+      //https://chrome.google.com/webstore/detail/key-socket-media-keys/fphfgdknbpakeedbaenojjdcdoajihik?hl=en
+      document.addEventListener("MediaPlayPause", this.togglePauseAndPlay);
+      document.addEventListener("MediaPrev", this.previousConditionally);
+      document.addEventListener("MediaNext", this.nextConditionally);
 
       this.audioElement.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;

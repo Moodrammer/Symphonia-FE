@@ -401,6 +401,7 @@ describe("TheSoundplayer", () => {
     wrapper.vm.setAudioElement({
       autoplay: false
     });
+    store.state.track.isRepeatEnabled = true;
     store.state.track.isNextAndPreviousFinished = true;
     store.state.track.trackId = "12";
 
