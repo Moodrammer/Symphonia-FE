@@ -4,6 +4,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
 import soundplayer from "@/components/TheSoundplayer/TheSoundplayer.vue";
+import soundplayerLogout from "@/components/TheSoundplayer/TheSoundplayerLogout.vue";
 
 describe("TheSoundplayer", () => {
   let wrapper;
@@ -439,3 +440,27 @@ describe("TheSoundplayer", () => {
     wrapper.vm._handleAudioError()
   })
 });
+
+describe("TheSoundplayerLogout", () => {
+  let wrapper;
+  let vuetify;
+
+  beforeEach(() => {
+    vuetify = new Vuetify();
+    Vue.use(Vuetify);
+
+    wrapper = shallowMount(soundplayerLogout, {
+      vuetify,
+    });
+  });
+
+  it("renders", () => {
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it("snack bar", () => {
+    wrapper.vm.signIn();
+
+    expect(wrapper.vm.snackbar).toBe(true);
+  })
+})
