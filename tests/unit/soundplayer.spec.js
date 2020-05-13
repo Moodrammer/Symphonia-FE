@@ -438,7 +438,11 @@ describe("TheSoundplayer", () => {
       }
     });
     wrapper.vm._handleAudioError()
-  })
+  });
+
+  it("copy context Url", () => {
+    wrapper.vm.copyLink();
+  });
 });
 
 describe("TheSoundplayerLogout", () => {

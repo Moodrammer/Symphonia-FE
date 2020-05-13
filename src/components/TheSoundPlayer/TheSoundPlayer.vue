@@ -40,6 +40,51 @@
               mdi-heart
             </v-icon>
           </a>
+
+          <!-- share -->
+
+          <v-menu offset-y top transition="slide-y-transition">
+            <template v-slot:activator="{ on }">
+              <v-btn :ripple="false" id="no-background-hover" text v-on="on">
+                <span class="mdi mdi-18px mdi-share icons"></span>
+              </v-btn>
+            </template>
+
+            <v-list style="background-color: #282828 !important">
+              <v-list-item>
+                <v-list-item-title>
+                  <!-- Your share button code -->
+                  <a
+                    style="text-decoration: none;"
+                    target="_blank"
+                    :href="facebookUrl"
+                  >
+                    <v-icon color="blue">mdi-facebook</v-icon></a
+                  >
+                </v-list-item-title>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-title>
+                  <!-- Your share button code -->
+                  <a
+                    style="text-decoration: none;"
+                    target="_blank"
+                    :href="twitterUrl"
+                  >
+                    <v-icon color="cyan">mdi-twitter</v-icon></a
+                  >
+                </v-list-item-title>
+              </v-list-item>
+
+              <v-list-item>
+                <a @click="copyLink">
+                  <v-icon color="white" title="copy link">mdi-content-copy</v-icon>
+                </a>
+              </v-list-item>
+
+            </v-list>
+          </v-menu>
         </v-toolbar>
       </v-col>
 
@@ -203,7 +248,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened
+                icons: !isQueueOpened,
               }"
             >
               mdi-format-list-numbered-rtl
@@ -264,26 +309,29 @@ export default {
     },
 
     ...mapState({
-      isTrackLiked: state => state.track.isTrackLiked,
-      trackUrl: state => state.track.trackUrl,
-      trackName: state => state.track.trackName,
-      trackArtistName: state => state.track.trackArtistName,
-      trackAlbumImageUrl: state => state.track.trackAlbumImageUrl,
-      isFirstTrackInQueue: state => state.track.isFirstTrackInQueue,
-      trackTotalDuration: state => state.track.trackTotalDuration,
-      trackId: state => state.track.trackId,
-      audioElement: state => state.track.audioElement,
-      isTrackPaused: state => state.track.isTrackPaused,
-      isQueueOpened: state => state.track.isQueueOpened,
-      isNextAndPreviousFinished: state => state.track.isNextAndPreviousFinished,
-      isBuffering: state => state.track.isBuffering,
-      token: state => state.track.token,
-      isRepeatOnceEnabled: state => state.track.isRepeatOnceEnabled,
-      isRepeatEnabled: state => state.track.isRepeatEnabled,
-      isShuffleEnabled: state => state.track.isShuffleEnabled,
-      isLastTrackInQueue: state => state.track.isLastTrackInQueue,
-      historyResponse: state => state.category.historyResponse
-    })
+      isTrackLiked: (state) => state.track.isTrackLiked,
+      trackUrl: (state) => state.track.trackUrl,
+      trackName: (state) => state.track.trackName,
+      trackArtistName: (state) => state.track.trackArtistName,
+      trackAlbumImageUrl: (state) => state.track.trackAlbumImageUrl,
+      isFirstTrackInQueue: (state) => state.track.isFirstTrackInQueue,
+      trackTotalDuration: (state) => state.track.trackTotalDuration,
+      trackId: (state) => state.track.trackId,
+      audioElement: (state) => state.track.audioElement,
+      isTrackPaused: (state) => state.track.isTrackPaused,
+      isQueueOpened: (state) => state.track.isQueueOpened,
+      isNextAndPreviousFinished: (state) =>
+        state.track.isNextAndPreviousFinished,
+      isBuffering: (state) => state.track.isBuffering,
+      token: (state) => state.track.token,
+      isRepeatOnceEnabled: (state) => state.track.isRepeatOnceEnabled,
+      isRepeatEnabled: (state) => state.track.isRepeatEnabled,
+      isShuffleEnabled: (state) => state.track.isShuffleEnabled,
+      isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
+      historyResponse: (state) => state.category.historyResponse,
+      facebookUrl: (state) => state.track.facebookUrl,
+      twitterUrl: (state) => state.track.twitterUrl,
+    }),
   },
   data() {
     return {
@@ -299,7 +347,7 @@ export default {
       isVolumePressed: false,
 
       devices: undefined,
-      currentDeviceId: undefined
+      currentDeviceId: undefined,
     };
   },
   methods: {
@@ -318,7 +366,7 @@ export default {
       "setToken",
       "setContextType",
       "setContextId",
-      "setContextUrl"
+      "setContextUrl",
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -333,7 +381,8 @@ export default {
       "toggleRepeat",
       "toggleShuffle",
       "saveTrack",
-      "removeSavedTrack"
+      "removeSavedTrack",
+      "copyLink"
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -401,13 +450,13 @@ export default {
         if (!this.isTrackLiked) {
           await this.saveTrack({
             token: this.getuserToken(),
-            id: this.trackId
+            id: this.trackId,
           });
           this.$root.$emit("updateContent");
         } else {
           await this.removeSavedTrack({
             token: this.getuserToken(),
-            id: this.trackId
+            id: this.trackId,
           });
           this.$root.$emit("updateContent");
         }
@@ -584,7 +633,7 @@ export default {
       var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
       this.getTrackInformation({
         token: this.token,
-        trackId: CurrentlyPlayingTrackId
+        trackId: CurrentlyPlayingTrackId,
       });
 
       await this.initQueueStatus(this.token);
@@ -598,7 +647,7 @@ export default {
       }
 
       this.playTrackInQueue(CurrentlyPlayingTrackId);
-    }
+    },
   },
   mounted: function() {
     this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
@@ -615,7 +664,7 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
-  }
+  },
 };
 </script>
 
