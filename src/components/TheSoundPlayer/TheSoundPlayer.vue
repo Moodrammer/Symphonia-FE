@@ -342,7 +342,7 @@ export default {
       //-new Data(val * 1000) get a date from 1970 2:00:00 and advance it with milli seconds
       //-convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
       //-take only the HH:mm:ss part
-      let hhmmss = new Date(value * 1000).toISOString().substr(11, 8);
+      var hhmmss = new Date(value * 1000).toISOString().substr(11, 8);
       //-if the hh part is 00: then show only mm:ss part. .indexOf('a')
       //returns the index of the first element in an array starts with 'a'
       return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
