@@ -310,9 +310,14 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/albums/:ID/tracks", (schema, request) => {
         let albumID = request.params.ID;
+        let tracksID = schema.albums.where({ id: albumID }).models[0].tracks;
+        let tracksList = [];
+        for (let i = 0; i < tracksID.length; i++) {
+          tracksList.push(schema.tracks.where({ id: tracksID[i] }).models[0]);
+        }
         return {
           tracks: {
-            items: schema.albums.where({ _id: albumID }).models[0].tracks
+            items: tracksList
           }
         };
       });

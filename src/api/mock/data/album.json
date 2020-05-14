@@ -3,29 +3,8 @@
   "items": [
     {   
         "liked": true,
-        "tracksCount":"1",
-        "tracks": [
-            {
-                "liked": true,
-                "_id": "2",
-                "artist": 
-                  {
-                    "href": "https://api.symphonia.com/v1/artists/2",
-                    "_id": "2",
-                    "name": "Nasser Al-Qatami",
-                    "type": "artist"
-                  }
-                ,
-                "durationMs": 374000,
-                "explicit": false,
-                "href": "https://server6.mp3quran.net/qtm/053.mp3",
-                "name": "Surah Al-Najm",
-                "popularity": 45,
-                "track_number": 1,
-                "type": "track",
-                "premium": false
-              }
-        ],
+        "tracksCount":"3",
+        "tracks": ["4","6","2"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "1",
         "id": "1",
@@ -39,28 +18,8 @@
     },
     {
         "liked": false,
-        "tracksCount": "1",
-        "tracks": [
-          {
-              "liked": true,
-              "_id": "2",
-              "artist": 
-                {
-                  "href": "https://api.symphonia.com/v1/artists/2",
-                  "_id": "2",
-                  "name": "Nasser Al-Qatami",
-                  "type": "artist"
-                }
-              ,
-              "durationMs": 374000,
-              "explicit": false,
-              "href": "https://server6.mp3quran.net/qtm/053.mp3",
-              "name": "Surah Al-Najm",
-              "popularity": 45,
-              "track_number": 1,
-              "type": "track",
-              "premium": false
-            }],
+        "tracksCount": "2",
+        "tracks": ["3","5"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "2",
         "id": "2",
@@ -74,28 +33,8 @@
     },
     {
         "liked": true,
-        "tracksCount": "1",
-        "tracks": [
-            {
-                "liked": true,
-                "_id": "5",
-                "artist": 
-                  {
-                    "href": "https://api.symphonia.com/v1/artists/2",
-                    "_id": "2",
-                    "name": "Nasser Al-Qatami",
-                    "type": "artist"
-                  }
-                ,
-                "durationMs": 409000,
-                "explicit": false,
-                "href": "https://server6.mp3quran.net/qtm/067.mp3",
-                "name": "Surah Al-Mulk",
-                "popularity": 45,
-                "track_number": 2,
-                "premium": true
-            }
-        ],
+        "tracksCount": "2",
+        "tracks": ["6","4"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "3",
         "id": "3",
@@ -109,29 +48,8 @@
     },
     {
         "liked": true,
-        "tracksCount":"1",
-        "tracks": [
-            {
-                "liked": true,
-                "_id": "2",
-                "artist": 
-                  {
-                    "href": "https://api.symphonia.com/v1/artists/1",
-                    "_id": "1",
-                    "name": "Yasser Al-Dosari",
-                    "type": "artist"
-                  }
-                ,
-                "durationMs": 2131000,
-                "explicit": false,
-                "href": "https://server11.mp3quran.net/yasser/012.mp3",
-                "name": "Surah Yossef",
-                "popularity": 45,
-                "track_number": 1,
-                "type": "track",
-                "premium": true
-              }
-        ],
+        "tracksCount":"4",
+        "tracks": ["5","4","2","6"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "4",
         "id": "4",
@@ -145,29 +63,8 @@
     },
     {
         "liked": false,
-        "tracksCount":"1",
-        "tracks": [
-            {
-                "liked": true,
-                "_id": "2",
-                "artist": 
-                  {
-                    "href": "https://api.symphonia.com/v1/artists/1",
-                    "_id": "1",
-                    "name": "Yasser Al-Dosari",
-                    "type": "artist"
-                  }
-                ,
-                "durationMs": 2131000,
-                "explicit": false,
-                "href": "https://server11.mp3quran.net/yasser/012.mp3",
-                "name": "Surah Yossef",
-                "popularity": 45,
-                "track_number": 1,
-                "type": "track",
-                "premium": false
-              }
-        ],
+        "tracksCount":"3",
+        "tracks": ["2","3","6"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "5",
         "id": "5",
@@ -182,28 +79,7 @@
     {
         "liked": false,
         "tracksCount":"1",
-        "tracks": [
-            {
-                "liked": true,
-                "_id": "2",
-                "artist": 
-                  {
-                    "href": "https://api.symphonia.com/v1/artists/2",
-                    "_id": "2",
-                    "name": "Nasser Al-Qatami",
-                    "type": "artist"
-                  }
-                ,
-                "durationMs": 374000,
-                "explicit": false,
-                "href": "https://server6.mp3quran.net/qtm/053.mp3",
-                "name": "Surah Al-Najm",
-                "popularity": 45,
-                "track_number": 1,
-                "type": "track",
-                "premium": false
-              }
-        ],
+        "tracks": ["2"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "6",
         "id": "6",
