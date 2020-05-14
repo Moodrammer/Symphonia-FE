@@ -1,39 +1,44 @@
 import axios from "axios";
 
+//--------------------------------------------------------
+//             The stored album's data
+//--------------------------------------------------------
 const state = {
-  albums: [],
+  //Array of user's followed albums
+  followedAlbums: [],
+  //The needed data for a single album
   singleAlbum: null,
-  followed: false,
   albumTracks: [],
-  menuAlbum: null
+  isFollowdAlbum: true
 };
 
+//-----------------------------------------------------------------
+//  Save the returned data from requests in the state's variables
+//-----------------------------------------------------------------
 const mutations = {
-  load_albums: (state, list) => (state.albums = list),
-  delete_albums: (state, list) =>
-    (state.albums = state.albums.filter(album => !list.includes(album._id))),
-  setAlbum(state, payload) {
-    if (payload.isMenu) state.menuAlbum = payload.album;
-    else state.singleAlbum = payload.album;
+  setFollowdAlbums(state, userFollowdAlbums) {
+    state.followedAlbums = userFollowdAlbums;
   },
-  setTracks(state, payload) {
-    state.albumTracks = payload;
+  setAlbumData(state, albumData) {
+    state.singleAlbum = albumData;
+  },
+  setAlbumTracks(state, albumTracks) {
+    state.albumTracks = albumTracks;
   },
   setFollowed(state, payload) {
-    state.followed = payload[0];
-    console.log(state.followed);
+    state.isFollowdAlbum = payload[0];
   },
-  unfollow(state) {
-    state.followed = false;
+  notFollowedAlbum(state) {
+    state.isFollowdAlbum = false;
   },
-  followed(state) {
-    state.followed = true;
+  followedAlbum(state) {
+    state.isFollowdAlbum = true;
   }
 };
 
 const getters = {
   allAlbums: function(state) {
-    var newValue = state.albums;
+    var newValue = state.followedAlbums;
     var albums = [];
     newValue.forEach(element => {
       var k = {
@@ -50,11 +55,9 @@ const getters = {
 };
 
 const actions = {
-  /**
-   * called to get user's saved albums
-   * @param {object} payload contains the token
-   */
-
+  //-----------------------------------------
+  //      Get User's followed albums
+  //-----------------------------------------
   getAlbums({ commit }, payload) {
     axios
       .get("/v1/me/albums", {
@@ -63,63 +66,49 @@ const actions = {
         }
       })
       .then(response => {
-        commit("load_albums", response.data.Albums.items);
+        commit("setFollowdAlbums", response.data.Albums.items);
       })
       .catch(error => {
         console.log("axios caught an error in getAlbums");
         console.log(error);
       });
   },
-
-  /**
-   * called to remove albums from the user's saved albums
-   * @param {object} payload contains the token and the albums ids
-   */
-
-  deleteAlbums({ commit }, payload) {
-    axios
-      .delete("/v1/me/albums", {
-        headers: {
-          Authorization: `Bearer ${payload.token}`,
-          "Content-Type": "application/json"
-        },
-        data: payload.albums
-      })
-      .then(commit("delete_albums", payload.albums))
-      .catch(error => {
-        console.log("axios caught an error in deleteAlbums");
-        console.log(error);
-      });
-  },
-  async getAlbum({ commit, dispatch }, payload) {
-    dispatch("getAlbumTracks", payload.albumID);
+  //---------------------------------------------
+  //        Get a single album's data
+  //---------------------------------------------
+  async getAlbum({ commit, dispatch }, albumID) {
+    dispatch("getAlbumTracks", albumID);
     await axios
-      .get("/v1/albums/" + payload.albumID)
+      .get("/v1/albums/" + albumID)
       .then(response => {
-        let album = response.data;
-        commit("setAlbum", { album: album, isMenu: payload.isMenu });
+        commit("setAlbumData", response.data);
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
   },
+  //----------------------------------------------
+  //    Get a single album's tracks
+  //----------------------------------------------
   getAlbumTracks({ commit }, albumID) {
     axios
       .get("/v1/albums/" + albumID + "/tracks")
       .then(response => {
-        let tracks = response.data.tracks.items;
-        commit("setTracks", tracks);
+        commit("setAlbumTracks", response.data.tracks.items);
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
   },
+  //--------------------------------------------------
+  //     Check if the current user save the album
+  //--------------------------------------------------
   async checkFollowed({ commit }, payload) {
-    console.log(payload.albumID);
+    //No user logged in
     if (payload.token == null) {
-      commit("unfollow");
+      commit("notFollowedAlbum");
     } else {
       await axios
         .get("/v1/me/albums/contains?ids=" + payload.albumID, {
@@ -128,8 +117,7 @@ const actions = {
           }
         })
         .then(response => {
-          let status = response.data;
-          commit("setFollowed", status);
+          commit("setFollowed", response.data);
         })
         .catch(error => {
           console.log("axios caught an error");
@@ -137,10 +125,13 @@ const actions = {
         });
     }
   },
+  //-------------------------------------------------
+  //      Save an album for the current user
+  //-------------------------------------------------
   followAlbum({ commit }, payload) {
     axios
       .put(
-        "/v1/me/albums?ids=" + payload.id,
+        "/v1/me/albums?ids=" + payload.albumID,
         {},
         {
           headers: {
@@ -149,13 +140,16 @@ const actions = {
         }
       )
       .then(() => {
-        commit("followed");
+        commit("followedAlbum");
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
   },
+  //-------------------------------------------------
+  //    Delete an album from user's followed albums
+  //-------------------------------------------------
   unfollowAlbum({ commit }, payload) {
     axios
       .delete("/v1/me/albums?ids=" + payload.id, {
@@ -164,7 +158,7 @@ const actions = {
         }
       })
       .then(() => {
-        commit("unfollow");
+        commit("notFollowedAlbum");
       })
       .catch(error => {
         console.log("axios caught an error");

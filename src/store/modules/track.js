@@ -42,7 +42,9 @@ const state = {
   twitterUrl: "#",
 
   picInPicCanvas: undefined,
-  isPicInPicCanvasRdy: false
+  isPicInPicCanvasRdy: false,
+  savedTracks: [],
+  savedTracksNum: null
 };
 
 const mutations = {
@@ -117,6 +119,12 @@ const mutations = {
   },
   setPicInPicCanvas(state, picInPicCanvas) {
     state.picInPicCanvas = picInPicCanvas;
+  },
+  load_tracks(state, list) {
+    state.savedTracks = list;
+  },
+  setTracksNum(state, num) {
+    state.savedTracksNum = num;
   }
 };
 
@@ -126,17 +134,17 @@ const actions = {
       await axios
         .get("/v1/users/track/" + payload.trackId, {
           headers: {
-            Authorization: payload.token,
-          },
+            Authorization: payload.token
+          }
         })
-        .then(async (response) => {
+        .then(async response => {
           let trackData = response.data;
 
           state.trackName = trackData.name;
           state.trackTotalDurationMs = trackData.durationMs;
           state.trackId = trackData._id;
           state.trackAlbumImageUrl = trackData.album.image;
-          
+
           //configure PicInPicCanvasRdy
           state.isPicInPicCanvasRdy = false;
 
@@ -144,13 +152,13 @@ const actions = {
           image.crossOrigin = true;
           image.src = trackData.album.image;
           await image.decode();
-          var ctx = state.picInPicCanvas.getContext('2d');
+          var ctx = state.picInPicCanvas.getContext("2d");
           ctx.drawImage(image, 0, 0, 512, 512);
 
           ctx.font = "30px Comic Sans MS";
           ctx.fillStyle = "white";
           ctx.textAlign = "center";
-          ctx.fillText(trackData.name, 512/2, 512/2);
+          ctx.fillText(trackData.name, 512 / 2, 512 / 2);
 
           state.isPicInPicCanvasRdy = true;
 
@@ -164,10 +172,10 @@ const actions = {
 
           dispatch("checkSaved", {
             token: token,
-            id: state.trackId,
+            id: state.trackId
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log("axios caught an error");
           console.log(error);
         });
@@ -180,14 +188,14 @@ const actions = {
       await axios
         .get("/v1/me/tracks/contains?ids=" + payload.id, {
           headers: {
-            Authorization: `Bearer ${payload.token}`,
-          },
+            Authorization: `Bearer ${payload.token}`
+          }
         })
-        .then((response) => {
+        .then(response => {
           let isTrackLiked = response.data;
           commit("setLiked", { status: isTrackLiked, id: payload.id });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log("axios caught an error");
           console.log(error);
         });
@@ -197,14 +205,14 @@ const actions = {
     await axios
       .delete("/v1/me/tracks?ids=" + payload.id, {
         headers: {
-          Authorization: `Bearer ${payload.token}`,
-        },
+          Authorization: `Bearer ${payload.token}`
+        }
       })
       .then(() => {
-        //   if(id[0]==state.trackId)           //comment it for now
         commit("unlikeTrack", payload.id);
+        console.log("from track");
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -216,15 +224,14 @@ const actions = {
         {},
         {
           headers: {
-            Authorization: `Bearer ${payload.token}`,
-          },
+            Authorization: `Bearer ${payload.token}`
+          }
         }
       )
       .then(() => {
-        //if(id[0]==state.trackId)
         commit("likeTrack", payload.id);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -239,9 +246,9 @@ const actions = {
       method: "get",
       url: "/v1/me/player/queue",
       headers: {
-        Authorization: token,
-      },
-    }).then((response) => {
+        Authorization: token
+      }
+    }).then(response => {
       state.queueTracks = response.data.data.queueTracks;
 
       dispatch("updateQueueTracksInfo", token);
@@ -282,9 +289,9 @@ const actions = {
       method: "get",
       url: "/v1/me/player/queue",
       headers: {
-        Authorization: token,
-      },
-    }).then((response) => {
+        Authorization: token
+      }
+    }).then(response => {
       state.queueTracks = response.data.data.queueTracks;
 
       state.isRepeatOnceEnabled = response.data.data.repeatOnce;
@@ -328,16 +335,16 @@ const actions = {
 
       var track = {
         name: undefined,
-        artistName: undefined,
+        artistName: undefined
       };
 
       await axios
         .get("/v1/users/track/" + songId, {
           headers: {
-            Authorization: token,
-          },
+            Authorization: token
+          }
         })
-        .then((response) => {
+        .then(response => {
           let trackData = response.data;
 
           track.name = trackData.name;
@@ -379,9 +386,9 @@ const actions = {
       method: "get",
       url: "/v1/me/player/currently-playing",
       headers: {
-        Authorization: state.token,
-      },
-    }).then((response) => {
+        Authorization: state.token
+      }
+    }).then(response => {
       //get the track url
       var tempTrackUrl = response.data.data.currentTrack;
       //get the track id
@@ -429,7 +436,7 @@ const actions = {
 
       await dispatch("getTrackInformation", {
         token: state.token,
-        trackId: trackId,
+        trackId: trackId
       });
 
       await dispatch("playTrackInQueue", trackId);
@@ -441,15 +448,15 @@ const actions = {
         method: "post",
         url: "/v1/me/player/next",
         headers: {
-          Authorization: state.token,
-        },
+          Authorization: state.token
+        }
       }).then(async () => {
         var CurrentlyPlayingTrackId = await dispatch(
           "getCurrentlyPlayingTrackId"
         );
         await dispatch("getTrackInformation", {
           token: state.token,
-          trackId: CurrentlyPlayingTrackId,
+          trackId: CurrentlyPlayingTrackId
         });
         await dispatch("updateQueue", state.token);
 
@@ -499,7 +506,7 @@ const actions = {
 
       await dispatch("getTrackInformation", {
         token: state.token,
-        trackId: trackId,
+        trackId: trackId
       });
 
       await dispatch("playTrackInQueue", trackId);
@@ -511,15 +518,15 @@ const actions = {
         method: "post",
         url: "/v1/me/player/previous",
         headers: {
-          Authorization: state.token,
-        },
+          Authorization: state.token
+        }
       }).then(async () => {
         var CurrentlyPlayingTrackId = await dispatch(
           "getCurrentlyPlayingTrackId"
         );
         await dispatch("getTrackInformation", {
           token: state.token,
-          trackId: CurrentlyPlayingTrackId,
+          trackId: CurrentlyPlayingTrackId
         });
         await dispatch("updateQueue", state.token);
 
@@ -552,19 +559,19 @@ const actions = {
           contextId: state.contextId,
           context_type: state.contextType,
           context_url: state.contextUrl,
-          device: "Chrome",
+          device: "Chrome"
         },
         headers: {
-          Authorization: state.token,
-        },
-      }).then((response) => {
+          Authorization: state.token
+        }
+      }).then(response => {
         axios({
           method: "get",
           url: "/v1/me/player/queue",
           headers: {
-            Authorization: state.token,
-          },
-        }).then((response) => {
+            Authorization: state.token
+          }
+        }).then(response => {
           if (response.data.data.repeat != state.isRepeatEnabled) {
             state.isRepeatEnabled = false;
             dispatch("toggleRepeat");
@@ -600,8 +607,8 @@ const actions = {
       method: "patch",
       url: "/v1/me/player/repeatOnce",
       headers: {
-        Authorization: state.token,
-      },
+        Authorization: state.token
+      }
     }).then(() => {
       state.isRepeatOnceEnabled = !state.isRepeatOnceEnabled;
     });
@@ -616,8 +623,8 @@ const actions = {
       method: "patch",
       url: "/v1/me/player/repeat",
       headers: {
-        Authorization: state.token,
-      },
+        Authorization: state.token
+      }
     }).then(() => {
       state.isRepeatEnabled = !state.isRepeatEnabled;
     });
@@ -631,8 +638,8 @@ const actions = {
       method: "patch",
       url: "/v1/me/player/shuffle",
       headers: {
-        Authorization: state.token,
-      },
+        Authorization: state.token
+      }
     }).then(() => {
       state.isShuffleEnabled = !state.isShuffleEnabled;
     });
@@ -642,13 +649,34 @@ const actions = {
    * @public
    */
   copyLink({ state }) {
-    const dummyTextAreaElement = document.createElement('textarea');
+    const dummyTextAreaElement = document.createElement("textarea");
     dummyTextAreaElement.value = state.contextUrl;
     document.body.appendChild(dummyTextAreaElement);
     dummyTextAreaElement.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
     document.body.removeChild(dummyTextAreaElement);
   },
+  getTracks({ commit }, payload) {
+    axios
+      .get("/v1/me/tracks", {
+        headers: {
+          Authorization: `Bearer ${payload}`
+        }
+      })
+      .then(response => {
+        let list = response.data.tracks.items;
+        commit("setTracksNum", response.data.tracks.total);
+        commit("load_tracks", list);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  }
+};
+
+const getters = {
+  tracksGetter: state => state.savedTracks
 };
 
 export default {
@@ -656,4 +684,5 @@ export default {
   state,
   mutations,
   actions,
+  getters
 };

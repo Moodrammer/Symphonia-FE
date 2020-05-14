@@ -1,60 +1,60 @@
 import axios from "axios";
 
 const state = {
-  likedPlaylists: [],
-  playlists: [],
+  userSavedPlaylists: [],
+  ownedPlaylists: [],
   singlePlaylist: null,
-  playlistOwner: null,
+  menuPlaylist: null,
   playlistTracks: [],
-  followed: false,
+  isFollowed: false,
+  deletedFlag: false,
+  playlistID: null,
+  updateTracksFlag: null,
+
+  createWithTrack: false,
+
+  //The tracks' IDs to be added
+  tracksToAdd: [],
+
+  //Playlist's popups flags
   deletePlaylist: false,
   createPlaylist: false,
   addTrack: false,
-  deleted: false,
-  playlistID: null,
-  ownedPlaylists: [],
-  flag: null,
-  tracksToAdd: [],
-  createWithTrack: false,
-  menuPlaylist: null
+  adsPopup: false
 };
 
 const mutations = {
-  add_playlist(state, payload) {
+  addNewPlaylist(state, payload) {
     var k = {
       name: payload.name,
       image: payload.images[0],
       description: payload.description,
       id: payload.id,
-      url: "to be added",
       type: "playlist"
     };
-    state.likedPlaylists.push(k);
+    state.userSavedPlaylists.push(k);
   },
-  load_likedPlaylists(state, list) {
-    state.likedPlaylists = list;
-  },
-  load_playlists(state, list) {
-    state.playlists = list;
-  },
-  followed(state) {
-    state.followed = true;
+  setUserPlaylists(state, list) {
+    state.userSavedPlaylists = list;
   },
   setPlaylist(state, payload) {
     if (payload.isMenu) state.menuPlaylist = payload.playlist;
     else state.singlePlaylist = payload.playlist;
   },
-  setTracks(state, tracks) {
+  setPlaylistTracks(state, tracks) {
     state.playlistTracks = tracks;
   },
-  emptyTracks(state) {
-    state.playlistTracks = [];
+  setOwnedPlaylists(state, playlists) {
+    state.ownedPlaylists = playlists;
   },
   setFollowed(state, payload) {
-    state.followed = payload[0];
+    state.isFollowed = payload[0];
   },
-  unfollow(state) {
-    state.followed = false;
+  followedPlaylist(state) {
+    state.isFollowed = true;
+  },
+  unfollowedPlaylist(state) {
+    state.isFollowed = false;
   },
   changeDeleteModel(state) {
     state.deletePlaylist = !state.deletePlaylist;
@@ -65,20 +65,17 @@ const mutations = {
   changeAddTrackModel(state) {
     state.addTrack = !state.addTrack;
   },
-  deleted(state) {
-    state.deleted = true;
+  changeAdsPopup(state) {
+    state.adsPopup = !state.adsPopup;
+  },
+  setDeletedFlag(state) {
+    state.deletedFlag = true;
   },
   setPlaylistID(state, ID) {
     state.playlistID = ID;
   },
-  emptyPlaylists(state) {
-    state.likedPlaylists = [];
-  },
-  setOwnedPlaylists(state, playlists) {
-    state.ownedPlaylists = playlists;
-  },
-  changeFlag(state) {
-    state.flag = true;
+  setUpdateTracksFlag(state) {
+    state.updateTracksFlag = true;
   },
   setAddedTracks(state, payload) {
     state.tracksToAdd = payload;
@@ -89,7 +86,9 @@ const mutations = {
 };
 
 const getters = {
-  likedPlaylists: state => state.likedPlaylists,
+  likedPlaylists(state) {
+    return state.userSavedPlaylists;
+  },
   playlistTracks(state) {
     return state.playlistTracks;
   },
@@ -99,40 +98,44 @@ const getters = {
 };
 
 const actions = {
-  //Create a new playlist for the current user payload{Playlist's name & token}
-  createPlaylist({ commit, state, dispatch }, payload) {
-    axios
-      .post(
-        "/v1/users/" + payload.id + "/playlists",
-        { name: payload.name },
-        {
-          headers: {
-            Authorization: `Bearer ${payload.token}`
-          }
-        }
-      )
+  //--------------------------------------------------------
+  //   Get a single playlist's data
+  //--------------------------------------------------------
+  async getPlaylist({ commit }, payload) {
+    await axios
+      .get("/v1/playlists/" + payload.playlistID)
       .then(response => {
-        var newPlaylist = response.data;
-        commit("add_playlist", newPlaylist);
-        if (state.createWithTrack == true) {
-          dispatch("addTrackToPlaylist", {
-            playlistID: newPlaylist.id,
-            token: payload.token
-          });
-          commit("changeAddTrackModel");
-        }
+        commit("setPlaylist", {
+          playlist: response.data,
+          //Flag to know if this data for the playlist view or to the right click menu
+          isMenu: payload.isMenu
+        });
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
   },
-
-  // getPlayslist works for (Get a List of Current User's Playlists) when nothing send in the parameter 'user'
-  // and works for (Get a List of a User's Playlists) when user is send in the parameter 'user'
+  //--------------------------------------------------------
+  //   Get a single playlist's tracks
+  //--------------------------------------------------------
+  getPlaylistTracks({ commit }, playlistID) {
+    axios
+      .get("/v1/playlists/" + playlistID + "/tracks")
+      .then(response => {
+        let returnedTracks = response.data.tracks.items;
+        commit("setPlaylistTracks", returnedTracks);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  //--------------------------------------------------------
+  //   Get User's playlists (owned || followed)
+  //--------------------------------------------------------
   async getPlaylists({ commit }, payload) {
     if (payload != null) {
-      // await commit("emptyPlaylists");
       await axios
         .get("/v1/me/playlists", {
           headers: {
@@ -148,12 +151,11 @@ const actions = {
               image: element.images[0],
               description: element.description,
               id: element.id,
-              url: "to be added",
               type: "playlist"
             };
             newList.push(k);
           });
-          commit("load_likedPlaylists", newList);
+          commit("setUserPlaylists", newList);
         })
         .catch(error => {
           console.log("axios caught an error");
@@ -161,59 +163,31 @@ const actions = {
         });
     }
   },
-  pauseAndPlay(context) {
-    context.commit("pauseAndPlay");
-  },
-  //Follow a playlist Payload {playlist's id , token}
-  followPlaylist({ commit }, payload) {
+  //--------------------------------------------------------
+  //   Get User's owned playlists (created by him)
+  //--------------------------------------------------------
+  getOwnedPlaylists({ commit }, token) {
     axios
-      .put(
-        "/v1/playlists/" + payload.id + "/followers",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${payload.token}`
-          }
+      .get("/v1/me/playlists/owned", {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      )
-      .then(() => {
-        commit("followed");
       })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
-  },
-  async getPlaylist({ commit }, payload) {
-    await axios
-      .get("/v1/playlists/" + payload.playlistID)
       .then(response => {
-        let returnedPlaylist = response.data;
-        commit("setPlaylist", {
-          playlist: returnedPlaylist,
-          isMenu: payload.isMenu
-        });
+        let owned = response.data.playlists.items;
+        commit("setOwnedPlaylists", owned);
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
   },
-  getPlaylistTracks({ commit }, playlistID) {
-    axios
-      .get("/v1/playlists/" + playlistID + "/tracks")
-      .then(response => {
-        let returnedTracks = response.data.tracks.items;
-        commit("setTracks", returnedTracks);
-      })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
-  },
+  //--------------------------------------------------------
+  //   Check if the user follows a specific playlist
+  //--------------------------------------------------------
   async checkFollowed({ commit }, payload) {
     if (payload.token == null) {
-      commit("unfollow");
+      commit("unfollowedPlaylist");
     } else {
       await axios
         .get(
@@ -237,6 +211,31 @@ const actions = {
         });
     }
   },
+  //--------------------------------------------------------
+  //          Follow a playlist (Not created by user)
+  //--------------------------------------------------------
+  followPlaylist({ commit }, payload) {
+    axios
+      .put(
+        "/v1/playlists/" + payload.id + "/followers",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`
+          }
+        }
+      )
+      .then(() => {
+        commit("followedPlaylist");
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  //--------------------------------------------------------
+  //          Unfollow a playlist (Not created by user)
+  //--------------------------------------------------------
   unfollowPlaylist({ commit }, payload) {
     axios
       .delete("/v1/playlists/" + payload.id + "/followers", {
@@ -245,13 +244,48 @@ const actions = {
         }
       })
       .then(() => {
-        commit("unfollow");
+        commit("unfollowedPlaylist");
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
   },
+  //--------------------------------------------------------
+  //               Create a new playlist
+  //--------------------------------------------------------
+  //It has 2 cases:
+  //1)Normal Creation     2)Create to add track to it
+  createPlaylist({ commit, state, dispatch }, payload) {
+    axios
+      .post(
+        "/v1/users/" + payload.id + "/playlists",
+        { name: payload.name },
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`
+          }
+        }
+      )
+      .then(response => {
+        var newPlaylist = response.data;
+        commit("addNewPlaylist", newPlaylist);
+        if (state.createWithTrack == true) {
+          dispatch("addTrackToPlaylist", {
+            playlistID: newPlaylist.id,
+            token: payload.token
+          });
+          commit("changeAddTrackModel");
+        }
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  //--------------------------------------------------------
+  //    Delete a Playlist (From user's owned playlists)
+  //--------------------------------------------------------
   deletePlaylist({ commit, state }, token) {
     axios
       .delete("/v1/playlists/" + state.playlistID, {
@@ -260,41 +294,16 @@ const actions = {
         }
       })
       .then(() => {
-        commit("deleted");
+        commit("setDeletedFlag");
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
   },
-  // followedPlaylist({ commit }, token) {
-  //   axios
-  //     .get("/v1/me/following/playlists", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`
-  //       }
-  //     })
-  //     .then(response => {
-  //       let list = response.data;
-  //       let newList = [];
-  //       list.forEach(element => {
-  //         var k = {
-  //           name: element.name,
-  //           image: element.images[0],
-  //           description: element.description,
-  //           id: element.id,
-  //           url: "to be added",
-  //           type: "playlist"
-  //         };
-  //         newList.push(k);
-  //       });
-  //       commit("load_likedPlaylists", newList);
-  //     })
-  //     .catch(error => {
-  //       console.log("axios caught an error");
-  //       console.log(error);
-  //     });
-  // },
+  //--------------------------------------------------------
+  //            Make a playlist public\secret
+  //--------------------------------------------------------
   changeDetails({ commit }, payload) {
     axios
       .patch(
@@ -317,6 +326,9 @@ const actions = {
         console.log(error);
       });
   },
+  //--------------------------------------------------------
+  //             Add Track To Playlist
+  //--------------------------------------------------------
   addTrackToPlaylist({ commit, state }, payload) {
     axios
       .post(
@@ -331,31 +343,18 @@ const actions = {
         }
       )
       .then(() => {
-        commit("changeFlag");
+        commit("setUpdateTracksFlag");
       })
       .catch(error => {
         console.log("axios caught an error");
         console.log(error);
       });
   },
-  getOwnedPlaylists({ commit }, token) {
-    axios
-      .get("/v1/me/playlists/owned", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(response => {
-        let owned = response.data.playlists.items;
-        commit("setOwnedPlaylists", owned);
-      })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
-  },
-  removePlaylistTrack({ commit }, payload) {
-    axios
+  //--------------------------------------------------------
+  //             Remove Track From Playlist
+  //--------------------------------------------------------
+  async removePlaylistTrack({ commit }, payload) {
+    await axios
       .delete(
         "/v1/playlists/" + payload.playlistID + "/tracks?ids=" + payload.ids,
         {
@@ -365,7 +364,7 @@ const actions = {
         }
       )
       .then(() => {
-        commit("changeFlag");
+        commit("setUpdateTracksFlag");
       })
       .catch(error => {
         console.log("axios caught an error");

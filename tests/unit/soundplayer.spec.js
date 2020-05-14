@@ -89,7 +89,7 @@ describe("TheSoundplayer", () => {
             playTrackInQueue({ state }, trackId) {}
           },
           mutations: {
-            setTrackUrl({state}, trackUrl) {
+            setTrackUrl({ state }, trackUrl) {
               state.trackUrl = trackUrl;
             },
             setId(state, id) {
@@ -317,11 +317,11 @@ describe("TheSoundplayer", () => {
     store.state.track.isRepeatOnceEnabled = true;
     wrapper.vm.setAudioElement({
       autoplay: false,
-      play: function(){}
+      play: function() {}
     });
     wrapper.vm._handleEndedTrack();
     expect(wrapper.vm.audioElement.play()).toBeCalled;
-    
+
     store.state.track.isRepeatOnceEnabled = false;
     store.state.track.isRepeatEnabled = true;
     store.state.track.isLastTrackInQueue = true;
@@ -438,7 +438,7 @@ describe("TheSoundplayer", () => {
         code: 5
       }
     });
-    wrapper.vm._handleAudioError()
+    wrapper.vm._handleAudioError();
   });
 
   it("copy context Url", () => {
@@ -455,7 +455,7 @@ describe("TheSoundplayerLogout", () => {
     Vue.use(Vuetify);
 
     wrapper = shallowMount(soundplayerLogout, {
-      vuetify,
+      vuetify
     });
   });
 
@@ -467,5 +467,5 @@ describe("TheSoundplayerLogout", () => {
     wrapper.vm.signIn();
 
     expect(wrapper.vm.snackbar).toBe(true);
-  })
-})
+  });
+});

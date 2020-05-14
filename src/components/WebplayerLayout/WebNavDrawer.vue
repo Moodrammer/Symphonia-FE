@@ -55,7 +55,7 @@
       <!--Nesting the popup-->
       <!-- <create-playlist v-if="loggedIn"></create-playlist> -->
       <v-list-item
-        class="temp"
+        class="listItem"
         @click="changeCreateModel"
         inactive
         v-if="loggedIn"
@@ -79,7 +79,6 @@
         to="/webhome/collection/tracks"
         class="listItem"
         active-class="active"
-        tag="p"
         v-if="loggedIn"
         id="likedItem"
       >
@@ -144,7 +143,7 @@ export default {
   },
   computed: {
     playlists: function() {
-      return this.$store.state.playlist.likedPlaylists;
+      return this.$store.state.playlist.userSavedPlaylists;
     }
   },
   data: function() {
@@ -185,6 +184,7 @@ export default {
 
 .listItem:hover {
   opacity: 1;
+  cursor: pointer;
 }
 
 a {

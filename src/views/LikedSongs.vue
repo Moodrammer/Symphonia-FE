@@ -1,5 +1,5 @@
 <template>
-  <!--The Liked Songs view wil be modified-->
+  <!--The Liked Songs view-->
   <v-container class="pt-0">
     <v-row justify="center">
       <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">
@@ -16,6 +16,7 @@
                 'lg-col': isLg()
               }"
             >
+              <!--Liked songs' image-->
               <v-card
                 elevation="9"
                 color="trasparent"
@@ -76,13 +77,15 @@
           </v-row>
         </v-container>
       </v-col>
+
       <!--Display the Songs -->
       <v-col lg="8" sm="12" md="12">
         <!--this divider will be shown at the small screen sizes only-->
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
+
         <v-list color="transparent">
           <!--Nesting the song component-->
-          <song
+          <SongItem
             v-for="track in tracks"
             :key="track.name"
             :songName="track.name"
@@ -90,10 +93,10 @@
             :albumID="track.album._id"
             :artistName="track.artist.name"
             :artistID="track.artist._id"
-            :duration="track.durationMs"
-            :id="track._id"
-            :disabled="track.premium"
-            :playlist="false"
+            :songDuration="track.durationMs"
+            :ID="track._id"
+            :isDisabled="track.premium"
+            :ownedPlaylist="false"
             :contextMenu="contextMenu"
           />
         </v-list>
@@ -103,7 +106,7 @@
 </template>
 
 <script>
-import Song from "../components/general/Song";
+import SongItem from "../components/general/SongItem";
 import getDeviceSize from "../mixins/getDeviceSize";
 import getuserToken from "../mixins/userService";
 
@@ -113,7 +116,7 @@ import getuserToken from "../mixins/userService";
  */
 export default {
   components: {
-    Song
+    SongItem
   },
   data: function() {
     return {
@@ -121,22 +124,20 @@ export default {
       iconClick: false
     };
   },
-  methods: {},
   created: function() {
-    this.$store.dispatch("category/getTracks", this.getuserToken());
+    this.$store.dispatch("track/getTracks", this.getuserToken());
   },
   mounted() {
     this.$root.$on("updateContent", () => {
-      this.$store.dispatch("category/getTracks", this.getuserToken());
-      console.log("from event");
+      this.$store.dispatch("track/getTracks", this.getuserToken());
     });
   },
   computed: {
     tracks() {
-      return this.$store.state.category.tracks;
+      return this.$store.state.track.savedTracks;
     },
     numOfTracks() {
-      return this.$store.state.category.savedTracksNum;
+      return this.$store.state.track.savedTracksNum;
     }
   },
   props: ["contextMenu"],
