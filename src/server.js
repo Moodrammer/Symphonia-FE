@@ -373,14 +373,44 @@ export function makeServer({ environment = "development" } = {}) {
         let playlistID = request.params.ID;
         let playlistTracks = schema.playlists.where({ id: playlistID })
           .models[0].tracks;
+        let numOfTracks = schema.playlists.where({ id: playlistID }).models[0]
+          .tracksCount;
         let newTracks = JSON.parse(request.requestBody).tracks;
         for (let i = 0; i < newTracks.length; i++) {
           let exist = playlistTracks.indexOf(newTracks[i]);
-          if (exist == -1) playlistTracks.push(newTracks[i]);
+          if (exist == -1) {
+            numOfTracks += 1;
+            playlistTracks.push(newTracks[i]);
+          }
         }
         schema.playlists
           .where({ id: playlistID })
           .update({ tracks: playlistTracks });
+        schema.playlists
+          .where({ id: playlistID })
+          .update({ tracksCount: numOfTracks });
+        return new Response(200, {}, {});
+      });
+      /////////////////////////////////////////////////////////////////////////////////////////
+      // Remove Track from Playlist
+      /////////////////////////////////////////////////////////////////////////////////////////
+      this.delete("/v1/playlists/:playlistID/tracks", (schema, request) => {
+        let playlistID = request.params.playlistID;
+        let trackID = request.queryParams.ids;
+        let numOfTracks = schema.playlists.where({ id: playlistID }).models[0]
+          .tracksCount;
+        let playlistTracks = schema.playlists.where({ id: playlistID })
+          .models[0].tracks;
+        playlistTracks = playlistTracks.filter(function(item) {
+          return item !== trackID;
+        });
+        numOfTracks -= 1;
+        schema.playlists
+          .where({ id: playlistID })
+          .update({ tracks: playlistTracks });
+        schema.playlists
+          .where({ id: playlistID })
+          .update({ tracksCount: numOfTracks });
         return new Response(200, {}, {});
       });
       /////////////////////////////////////////////////////////////////////////////////////////
