@@ -125,20 +125,19 @@ export default {
     };
   },
   created: function() {
-    this.$store.dispatch("category/getTracks", this.getuserToken());
+    this.$store.dispatch("track/getTracks", this.getuserToken());
   },
   mounted() {
     this.$root.$on("updateContent", () => {
-      this.$store.dispatch("category/getTracks", this.getuserToken());
-      console.log("from event");
+      this.$store.dispatch("track/getTracks", this.getuserToken());
     });
   },
   computed: {
     tracks() {
-      return this.$store.state.category.tracks;
+      return this.$store.state.track.savedTracks;
     },
     numOfTracks() {
-      return this.$store.state.category.savedTracksNum;
+      return this.$store.state.track.savedTracksNum;
     }
   },
   props: ["contextMenu"],

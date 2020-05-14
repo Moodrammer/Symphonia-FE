@@ -28,7 +28,7 @@ export default {
     Category
   },
   created: function() {
-    this.$store.dispatch("category/newReleases");
+    //this.$store.dispatch("category/getNewReleases");
     this.$store.dispatch("category/loadGenres");
   },
   computed: {

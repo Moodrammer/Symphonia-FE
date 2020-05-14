@@ -29,8 +29,8 @@ export default {
   },
   created: function() {
     this.$store.dispatch("category/recentlyPlayedSection", this.getuserToken());
-    this.$store.dispatch("category/newReleases");
-    this.$store.dispatch("category/loadUserSections", this.getuserToken());
+    this.$store.dispatch("category/getNewReleases");
+    this.$store.dispatch("category/yourPlaylistsSection", this.getuserToken());
     this.$store.dispatch("category/loadGenres");
   },
   computed: {

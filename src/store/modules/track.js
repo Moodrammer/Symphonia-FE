@@ -36,7 +36,10 @@ const state = {
   isRepeatOnceEnabled: false,
   isShuffleEnabled: false,
 
-  generalLiked: null
+  generalLiked: null,
+
+  savedTracks: [],
+  savedTracksNum: null
 };
 
 const mutations = {
@@ -103,6 +106,12 @@ const mutations = {
   },
   setContextUrl(state, contextUrl) {
     state.contextUrl = contextUrl;
+  },
+  load_tracks(state, list) {
+    state.savedTracks = list;
+  },
+  setTracksNum(state, num) {
+    state.savedTracksNum = num;
   }
 };
 
@@ -605,12 +614,34 @@ const actions = {
     }).then(() => {
       state.isShuffleEnabled = !state.isShuffleEnabled;
     });
+  },
+  getTracks({ commit }, payload) {
+    axios
+      .get("/v1/me/tracks", {
+        headers: {
+          Authorization: `Bearer ${payload}`
+        }
+      })
+      .then(response => {
+        let list = response.data.tracks.items;
+        commit("setTracksNum", response.data.tracks.total);
+        commit("load_tracks", list);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
+        console.log(error);
+      });
   }
+};
+
+const getters = {
+  tracksGetter: state => state.savedTracks
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
 };
