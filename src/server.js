@@ -384,7 +384,7 @@ export function makeServer({ environment = "development" } = {}) {
         for (let i = 0; i < newTracks.length; i++) {
           let exist = playlistTracks.indexOf(newTracks[i]);
           if (exist == -1) {
-            numOfTracks += 1;
+            numOfTracks = numOfTracks + 1;
             playlistTracks.push(newTracks[i]);
           }
         }
