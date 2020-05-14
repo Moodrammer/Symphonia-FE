@@ -1,20 +1,22 @@
 <template>
   <v-app>
     <!--Sending a prop to the drawer to be updated after logout-->
-    <nav-drawer
-      :loggedIn="isLoggedIn()"
-      :contextMenu="contextMenu"
-    ></nav-drawer>
-    <nav-bar></nav-bar>
+    <NavDrawer :loggedIn="isLoggedIn()" :contextMenu="contextMenu" />
+    <NavBar />
     <router-view
       :loggedIn="isLoggedIn()"
       :contextMenu="contextMenu"
     ></router-view>
-    <delete-playlist v-if="deletePlaylist" />
-    <add-track-to-playlist v-if="addTrack" />
-    <create-playlist v-if="createPlaylist" />
-    <sound-player v-if="isLoggedIn()" />
-    <sound-player-logout v-if="!isLoggedIn()" />
+
+    <!--Nesting the playlist's popups-->
+    <DeletePlaylist v-if="deletePlaylist" />
+    <AddTrackToPlaylist v-if="addTrack" />
+    <CreatePlaylist v-if="createPlaylist" />
+    <AdsPopup v-if="isAdsActive" />
+
+    <!--Nesting the sound player component-->
+    <SoundPlayer v-if="isLoggedIn()" />
+    <SoundPlayerLogout v-if="!isLoggedIn()" />
     <ContextMenu ref="context" />
   </v-app>
 </template>
@@ -29,6 +31,7 @@ import SoundPlayerLogout from "../components/TheSoundPlayer/TheSoundPlayerLogout
 import DeletePlaylist from "../components/DeletePlaylist.vue";
 import CreatePlaylist from "../components/CreatePlaylist.vue";
 import AddTrackToPlaylist from "../components/AddTrackToPlaylist.vue";
+import AdsPopup from "../components/Popups/AdsPopup.vue";
 
 /**
  * The webplayer view it contains (the side bar - the navigation bar - the sound player)
@@ -47,7 +50,8 @@ export default {
     SoundPlayerLogout,
     DeletePlaylist,
     CreatePlaylist,
-    AddTrackToPlaylist
+    AddTrackToPlaylist,
+    AdsPopup
   },
   watch: {
     "contextMenu.id": function() {
@@ -76,6 +80,9 @@ export default {
     },
     addTrack() {
       return this.$store.state.playlist.addTrack;
+    },
+    isAdsActive() {
+      return this.$store.state.playlist.adsPopup;
     }
   },
   mixins: [isLoggedIn]

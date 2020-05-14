@@ -36,12 +36,15 @@
                 id="premium"
                 class="white--text px-6 mt-5 mb-5 mr-6"
                 rounded
+                to="/premium/?checkout=false"
                 >Get Premium</v-btn
               >
             </v-col>
           </v-row>
           <v-row justify="center">
-            <v-btn outlined class="white--text mb-2" id="close">Close</v-btn>
+            <v-btn outlined class="white--text mb-2" id="close" @click="close"
+              >Close</v-btn
+            >
           </v-row>
         </v-card>
       </v-container>
@@ -55,6 +58,17 @@ export default {
     return {
       dialog: true
     };
+  },
+  methods: {
+    /**
+     * Gets called when the user clicks on the close button or press esc
+     * @public This is a public method
+     * @param {none}
+     */
+    close: function() {
+      this.$store.commit("playlist/changeAdsPopup");
+      this.dialog = false;
+    }
   }
 };
 </script>
@@ -65,21 +79,17 @@ export default {
   background-color: #1db954;
   border-width: 0;
 }
-
 #premium:hover {
   background-color: #1ed760;
 }
-
 #card {
   margin-top: 90px;
   background-image: linear-gradient(-225deg, #cbbacc 0%, #2580b3 100%);
 }
-
 #close {
   border-width: 0;
   text-decoration: none;
 }
-
 #close:before {
   background-color: rgba(0, 0, 0, 0);
 }

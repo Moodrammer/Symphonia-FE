@@ -1,23 +1,23 @@
 <template>
   <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
     <v-container class="ma-5">
-      <category
+      <!--Display the webplayer home sections if the user logged out-->
+      <Category
         v-for="category in categories"
         :key="category.categoryName"
-        :name="category.categoryName"
+        :categoryName="category.categoryName"
         :seeAll="category.showSeeAll"
-        :id="category.categoryID"
+        :genreID="category.categoryID"
         :gridItems="category.list"
         :gridStyle="category.style"
         :contextMenu="contextMenu"
-      ></category>
+      />
     </v-container>
   </v-content>
 </template>
 
 <script>
 import Category from "../general/Category";
-import { mapGetters } from "vuex";
 /**
  * The webplayer home content if the user hasn't logged in yet
  * @displayName Home Content Logout
@@ -28,12 +28,16 @@ export default {
     Category
   },
   created: function() {
-    this.$store.dispatch("category/newReleases");
+    this.$store.commit("category/emptyArray");
     this.$store.dispatch("category/loadGenres");
   },
-  computed: mapGetters({
-    categories: "category/categoriesGetter"
-  }),
-  props: ["contextMenu"]
+  computed: {
+    categories: function() {
+      return this.$store.state.category.categories;
+    }
+  },
+  props: {
+    contextMenu: {}
+  }
 };
 </script>

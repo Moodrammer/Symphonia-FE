@@ -13,7 +13,10 @@ import { VueContext } from "vue-context";
 import getuserToken from "../../mixins/userService";
 import getuserID from "../../mixins/userService";
 import isLoggedIn from "../../mixins/userService";
-
+/**
+ * @displayName Context Menu
+ * @example [none]
+ */
 export default {
   name: "ContextMenu",
   data() {
@@ -249,30 +252,53 @@ export default {
       document.body.removeChild(el);
     },
     //-----------------------------------------------------------------
-    //                        Track's FUnction
+    //                        Track's Function
     //-----------------------------------------------------------------
-    //Save a track to the current user's saved tracks
+    /**
+     * Function to save a track for user
+     * @public This is a public method
+     * @param {none}
+     */
     saveTrack() {
       this.$store.dispatch("track/saveTrack", {
         id: [this.id],
         token: this.getuserToken()
       });
     },
-    //Remove track from user's saved tracks
-    removeTrackForUser() {
-      this.$store.dispatch("track/removeSavedTrack", {
+
+    /**
+     * Function to remove this song from user's the saved tracks
+     * @public This is a public method
+     * @param {none}
+     */
+    async removeTrackForUser() {
+      await this.$store.dispatch("track/removeSavedTrack", {
         id: [this.id],
         token: this.getuserToken()
       });
+      /**
+       * Update the playlist tracks event.
+       */
+      this.$root.$emit("updateContent");
     },
-    //Add this track to a playlist
+
+    /**
+     * Function to add this track to a user's playlist(already existing playlist or new playlist)
+     * @public This is a public method
+     * @param {none}
+     */
     addToPlaylist() {
       this.$store.commit("playlist/setAddedTracks", [this.id]);
       this.$store.commit("playlist/changeAddTrackModel");
     },
-    //Remove this track from this playlist (for owned playlists only)
-    removeTrackFromPlaylist() {
-      this.$store.dispatch("playlist/removePlaylistTrack", {
+
+    /**
+     * Function to remove this track from this playlist , get called only from user's playlists
+     * @public This is a public method
+     * @param {none}
+     */
+    async removeTrackFromPlaylist() {
+      await this.$store.dispatch("playlist/removePlaylistTrack", {
         token: this.getuserToken(),
         playlistID: this.$route.params.id,
         ids: [this.id]
@@ -284,7 +310,7 @@ export default {
     //-----------------------------------------------------------------
     followAlbum() {
       this.$store.dispatch("album/followAlbum", {
-        id: this.id,
+        albumID: this.id,
         token: this.getuserToken()
       });
     },
@@ -295,19 +321,21 @@ export default {
       });
     },
     async addAlbumTracksToPlaylist() {
-      await this.$store.dispatch("album/getAlbum", {
-        albumID: this.id,
-        isMenu: true
-      });
+      await this.$store.dispatch("album/getAlbum", this.id);
       this.$store.commit(
         "playlist/setAddedTracks",
-        this.$store.state.album.menuAlbum.tracks
+        this.$store.state.album.singleAlbum.tracks
       );
       this.$store.commit("playlist/changeAddTrackModel");
     },
     //----------------------------------------------------------------
     //                       Playlist Functions
     //----------------------------------------------------------------
+    /**
+     * Function to make an owned playlist secret from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     makePlaylistSecret() {
       this.$store.dispatch("playlist/changeDetails", {
         playlistID: this.id,
@@ -315,6 +343,12 @@ export default {
         token: this.getuserToken()
       });
     },
+
+    /**
+     * Function to make an owned playlist public from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     makePlaylistPublic() {
       this.$store.dispatch("playlist/changeDetails", {
         playlistID: this.id,
@@ -322,16 +356,34 @@ export default {
         token: this.getuserToken()
       });
     },
+
+    /**
+     * Function to delete an owned playlist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     deleteUserPlaylist() {
       this.$store.commit("playlist/setPlaylistID", this.id);
       this.$store.commit("playlist/changeDeleteModel");
     },
+
+    /**
+     * Function to follow a playlist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     followPlaylist() {
       this.$store.dispatch("playlist/followPlaylist", {
         id: this.id,
         token: this.getuserToken()
       });
     },
+
+    /**
+     * Function to unfollow a playlist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     async unfollowPlaylist() {
       await this.$store.dispatch("playlist/unfollowPlaylist", {
         id: this.id,
@@ -340,6 +392,11 @@ export default {
     }
   },
   computed: {
+    /**
+     * Function to check if the user saves this song or not , gets called at the menu click
+     * @public This is a public method
+     * @param {none}
+     */
     isTrackSaved() {
       return this.$store.state.track.generalLiked;
     },
@@ -352,13 +409,13 @@ export default {
       } else return false;
     },
     isAlbumSaved() {
-      return this.$store.state.album.followed;
+      return this.$store.state.album.isFollowdAlbum;
     },
     isPublicPlaylist() {
       return this.$store.state.playlist.menuPlaylist.public;
     },
     isPlaylistSaved() {
-      return this.$store.state.playlist.followed;
+      return this.$store.state.playlist.isFollowed;
     },
     isOwnedPlaylist() {
       return (

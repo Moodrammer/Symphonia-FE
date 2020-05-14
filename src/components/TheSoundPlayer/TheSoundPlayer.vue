@@ -254,7 +254,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened,
+                icons: !isQueueOpened
               }"
             >
               mdi-format-list-numbered-rtl
@@ -315,31 +315,30 @@ export default {
     },
 
     ...mapState({
-      isTrackLiked: (state) => state.track.isTrackLiked,
-      trackUrl: (state) => state.track.trackUrl,
-      trackName: (state) => state.track.trackName,
-      trackArtistName: (state) => state.track.trackArtistName,
-      trackAlbumImageUrl: (state) => state.track.trackAlbumImageUrl,
-      isFirstTrackInQueue: (state) => state.track.isFirstTrackInQueue,
-      trackTotalDuration: (state) => state.track.trackTotalDuration,
-      trackId: (state) => state.track.trackId,
-      audioElement: (state) => state.track.audioElement,
-      isTrackPaused: (state) => state.track.isTrackPaused,
-      isQueueOpened: (state) => state.track.isQueueOpened,
-      isNextAndPreviousFinished: (state) =>
-        state.track.isNextAndPreviousFinished,
-      isBuffering: (state) => state.track.isBuffering,
-      token: (state) => state.track.token,
-      isRepeatOnceEnabled: (state) => state.track.isRepeatOnceEnabled,
-      isRepeatEnabled: (state) => state.track.isRepeatEnabled,
-      isShuffleEnabled: (state) => state.track.isShuffleEnabled,
-      isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
-      historyResponse: (state) => state.category.historyResponse,
-      facebookUrl: (state) => state.track.facebookUrl,
-      twitterUrl: (state) => state.track.twitterUrl,
-      picInPicCanvas: (state) => state.track.picInPicCanvas,
-      isPicInPicCanvasRdy: (state) => state.track.isPicInPicCanvasRdy
-    }),
+      isTrackLiked: state => state.track.isTrackLiked,
+      trackUrl: state => state.track.trackUrl,
+      trackName: state => state.track.trackName,
+      trackArtistName: state => state.track.trackArtistName,
+      trackAlbumImageUrl: state => state.track.trackAlbumImageUrl,
+      isFirstTrackInQueue: state => state.track.isFirstTrackInQueue,
+      trackTotalDuration: state => state.track.trackTotalDuration,
+      trackId: state => state.track.trackId,
+      audioElement: state => state.track.audioElement,
+      isTrackPaused: state => state.track.isTrackPaused,
+      isQueueOpened: state => state.track.isQueueOpened,
+      isNextAndPreviousFinished: state => state.track.isNextAndPreviousFinished,
+      isBuffering: state => state.track.isBuffering,
+      token: state => state.track.token,
+      isRepeatOnceEnabled: state => state.track.isRepeatOnceEnabled,
+      isRepeatEnabled: state => state.track.isRepeatEnabled,
+      isShuffleEnabled: state => state.track.isShuffleEnabled,
+      isLastTrackInQueue: state => state.track.isLastTrackInQueue,
+      historyResponse: state => state.category.historyResponse,
+      facebookUrl: state => state.track.facebookUrl,
+      twitterUrl: state => state.track.twitterUrl,
+      picInPicCanvas: state => state.track.picInPicCanvas,
+      isPicInPicCanvasRdy: state => state.track.isPicInPicCanvasRdy
+    })
   },
   data() {
     return {
@@ -357,7 +356,7 @@ export default {
       devices: undefined,
       currentDeviceId: undefined,
 
-      picInPicVideo: undefined,
+      picInPicVideo: undefined
     };
   },
   methods: {
@@ -393,7 +392,7 @@ export default {
       "toggleShuffle",
       "saveTrack",
       "removeSavedTrack",
-      "copyLink",
+      "copyLink"
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -465,13 +464,13 @@ export default {
         if (!this.isTrackLiked) {
           await this.saveTrack({
             token: this.getuserToken(),
-            id: this.trackId,
+            id: this.trackId
           });
           this.$root.$emit("updateContent");
         } else {
           await this.removeSavedTrack({
             token: this.getuserToken(),
-            id: this.trackId,
+            id: this.trackId
           });
           this.$root.$emit("updateContent");
         }
@@ -527,10 +526,8 @@ export default {
      * open the picture in picture window
      * @public
      */
-    picInPic: async function()
-    {
-      if(this.isPicInPicCanvasRdy == true)
-      {
+    picInPic: async function() {
+      if (this.isPicInPicCanvasRdy == true) {
         await this.picInPicVideo.play();
         await this.picInPicVideo.requestPictureInPicture();
       }
@@ -634,7 +631,7 @@ export default {
     _handlePicInPicPlay: function() {
       this.togglePauseAndPlay();
       if (document.pictureInPictureElement)
-        document.pictureInPictureElement.play()
+        document.pictureInPictureElement.play();
     },
     /**
      * when user press pause in PicInPic canvas
@@ -643,7 +640,7 @@ export default {
     _handlePicInPicPause: function() {
       this.togglePauseAndPlay();
       if (document.pictureInPictureElement)
-        document.pictureInPictureElement.pause()
+        document.pictureInPictureElement.pause();
     },
     /**
      * This is the initialization function
@@ -685,7 +682,7 @@ export default {
       var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
       this.getTrackInformation({
         token: this.token,
-        trackId: CurrentlyPlayingTrackId,
+        trackId: CurrentlyPlayingTrackId
       });
 
       await this.initQueueStatus(this.token);
@@ -701,23 +698,32 @@ export default {
       this.playTrackInQueue(CurrentlyPlayingTrackId);
 
       /* Picture-in-Picture Feature */
-      var picInPicCanvasTemp = document.createElement('canvas');
+      var picInPicCanvasTemp = document.createElement("canvas");
       picInPicCanvasTemp.width = picInPicCanvasTemp.height = 512;
 
       this.setPicInPicCanvas(picInPicCanvasTemp);
 
-      this.picInPicVideo = document.createElement('video');
+      this.picInPicVideo = document.createElement("video");
       this.picInPicVideo.srcObject = this.picInPicCanvas.captureStream();
       this.picInPicVideo.muted = true;
 
       /* Play & Pause */
-      navigator.mediaSession.setActionHandler('play', this._handlePicInPicPlay);
-      navigator.mediaSession.setActionHandler('pause', this._handlePicInPicPause); 
-      
+      navigator.mediaSession.setActionHandler("play", this._handlePicInPicPlay);
+      navigator.mediaSession.setActionHandler(
+        "pause",
+        this._handlePicInPicPause
+      );
+
       /* Previous Track & Next Track */
-      navigator.mediaSession.setActionHandler('previoustrack', this.previousConditionally);
-      navigator.mediaSession.setActionHandler('nexttrack', this.nextConditionally);
-    },
+      navigator.mediaSession.setActionHandler(
+        "previoustrack",
+        this.previousConditionally
+      );
+      navigator.mediaSession.setActionHandler(
+        "nexttrack",
+        this.nextConditionally
+      );
+    }
   },
   mounted: function() {
     this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
@@ -734,7 +740,7 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
-  },
+  }
 };
 </script>
 
