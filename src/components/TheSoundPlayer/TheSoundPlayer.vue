@@ -86,6 +86,11 @@
               </v-list-item>
             </v-list>
           </v-menu>
+
+          <!-- picture-in-picture -->
+          <a @click="picInPic">
+            <v-icon class="icons">mdi-picture-in-picture-bottom-right</v-icon>
+          </a>
         </v-toolbar>
       </v-col>
 
@@ -332,6 +337,8 @@ export default {
       historyResponse: (state) => state.category.historyResponse,
       facebookUrl: (state) => state.track.facebookUrl,
       twitterUrl: (state) => state.track.twitterUrl,
+      picInPicCanvas: (state) => state.track.picInPicCanvas,
+      isPicInPicCanvasRdy: (state) => state.track.isPicInPicCanvasRdy
     }),
   },
   data() {
@@ -349,6 +356,8 @@ export default {
 
       devices: undefined,
       currentDeviceId: undefined,
+
+      picInPicVideo: undefined,
     };
   },
   methods: {
@@ -368,6 +377,7 @@ export default {
       "setContextType",
       "setContextId",
       "setContextUrl",
+      "setPicInPicCanvas"
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -514,6 +524,18 @@ export default {
       this.audioElement.volume = this.volumeValue / 100; //update the volume
     },
     /**
+     * open the picture in picture window
+     * @public
+     */
+    picInPic: async function()
+    {
+      if(this.isPicInPicCanvasRdy == true)
+      {
+        await this.picInPicVideo.play();
+        await this.picInPicVideo.requestPictureInPicture();
+      }
+    },
+    /**
      * This handler is invoked after track is loaded
      *
      * @public
@@ -606,6 +628,24 @@ export default {
       }
     },
     /**
+     * when user press play in PicInPic canvas
+     * @public
+     */
+    _handlePicInPicPlay: function() {
+      this.togglePauseAndPlay();
+      if (document.pictureInPictureElement)
+        document.pictureInPictureElement.play()
+    },
+    /**
+     * when user press pause in PicInPic canvas
+     * @public
+     */
+    _handlePicInPicPause: function() {
+      this.togglePauseAndPlay();
+      if (document.pictureInPictureElement)
+        document.pictureInPictureElement.pause()
+    },
+    /**
      * This is the initialization function
      * which is executed only after the
      * soundplayer is loaded/mounted
@@ -659,6 +699,24 @@ export default {
       }
 
       this.playTrackInQueue(CurrentlyPlayingTrackId);
+
+      /* Picture-in-Picture Feature */
+      var picInPicCanvasTemp = document.createElement('canvas');
+      picInPicCanvasTemp.width = picInPicCanvasTemp.height = 512;
+
+      this.setPicInPicCanvas(picInPicCanvasTemp);
+
+      this.picInPicVideo = document.createElement('video');
+      this.picInPicVideo.srcObject = this.picInPicCanvas.captureStream();
+      this.picInPicVideo.muted = true;
+
+      /* Play & Pause */
+      navigator.mediaSession.setActionHandler('play', this._handlePicInPicPlay);
+      navigator.mediaSession.setActionHandler('pause', this._handlePicInPicPause); 
+      
+      /* Previous Track & Next Track */
+      navigator.mediaSession.setActionHandler('previoustrack', this.previousConditionally);
+      navigator.mediaSession.setActionHandler('nexttrack', this.nextConditionally);
     },
   },
   mounted: function() {

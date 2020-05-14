@@ -40,6 +40,9 @@ const state = {
 
   facebookUrl: "#",
   twitterUrl: "#",
+
+  picInPicCanvas: undefined,
+  isPicInPicCanvasRdy: false
 };
 
 const mutations = {
@@ -112,6 +115,9 @@ const mutations = {
       "&amp;src=sdkpreparse";
     state.twitterUrl = "https://twitter.com/intent/tweet?url=" + contextUrl;
   },
+  setPicInPicCanvas(state, picInPicCanvas) {
+    state.picInPicCanvas = picInPicCanvas;
+  }
 };
 
 const actions = {
@@ -123,13 +129,31 @@ const actions = {
             Authorization: payload.token,
           },
         })
-        .then((response) => {
+        .then(async (response) => {
           let trackData = response.data;
 
           state.trackName = trackData.name;
           state.trackTotalDurationMs = trackData.durationMs;
           state.trackId = trackData._id;
           state.trackAlbumImageUrl = trackData.album.image;
+          
+          //configure PicInPicCanvasRdy
+          state.isPicInPicCanvasRdy = false;
+
+          const image = new Image();
+          image.crossOrigin = true;
+          image.src = trackData.album.image;
+          await image.decode();
+          var ctx = state.picInPicCanvas.getContext('2d');
+          ctx.drawImage(image, 0, 0, 512, 512);
+
+          ctx.font = "30px Comic Sans MS";
+          ctx.fillStyle = "white";
+          ctx.textAlign = "center";
+          ctx.fillText(trackData.name, 512/2, 512/2);
+
+          state.isPicInPicCanvasRdy = true;
+
           state.trackAlbumName = trackData.album.name;
           state.trackArtistName = trackData.artist.name;
 
