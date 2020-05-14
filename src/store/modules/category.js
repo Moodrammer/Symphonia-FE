@@ -37,6 +37,9 @@ const mutations = {
   emptyArray(state) {
     state.categories = [];
   },
+  togglePushAgain(state) {
+    state.pushAgain = !state.pushAgain;
+  },
   setGenresList(state, genresList) {
     state.genresList = genresList;
   },
@@ -135,25 +138,29 @@ const actions = {
   //         Get a list of categories
   //-------------------------------------------------
   async loadGenres({ state, commit, dispatch }) {
-    commit("emptyArray");
-    let genresIDs = [];
-    axios
-      .get("/v1/browse/categories")
-      .then(async response => {
-        let genres = response.data.categories.items;
-        for (let i = 0; i < genres.length; i++) {
-          var id = genres[i].id;
-          genresIDs.push(id);
-        }
-        commit("setGenresList", genresIDs);
-        for (let index = 0; index < genresIDs.length; index++) {
-          await dispatch("getGenrePlaylists", genresIDs[index]);
-        }
-      })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
+    if (state.pushAgain) {
+      commit("togglePushAgain");
+      commit("emptyArray");
+      let genresIDs = [];
+      axios
+        .get("/v1/browse/categories")
+        .then(async response => {
+          let genres = response.data.categories.items;
+          for (let i = 0; i < genres.length; i++) {
+            var id = genres[i].id;
+            genresIDs.push(id);
+          }
+          commit("setGenresList", genresIDs);
+          for (let index = 0; index < genresIDs.length; index++) {
+            await dispatch("getGenrePlaylists", genresIDs[index]);
+          }
+          commit("togglePushAgain");
+        })
+        .catch(error => {
+          console.log("axios caught an error");
+          console.log(error);
+        });
+    }
   },
   //-------------------------------------------------
   //      Get user's recently played list
