@@ -288,17 +288,19 @@ export default {
       });
     }
   },
-  beforeCreate: function() {
-    this.$store.commit("playlist/changeAdsPopup");
-  },
   created: function() {
+    if (this.isLoggedIn()) {
+      this.$store.commit("playlist/changeAdsPopup");
+    }
     this.getPlaylistData();
     this.getPlaylistTracks();
     this.isFollowedPlaylist();
   },
   watch: {
     "$route.params.id": function() {
-      this.$store.commit("playlist/changeAdsPopup");
+      if (this.isLoggedIn()) {
+        this.$store.commit("playlist/changeAdsPopup");
+      }
       this.getPlaylistData();
       this.getPlaylistTracks();
       this.isFollowedPlaylist();
@@ -318,7 +320,7 @@ export default {
       return this.$store.state.playlist.playlistTracks;
     },
     followed() {
-      return this.$store.state.playlist.followed;
+      return this.$store.state.playlist.isFollowed;
     },
     owned() {
       return (

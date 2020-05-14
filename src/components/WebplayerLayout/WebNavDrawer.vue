@@ -143,7 +143,7 @@ export default {
   },
   computed: {
     playlists: function() {
-      return this.$store.state.playlist.likedPlaylists;
+      return this.$store.state.playlist.userSavedPlaylists;
     }
   },
   data: function() {

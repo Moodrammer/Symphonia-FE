@@ -178,7 +178,6 @@ const actions = {
         }
       })
       .then(() => {
-        //   if(id[0]==state.trackId)           //comment it for now
         commit("unlikeTrack", payload.id);
         console.log("from track");
       })
@@ -199,7 +198,6 @@ const actions = {
         }
       )
       .then(() => {
-        //if(id[0]==state.trackId)
         commit("likeTrack", payload.id);
       })
       .catch(error => {

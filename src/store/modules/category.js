@@ -82,7 +82,7 @@ const mutations = {
     }
   },
   setUserPlaylists(state) {
-    state.likedPlaylists.list.items = playlistModule.state.likedPlaylists;
+    state.likedPlaylists.list.items = playlistModule.state.userSavedPlaylists;
     if (state.likedPlaylists.list.items.length != 0)
       state.categories.push(state.likedPlaylists);
   },

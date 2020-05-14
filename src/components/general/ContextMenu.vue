@@ -417,7 +417,7 @@ export default {
       return this.$store.state.playlist.menuPlaylist.public;
     },
     isPlaylistSaved() {
-      return this.$store.state.playlist.followed;
+      return this.$store.state.playlist.isFollowed;
     },
     isOwnedPlaylist() {
       return (
