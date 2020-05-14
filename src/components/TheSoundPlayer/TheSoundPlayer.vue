@@ -680,7 +680,25 @@ export default {
       this.audioElement.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
-      this.setToken("Bearer " + this.getuserToken());
+      /* Picture-in-Picture Feature */
+      var picInPicCanvasTemp = document.createElement('canvas');
+      picInPicCanvasTemp.width = picInPicCanvasTemp.height = 512;
+
+      this.setPicInPicCanvas(picInPicCanvasTemp);
+
+      this.picInPicVideo = document.createElement('video');
+      this.picInPicVideo.srcObject = this.picInPicCanvas.captureStream();
+      this.picInPicVideo.muted = true;
+
+      /* Play & Pause */
+      navigator.mediaSession.setActionHandler('play', this._handlePicInPicPlay);
+      navigator.mediaSession.setActionHandler('pause', this._handlePicInPicPause); 
+      
+      /* Previous Track & Next Track */
+      navigator.mediaSession.setActionHandler('previoustrack', this.previousConditionally);
+      navigator.mediaSession.setActionHandler('nexttrack', this.nextConditionally);
+
+       this.setToken("Bearer " + this.getuserToken());
 
       var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
       this.getTrackInformation({
@@ -699,24 +717,6 @@ export default {
       }
 
       this.playTrackInQueue(CurrentlyPlayingTrackId);
-
-      /* Picture-in-Picture Feature */
-      var picInPicCanvasTemp = document.createElement('canvas');
-      picInPicCanvasTemp.width = picInPicCanvasTemp.height = 512;
-
-      this.setPicInPicCanvas(picInPicCanvasTemp);
-
-      this.picInPicVideo = document.createElement('video');
-      this.picInPicVideo.srcObject = this.picInPicCanvas.captureStream();
-      this.picInPicVideo.muted = true;
-
-      /* Play & Pause */
-      navigator.mediaSession.setActionHandler('play', this._handlePicInPicPlay);
-      navigator.mediaSession.setActionHandler('pause', this._handlePicInPicPause); 
-      
-      /* Previous Track & Next Track */
-      navigator.mediaSession.setActionHandler('previoustrack', this.previousConditionally);
-      navigator.mediaSession.setActionHandler('nexttrack', this.nextConditionally);
     },
   },
   mounted: function() {
