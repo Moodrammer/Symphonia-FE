@@ -133,12 +133,15 @@ export function makeServer({ environment = "development" } = {}) {
       //Get a User's Saved Tracks                "Liked Songs"
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me/tracks", schema => {
+        let likedSongs = schema.tracks.where({ liked: true }).models;
+        let totalNum = likedSongs.length;
         return new Response(
           200,
           {},
           {
             tracks: {
-              items: schema.tracks.where({ liked: true }).models
+              items: likedSongs,
+              total: totalNum
             }
           }
         );
@@ -155,7 +158,6 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/me/popularArtists", schema => {
         return schema.artists.where({ popularity: 90 }).models;
       });
-
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Genre Playlists
       ///////////////////////////////////////////////////////////////////////////////////
@@ -367,7 +369,20 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////////////
       // Add Tracks to Playlist
       /////////////////////////////////////////////////////////////////////////////////////////
-
+      this.post("/v1/playlists/:ID/tracks", (schema, request) => {
+        let playlistID = request.params.ID;
+        let playlistTracks = schema.playlists.where({ id: playlistID })
+          .models[0].tracks;
+        let newTracks = JSON.parse(request.requestBody).tracks;
+        for (let i = 0; i < newTracks.length; i++) {
+          let exist = playlistTracks.indexOf(newTracks[i]);
+          if (exist == -1) playlistTracks.push(newTracks[i]);
+        }
+        schema.playlists
+          .where({ id: playlistID })
+          .update({ tracks: playlistTracks });
+        return new Response(200, {}, {});
+      });
       /////////////////////////////////////////////////////////////////////////////////////////
       //Get User's History
       /////////////////////////////////////////////////////////////////////////////////////////
@@ -390,15 +405,6 @@ export function makeServer({ environment = "development" } = {}) {
           Albums: { items: schema.albums.where({ liked: true }).models }
         };
       });
-
-      // this.delete("/v1/me/albums", (schema, request) => {
-      //   var x = "";
-
-      //   for (var i = 2; i < request.requestBody.length - 2; i++)
-      //     x += request.requestBody[i];
-      //   return schema.albums.findBy(album => album._id === x).destroy();
-      // });
-
       //////////////  Artist /////////////////////////////////////////////////////////
       this.get("/v1/me/following", (schema, request) => {
         if (request.queryParams.type === "artist")
