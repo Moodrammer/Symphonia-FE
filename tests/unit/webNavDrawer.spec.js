@@ -22,7 +22,7 @@ describe("Webplayer Navigation Drawer", () => {
           namespaced: true,
 
           state: {
-            likedPlaylists: [
+            userSavedPlaylists: [
               {
                 collaborative: false,
                 images: [
@@ -56,6 +56,13 @@ describe("Webplayer Navigation Drawer", () => {
       store,
       stubs: {
         RouterLink: RouterLinkStub
+      },
+      propsData:{
+        contextMenu: {
+          event:'event',
+          type:'type',
+          id:"1234"
+        }
       }
     });
   });
@@ -79,8 +86,7 @@ describe("Webplayer Navigation Drawer", () => {
   });
 
   it("Get saved playlists", () => {
-    wrapper.setProps({ playlists: [] });
-    expect("wrapper.vm.playlists").toBe("[]");
+    expect(wrapper.vm.playlists).toBe(store.state.playlist.userSavedPlaylists);
   });
   //--------------------------------------------------
   //                   Methods
@@ -88,5 +94,10 @@ describe("Webplayer Navigation Drawer", () => {
   it("Change create playlist state", () => {
     wrapper.vm.changeCreateModel();
     expect("changeCreateModel").toHaveBeenCalled;
+  });
+
+  it("Set menu data",() => {
+    wrapper.vm.$emit('contextmenu.prevent');
+    expect(wrapper.vm.menuClick()).toHaveBeenCalled;
   });
 });

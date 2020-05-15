@@ -6,7 +6,7 @@ import VueRouter from "vue-router";
 
 //import the required componets
 import PlaylistView from "@/components/general/PlaylistView.vue";
-import Song from "@/components/general/Song.vue";
+import Song from "@/components/general/SongItem.vue";
 
 describe("Playlist View", () => {
   let wrapper;
