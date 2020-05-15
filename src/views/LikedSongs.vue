@@ -98,6 +98,7 @@
             :isDisabled="track.premium"
             :ownedPlaylist="false"
             :contextMenu="contextMenu"
+            v-on:updateContent="updateTracks"
           />
         </v-list>
       </v-col>
@@ -121,16 +122,18 @@ export default {
   data: function() {
     return {
       hover: false,
-      iconClick: false
+      iconClick: false,
+      update:false
     };
+  },
+  methods:{
+    updateTracks: function(){
+      this.update=true;
+      this.$store.dispatch("track/getTracks", this.getuserToken());
+    }
   },
   created: function() {
     this.$store.dispatch("track/getTracks", this.getuserToken());
-  },
-  mounted() {
-    this.$root.$on("updateContent", () => {
-      this.$store.dispatch("track/getTracks", this.getuserToken());
-    });
   },
   computed: {
     tracks() {
