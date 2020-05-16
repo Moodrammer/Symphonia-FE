@@ -1,6 +1,6 @@
 <template>
-  <div class="col-sm-9">
-    <div class="content">
+  <v-col class="col-sm-9" style="margin-left: 0px;margin-right:0px">
+    <v-content cols="9" class="content" style="padding: 48px;">
       <!-- account overview view content -->
       <h1>Account overview</h1>
       <article class="section">
@@ -123,8 +123,8 @@
         <a class="btn-class" href="#">Sign out everywhere</a>
       </article>
       <bottomContent />
-    </div>
-  </div>
+    </v-content>
+  </v-col>
 </template>
 
 <script>
