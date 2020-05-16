@@ -99,6 +99,6 @@ describe("Webplayer Home", () => {
   it("Watch the context menu id",async ()=>{
     wrapper.setData({ contextMenu: { id: "124" } });
     wrapper.vm.$options.watch.contextID.call(wrapper.vm);
-    expect(wrapper.vm.contextMenu.id).toBe(null); // OK 
+    expect(wrapper.vm.contextMenu.id).toBe(null);
   });
 });

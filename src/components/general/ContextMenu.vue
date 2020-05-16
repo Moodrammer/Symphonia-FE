@@ -276,10 +276,7 @@ export default {
         id: [this.id],
         token: this.getuserToken()
       });
-      /**
-       * Update the playlist tracks event.
-       */
-      this.$root.$emit("update");
+      this.$store.commit("track/changeUpdateTracks");
     },
 
     /**

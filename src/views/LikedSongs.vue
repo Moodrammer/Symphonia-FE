@@ -98,7 +98,6 @@
             :isDisabled="track.premium"
             :ownedPlaylist="false"
             :contextMenu="contextMenu"
-            v-on:update="updateTracks"
           />
         </v-list>
       </v-col>
@@ -126,10 +125,12 @@ export default {
       update: false
     };
   },
-  methods: {
-    updateTracks: function() {
-      this.update = true;
-      this.$store.dispatch("track/getTracks", this.getuserToken());
+  watch: {
+    isUpdateTracks:function(){
+      if(this.isUpdateTracks){
+        this.$store.dispatch("track/getTracks", this.getuserToken());
+        this.$store.commit("track/changeUpdateTracks");
+      }
     }
   },
   created: function() {
@@ -141,6 +142,9 @@ export default {
     },
     numOfTracks() {
       return this.$store.state.track.savedTracksNum;
+    },
+    isUpdateTracks() {
+      return this.$store.state.track.updateSavedTracks;
     }
   },
   props: ["contextMenu"],

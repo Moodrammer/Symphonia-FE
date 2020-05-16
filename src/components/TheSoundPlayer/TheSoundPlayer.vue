@@ -466,13 +466,13 @@ export default {
             token: this.getuserToken(),
             id: this.trackId
           });
-          this.$root.$emit("updateContent");
+          this.$store.commit("track/changeUpdateTracks");
         } else {
           await this.removeSavedTrack({
             token: this.getuserToken(),
             id: this.trackId
           });
-          this.$root.$emit("updateContent");
+          this.$store.commit("track/changeUpdateTracks");
         }
       }
     },

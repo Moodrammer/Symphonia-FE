@@ -32,9 +32,12 @@ describe("Liked Songs", () => {
                 album: "5e8b6d866253cb184eaac150"
               }
             ],
-            savedTracksNum: 1
+            savedTracksNum: 1,
+            updateSavedTracks: false
           },
-
+          mutation: {
+            changeUpdateTracks: jest.fn()
+          },
           actions: {
             getTracks: jest.fn()
           }
@@ -78,8 +81,9 @@ describe("Liked Songs", () => {
   //-------------------------------------------------
   //             Update the tracks
   //-------------------------------------------------
-  // it("Update Saved tracks", async () => {
-  //   wrapper.find(SongItem).vm.$emit("updateContent");
-  //   expect(wrapper.vm.update).toBe(true);
-  // });
+  it("Update Saved tracks", async () => {
+    wrapper.vm.$options.watch.isUpdateTracks.call(wrapper.vm);
+    store.state.track.updateSavedTracks=true;
+    expect("getTracks").toBeCalled;
+  });
 });

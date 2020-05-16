@@ -159,7 +159,6 @@
                 :ID="track._id"
                 :isDisabled="track.premium"
                 :contextMenu="contextMenu"
-                v-on:update="updateData"
               />
             </div>
           </v-list>
@@ -280,10 +279,6 @@ export default {
         usersID: [this.getuserID()],
         token: this.getuserToken()
       });
-    },
-    updateData(){
-      this.getPlaylistData();
-      this.getPlaylistTracks();
     }
   },
   created: function() {
@@ -302,6 +297,13 @@ export default {
       this.getPlaylistData();
       this.getPlaylistTracks();
       this.isFollowedPlaylist();
+    },
+    updatePlaylistTracks: function() {
+      if(this.updatePlaylistTracks) {
+        this.getPlaylistData();
+        this.getPlaylistTracks();
+        this.$store.commit("playlist/changeUpdatePlaylistTracks");
+      }
     }
   },
   computed: {
@@ -318,6 +320,9 @@ export default {
       return (
         this.$store.state.playlist.singlePlaylist.owner._id == this.getuserID()
       );
+    },
+    updatePlaylistTracks() {
+      return this.$store.state.playlist.updateTracksFlag;
     }
   },
   props: {
