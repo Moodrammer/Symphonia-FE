@@ -20,6 +20,12 @@ describe("Playlist View", () => {
     Vue.use(VueRouter);
     Vue.use(Vuex);
 
+    const localStorageMock = {
+      getItem: jest.fn(),
+      setItem: jest.fn(),
+      clear: jest.fn()
+    };
+
     //Mocking the store
     store = new Vuex.Store({
       modules: {
@@ -49,10 +55,12 @@ describe("Playlist View", () => {
                 album: { _id: "5e8b6d866253cb184eaac150", name: "New Album" }
               }
             ],
-            isFollowed: false
+            isFollowed: false,
+            updateTracksFlag: false
           },
           mutations: {
-            changeAdsPopup: jest.fn()
+            changeAdsPopup: jest.fn(),
+            changeUpdatePlaylistTracks: jest.fn()
           },
           actions: {
             followPlaylist: jest.fn(),
@@ -78,7 +86,8 @@ describe("Playlist View", () => {
           type: "type",
           id: "1234"
         }
-      }
+      },
+      localStorageMock
     });
   });
 
@@ -132,19 +141,34 @@ describe("Playlist View", () => {
     expect(wrapper.vm.menuClick()).toHaveBeenCalled;
   });
 
-  it("Play a playlist",() =>{
+  it("Play a playlist", () => {
     const btn = wrapper.find("#playBtn");
     btn.vm.$emit("click");
     expect(wrapper.vm.play()).toHaveBeenCalled;
   });
 
-  it("Follow a playlist",() =>{
+  it("Follow a playlist", () => {
     wrapper.vm.followPlaylist();
     expect("followPlaylist").toHaveBeenCalled;
   });
 
-  it("Unfollow a playlist",() =>{
+  it("Unfollow a playlist", () => {
     wrapper.vm.unfollowPlaylist();
     expect("unfollowPlaylist").toHaveBeenCalled;
+  });
+
+  it("Update Saved tracks", () => {
+    wrapper.vm.$options.watch.updatePlaylistTracks.call(wrapper.vm);
+    store.state.playlist.updateTracksFlag = true;
+    expect(wrapper.vm.getPlaylistData()).toBeCalled;
+    expect(wrapper.vm.getPlaylistTracks()).toBeCalled;
+    expect("changeUpdatePlaylistTracks").toBeCalled;
+  });
+
+  it("Update content after routing", () => {
+    wrapper.vm.$options.watch.playlistID.call(wrapper.vm);
+    expect("getPlaylist").toHaveBeenCalled;
+    expect("getPlaylistTracks").toHaveBeenCalled;
+    expect("checkFollowed").toHaveBeenCalled;
   });
 });

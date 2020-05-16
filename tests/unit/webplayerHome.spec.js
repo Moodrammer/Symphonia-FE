@@ -2,7 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
-import  {VueContext}  from "vue-context";
+import { VueContext } from "vue-context";
 
 import WebplayerHome from "@/views/WebPlayerHome.vue";
 import VueRouter from "vue-router";
@@ -23,7 +23,7 @@ describe("Webplayer Home", () => {
     Vue.use(VueContext);
 
     const $forceUpdate = jest.fn();
-    const contextID=jest.fn();
+    const contextID = jest.fn();
 
     store = new Vuex.Store({
       modules: {
@@ -51,14 +51,10 @@ describe("Webplayer Home", () => {
       vuetify,
       $forceUpdate,
       contextID,
-      propsData:{
-        contextMenu:{        event: "event",
-        type: "type",
-        id: "1234"}
-
+      propsData: {
+        contextMenu: { event: "event", type: "type", id: "1234" }
       }
     });
-
   });
 
   //--------------------------------------------------
@@ -92,11 +88,11 @@ describe("Webplayer Home", () => {
 
   it("Update after logout", async () => {
     wrapper.vm.$options.watch.isLogoutUpdate.call(wrapper.vm);
-    store.state.category.logoutUpdate=true;
+    store.state.category.logoutUpdate = true;
     expect("changeLogoutUpdate").toHaveBeenCalled;
   });
 
-  it("Watch the context menu id",async ()=>{
+  it("Watch the context menu id", async () => {
     wrapper.setData({ contextMenu: { id: "124" } });
     wrapper.vm.$options.watch.contextID.call(wrapper.vm);
     expect(wrapper.vm.contextMenu.id).toBe(null);

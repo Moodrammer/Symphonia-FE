@@ -290,7 +290,7 @@ export default {
     this.isFollowedPlaylist();
   },
   watch: {
-    "$route.params.id": function() {
+    playlistID: function() {
       if (this.isLoggedIn()) {
         this.$store.commit("playlist/changeAdsPopup");
       }
@@ -299,7 +299,7 @@ export default {
       this.isFollowedPlaylist();
     },
     updatePlaylistTracks: function() {
-      if(this.updatePlaylistTracks) {
+      if (this.updatePlaylistTracks) {
         this.getPlaylistData();
         this.getPlaylistTracks();
         this.$store.commit("playlist/changeUpdatePlaylistTracks");
@@ -323,6 +323,9 @@ export default {
     },
     updatePlaylistTracks() {
       return this.$store.state.playlist.updateTracksFlag;
+    },
+    playlistID() {
+      return this.$route.params.id;
     }
   },
   props: {

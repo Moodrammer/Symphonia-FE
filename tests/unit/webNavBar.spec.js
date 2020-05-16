@@ -21,16 +21,17 @@ describe("Nav Bar", () => {
 
     store = new Vuex.Store({
       modules: {
-        category:{
-          mutations:{
+        category: {
+          mutations: {
             changeLogoutUpdate: jest.fn()
           }
         }
-      }});
+      }
+    });
     wrapper = shallowMount(NavBar, {
       router,
       store,
-      vuetify, 
+      vuetify,
       attachToDocument: true,
       removeEventListener: jest.fn()
     });
@@ -121,18 +122,18 @@ describe("Nav Bar", () => {
     expect("prev").toBeCalled;
   });
 
-  it("Add event listener",()=>{
-    window.dispatchEvent(new Event('scroll'));
+  it("Add event listener", () => {
+    window.dispatchEvent(new Event("scroll"));
     expect(wrapper.vm.updateScroll()).toHaveBeenCalled;
   });
 
-  it("Watch the route",() =>{
+  it("Watch the route", () => {
     wrapper.vm.$options.watch.$route.call(wrapper.vm);
     expect(wrapper.vm.handleTabs).toBeCalled;
     expect(wrapper.vm.itemChosen).toBeCalled;
   });
 
-  it("Destory the event listener",()=>{
+  it("Destory the event listener", () => {
     wrapper.destroy();
     expect(wrapper.vm.updateScroll()).toHaveBeenCalled;
   });

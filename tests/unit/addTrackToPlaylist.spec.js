@@ -19,11 +19,11 @@ describe("CreatePlaylist", () => {
       modules: {
         playlist: {
           namespaced: true,
-          state:{
-            addTrack:true,
+          state: {
+            addTrack: true,
             ownedPlaylists: []
           },
-          mutations:{
+          mutations: {
             changeAddTrackModel: jest.fn(),
             createWithTrackModel: jest.fn(),
             changeCreateModel: jest.fn()
@@ -67,16 +67,15 @@ describe("CreatePlaylist", () => {
     expect(wrapper.vm.hoverIndex).toBe(2);
   });
 
-  it("Get the owned playlist of the user",()=>{
+  it("Get the owned playlist of the user", () => {
     wrapper.vm.create();
     expect("createWithTrackModel").toBeCalled;
     expect("changeAddTrackModel").toBeCalled;
   });
 
-  it("Change the popup model at closing",()=>{
+  it("Change the popup model at closing", () => {
     wrapper.vm.close();
     expect("changeAddTrackModel").toBeCalled;
     expect(wrapper.vm.dialog).toBe(false);
   });
-
 });

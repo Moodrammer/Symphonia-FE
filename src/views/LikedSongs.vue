@@ -126,8 +126,8 @@ export default {
     };
   },
   watch: {
-    isUpdateTracks:function(){
-      if(this.isUpdateTracks){
+    isUpdateTracks: function() {
+      if (this.isUpdateTracks) {
         this.$store.dispatch("track/getTracks", this.getuserToken());
         this.$store.commit("track/changeUpdateTracks");
       }

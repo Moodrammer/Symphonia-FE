@@ -40,7 +40,7 @@ import AdsPopup from "../components/Popups/AdsPopup.vue";
  */
 export default {
   data() {
-    return { contextMenu: { event: null, type: null, id: null }};
+    return { contextMenu: { event: null, type: null, id: null } };
   },
   components: {
     ContextMenu,

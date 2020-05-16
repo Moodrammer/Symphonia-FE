@@ -19,7 +19,7 @@ describe("CreatePlaylist", () => {
       modules: {
         playlist: {
           namespaced: true,
-          mutations:{
+          mutations: {
             changeAdsPopup: jest.fn()
           }
         }
@@ -43,10 +43,9 @@ describe("CreatePlaylist", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
 
-  it("Change the popup model at closing",()=>{
+  it("Change the popup model at closing", () => {
     wrapper.vm.close();
     expect("changeAdsPopup").toBeCalled;
     expect(wrapper.vm.dialog).toBe(false);
   });
-
 });

@@ -83,7 +83,7 @@ describe("Liked Songs", () => {
   //-------------------------------------------------
   it("Update Saved tracks", async () => {
     wrapper.vm.$options.watch.isUpdateTracks.call(wrapper.vm);
-    store.state.track.updateSavedTracks=true;
+    store.state.track.updateSavedTracks = true;
     expect("getTracks").toBeCalled;
   });
 });
