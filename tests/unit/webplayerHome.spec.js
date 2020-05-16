@@ -23,7 +23,8 @@ describe("Webplayer Home", () => {
     Vue.use(VueContext);
 
     const $forceUpdate = jest.fn();
-    const $root = {};
+    const contextID=jest.fn();
+
     store = new Vuex.Store({
       modules: {
         playlist: {
@@ -36,7 +37,7 @@ describe("Webplayer Home", () => {
         },
         category: {
           state: {
-            logoutUpdate: true
+            logoutUpdate: false
           },
           mutations: {
             changeLogoutUpdate: jest.fn()
@@ -44,14 +45,20 @@ describe("Webplayer Home", () => {
         }
       }
     });
-
     wrapper = shallowMount(WebplayerHome, {
       store,
       router,
       vuetify,
       $forceUpdate,
-      $root
+      contextID,
+      propsData:{
+        contextMenu:{        event: "event",
+        type: "type",
+        id: "1234"}
+
+      }
     });
+
   });
 
   //--------------------------------------------------
@@ -84,6 +91,14 @@ describe("Webplayer Home", () => {
   });
 
   it("Update after logout", async () => {
-    expect("changeLogoutUpdate").toBeCalled;
+    wrapper.vm.$options.watch.isLogoutUpdate.call(wrapper.vm);
+    store.state.category.logoutUpdate=true;
+    expect("changeLogoutUpdate").toHaveBeenCalled;
+  });
+
+  it("Watch the context menu id",async ()=>{
+    wrapper.setData({ contextMenu: { id: "124" } });
+    wrapper.vm.$options.watch.contextID.call(wrapper.vm);
+    expect(wrapper.vm.contextMenu.id).toBe(null); // OK 
   });
 });

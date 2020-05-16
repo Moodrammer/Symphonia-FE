@@ -305,7 +305,7 @@ export default {
     this.handleTransparency();
   },
   //Remove the listerner when the component is destroied
-  destroy() {
+  beforeDestroy() {
     window.removeEventListener("scroll", this.updateScroll);
   },
   mixins: [isLoggedIn, getusername]

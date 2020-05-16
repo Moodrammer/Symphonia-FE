@@ -40,7 +40,7 @@ import AdsPopup from "../components/Popups/AdsPopup.vue";
  */
 export default {
   data() {
-    return { contextMenu: { event: null, type: null, id: null } };
+    return { contextMenu: { event: null, type: null, id: null }};
   },
   components: {
     ContextMenu,
@@ -54,7 +54,7 @@ export default {
     AdsPopup
   },
   watch: {
-    "contextMenu.id": function() {
+    contextID: function() {
       if (this.contextMenu.id != null) {
         this.$refs.context.openMenu(
           this.contextMenu.event,
@@ -86,6 +86,9 @@ export default {
     },
     isLogoutUpdate() {
       return this.$store.state.category.logoutUpdate;
+    },
+    contextID() {
+      return this.contextMenu.id;
     }
   },
   mixins: [isLoggedIn]

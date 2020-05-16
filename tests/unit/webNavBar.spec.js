@@ -30,8 +30,9 @@ describe("Nav Bar", () => {
     wrapper = shallowMount(NavBar, {
       router,
       store,
-      vuetify,
-      attachToDocument: true
+      vuetify, 
+      attachToDocument: true,
+      removeEventListener: jest.fn()
     });
   });
 
@@ -118,5 +119,21 @@ describe("Nav Bar", () => {
     const icon = wrapper.find("#backward");
     icon.vm.$emit("click");
     expect("prev").toBeCalled;
+  });
+
+  it("Add event listener",()=>{
+    window.dispatchEvent(new Event('scroll'));
+    expect(wrapper.vm.updateScroll()).toHaveBeenCalled;
+  });
+
+  it("Watch the route",() =>{
+    wrapper.vm.$options.watch.$route.call(wrapper.vm);
+    expect(wrapper.vm.handleTabs).toBeCalled;
+    expect(wrapper.vm.itemChosen).toBeCalled;
+  });
+
+  it("Destory the event listener",()=>{
+    wrapper.destroy();
+    expect(wrapper.vm.updateScroll()).toHaveBeenCalled;
   });
 });
