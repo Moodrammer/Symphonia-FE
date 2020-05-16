@@ -3,6 +3,7 @@ import axios from "axios";
 import playlistModule from "./playlist.js";
 
 const state = {
+  logoutUpdate: false,
   categories: [],
   recentlyPlayed: {
     categoryName: "Recently Played",
@@ -36,6 +37,9 @@ const state = {
 const mutations = {
   emptyArray(state) {
     state.categories = [];
+  },
+  changeLogoutUpdate(state) {
+    state.logoutUpdate = !state.logoutUpdate;
   },
   togglePushAgain(state) {
     state.pushAgain = !state.pushAgain;

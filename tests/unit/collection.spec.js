@@ -127,7 +127,17 @@ collection.forEach(collectionElement => {
       });
     } else if (collectionElement === albums) {
       it("allAlbums watcher", async () => {
-        store.state.album.followedAlbums = [92341, 2, 3, 50, 6932, 437, 8, 3219, 13210];
+        store.state.album.followedAlbums = [
+          92341,
+          2,
+          3,
+          50,
+          6932,
+          437,
+          8,
+          3219,
+          13210
+        ];
         await wrapper.vm.$nextTick();
         expect(wrapper.vm.cardItems.items).toEqual([
           92341,

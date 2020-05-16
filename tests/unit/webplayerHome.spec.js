@@ -2,6 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
+//import  {VueContext}  from "vue-context";
 
 import WebplayerHome from "@/views/WebPlayerHome.vue";
 import VueRouter from "vue-router";
@@ -11,14 +12,17 @@ import NavDrawer from "@/components/WebplayerLayout/WebNavDrawer.vue";
 describe("Webplayer Home", () => {
   let wrapper;
   let vuetify;
+  //let vueContext;
   let store;
 
   beforeEach(() => {
     vuetify = new Vuetify();
+    //vueContext=new VueContext();
     const router = new VueRouter();
     Vue.use(Vuetify);
     Vue.use(VueRouter);
     Vue.use(Vuex);
+    //Vue.use(VueContext);
 
     const $forceUpdate = jest.fn();
     const $root = {};
@@ -31,6 +35,14 @@ describe("Webplayer Home", () => {
             createPlaylist: false,
             addTrack: false
           }
+        },
+        category: {
+          state: {
+            logoutUpdate: false
+          },
+          mutations: {
+            changeLogoutUpdate: jest.fn()
+          }
         }
       }
     });
@@ -41,6 +53,7 @@ describe("Webplayer Home", () => {
       vuetify,
       $forceUpdate,
       $root
+      //vueContext
     });
   });
 
@@ -62,17 +75,19 @@ describe("Webplayer Home", () => {
   //          Test computed properties
   //--------------------------------------------------
   it("Get delete model state", () => {
-    wrapper.setProps({ deletePlaylist: false });
-    expect("wrapper.vm.deletePlaylist").toBe(false);
+    expect(wrapper.vm.deletePlaylist).toBe(false);
   });
 
   it("Get create model state", () => {
-    wrapper.setProps({ createPlaylist: true });
-    expect("wrapper.vm.createPlaylist").toBe(true);
+    expect(wrapper.vm.createPlaylist).toBe(false);
   });
 
   it("Get add track model state", () => {
-    wrapper.setProps({ addTrack: false });
-    expect("wrapper.vm.addTrack").toBe(false);
+    expect(wrapper.vm.addTrack).toBe(false);
+  });
+
+  it("Update after logout", async () => {
+    store.state.category.logoutUpdate = true;
+    expect("changeLogoutUpdate").toBeCalled;
   });
 });

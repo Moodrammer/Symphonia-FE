@@ -1,5 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
+import Vuex from "vuex";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 
@@ -8,14 +9,27 @@ import NavBar from "@/components/WebplayerLayout/WebNavBar.vue";
 describe("Nav Bar", () => {
   let wrapper;
   let vuetify;
+  let store;
 
   beforeEach(() => {
     const router = new VueRouter();
     vuetify = new Vuetify();
+
     Vue.use(Vuetify);
     Vue.use(VueRouter);
+    Vue.use(Vuex);
+
+    store = new Vuex.Store({
+      modules: {
+        category:{
+          mutations:{
+            changeLogoutUpdate: jest.fn()
+          }
+        }
+      }});
     wrapper = shallowMount(NavBar, {
       router,
+      store,
       vuetify,
       attachToDocument: true
     });

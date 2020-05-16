@@ -39,11 +39,11 @@ describe("Song Component", () => {
       stubs: {
         RouterLink: RouterLinkStub
       },
-      propsData:{
+      propsData: {
         contextMenu: {
-          event:'event',
-          type:'type',
-          id:"1234"
+          event: "event",
+          type: "type",
+          id: "1234"
         }
       }
     });
@@ -72,8 +72,8 @@ describe("Song Component", () => {
   //---------------------------------------------------
   //       Test user functionalities (logged out)
   //---------------------------------------------------
-  it("Set menu data",() => {
-    wrapper.vm.$emit('contextmenu.prevent');
+  it("Set menu data", () => {
+    wrapper.vm.$emit("contextmenu.prevent");
     expect(wrapper.vm.menuClick()).toHaveBeenCalled;
   });
 });

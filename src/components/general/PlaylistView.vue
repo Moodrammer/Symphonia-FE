@@ -90,8 +90,7 @@
                     v-else
                     rounded
                     class="white--text px-8"
-                    id="playBtn"
-                    @click="play"
+                    id="playBtnDisabled"
                     disabled
                   >
                     Play
@@ -160,6 +159,7 @@
                 :ID="track._id"
                 :isDisabled="track.premium"
                 :contextMenu="contextMenu"
+                v-on:update="updateData"
               />
             </div>
           </v-list>
@@ -211,13 +211,7 @@ export default {
      * @public This is a public method
      * @param {none}
      */
-    play: function() {
-      this.$store.dispatch("track/playSongStore", {
-        songId: this.tracks[0]._id,
-        token: "Bearer " + this.getuserToken(),
-        contextId: this.playlist._id
-      });
-    },
+    play: function() {},
 
     /**
      *Function to follow this playlist,gets called when the user clicks on white heart icon
@@ -286,6 +280,10 @@ export default {
         usersID: [this.getuserID()],
         token: this.getuserToken()
       });
+    },
+    updateData(){
+      this.getPlaylistData();
+      this.getPlaylistTracks();
     }
   },
   created: function() {
@@ -305,12 +303,6 @@ export default {
       this.getPlaylistTracks();
       this.isFollowedPlaylist();
     }
-  },
-  mounted() {
-    this.$root.$on("update", () => {
-      this.getPlaylistData();
-      this.getPlaylistTracks();
-    });
   },
   computed: {
     playlist() {

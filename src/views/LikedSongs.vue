@@ -98,7 +98,7 @@
             :isDisabled="track.premium"
             :ownedPlaylist="false"
             :contextMenu="contextMenu"
-            v-on:updateContent="updateTracks"
+            v-on:update="updateTracks"
           />
         </v-list>
       </v-col>
@@ -123,12 +123,12 @@ export default {
     return {
       hover: false,
       iconClick: false,
-      update:false
+      update: false
     };
   },
-  methods:{
-    updateTracks: function(){
-      this.update=true;
+  methods: {
+    updateTracks: function() {
+      this.update = true;
       this.$store.dispatch("track/getTracks", this.getuserToken());
     }
   },

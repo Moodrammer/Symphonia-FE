@@ -57,11 +57,11 @@ describe("Webplayer Navigation Drawer", () => {
       stubs: {
         RouterLink: RouterLinkStub
       },
-      propsData:{
+      propsData: {
         contextMenu: {
-          event:'event',
-          type:'type',
-          id:"1234"
+          event: "event",
+          type: "type",
+          id: "1234"
         }
       }
     });
@@ -96,8 +96,8 @@ describe("Webplayer Navigation Drawer", () => {
     expect("changeCreateModel").toHaveBeenCalled;
   });
 
-  it("Set menu data",() => {
-    wrapper.vm.$emit('contextmenu.prevent');
+  it("Set menu data", () => {
+    wrapper.vm.$emit("contextmenu.prevent");
     expect(wrapper.vm.menuClick()).toHaveBeenCalled;
   });
 });

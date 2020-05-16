@@ -44,15 +44,18 @@
           </p>
 
           <p v-if="!isAlbum">.</p>
-          <router-link v-bind:to="'/webhome/album/' + this.albumID" class="white--text">
-          <p
-            v-bind:class="{ 'disabled-2': isDisabled }"
-            class="subtitle ml-2"
-            v-if="!isAlbum"
-            id="routeToAlbum"
+          <router-link
+            v-bind:to="'/webhome/album/' + this.albumID"
+            class="white--text"
           >
-            {{ albumName }}
-          </p>
+            <p
+              v-bind:class="{ 'disabled-2': isDisabled }"
+              class="subtitle ml-2"
+              v-if="!isAlbum"
+              id="routeToAlbum"
+            >
+              {{ albumName }}
+            </p>
           </router-link>
         </v-row>
       </v-list-item-subtitle>
@@ -138,15 +141,6 @@ export default {
       this.min = Math.floor((durationMS / 1000 / 60) << 0);
       this.sec = Math.floor((durationMS / 1000) % 60);
     },
-
-    // /**
-    //  * Function to route to the song's album view , get called when the user click on the album name
-    //  * @public This is a public method
-    //  * @param {none}
-    //  */
-    // routeToAlbum: function() {
-    //   this.$router.push(`/webhome/album/${this.albumID}`);
-    // },
 
     /**
      * Function to set the right click menu data

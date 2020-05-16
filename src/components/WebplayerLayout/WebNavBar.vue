@@ -297,7 +297,7 @@ export default {
     logOutAndRerender() {
       this.logOut();
       this.$forceUpdate();
-      this.$root.$emit("updateContent"); //like this
+      this.$store.commit("category/changeLogoutUpdate");
     }
   },
   mounted() {

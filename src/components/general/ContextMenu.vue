@@ -279,7 +279,7 @@ export default {
       /**
        * Update the playlist tracks event.
        */
-      this.$root.$emit("updateContent");
+      this.$root.$emit("update");
     },
 
     /**
