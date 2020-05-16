@@ -2,7 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
-//import  {VueContext}  from "vue-context";
+import  {VueContext}  from "vue-context";
 
 import WebplayerHome from "@/views/WebPlayerHome.vue";
 import VueRouter from "vue-router";
@@ -12,17 +12,15 @@ import NavDrawer from "@/components/WebplayerLayout/WebNavDrawer.vue";
 describe("Webplayer Home", () => {
   let wrapper;
   let vuetify;
-  //let vueContext;
   let store;
 
   beforeEach(() => {
     vuetify = new Vuetify();
-    //vueContext=new VueContext();
     const router = new VueRouter();
     Vue.use(Vuetify);
     Vue.use(VueRouter);
     Vue.use(Vuex);
-    //Vue.use(VueContext);
+    Vue.use(VueContext);
 
     const $forceUpdate = jest.fn();
     const $root = {};
@@ -38,7 +36,7 @@ describe("Webplayer Home", () => {
         },
         category: {
           state: {
-            logoutUpdate: false
+            logoutUpdate: true
           },
           mutations: {
             changeLogoutUpdate: jest.fn()
@@ -53,7 +51,6 @@ describe("Webplayer Home", () => {
       vuetify,
       $forceUpdate,
       $root
-      //vueContext
     });
   });
 
@@ -87,7 +84,6 @@ describe("Webplayer Home", () => {
   });
 
   it("Update after logout", async () => {
-    store.state.category.logoutUpdate = true;
     expect("changeLogoutUpdate").toBeCalled;
   });
 });

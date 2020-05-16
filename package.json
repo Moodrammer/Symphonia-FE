@@ -83,6 +83,9 @@
         "collectCoverageFrom": [
             "**/*.vue",
             "!**/node_modules/**"
+        ],
+        "transformIgnorePatterns": [
+            "../../node_modules/(?!${vue-context})"
         ]
     }
 }
