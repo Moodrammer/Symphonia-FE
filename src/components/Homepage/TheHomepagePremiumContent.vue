@@ -134,7 +134,7 @@
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getuserToken from "../../mixins/userService";
 
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 
 import axios from "axios";
 
@@ -177,7 +177,7 @@ export default {
 
   methods: {
     ...mapMutations("homepage", ["setNavigationBarColor"]),
-
+    ...mapActions("homepage", ["openStripeForm"]),
     /**
      * Change the opacity of the Navbar after scrolling.
      * @public
@@ -193,14 +193,12 @@ export default {
      * get premium
      * @public
      */
-    async premium() {
-      const session = await axios.get("/v1/me/checkout-session", {
-        headers: {
-          Authorization: this.userToken
-        }
-      });
-      await this.stripe.redirectToCheckout({
-        sessionId: session.data.session.id
+    premium() {
+      this.stripe = Stripe("pk_test_RqCR6gpy5RMhclg6bDCNZriV00z3bugPaY");
+
+      this.openStripeForm({
+        token: this.userToken,
+        stripe: this.stripe
       });
     }
   },
@@ -210,8 +208,6 @@ export default {
     window.addEventListener("scroll", this.NavFunction);
 
     this.userToken = "Bearer " + this.getuserToken();
-
-    this.stripe = Stripe("pk_test_RqCR6gpy5RMhclg6bDCNZriV00z3bugPaY");
   },
 
   destroyed: function() {
