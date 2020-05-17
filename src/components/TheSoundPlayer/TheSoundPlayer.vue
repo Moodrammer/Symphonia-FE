@@ -254,7 +254,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened
+                icons: !isQueueOpened,
               }"
             >
               mdi-format-list-numbered-rtl
@@ -315,30 +315,31 @@ export default {
     },
 
     ...mapState({
-      isTrackLiked: state => state.track.isTrackLiked,
-      trackUrl: state => state.track.trackUrl,
-      trackName: state => state.track.trackName,
-      trackArtistName: state => state.track.trackArtistName,
-      trackAlbumImageUrl: state => state.track.trackAlbumImageUrl,
-      isFirstTrackInQueue: state => state.track.isFirstTrackInQueue,
-      trackTotalDuration: state => state.track.trackTotalDuration,
-      trackId: state => state.track.trackId,
-      audioElement: state => state.track.audioElement,
-      isTrackPaused: state => state.track.isTrackPaused,
-      isQueueOpened: state => state.track.isQueueOpened,
-      isNextAndPreviousFinished: state => state.track.isNextAndPreviousFinished,
-      isBuffering: state => state.track.isBuffering,
-      token: state => state.track.token,
-      isRepeatOnceEnabled: state => state.track.isRepeatOnceEnabled,
-      isRepeatEnabled: state => state.track.isRepeatEnabled,
-      isShuffleEnabled: state => state.track.isShuffleEnabled,
-      isLastTrackInQueue: state => state.track.isLastTrackInQueue,
-      historyResponse: state => state.category.historyResponse,
-      facebookUrl: state => state.track.facebookUrl,
-      twitterUrl: state => state.track.twitterUrl,
-      picInPicCanvas: state => state.track.picInPicCanvas,
-      isPicInPicCanvasRdy: state => state.track.isPicInPicCanvasRdy
-    })
+      isTrackLiked: (state) => state.track.isTrackLiked,
+      trackUrl: (state) => state.track.trackUrl,
+      trackName: (state) => state.track.trackName,
+      trackArtistName: (state) => state.track.trackArtistName,
+      trackAlbumImageUrl: (state) => state.track.trackAlbumImageUrl,
+      isFirstTrackInQueue: (state) => state.track.isFirstTrackInQueue,
+      trackTotalDuration: (state) => state.track.trackTotalDuration,
+      trackId: (state) => state.track.trackId,
+      audioElement: (state) => state.track.audioElement,
+      isTrackPaused: (state) => state.track.isTrackPaused,
+      isQueueOpened: (state) => state.track.isQueueOpened,
+      isNextAndPreviousFinished: (state) =>
+        state.track.isNextAndPreviousFinished,
+      isBuffering: (state) => state.track.isBuffering,
+      token: (state) => state.track.token,
+      isRepeatOnceEnabled: (state) => state.track.isRepeatOnceEnabled,
+      isRepeatEnabled: (state) => state.track.isRepeatEnabled,
+      isShuffleEnabled: (state) => state.track.isShuffleEnabled,
+      isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
+      historyResponse: (state) => state.category.historyResponse,
+      facebookUrl: (state) => state.track.facebookUrl,
+      twitterUrl: (state) => state.track.twitterUrl,
+      picInPicCanvas: (state) => state.track.picInPicCanvas,
+      isPicInPicCanvasRdy: (state) => state.track.isPicInPicCanvasRdy,
+    }),
   },
   data() {
     return {
@@ -356,7 +357,7 @@ export default {
       devices: undefined,
       currentDeviceId: undefined,
 
-      picInPicVideo: undefined
+      picInPicVideo: undefined,
     };
   },
   methods: {
@@ -376,7 +377,7 @@ export default {
       "setContextType",
       "setContextId",
       "setContextUrl",
-      "setPicInPicCanvas"
+      "setPicInPicCanvas",
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -392,7 +393,7 @@ export default {
       "toggleShuffle",
       "saveTrack",
       "removeSavedTrack",
-      "copyLink"
+      "copyLink",
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -401,12 +402,13 @@ export default {
      * @public
      */
     convertTimeHHMMSS: function(value) {
-      //-val is the time passed from the start of the sound in integer seconds
-      //-new Data(val * 1000) get a date from 1970 2:00:00 and advance it with milli seconds
-      //-convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
-      //-take only the HH:mm:ss part
+      /*val is the time passed from the start of the sound in integer seconds
+      new Data(val * 1000) get a date from 1970 2:00:00 and advance it with 
+      milli seconds convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
+      take only the HH:mm:ss part */
       var hhmmss = new Date(value * 1000).toISOString().substr(11, 8);
-      //-if the hh part is 00: then show only mm:ss part. .indexOf('a')
+
+      //if the hh part is 00: then show only mm:ss part. .indexOf('a')
       //returns the index of the first element in an array starts with 'a'
       return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
     },
@@ -434,6 +436,7 @@ export default {
     },
     /**
      * play the next track in case previous and next are finished
+     *
      * @public
      */
     nextConditionally: function() {
@@ -443,6 +446,7 @@ export default {
     },
     /**
      * play the previous track in case previous and next are finished
+     *
      * @public
      */
     previousConditionally: function() {
@@ -464,13 +468,13 @@ export default {
         if (!this.isTrackLiked) {
           await this.saveTrack({
             token: this.getuserToken(),
-            id: this.trackId
+            id: this.trackId,
           });
           this.$store.commit("track/changeUpdateTracks");
         } else {
           await this.removeSavedTrack({
             token: this.getuserToken(),
-            id: this.trackId
+            id: this.trackId,
           });
           this.$store.commit("track/changeUpdateTracks");
         }
@@ -524,6 +528,7 @@ export default {
     },
     /**
      * open the picture in picture window
+     *
      * @public
      */
     picInPic: async function() {
@@ -602,6 +607,7 @@ export default {
     },
     /**
      * This handler is invoked when the track is finished
+     *
      * @public
      */
     _handleEndedTrack: function() {
@@ -615,6 +621,11 @@ export default {
         return;
       }
     },
+    /**
+     * This handler is invoked when there's an error in audio
+     *
+     * @public
+     */
     _handleAudioError: function() {
       let errorCode = this.audioElement.error.code;
       if (errorCode == 4) {
@@ -626,6 +637,7 @@ export default {
     },
     /**
      * when user press play in PicInPic canvas
+     *
      * @public
      */
     _handlePicInPicPlay: function() {
@@ -635,6 +647,7 @@ export default {
     },
     /**
      * when user press pause in PicInPic canvas
+     *
      * @public
      */
     _handlePicInPicPause: function() {
@@ -660,7 +673,6 @@ export default {
         "playing",
         this._handlePlayingAfterBuffering
       );
-      // Add event to detect error and display error code
       this.audioElement.addEventListener(
         "error",
         this._handleAudioError,
@@ -668,8 +680,7 @@ export default {
       );
 
       //keysocket feature
-      //add this extension to google chrome to enable this feature
-      //https://chrome.google.com/webstore/detail/key-socket-media-keys/fphfgdknbpakeedbaenojjdcdoajihik?hl=en
+      //add keysocket extension to google chrome to enable this feature
       document.addEventListener("MediaPlayPause", this.togglePauseAndPlay);
       document.addEventListener("MediaPrev", this.previousConditionally);
       document.addEventListener("MediaNext", this.nextConditionally);
@@ -709,7 +720,7 @@ export default {
       var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
       this.getTrackInformation({
         token: this.token,
-        trackId: CurrentlyPlayingTrackId
+        trackId: CurrentlyPlayingTrackId,
       });
 
       await this.initQueueStatus(this.token);
@@ -723,7 +734,7 @@ export default {
       }
 
       this.playTrackInQueue(CurrentlyPlayingTrackId);
-    }
+    },
   },
   mounted: function() {
     this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
@@ -740,7 +751,17 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
-  }
+    this.audioElement.removeEventListener(
+      "error",
+      this._handleAudioError,
+      false
+    );
+
+    document.removeEventListener("MediaPlayPause", this.togglePauseAndPlay);
+    document.removeEventListener("MediaPrev", this.previousConditionally);
+    document.removeEventListener("MediaNext", this.nextConditionally);
+
+  },
 };
 </script>
 
