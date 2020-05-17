@@ -4,6 +4,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
 import soundplayer from "@/components/TheSoundplayer/TheSoundplayer.vue";
+import soundplayerLogout from "@/components/TheSoundplayer/TheSoundplayerLogout.vue";
 
 describe("TheSoundplayer", () => {
   let wrapper;
@@ -39,10 +40,16 @@ describe("TheSoundplayer", () => {
             isLastTrackInQueue: true,
             isNextAndPreviousFinished: true,
             isBuffering: false,
+            isRepeatOnceEnabled: false,
+            isRepeatEnabled: false,
 
             trackAlbumImageUrl: null,
             trackAlbumId: null,
             trackAlbumName: "",
+
+            contextType: "",
+            contextId: "",
+            contextUrl: "",
 
             isQueueOpened: false,
             queueTracks: [],
@@ -50,36 +57,39 @@ describe("TheSoundplayer", () => {
           },
           actions: {
             next({ state }) {
-              if (
-                !state.isLastTrackInQueue &&
-                state.isNextAndPreviousFinished
-              ) {
-                state.isNextAndPreviousFinished = false;
+              state.isNextAndPreviousFinished = false;
 
-                state.isBuffering = true;
-                state.audioElement.autoplay = true;
-              }
+              state.isBuffering = true;
+              state.audioElement.autoplay = true;
             },
             previous({ state }) {
-              if (
-                !state.isLastTrackInQueue &&
-                state.isNextAndPreviousFinished
-              ) {
-                state.isNextAndPreviousFinished = false;
+              state.isNextAndPreviousFinished = false;
 
-                state.isBuffering = true;
-                state.audioElement.autoplay = true;
-              }
+              state.isBuffering = true;
+              state.audioElement.autoplay = true;
             },
             getTrackInformation() {},
             updateQueue() {},
             updateQueueTracksInfo() {},
             togglePauseAndPlay() {},
             getCurrentlyPlayingTrackId() {},
-            playTrackInQueue() {}
+            playTrackInQueue() {},
+            toggleRepeatOnce({ state }) {
+              state.isRepeatOnceEnabled = !state.isRepeatOnceEnabled;
+            },
+            toggleRepeat({ state }) {
+              state.isRepeatEnabled = !state.isRepeatEnabled;
+            },
+            saveTrack({ state }, payload) {
+              state.isTrackLiked = true;
+            },
+            removeSavedTrack({ state }, payload) {
+              state.isTrackLiked = false;
+            },
+            playTrackInQueue({ state }, trackId) {}
           },
           mutations: {
-            setTrackUrl(state, trackUrl) {
+            setTrackUrl({ state }, trackUrl) {
               state.trackUrl = trackUrl;
             },
             setId(state, id) {
@@ -112,15 +122,37 @@ describe("TheSoundplayer", () => {
             setIsTrackLoaded(state, isTrackLoaded) {
               state.isTrackLoaded = isTrackLoaded;
             },
-            setIsTrackLiked(state, isTrackLiked) {
-              state.isTrackLiked = isTrackLiked;
-            },
             setIsBuffering(state, isBuffering) {
               state.isBuffering = isBuffering;
             },
             setToken(state, token) {
               state.token = token;
+            },
+            setContextType(state, contextType) {
+              state.contextType = contextType;
+            },
+            setContextId(state, contextId) {
+              state.contextId = contextId;
+            },
+            setContextUrl(state, contextUrl) {
+              state.contextUrl = contextUrl;
             }
+          }
+        },
+        category: {
+          namespaced: true,
+
+          state: {
+            historyResponse: [
+              {
+                contextType: "",
+                contextId: "",
+                contextUrl: ""
+              }
+            ]
+          },
+          actions: {
+            recentlyPlayed() {}
           }
         }
       }
@@ -135,6 +167,9 @@ describe("TheSoundplayer", () => {
 
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
+
+    store.state.category.historyResponse = [];
+    wrapper.vm.init();
   });
 
   //check if it is a vue instance
@@ -143,12 +178,17 @@ describe("TheSoundplayer", () => {
   });
 
   // test like song
-  it("song is disliked", () => {
-    wrapper.vm.setIsTrackLiked(true);
+  it("song is liked or disliked", () => {
+    wrapper.vm.setTrackId("12");
+    store.state.track.isTrackLiked = true;
     wrapper.vm.saveToLikedSongs();
     expect(wrapper.vm.isTrackLiked).toEqual(false);
 
-    wrapper.vm.setIsTrackLiked(false);
+    store.state.track.isTrackLiked = false;
+    wrapper.vm.saveToLikedSongs();
+    expect(wrapper.vm.isTrackLiked).toEqual(true);
+
+    wrapper.vm.setTrackId(null);
     wrapper.vm.saveToLikedSongs();
     expect(wrapper.vm.isTrackLiked).toEqual(true);
   });
@@ -190,31 +230,35 @@ describe("TheSoundplayer", () => {
     expect(wrapper.vm.isMuted).toEqual(true);
   });
 
-  //shuffle
-  it("shuffle enabled", () => {
-    wrapper.vm.enableShuffle();
-    expect(wrapper.vm.isShuffleEnabled).toBe(true);
-  });
+  it("toggle RepeatOnce", () => {
+    store.state.track.isRepeatOnceEnabled = true;
+    wrapper.vm.toggleRepeatOnce();
+    expect(wrapper.vm.isRepeatOnceEnabled).toBe(false);
 
-  it("shuffle disabled", () => {
-    wrapper.vm.disableShuffle();
-    expect(wrapper.vm.isShuffleEnabled).toBe(false);
-  });
-
-  it("repeat enabled", () => {
-    wrapper.vm.enableRepeat();
-    expect(wrapper.vm.isRepeatEnabled).toBe(true);
-  });
-
-  it("RepeatOnce enabled", () => {
-    wrapper.vm.enableRepeatOnce();
-    expect(wrapper.vm.isRepeatEnabled).toBe(false);
+    wrapper.vm.toggleRepeatOnce();
     expect(wrapper.vm.isRepeatOnceEnabled).toBe(true);
   });
 
-  it("disableRepeatOnce", () => {
-    wrapper.vm.disableRepeatOnce();
+  it("toggle RepeatOnce Conditionally", () => {
+    store.state.track.isRepeatOnceEnabled = true;
+    store.state.track.isNextAndPreviousFinished = true;
+    wrapper.vm.toggleRepeatOnceConditionally();
     expect(wrapper.vm.isRepeatOnceEnabled).toBe(false);
+
+    store.state.track.isNextAndPreviousFinished = false;
+    wrapper.vm.toggleRepeatOnceConditionally();
+    expect(wrapper.vm.isRepeatOnceEnabled).toBe(false);
+  });
+
+  it("toggle Repeat Conditionally", () => {
+    store.state.track.isRepeatEnabled = true;
+    store.state.track.isNextAndPreviousFinished = true;
+    wrapper.vm.toggleRepeatConditionally();
+    expect(wrapper.vm.isRepeatEnabled).toBe(false);
+
+    store.state.track.isNextAndPreviousFinished = false;
+    wrapper.vm.toggleRepeatConditionally();
+    expect(wrapper.vm.isRepeatEnabled).toBe(false);
   });
 
   //mute
@@ -270,8 +314,27 @@ describe("TheSoundplayer", () => {
   });
 
   it("handle ended track", () => {
+    store.state.track.isRepeatOnceEnabled = true;
+    wrapper.vm.setAudioElement({
+      autoplay: false,
+      play: function() {}
+    });
     wrapper.vm._handleEndedTrack();
-    expect(wrapper.vm.next).toBeCalled;
+    expect(wrapper.vm.audioElement.play()).toBeCalled;
+
+    store.state.track.isRepeatOnceEnabled = false;
+    store.state.track.isRepeatEnabled = true;
+    store.state.track.isLastTrackInQueue = true;
+    wrapper.vm._handleEndedTrack();
+    expect(wrapper.vm.next()).toBeCalled;
+
+    store.state.track.isRepeatEnabled = false;
+    store.state.track.isLastTrackInQueue = false;
+    wrapper.vm._handleEndedTrack();
+    expect(wrapper.vm.next()).toBeCalled;
+
+    store.state.track.isLastTrackInQueue = true;
+    wrapper.vm._handleEndedTrack();
   });
 
   it("pause handler", () => {
@@ -302,22 +365,55 @@ describe("TheSoundplayer", () => {
     wrapper.vm.setAudioElement({
       autoplay: false
     });
-    store.state.track.isLastTrackInQueue = false;
-    store.state.track.isNextAndPreviousFinished = true;
     wrapper.vm.next();
 
     expect(wrapper.vm.audioElement.autoplay).toEqual(true);
+  });
+
+  it("play the next track conditionally", () => {
+    wrapper.vm.setAudioElement({
+      autoplay: false
+    });
+    store.state.track.trackId = "12";
+
+    store.state.track.isNextAndPreviousFinished = true;
+    wrapper.vm.nextConditionally();
+    expect(wrapper.vm.audioElement.autoplay).toEqual(true);
+
+    wrapper.vm.setAudioElement({
+      autoplay: false
+    });
+    store.state.track.isNextAndPreviousFinished = false;
+    wrapper.vm.nextConditionally();
+    expect(wrapper.vm.audioElement.autoplay).toEqual(false);
   });
 
   it("play the previous track", () => {
     wrapper.vm.setAudioElement({
       autoplay: false
     });
-    store.state.track.isLastTrackInQueue = false;
-    store.state.track.isNextAndPreviousFinished = true;
     wrapper.vm.previous();
 
     expect(wrapper.vm.audioElement.autoplay).toEqual(true);
+  });
+
+  it("play the previous track conditionally", () => {
+    wrapper.vm.setAudioElement({
+      autoplay: false
+    });
+    store.state.track.isRepeatEnabled = true;
+    store.state.track.isNextAndPreviousFinished = true;
+    store.state.track.trackId = "12";
+
+    wrapper.vm.previousConditionally();
+    expect(wrapper.vm.audioElement.autoplay).toEqual(true);
+
+    wrapper.vm.setAudioElement({
+      autoplay: false
+    });
+    store.state.track.isNextAndPreviousFinished = false;
+    wrapper.vm.previousConditionally();
+    expect(wrapper.vm.audioElement.autoplay).toEqual(false);
   });
 
   it("converts time in seconds to HH:MM:SS", () => {
@@ -326,5 +422,50 @@ describe("TheSoundplayer", () => {
 
     result = wrapper.vm.convertTimeHHMMSS(3600);
     expect(result).toEqual("01:00:00");
+  });
+
+  it("handle audio error", () => {
+    wrapper.vm.setAudioElement({
+      error: {
+        code: 4
+      }
+    });
+    wrapper.vm._handleAudioError();
+    expect(wrapper.vm.playTrackInQueue()).toBeCalled;
+
+    wrapper.vm.setAudioElement({
+      error: {
+        code: 5
+      }
+    });
+    wrapper.vm._handleAudioError();
+  });
+
+  it("copy context Url", () => {
+    wrapper.vm.copyLink();
+  });
+});
+
+describe("TheSoundplayerLogout", () => {
+  let wrapper;
+  let vuetify;
+
+  beforeEach(() => {
+    vuetify = new Vuetify();
+    Vue.use(Vuetify);
+
+    wrapper = shallowMount(soundplayerLogout, {
+      vuetify
+    });
+  });
+
+  it("renders", () => {
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it("snack bar", () => {
+    wrapper.vm.signIn();
+
+    expect(wrapper.vm.snackbar).toBe(true);
   });
 });

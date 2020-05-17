@@ -17,6 +17,7 @@
                   'lg-col': isLg()
                 }"
               >
+                <!--The album's image-->
                 <v-card
                   elevation="9"
                   color="trasparent"
@@ -30,6 +31,7 @@
                     id="playPhoto"
                     @mouseover="hover = true"
                     @mouseleave="hover = false"
+                    @contextmenu.prevent="menuClick($event)"
                     elevation="12"
                     v-bind:class="{
                       'lg-img': isLg(),
@@ -60,13 +62,18 @@
                 </v-card>
               </v-col>
 
+              <!--Display the album's name - artist's name - number of songs-->
               <v-col lg="12" md="8" sm="7" xs="1" cols="12">
-                <v-row justify-lg="center">
+                <v-row
+                  justify-lg="center"
+                  @contextmenu.prevent="menuClick($event)"
+                >
                   <h1 class="mt-5">{{ album.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">
                   <p class="mt-2" id="year">{{ album.artist.name }}</p>
                 </v-row>
+                <!--The play button-->
                 <v-row justify-lg="center">
                   <v-btn
                     rounded
@@ -77,6 +84,8 @@
                     Play
                   </v-btn>
                 </v-row>
+
+                <!--Follow / Unfollow this album-->
                 <v-row justify-lg="center" class="mt-4">
                   <v-icon
                     color="white"
@@ -94,50 +103,16 @@
                     class="mr-3"
                     >mdi-heart</v-icon
                   >
-                  <v-menu offset-x>
-                    <template v-slot:activator="{ on }">
-                      <!--Icon to activate the menu-->
-                      <div v-on="on" id="albumMenu">
-                        <v-icon color="white" class="mx-2" id="menuDots">
-                          mdi-dots-horizontal
-                        </v-icon>
-                      </div>
-                    </template>
-                    <!--Menu list-->
-                    <v-list color="#282828" dark class="mt-3 white--text">
-                      <v-list-item>
-                        <v-list-item-title class="draweritem">
-                          Start Radio
-                        </v-list-item-title>
-                      </v-list-item>
 
-                      <v-list-item
-                        v-if="!followed"
-                        @click="followAlbum"
-                        id="followButton"
-                      >
-                        <v-list-item-title class="draweritem">
-                          Save to Your Library
-                        </v-list-item-title>
-                      </v-list-item>
-
-                      <v-list-item
-                        v-else
-                        @click="unfollowAlbum"
-                        id="unfollowButton"
-                      >
-                        <v-list-item-title class="draweritem">
-                          Remove from your Library
-                        </v-list-item-title>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-title class="draweritem">
-                          Copy Album Link
-                        </v-list-item-title>
-                      </v-list-item>
-                    </v-list>
-                  </v-menu>
+                  <!--Icon to activate the menu-->
+                  <v-icon
+                    color="white"
+                    class="mx-2"
+                    id="menuDots"
+                    @mousedown.prevent="menuClick($event)"
+                  >
+                    mdi-dots-horizontal
+                  </v-icon>
                 </v-row>
                 <v-row justify-lg="center">
                   <h5 id="year" class="mt-3 mr-2">{{ album.year }}</h5>
@@ -149,6 +124,7 @@
             </v-row>
           </v-container>
         </v-col>
+
         <!--Display the Songs -->
         <v-col lg="8" sm="12" md="12">
           <!--this divider will be shown at the small screen sizes only-->
@@ -156,42 +132,28 @@
           <v-list color="transparent">
             <!--Nesting the song component-->
             <div v-if="tracks">
-              <song
+              <SongItem
                 v-for="track in tracks"
                 :key="track.name"
                 :songName="track.name"
                 :artistName="track.artist.name"
                 :artistID="track.artist._id"
-                :duration="track.durationMs"
-                :album="true"
-                :id="track._id"
-                :disabled="track.premium"
+                :songDuration="track.durationMs"
+                :isAlbum="true"
+                :ID="track._id"
+                :isDisabled="track.premium"
+                :contextMenu="contextMenu"
               />
             </div>
           </v-list>
         </v-col>
       </v-row>
-      <v-snackbar v-model="snackbar" style="bottom: 100px;">
-        <span>Start listening with a free Symphonia account</span>
-
-        <router-link to="/signup" style="text-decoration: none;">
-          <v-btn color="green" text>
-            sign up
-          </v-btn>
-        </router-link>
-
-        <router-link to="/login" style="text-decoration: none;">
-          <v-btn color="cyan" text min-width="20">
-            log in
-          </v-btn>
-        </router-link>
-      </v-snackbar>
     </v-container>
   </v-content>
 </template>
 
 <script>
-import Song from "./Song";
+import SongItem from "./SongItem";
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getuserToken from "../../mixins/userService";
 import getuserID from "../../mixins/userService";
@@ -203,15 +165,13 @@ import isLoggedIn from "../../mixins/userService";
  */
 export default {
   components: {
-    Song
+    SongItem
   },
   data: function() {
     return {
       hover: false,
       iconClick: false,
-      id: this.$route.params.id,
-      disable: false,
-      snackbar: false
+      id: this.$route.params.id
     };
   },
   methods: {
@@ -221,15 +181,7 @@ export default {
      * @param {none}
      */
     play: function() {
-      if (this.isLoggedIn()) {
-        this.$store.dispatch("track/playSongStore", {
-          songId: this.tracks[0]._id,
-          token: "Bearer " + this.getuserToken(),
-          contextId: this.$route.params.id
-        });
-      } else {
-        this.snackbar = true;
-      }
+      //To be added
     },
     /**
      * Gets called when the user clicks on heart icon to follow the album
@@ -237,14 +189,10 @@ export default {
      * @param {none}
      */
     followAlbum: function() {
-      if (this.isLoggedIn()) {
         this.$store.dispatch("album/followAlbum", {
-          id: this.id,
+          albumID: this.id,
           token: this.getuserToken()
         });
-      } else {
-        this.snackbar = true;
-      }
     },
     /**
      * Gets called when the user clicks on heart icon to unfollow the album
@@ -252,22 +200,44 @@ export default {
      * @param {none}
      */
     unfollowAlbum: async function() {
-      if (this.isLoggedIn()) {
         await this.$store.dispatch("album/unfollowAlbum", {
           id: this.id,
           token: this.getuserToken()
         });
-      } else {
-        this.snackbar = true;
-      }
+    },
+    /**
+     * Function to set the right click menu data
+     * @public This is a public method
+     * @param {Event} event the event type
+     */
+    menuClick(event) {
+      this.$props.contextMenu.event = event;
+      this.$props.contextMenu.id = this.$route.params.id;
+      this.$props.contextMenu.type = "album";
+    },
+    /**
+     *Function to get the album's data
+     * @public This is a public method
+     * @param {none}
+     */
+    getAlbumData() {
+      this.$store.dispatch("album/getAlbum", this.$route.params.id);
+    },
+    /**
+     *Function to check if the user follow this album
+     * @public This is a public method
+     * @param {none}
+     */
+    isFollowedAlbum() {
+      this.$store.dispatch("album/checkFollowed", {
+        albumID: [this.$route.params.id],
+        token: this.getuserToken()
+      });
     }
   },
   created: function() {
-    this.$store.dispatch("album/getAlbum", this.$route.params.id);
-    this.$store.dispatch("album/checkFollowed", {
-      albumID: [this.$route.params.id],
-      token: this.getuserToken()
-    });
+    this.getAlbumData();
+    this.isFollowedAlbum();
   },
   computed: {
     album() {
@@ -277,9 +247,10 @@ export default {
       return this.$store.state.album.albumTracks;
     },
     followed() {
-      return this.$store.state.album.followed;
+      return this.$store.state.album.isFollowdAlbum;
     }
   },
+  props: ["contextMenu"],
   mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID]
 };
 </script>
@@ -299,10 +270,6 @@ export default {
   background-color: #1ed760;
   transform: scale(1.05, 1.05);
 }
-
-/* #followPlaylist {
-  border-radius: 0; 
-} */
 
 .lg-img,
 .lg-card,

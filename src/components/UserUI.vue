@@ -1,15 +1,16 @@
 <template>
   <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
     <v-row align="center" justify="center">
-      <v-avatar size=200 class="my-8"><v-img  :src="user.image"></v-img></v-avatar>
-  </v-row>
+      <v-avatar size="200" class="my-8"
+        ><v-img :src="user.image"></v-img
+      ></v-avatar>
+    </v-row>
     <v-row align="center" justify="center">
-      <h1>{{user.name}}</h1>
-  </v-row>
-  <v-container align="center" justify="center">
-    <CardGrid :cardItems="cardItems" :contextMenu=contextMenu />
-  </v-container>
-
+      <h1>{{ user.name }}</h1>
+    </v-row>
+    <v-container align="center" justify="center">
+      <CardGrid :cardItems="cardItems" :contextMenu="contextMenu" />
+    </v-container>
   </v-content>
 </template>
 
@@ -19,56 +20,56 @@ import getuserToken from "../mixins/userService";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name:"UserUI",
-  props:["contextMenu"],
-  components:{
+  name: "UserUI",
+  props: ["contextMenu"],
+  components: {
     CardGrid
   },
   mixins: [getuserToken],
-  data(){
-    return{
-      user:{
-        name:"",
-        image:""
+  data() {
+    return {
+      user: {
+        name: "",
+        image: ""
       },
-      cardItems:{
-        items:[
-          ]
+      cardItems: {
+        items: []
       }
-    }
+    };
   },
-  created(){
-    console.log("token" ,this.getuserToken());
-    try
-    {
-      this.getUserInfo({token:this.getuserToken(), id:this.$route.params.id});
-      this.getPublicPlaylists({token:this.getuserToken(), id:this.$route.params.id});
-    }
-    catch(error)
-    { 
-      console.log(error)
+  created() {
+    console.log("token", this.getuserToken());
+    try {
+      this.getUserInfo({
+        token: this.getuserToken(),
+        id: this.$route.params.id
+      });
+      this.getPublicPlaylists({
+        token: this.getuserToken(),
+        id: this.$route.params.id
+      });
+    } catch (error) {
+      console.log(error);
     }
   },
 
   methods: {
     ...mapActions("userPublicProfile", ["getUserInfo"]),
-    ...mapActions("userPublicProfile", ["getPublicPlaylists"]),
+    ...mapActions("userPublicProfile", ["getPublicPlaylists"])
   },
-  computed:{
+  computed: {
     ...mapGetters("userPublicProfile", ["allInfo"]),
-    ...mapGetters("userPublicProfile", ["allPublicPlaylists"]),
+    ...mapGetters("userPublicProfile", ["allPublicPlaylists"])
   },
-  watch:{
+  watch: {
     allInfo(newValue) {
       this.user = newValue;
-    },  
+    },
     allPublicPlaylists(newValue) {
       this.cardItems.items = newValue;
     }
   }
-}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

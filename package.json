@@ -15,11 +15,11 @@
         "axios": "^0.19.2",
         "bourbon": "^7.0.0",
         "core-js": "^3.6.4",
-        "socket.io": "^2.3.0",
         "vue": "^2.6.11",
         "vue-context": "^5.1.0",
         "vue-image-crop-upload": "^2.5.0",
         "vue-router": "^3.1.5",
+        "vue-spinner": "^1.0.3",
         "vuetify": "^2.2.11",
         "vuex": "^3.1.2"
     },
@@ -84,6 +84,9 @@
         "collectCoverageFrom": [
             "**/*.vue",
             "!**/node_modules/**"
+        ],
+        "transformIgnorePatterns": [
+            "../../node_modules/(?!${vue-context})"
         ]
     }
 }

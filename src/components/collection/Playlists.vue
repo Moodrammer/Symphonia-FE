@@ -3,9 +3,8 @@
     <h1>Playlists</h1>
     <CardGrid
       :cardItems="cardItems"
-      :contextMenu=contextMenu
+      :contextMenu="contextMenu"
       cardStyle="playlist"
-      
     />
   </v-content>
 </template>
@@ -20,7 +19,7 @@ export default {
   components: {
     CardGrid
   },
-  props:["contextMenu"],
+  props: ["contextMenu"],
   data() {
     return {
       // Custom context menu data section
@@ -62,11 +61,11 @@ export default {
   },
   computed: {
     ...mapGetters("playlist", ["likedPlaylists"]),
-    ...mapGetters("category", ["tracksGetter"])
+    ...mapGetters("track", ["tracksGetter"])
   },
   methods: {
     ...mapActions("playlist", ["getPlaylists"]),
-    ...mapActions("category", ["getTracks"]),
+    ...mapActions("track", ["getTracks"])
     /**
      * called when the user clicks on an aption from the context menu
      * @param {string} menuItem the option chosen by user
@@ -87,7 +86,7 @@ export default {
 
     //   this.contextMenuChoice = null;
     // },
-    likedPlaylists: function(newValue){
+    likedPlaylists: function(newValue) {
       this.cardItems.items = newValue;
     },
     tracksGetter: function(newValue) {

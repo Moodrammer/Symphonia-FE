@@ -1,7 +1,7 @@
 <template>
   <v-content class="pa-0 mr-5">
     <h1>Albums</h1>
-    <CardGrid :cardItems="cardItems" :contextMenu=contextMenu />
+    <CardGrid :cardItems="cardItems" :contextMenu="contextMenu" />
   </v-content>
 </template>
 
@@ -12,7 +12,7 @@ import getuserToken from "../../mixins/userService";
 
 export default {
   name: "Albums",
-  props:["contextMenu"],
+  props: ["contextMenu"],
   components: {
     CardGrid
   },
@@ -39,7 +39,7 @@ export default {
   },
   mixins: [getuserToken],
   methods: {
-    ...mapActions("album", ["getAlbums", "deleteAlbums"]),
+    ...mapActions("album", ["getAlbums", "deleteAlbums"])
     /**
      * called when the user clicks on an aption from the context menu
      * @param {string} menuItem the option chosen by user

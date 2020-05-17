@@ -1,7 +1,7 @@
 <template>
   <v-container class="pt-0">
     <h1 style="font-size: 28px;">Play Queue</h1>
-    <v-row justify="center">
+    <v-row justify="center" v-if="isCurTrkReady">
       <!--Display the Now player -->
       <v-col lg="12" sm="12" md="12">
         <h2 style="font-size: 18px;">Now Playing</h2>
@@ -9,19 +9,18 @@
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
         <v-list color="transparent">
           <!--Nesting the song component-->
-          <song
-            :playing="true"
+          <SongItem
+            :isPlaying="true"
             :songName="curTrkName"
             :artistName="curTrkArtistName"
             :albumName="albumName"
-            :duration="totalDurationMs"
-            v-if="isCurTrkReady"
+            :songDuration="trackTotalDurationMs"
           />
         </v-list>
       </v-col>
     </v-row>
 
-    <v-row justify="center">
+    <v-row justify="center" v-if="isCurTrkReady">
       <!--Display the Now player -->
       <v-col lg="12" sm="12" md="12">
         <h2 style="font-size: 18px;">Next Up</h2>
@@ -29,14 +28,14 @@
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
         <v-list color="transparent">
           <!--Nesting the song component-->
-          <song
+          <SongItem
             v-for="track in queueNextTracks"
             :key="track.name"
-            :disabled="true"
+            :isDisabled="true"
             :songName="track.name"
             :artistName="track.artistName"
-            :duration="track.durationMs"
-            :albumName="track.albumName"
+            :songDuration="track.durationMs"
+            :albumName="track.trackAlbumName"
           />
         </v-list>
       </v-col>
@@ -45,7 +44,7 @@
 </template>
 
 <script>
-import Song from "../components/general/Song";
+import SongItem from "../components/general/SongItem";
 import { mapState, mapActions, mapMutations } from "vuex";
 import getuserToken from "../mixins/userService";
 
@@ -53,7 +52,7 @@ export default {
   name: "TheQueue",
 
   components: {
-    Song
+    SongItem
   },
 
   data: function() {
@@ -66,21 +65,23 @@ export default {
 
   methods: {
     ...mapActions("track", ["updateQueueTracksInfo"]),
-    ...mapMutations("playlist", ["setIsQueueOpened"])
+    ...mapMutations("track", ["setIsQueueOpened"])
   },
 
   computed: {
     ...mapState({
       curTrkName: state => state.track.trackName,
-      curTrkArtistName: state => state.track.trackArtist,
+      curTrkArtistName: state => state.track.trackArtistName,
       queueNextTracks: state => state.track.queueNextTracks,
-      totalDurationMs: state => state.track.totalDurationMs,
-      albumName: state => state.track.albumName,
+      trackTotalDurationMs: state => state.track.trackTotalDurationMs,
+      albumName: state => state.track.trackAlbumName,
       isCurTrkReady: state => state.track.isCurTrkReady
     })
   },
 
   mounted: function() {
+    this.setIsQueueOpened(true);
+
     this.token = "Bearer " + this.getuserToken();
   },
 

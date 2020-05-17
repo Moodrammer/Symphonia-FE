@@ -1,22 +1,29 @@
 <template>
   <v-container>
     <v-row>
-      <h1>{{ name }}</h1>
+      <!--Display the section name-->
+      <h1>{{ categoryName }}</h1>
+
       <v-spacer></v-spacer>
+
+      <!--See All to route to the genre and display all the items of this section-->
       <router-link
         v-if="seeAll"
-        v-bind:to="'/genre/' + id"
+        v-bind:to="'/genre/' + genreID"
         class="white--text mt-3"
+        :contextMenu="contextMenu"
       >
         <p id="seeAll">SEE ALL</p>
       </router-link>
     </v-row>
-    <cardGrid :cardItems="gridItems" :cardStyle="gridStyle" />
+
+    <!--Card Grid to display the bar of items-->
+    <CardGrid :cardItems="gridItems" :contextMenu="contextMenu" />
   </v-container>
 </template>
 
 <script>
-import cardGrid from "./CardGrid";
+import CardGrid from "./CardGrid";
 /**
  * A bar of playlists\albums cards with the name of the category
  * @displayName Category
@@ -24,14 +31,17 @@ import cardGrid from "./CardGrid";
  */
 export default {
   components: {
-    cardGrid
+    CardGrid
   },
   props: {
-    name: String,
-    id: String,
-    seeAll: Boolean,
+    categoryName: String,
+    genreID: String,
+    seeAll: {
+      type: Boolean,
+      default: false
+    },
     gridItems: Object,
-    gridStyle: String
+    contextMenu: {}
   }
 };
 </script>

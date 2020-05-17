@@ -18,11 +18,13 @@ import ArtistUI from "../components/artistUI/ArtistUI";
 import Overview from "../components/artistUI/Overview";
 import RelatedArtists from "../components/artistUI/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
-import Genre from "../components/general/Genre.vue";
+import GenreView from "../components/general/GenreView.vue";
 import Google from "../components/oauth/google.vue";
 import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
-import x from "../components/artistUI/Forms.vue"
+import Facebook from "../components/oauth/facebook.vue";
+import ArtistActivation from "../views/ArtistActivation.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -45,7 +47,7 @@ const routes = [
       {
         name: "UserUI",
         path: "user/:id",
-        component: UserUI,
+        component: UserUI
       },
       {
         name: "ArtistUI",
@@ -120,7 +122,7 @@ const routes = [
       },
       {
         path: "/genre/:id",
-        component: Genre
+        component: GenreView
       }
     ]
   },
@@ -182,8 +184,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/ForgetPass.vue"),
+    component: () => import("../views/ForgetPass.vue"),
     redirect: "/password-reset/reset",
     children: [
       {
@@ -203,6 +204,16 @@ const routes = [
     path: "/google/:userToken",
     name: "googleroute",
     component: Google
+  },
+  {
+    path: "/facebook/:userToken",
+    name: "facebookroute",
+    component: Facebook
+  },
+  {
+    path: "/artist-activation/:activationToken",
+    name: "artistActivation",
+    component: ArtistActivation
   }
 ];
 

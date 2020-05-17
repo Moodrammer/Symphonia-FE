@@ -52,7 +52,7 @@ const getters = {
     var newValue = state.artistRelatedArtists;
     var artists = [];
     newValue.artists.forEach(element => {
-      console.log("x",element)
+      console.log("x", element);
       var k = {
         name: element.name,
         image: element.imageUrl,
@@ -141,7 +141,7 @@ const actions = {
    */
 
   getArtistAlbums({ commit }, payload) {
-    console.log(payload.id,"its",payload.token)
+    console.log(payload.id, "its", payload.token);
     axios
       .get(`/v1/artists/${payload.id}/albums`, {
         headers: {
@@ -151,13 +151,13 @@ const actions = {
           //include_groups=appears_on&country=ES&limit=2&offset'
           // country: "from_token",
           limit: 1,
-          offset:1
+          offset: 1
           // include_groups: "album"
         }
       })
       .then(response => {
         commit("load_artistAlbums", response.data);
-        console.log("ALBUMS",response)
+        console.log("ALBUMS", response);
       })
       .catch(error => {
         console.log("axios caught an error in getArtistAlbums");
@@ -197,7 +197,7 @@ const actions = {
    */
 
   getArtistRelatedArtists({ commit }, payload) {
-    console.log("dsa",payload.id);
+    console.log("dsa", payload.id);
     axios
       .get(`/v1/artists/${payload.id}/related-artists`, {
         headers: {

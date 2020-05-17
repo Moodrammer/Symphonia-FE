@@ -48,7 +48,7 @@ import getuserToken from "../mixins/userService";
 import getuserID from "../mixins/userService";
 
 /**
- * @displayName Create Playlist
+ * @displayName Delete Playlist
  * @example [none]
  */
 export default {
@@ -66,8 +66,9 @@ export default {
      * @public This is a public method
      * @param {none}
      */
-    deleted: function() {
+    deleted: async function() {
       this.$store.dispatch("playlist/deletePlaylist", this.getuserToken());
+      this.$store.dispatch("playlist/getPlaylists", this.getuserToken());
       this.$store.commit("playlist/changeDeleteModel");
       this.$router.push(`/webhome/collection/playlists`);
       this.dialog = false;
