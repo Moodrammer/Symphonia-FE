@@ -90,8 +90,7 @@
                     v-else
                     rounded
                     class="white--text px-8"
-                    id="playBtn"
-                    @click="play"
+                    id="playBtnDisabled"
                     disabled
                   >
                     Play
@@ -211,13 +210,7 @@ export default {
      * @public This is a public method
      * @param {none}
      */
-    play: function() {
-      this.$store.dispatch("track/playSongStore", {
-        songId: this.tracks[0]._id,
-        token: "Bearer " + this.getuserToken(),
-        contextId: this.playlist._id
-      });
-    },
+    play: function() {},
 
     /**
      *Function to follow this playlist,gets called when the user clicks on white heart icon
@@ -297,20 +290,21 @@ export default {
     this.isFollowedPlaylist();
   },
   watch: {
-    "$route.params.id": function() {
+    playlistID: function() {
       if (this.isLoggedIn()) {
         this.$store.commit("playlist/changeAdsPopup");
       }
       this.getPlaylistData();
       this.getPlaylistTracks();
       this.isFollowedPlaylist();
+    },
+    updatePlaylistTracks: function() {
+      if (this.updatePlaylistTracks) {
+        this.getPlaylistData();
+        this.getPlaylistTracks();
+        this.$store.commit("playlist/changeUpdatePlaylistTracks");
+      }
     }
-  },
-  mounted() {
-    this.$root.$on("update", () => {
-      this.getPlaylistData();
-      this.getPlaylistTracks();
-    });
   },
   computed: {
     playlist() {
@@ -326,6 +320,12 @@ export default {
       return (
         this.$store.state.playlist.singlePlaylist.owner._id == this.getuserID()
       );
+    },
+    updatePlaylistTracks() {
+      return this.$store.state.playlist.updateTracksFlag;
+    },
+    playlistID() {
+      return this.$route.params.id;
     }
   },
   props: {

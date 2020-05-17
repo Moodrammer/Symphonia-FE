@@ -121,16 +121,20 @@ export default {
   data: function() {
     return {
       hover: false,
-      iconClick: false
+      iconClick: false,
+      update: false
     };
+  },
+  watch: {
+    isUpdateTracks: function() {
+      if (this.isUpdateTracks) {
+        this.$store.dispatch("track/getTracks", this.getuserToken());
+        this.$store.commit("track/changeUpdateTracks");
+      }
+    }
   },
   created: function() {
     this.$store.dispatch("track/getTracks", this.getuserToken());
-  },
-  mounted() {
-    this.$root.$on("updateContent", () => {
-      this.$store.dispatch("track/getTracks", this.getuserToken());
-    });
   },
   computed: {
     tracks() {
@@ -138,6 +142,9 @@ export default {
     },
     numOfTracks() {
       return this.$store.state.track.savedTracksNum;
+    },
+    isUpdateTracks() {
+      return this.$store.state.track.updateSavedTracks;
     }
   },
   props: ["contextMenu"],

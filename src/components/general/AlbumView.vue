@@ -171,8 +171,7 @@ export default {
     return {
       hover: false,
       iconClick: false,
-      id: this.$route.params.id,
-      disable: false
+      id: this.$route.params.id
     };
   },
   methods: {
@@ -182,15 +181,7 @@ export default {
      * @param {none}
      */
     play: function() {
-      if (this.isLoggedIn()) {
-        this.$store.dispatch("track/playSongStore", {
-          songId: this.tracks[0]._id,
-          token: "Bearer " + this.getuserToken(),
-          contextId: this.$route.params.id
-        });
-      } else {
-        this.snackbar = true;
-      }
+      //To be added
     },
     /**
      * Gets called when the user clicks on heart icon to follow the album
@@ -198,14 +189,10 @@ export default {
      * @param {none}
      */
     followAlbum: function() {
-      if (this.isLoggedIn()) {
         this.$store.dispatch("album/followAlbum", {
           albumID: this.id,
           token: this.getuserToken()
         });
-      } else {
-        this.snackbar = true;
-      }
     },
     /**
      * Gets called when the user clicks on heart icon to unfollow the album
@@ -213,14 +200,10 @@ export default {
      * @param {none}
      */
     unfollowAlbum: async function() {
-      if (this.isLoggedIn()) {
         await this.$store.dispatch("album/unfollowAlbum", {
           id: this.id,
           token: this.getuserToken()
         });
-      } else {
-        this.snackbar = true;
-      }
     },
     /**
      * Function to set the right click menu data

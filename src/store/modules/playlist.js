@@ -74,8 +74,8 @@ const mutations = {
   setPlaylistID(state, ID) {
     state.playlistID = ID;
   },
-  setUpdateTracksFlag(state) {
-    state.updateTracksFlag = true;
+  changeUpdatePlaylistTracks(state) {
+    state.updateTracksFlag = !state.updateTracksFlag;
   },
   setAddedTracks(state, payload) {
     state.tracksToAdd = payload;
@@ -343,7 +343,7 @@ const actions = {
         }
       )
       .then(() => {
-        commit("setUpdateTracksFlag");
+        commit("changeUpdatePlaylistTracks");
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -364,7 +364,7 @@ const actions = {
         }
       )
       .then(() => {
-        commit("setUpdateTracksFlag");
+        commit("changeUpdatePlaylistTracks");
       })
       .catch(error => {
         console.log("axios caught an error");

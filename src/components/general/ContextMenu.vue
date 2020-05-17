@@ -40,7 +40,6 @@ export default {
     openMenu($event, id, type) {
       this.id = id;
       this.type = type;
-      console.log(id, type);
       switch (type) {
         case "artist":
           this.artist();
@@ -276,10 +275,7 @@ export default {
         id: [this.id],
         token: this.getuserToken()
       });
-      /**
-       * Update the playlist tracks event.
-       */
-      this.$root.$emit("updateContent");
+      this.$store.commit("track/changeUpdateTracks");
     },
 
     /**
@@ -303,7 +299,6 @@ export default {
         playlistID: this.$route.params.id,
         ids: [this.id]
       });
-      this.$root.$emit("update");
     },
     //-----------------------------------------------------------------
     //                     Album Functions

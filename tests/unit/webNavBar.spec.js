@@ -1,5 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
+import Vuex from "vuex";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 
@@ -8,16 +9,32 @@ import NavBar from "@/components/WebplayerLayout/WebNavBar.vue";
 describe("Nav Bar", () => {
   let wrapper;
   let vuetify;
+  let store;
 
   beforeEach(() => {
     const router = new VueRouter();
     vuetify = new Vuetify();
+
     Vue.use(Vuetify);
     Vue.use(VueRouter);
+    Vue.use(Vuex);
+
+    store = new Vuex.Store({
+      modules: {
+        category: {
+          namespaced:true,
+          mutations: {
+            changeLogoutUpdate: jest.fn()
+          }
+        }
+      }
+    });
     wrapper = shallowMount(NavBar, {
       router,
+      store,
       vuetify,
-      attachToDocument: true
+      attachToDocument: true,
+      removeEventListener: jest.fn()
     });
   });
 
@@ -104,5 +121,21 @@ describe("Nav Bar", () => {
     const icon = wrapper.find("#backward");
     icon.vm.$emit("click");
     expect("prev").toBeCalled;
+  });
+
+  it("Add event listener", () => {
+    window.dispatchEvent(new Event("scroll"));
+    expect(wrapper.vm.updateScroll()).toHaveBeenCalled;
+  });
+
+  it("Watch the route", () => {
+    wrapper.vm.$options.watch.$route.call(wrapper.vm);
+    expect(wrapper.vm.handleTabs).toBeCalled;
+    expect(wrapper.vm.itemChosen).toBeCalled;
+  });
+
+  it("Destory the event listener", () => {
+    wrapper.destroy();
+    expect(wrapper.vm.updateScroll()).toHaveBeenCalled;
   });
 });

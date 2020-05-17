@@ -44,7 +44,8 @@ const state = {
   picInPicCanvas: undefined,
   isPicInPicCanvasRdy: false,
   savedTracks: [],
-  savedTracksNum: null
+  savedTracksNum: null,
+  updateSavedTracks: false
 };
 
 const mutations = {
@@ -125,6 +126,9 @@ const mutations = {
   },
   setTracksNum(state, num) {
     state.savedTracksNum = num;
+  },
+  changeUpdateTracks(state) {
+    state.updateSavedTracks = !state.updateSavedTracks;
   }
 };
 

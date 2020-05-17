@@ -113,7 +113,7 @@ describe("changePass", () => {
         return true;
       }
     });
-    expect(wrapper.vm.updatePass.called).toBe(true);
+    expect(wrapper.vm.updatePass()).toBe(true);
   });
   it("check that the currrent password empty to trigger error", () => {
     let current = wrapper.find("#current");

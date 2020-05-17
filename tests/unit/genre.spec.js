@@ -4,7 +4,7 @@ import Vuex from "vuex";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 
-import genre from "@/components/general/Genre.vue";
+import genre from "@/components/general/GenreView.vue";
 import cardGrid from "@/components/general/CardGrid.vue";
 
 describe("Genre Component", () => {

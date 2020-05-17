@@ -54,7 +54,7 @@ export default {
     AdsPopup
   },
   watch: {
-    "contextMenu.id": function() {
+    contextID: function() {
       if (this.contextMenu.id != null) {
         this.$refs.context.openMenu(
           this.contextMenu.event,
@@ -63,13 +63,13 @@ export default {
         );
         this.contextMenu.id = null;
       }
+    },
+    isLogoutUpdate: function() {
+      if (this.isLogoutUpdate) {
+        this.$store.commit("category/changeLogoutUpdate");
+        this.$forceUpdate();
+      }
     }
-  },
-  mounted: function() {
-    //Handle the updateContent event by force the component to update
-    this.$root.$on("updateContent", () => {
-      this.$forceUpdate();
-    });
   },
   computed: {
     deletePlaylist() {
@@ -83,6 +83,12 @@ export default {
     },
     isAdsActive() {
       return this.$store.state.playlist.adsPopup;
+    },
+    isLogoutUpdate() {
+      return this.$store.state.category.logoutUpdate;
+    },
+    contextID() {
+      return this.contextMenu.id;
     }
   },
   mixins: [isLoggedIn]

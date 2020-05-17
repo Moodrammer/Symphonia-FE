@@ -5,7 +5,7 @@ import Vuex from "vuex";
 
 //importing the required components
 import likedSongs from "@/views/LikedSongs.vue";
-import Song from "@/components/general/Song.vue";
+import SongItem from "@/components/general/SongItem.vue";
 
 describe("Liked Songs", () => {
   let wrapper;
@@ -20,10 +20,10 @@ describe("Liked Songs", () => {
     //Mocking the store
     store = new Vuex.Store({
       modules: {
-        category: {
+        track: {
           namespaced: true,
           state: {
-            tracks: [
+            savedTracks: [
               {
                 name: "Sulk",
                 durationMs: 30000,
@@ -31,18 +31,16 @@ describe("Liked Songs", () => {
                 artist: "5e8b6d866253cb184eaac150",
                 album: "5e8b6d866253cb184eaac150"
               }
-            ]
+            ],
+            savedTracksNum: 1,
+            updateSavedTracks: false
           },
-
+          mutation: {
+            changeUpdateTracks: jest.fn()
+          },
           actions: {
             getTracks: jest.fn()
           }
-        }
-      },
-      track: {
-        namespaced: true,
-        state: {
-          generalLiked: true
         }
       }
     });
@@ -50,7 +48,10 @@ describe("Liked Songs", () => {
     //Mount the component to be tested
     wrapper = shallowMount(likedSongs, {
       vuetify,
-      store
+      store,
+      stubs: {
+        updateContent: likedSongs
+      }
     });
   });
 
@@ -77,16 +78,12 @@ describe("Liked Songs", () => {
     const img = wrapper.find("#playPhoto");
     expect(img.exists()).toBe(true);
   });
-
-  it("Contains Song component", () => {
-    expect(wrapper.contains(Song)).toBe(true);
-  });
-
   //-------------------------------------------------
   //             Update the tracks
   //-------------------------------------------------
-  it("Get Saved tracks", async () => {
-    wrapper.vm.$root.$on("updateContent");
-    expect("getTracks").toHaveBeenCalled;
+  it("Update Saved tracks", async () => {
+    wrapper.vm.$options.watch.isUpdateTracks.call(wrapper.vm);
+    store.state.track.updateSavedTracks = true;
+    expect("getTracks").toBeCalled;
   });
 });

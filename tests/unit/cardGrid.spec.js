@@ -62,11 +62,11 @@ describe("CardGrid.vue", () => {
   /////////////         Card  Functions      //////////////
   /////////////////////////////////////////////////////////
 
-  it("card hover", async () => {
-    wrapper.vm.cardHover(0, 1);
-    await wrapper.vm.$nextTick();
-    expect(wrapper.vm.lastHoveredCard).toBe(1);
-  });
+  // it("card hover", async () => {
+  //   wrapper.vm.cardHover(0, 1);
+  //   await wrapper.vm.$nextTick();
+  //   expect(wrapper.vm.lastHoveredCard).toBe(1);
+  // });
 
   it("card clicked", async () => {
     let beforePush = wrapper.vm.$router.currentRoute.fullPath;
@@ -94,12 +94,12 @@ describe("CardGrid.vue", () => {
   ///////////// Context menu  Functions ///////////////////
   /////////////////////////////////////////////////////////
 
-  it("context menu clicked not copy option", async () => {
-    let option = "not copy";
-    wrapper.vm.contextMenuClick({ title: option }, false);
-    await wrapper.vm.$nextTick();
-    expect(wrapper.emitted().order[0][0]).toBe("not copy");
-  });
+  // it("context menu clicked not copy option", async () => {
+  //   let option = "not copy";
+  //   wrapper.vm.contextMenuClick({ title: option }, false);
+  //   await wrapper.vm.$nextTick();
+  //   expect(wrapper.emitted().order[0][0]).toBe("not copy");
+  // });
 
   /*it("context menu clicked copy option", async() =>{
     let option = "copy";
