@@ -40,7 +40,6 @@ export default {
     openMenu($event, id, type) {
       this.id = id;
       this.type = type;
-      console.log(id, type);
       switch (type) {
         case "artist":
           this.artist();
@@ -300,7 +299,6 @@ export default {
         playlistID: this.$route.params.id,
         ids: [this.id]
       });
-      this.$root.$emit("update");
     },
     //-----------------------------------------------------------------
     //                     Album Functions
