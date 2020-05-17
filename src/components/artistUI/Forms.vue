@@ -59,51 +59,58 @@
             </v-row>
 
             <div v-for="i in tracksNumber" :key="i">
-            <v-row><v-divider></v-divider></v-row>
+              <v-row><v-divider></v-divider></v-row>
               <v-row>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  :placeholder="`Track${i} Name`"
-                  required
-                  v-model="albumTrackName[i - 1]"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-file-input
-                  accept="audio/mp3"
-                  :rules="rules"
-                  :placeholder="`Track${i}.mp3`"
-                  prepend-icon="mdi-music"
-                  v-model="albumTrackFile[i - 1]"
-                  required
-                  loading="true"
-                ></v-file-input>
-              </v-col>
-              <!-- <v-row>
+                <v-col cols="12" sm="6" md="6">
+                  <v-text-field
+                    :placeholder="`Track${i} Name`"
+                    required
+                    v-model="albumTrackName[i - 1]"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                  <v-file-input
+                    accept="audio/mp3"
+                    :rules="rules"
+                    :placeholder="`Track${i}.mp3`"
+                    prepend-icon="mdi-music"
+                    v-model="albumTrackFile[i - 1]"
+                    required
+                    loading="true"
+                  ></v-file-input>
+                </v-col>
+                <!-- <v-row>
                 <v-col><v-title>Track{{ i }} Categories:</v-title></v-col>
               </v-row> -->
-              <v-row>
-                <v-col cols="12" md="4" 
-                  class="pt-0"
-                  v-for="(item, index) in albumTracksCategories[i - 1]"
-                  :key="index"
-                >
-                  <v-checkbox
-                    v-model="item.checked"
-                    :label="item.name"
-                  ></v-checkbox>
-                </v-col>
-              </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    md="4"
+                    class="pt-0"
+                    v-for="(item, index) in albumTracksCategories[i - 1]"
+                    :key="index"
+                  >
+                    <v-checkbox
+                      v-model="item.checked"
+                      :label="item.name"
+                    ></v-checkbox>
+                  </v-col>
+                </v-row>
 
-              <v-row>
-                <v-col>
-                  <v-switch v-model="explicit[i-1]" label="Explicit"></v-switch>
-                </v-col>
-                <v-col>
-                  <v-switch v-model="premium[i-1]" label="Premium"></v-switch>
-                </v-col>
-              </v-row>
-
+                <v-row>
+                  <v-col>
+                    <v-switch
+                      v-model="explicit[i - 1]"
+                      label="Explicit"
+                    ></v-switch>
+                  </v-col>
+                  <v-col>
+                    <v-switch
+                      v-model="premium[i - 1]"
+                      label="Premium"
+                    ></v-switch>
+                  </v-col>
+                </v-row>
               </v-row>
             </div>
           </v-container>
@@ -126,8 +133,8 @@
     </v-dialog>
     <v-dialog persistent v-model="uploading">
       <v-text-field color="success" loading disabled></v-text-field>
-      <h6 v-for="(item,index) in uploadedFiles" :key="index">
-        {{item}} uploaded <v-icon>mdi-check</v-icon>  
+      <h6 v-for="(item, index) in uploadedFiles" :key="index">
+        {{ item }} uploaded <v-icon>mdi-check</v-icon>
       </h6>
     </v-dialog>
   </v-row>
@@ -143,12 +150,12 @@ export default {
   },
 
   data: () => ({
-    uploadedFiles:[],
+    uploadedFiles: [],
     uploading: false,
     rules: [(value) => !value || value.size <= 1000000 || "MAX SIZE IS 1 MB"],
     albumTracksNumber: 0,
     premium: [],
-    explicit:[],
+    explicit: [],
     startUpload: false,
     show: false,
     dialog: false,
@@ -158,7 +165,7 @@ export default {
     albumTrackFile: [],
     categories: [],
     albumTracksCategories: [],
-    albumID:null,
+    albumID: null,
     alert: {
       msg: "Please Complete required fields",
       type: "error",
@@ -167,20 +174,22 @@ export default {
   }),
   mixins: [getuserToken],
   watch: {
-    explicit:function(newValue){console.log(newValue)},
-    uploading: function(){
-      this.uploadedFiles = []
+    explicit: function(newValue) {
+      console.log(newValue);
+    },
+    uploading: function() {
+      this.uploadedFiles = [];
     },
     tracksNumber: function(newValue) {
-      console.log(newValue)
+      console.log(newValue);
       let x = this.categories;
       this.albumTracksCategories = [];
       this.premium = [];
       this.explicit = [];
       this.albumTrackName = [];
       this.albumTrackFile = [];
-        
-      for (let i = 0; i < newValue; i++){
+
+      for (let i = 0; i < newValue; i++) {
         this.albumTracksCategories.push(JSON.parse(JSON.stringify(x)));
         this.premium.push(false);
         this.explicit.push(false);
@@ -217,19 +226,19 @@ export default {
       });
   },
   methods: {
-    addTrackToAblum(payload){
+    addTrackToAblum(payload) {
       const form = new FormData();
-      console.log("sadsdsa",payload)
+      console.log("sadsdsa", payload);
       // form.append("my_field", "my value");
       form.append("name", payload.name);
       form.append("track", payload.track);
-      payload.categories.forEach(element => {
+      payload.categories.forEach((element) => {
         form.append("category", element.id);
       });
       form.append("album", payload.albumID);
       form.append("explicit", payload.explicit);
       form.append("premium", payload.premium);
-      let token = this.getuserToken()
+      let token = this.getuserToken();
       axios
         .post("/v1/users/tracks", form, {
           headers: {
@@ -238,7 +247,7 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          this.uploadedFiles.push(payload.name)
+          this.uploadedFiles.push(payload.name);
           // this.albumID = response.
         })
         .catch((error) => console.log(error));
@@ -297,18 +306,20 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          this.albumID = response.data._id
-          console.log(this.albumID)
-          console.log(this.albumTrackName.length)
-          for(let i = 0; i < this.albumTrackName.length; i++)
+          this.albumID = response.data._id;
+          console.log(this.albumID);
+          console.log(this.albumTrackName.length);
+          for (let i = 0; i < this.albumTrackName.length; i++)
             this.addTrackToAblum({
               name: this.albumTrackName[i],
               track: this.albumTrackFile[i],
               explicit: this.explicit[i],
               premium: this.premium[i],
-              categories: this.albumTracksCategories[i].filter(e => e.checked),
-              albumID: this.albumID
-            })
+              categories: this.albumTracksCategories[i].filter(
+                (e) => e.checked
+              ),
+              albumID: this.albumID,
+            });
           this.startUpload = false;
         })
         .catch((error) => console.log(error));
