@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 import VueRouter from 'vue-router'
 import Vue from "vue";
 import Vuetify from "vuetify";
@@ -107,7 +107,7 @@ describe("Context Menu", () => {
     }
   }
     });
-    wrapper = shallowMount(ContextMenu, {
+    wrapper = mount(ContextMenu, {
       vuetify,
       store,
       document,

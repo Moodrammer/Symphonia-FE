@@ -22,6 +22,7 @@ describe("Nav Bar", () => {
     store = new Vuex.Store({
       modules: {
         category: {
+          namespaced:true,
           mutations: {
             changeLogoutUpdate: jest.fn()
           }

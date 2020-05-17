@@ -22,14 +22,11 @@ describe("Webplayer Home - user logged in", () => {
           state: {
             categories: []
           },
-          getters: {
-            categoriesGetter: state => {
-              return state.categories;
-            }
-          },
           actions: {
             loadGenres: jest.fn(),
-            loadUserSections: jest.fn()
+            recentlyPlayedSection:jest.fn(),
+            getNewReleases:jest.fn(),
+            yourPlaylistsSection:jest.fn()
           }
         }
       }
