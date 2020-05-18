@@ -34,7 +34,7 @@ describe("DeletePlaylist", () => {
           },
           actions: {
             deletePlaylist: jest.fn(),
-            getPlaylists:jest.fn()
+            getPlaylists: jest.fn()
           }
         }
       }

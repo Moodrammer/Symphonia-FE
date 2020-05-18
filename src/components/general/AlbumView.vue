@@ -2,7 +2,19 @@
   <!--The Album view wil be used later-->
   <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
     <v-container class="pt-0">
-      <v-row justify="center">
+      <v-row
+        justify="center"
+        align-content="center"
+        v-if="isLoading"
+        class="centering"
+      >
+        <pulse-loader
+          :loading="isLoading"
+          color="white"
+          size="20px"
+        ></pulse-loader>
+      </v-row>
+      <v-row justify="center" v-else>
         <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">
           <v-container class="pt-0">
             <v-row justify-lg="center">
@@ -158,6 +170,7 @@ import getDeviceSize from "../../mixins/getDeviceSize";
 import getuserToken from "../../mixins/userService";
 import getuserID from "../../mixins/userService";
 import isLoggedIn from "../../mixins/userService";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
 /**
  * @displayName Album View
@@ -165,7 +178,8 @@ import isLoggedIn from "../../mixins/userService";
  */
 export default {
   components: {
-    SongItem
+    SongItem,
+    PulseLoader
   },
   data: function() {
     return {
@@ -189,10 +203,10 @@ export default {
      * @param {none}
      */
     followAlbum: function() {
-        this.$store.dispatch("album/followAlbum", {
-          albumID: this.id,
-          token: this.getuserToken()
-        });
+      this.$store.dispatch("album/followAlbum", {
+        albumID: this.id,
+        token: this.getuserToken()
+      });
     },
     /**
      * Gets called when the user clicks on heart icon to unfollow the album
@@ -200,10 +214,10 @@ export default {
      * @param {none}
      */
     unfollowAlbum: async function() {
-        await this.$store.dispatch("album/unfollowAlbum", {
-          id: this.id,
-          token: this.getuserToken()
-        });
+      await this.$store.dispatch("album/unfollowAlbum", {
+        id: this.id,
+        token: this.getuserToken()
+      });
     },
     /**
      * Function to set the right click menu data
@@ -248,6 +262,9 @@ export default {
     },
     followed() {
       return this.$store.state.album.isFollowdAlbum;
+    },
+    isLoading() {
+      return this.$store.state.album.isLoading;
     }
   },
   props: ["contextMenu"],
@@ -292,5 +309,16 @@ export default {
 
 #year {
   opacity: 0.6;
+}
+
+.centering {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  margin: auto;
 }
 </style>

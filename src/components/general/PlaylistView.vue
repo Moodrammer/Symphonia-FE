@@ -1,7 +1,19 @@
 <template>
   <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
     <v-container class="pt-0">
-      <v-row justify="center">
+      <v-row
+        justify="center"
+        align-content="center"
+        v-if="isLoading"
+        class="centering"
+      >
+        <pulse-loader
+          :loading="isLoading"
+          color="white"
+          size="20px"
+        ></pulse-loader>
+      </v-row>
+      <v-row justify="center" v-else>
         <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">
           <v-container class="pt-0">
             <v-row justify-lg="center">
@@ -187,14 +199,15 @@ import getDeviceSize from "../../mixins/getDeviceSize";
 import getuserToken from "../../mixins/userService";
 import getuserID from "../../mixins/userService";
 import isLoggedIn from "../../mixins/userService";
-
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 /**
  * @displayName Playlist View
  * @example [none]
  */
 export default {
   components: {
-    SongItem
+    SongItem,
+    PulseLoader
   },
   data: function() {
     return {
@@ -326,6 +339,9 @@ export default {
     },
     playlistID() {
       return this.$route.params.id;
+    },
+    isLoading() {
+      return this.$store.state.playlist.isLoading;
     }
   },
   props: {
@@ -371,5 +387,16 @@ h5 {
 .small-col {
   width: 157px;
   height: 157px;
+}
+
+.centering {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  margin: auto;
 }
 </style>

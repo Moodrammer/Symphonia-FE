@@ -20,7 +20,9 @@ const state = {
   deletePlaylist: false,
   createPlaylist: false,
   addTrack: false,
-  adsPopup: false
+  adsPopup: false,
+
+  isLoading: false
 };
 
 const mutations = {
@@ -40,6 +42,7 @@ const mutations = {
   setPlaylist(state, payload) {
     if (payload.isMenu) state.menuPlaylist = payload.playlist;
     else state.singlePlaylist = payload.playlist;
+    state.isLoading = false;
   },
   setPlaylistTracks(state, tracks) {
     state.playlistTracks = tracks;
@@ -82,6 +85,9 @@ const mutations = {
   },
   createWithTrackModel(state) {
     state.createWithTrack = !state.createWithTrack;
+  },
+  setLoading() {
+    state.isLoading = true;
   }
 };
 
@@ -102,6 +108,7 @@ const actions = {
   //   Get a single playlist's data
   //--------------------------------------------------------
   async getPlaylist({ commit }, payload) {
+    commit("setLoading");
     await axios
       .get("/v1/playlists/" + payload.playlistID)
       .then(response => {
