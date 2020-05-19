@@ -45,7 +45,9 @@ const state = {
   isPicInPicCanvasRdy: false,
   savedTracks: [],
   savedTracksNum: null,
-  updateSavedTracks: false
+  updateSavedTracks: false,
+
+  audioContext: undefined,
 };
 
 const mutations = {
@@ -129,6 +131,17 @@ const mutations = {
   },
   changeUpdateTracks(state) {
     state.updateSavedTracks = !state.updateSavedTracks;
+  },
+  initAudioContext(state) {
+    // the AudioContext is the primary 'container' for all your audio node objects
+    if (!state.audioContext) {
+      try {
+        state.audioContext = new AudioContext();
+      } catch (e) {
+        alert(e);
+        alert("Web Audio API is not supported in this browser");
+      }
+    }
   }
 };
 
@@ -448,7 +461,7 @@ const actions = {
 
       state.isNextAndPreviousFinished = true;
     } else {
-      await axios({
+      axios({
         method: "post",
         url: "/v1/me/player/next",
         headers: {
