@@ -1,11 +1,9 @@
 <template>
-  <p style="display: block;">
     <canvas
       ref="soundGrapher"
       style="width: 100%; height: fit-content;"
       :height="canvasHeight"
     ></canvas>
-  </p>
 </template>
 
 <script>
