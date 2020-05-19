@@ -1,7 +1,7 @@
 <template>
   <p style="display: block;">
     <canvas
-      id="canvas"
+      ref="soundGrapher"
       style="width: 100%; height: fit-content;"
       :height="canvasHeight"
     ></canvas>
@@ -9,17 +9,17 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   computed: {
     ...mapState({
       audioElement: (state) => state.track.audioElement,
+      audioContext: (state) => state.track.audioContext
     }),
   },
   data() {
     return {
-      audioContext: undefined,
       sourceNode: undefined,
       analyserNode: undefined,
       javascriptNode: undefined,
@@ -30,50 +30,13 @@ export default {
       ctx: undefined,
     };
   },
-  mounted: function() {
-    // the AudioContext is the primary 'container' for all your audio node objects
-    if (!this.audioContext) {
-      try {
-        this.audioContext = new AudioContext();
-      } catch (e) {
-        alert(e);
-        alert("Web Audio API is not supported in this browser");
-      }
-    }
-
-    // Set up the audio Analyser, the Source Buffer and javascriptNode
-    this.setupAudioNodes();
-    // setup the event handler that is triggered every time enough samples have been collected
-    // trigger the audio analysis and draw the results
-    this.javascriptNode.onaudioprocess = this._handleOnAudioProcess;
-
-    // Hacks to deal with different function names in different browsers
-    window.requestAnimFrame = (function() {
-      return (
-        window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        function(callback) {
-          window.setTimeout(callback, 1000 / 60);
-        }
-      );
-    })();
-    window.AudioContext = (function() {
-      return (
-        window.webkitAudioContext ||
-        window.AudioContext ||
-        window.mozAudioContext
-      );
-    })();
-
-    this.ctx = document.querySelector("#canvas").getContext("2d");
-  },
   methods: {
+    ...mapMutations("track", ["initAudioContext"]),
+
     // When the Start button is clicked, finish setting up the audio nodes, play the sound,
     // gather samples for the analysis, update the canvas
 
     setupAudioNodes: function() {
-      //this.sourceNode = this.audioContext.createBufferSource();
       this.sourceNode = this.audioContext.createMediaElementSource(
         this.audioElement
       );
@@ -100,7 +63,7 @@ export default {
       for (let i = 0; i < this.amplitudeArray.length; i++) {
         let value = this.amplitudeArray[i] / 256;
         let y = this.canvasHeight - this.canvasHeight * value - 1;
-        this.ctx.fillStyle = "red";
+        this.ctx.fillStyle = "blue";
         this.ctx.fillRect(i, y, 1, 1);
       }
     },
@@ -113,6 +76,44 @@ export default {
       this.analyserNode.getByteTimeDomainData(this.amplitudeArray);
       window.requestAnimFrame(this.drawTimeDomain);
     },
+    /**
+     * initialize the component
+     * 
+     * @public
+     */
+    init: function () {
+      this.initAudioContext();
+
+    // Set up the audio Analyser, the Source Buffer and javascriptNode
+    this.setupAudioNodes();
+    // setup the event handler that is triggered every time enough samples have been collected
+    // trigger the audio analysis and draw the results
+    this.javascriptNode.onaudioprocess = this._handleOnAudioProcess;
+
+    // Hacks to deal with different function names in different browsers
+    window.requestAnimFrame = (function() {
+      return (
+        window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        function(callback) {
+          window.setTimeout(callback, 1000 / 60);
+        }
+      );
+    })();
+    window.AudioContext = (function() {
+      return (
+        window.webkitAudioContext ||
+        window.AudioContext ||
+        window.mozAudioContext
+      );
+    })();
+
+    this.ctx = this.$refs.soundGrapher.getContext("2d");
+    }
+  },
+  mounted: function() {
+    this.init(); 
   },
 };
 </script>
