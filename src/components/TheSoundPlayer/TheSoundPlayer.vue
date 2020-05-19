@@ -7,7 +7,11 @@
       preload="auto"
     ></audio>
 
-    <sound-grapher v-if="isSoundgrapherEnabled" />
+    <v-row style="min-width: 100%;" flat color="rgba(0,0,0,0)">
+      <v-col cols="12">
+        <sound-grapher v-if="isSoundgrapherEnabled" />
+      </v-col>
+    </v-row>
 
     <!-- song info -->
     <v-row>
