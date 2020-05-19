@@ -15,7 +15,7 @@
 
     <!-- song info -->
     <v-row>
-      <v-col cols="4">
+      <v-col lg="4" md="4" sm="12" xs="12">
         <v-toolbar flat color="rgba(0,0,0,0)">
           <v-avatar tile size="56">
             <img :src="trackAlbumImageUrl" />
@@ -101,7 +101,7 @@
         </v-toolbar>
       </v-col>
 
-      <v-col cols="5">
+      <v-col lg="5" md="5" sm="5" xs="5">
         <div class="audio-controls">
           <!-- shuffle -->
           <a
@@ -239,17 +239,31 @@
               isProgressBarPressed = false;
             "
             v-model="currentTimeInSec"
+            class="hidden-sm-and-down"
           />
+          
+          <input
+            id="songBar"
+            type="range"
+            min="0"
+            v-bind:max="trackTotalDuration"
+            @mousedown="isProgressBarPressed = true"
+            @mouseup="
+              audioElement.currentTime = currentTimeInSec;
+              isProgressBarPressed = false;
+            "
+            v-model="currentTimeInSec"
+            class="progress-slider-sm hidden-md-and-up"
+          />
+          
           <span class="time" style="padding-left: 10px; margin-top:0px;">{{
             duration
           }}</span>
         </v-toolbar>
       </v-col>
 
-      <v-spacer></v-spacer>
 
-      <v-col cols="2" style="background: rgba(0, 0, 0, 0);">
-        <!-- mute or change the volume-->
+      <v-col lg="2" md="2" sm="7" xs="7" style="background: rgba(0, 0, 0, 0);">
         <div style="padding-top: 20px;">
           <router-link
             to="/webhome/collection/queue"
