@@ -5,7 +5,6 @@ import Vuex from "vuex";
 
 //importing the required components
 import likedSongs from "@/views/LikedSongs.vue";
-import SongItem from "@/components/general/SongItem.vue";
 
 describe("Liked Songs", () => {
   let wrapper;

@@ -6,7 +6,6 @@ import VueRouter from "vue-router";
 
 //import the required componets
 import AlbumView from "@/components/general/AlbumView.vue";
-import SongItem from "@/components/general/SongItem.vue";
 
 describe("Album View", () => {
   let wrapper;
