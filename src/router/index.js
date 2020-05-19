@@ -24,6 +24,7 @@ import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
+import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue"
 
 Vue.use(VueRouter);
 
@@ -209,6 +210,11 @@ const routes = [
     path: "/artist-activation/:activationToken",
     name: "artistActivation",
     component: ArtistActivation
+  },
+  {
+    path: "/soundgrapher",
+    name: "soundGrapher",
+    component: soundGrapher
   }
 ];
 

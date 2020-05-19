@@ -6,6 +6,9 @@
       style="display:none;"
       preload="auto"
     ></audio>
+
+    <sound-grapher v-if="isSoundgrapherEnabled" />
+
     <!-- song info -->
     <v-row>
       <v-col cols="4">
@@ -301,9 +304,14 @@
 
 import { mapMutations, mapActions, mapState } from "vuex";
 import getuserToken from "../../mixins/userService";
+import SoundGrapher from "./TheSoundGrapher.vue" 
 
 export default {
   name: "soundplayer",
+
+  components: {
+    SoundGrapher,
+  },
 
   mixins: [getuserToken],
 
@@ -353,6 +361,7 @@ export default {
       isMuted: false,
       isProgressBarPressed: false,
       isVolumePressed: false,
+      isSoundgrapherEnabled: false,
 
       devices: undefined,
       currentDeviceId: undefined,
@@ -738,6 +747,7 @@ export default {
   },
   mounted: function() {
     this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
+    this.isSoundgrapherEnabled = true;
     this.init();
   },
   beforeDestroy: function() {
