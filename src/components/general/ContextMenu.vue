@@ -10,7 +10,13 @@
 
 <script>
 import { VueContext } from "vue-context";
-
+import getuserToken from "../../mixins/userService";
+import getuserID from "../../mixins/userService";
+import isLoggedIn from "../../mixins/userService";
+/**
+ * @displayName Context Menu
+ * @example [none]
+ */
 export default {
   name: "ContextMenu",
   data() {
@@ -20,15 +26,12 @@ export default {
       menuList: null,
       //initial data to be manipulated after the user make a right click
       artistMenu: ["Follow", "Copy Artist Link"],
-      playlistMenu: ["Save to Your Library", "Copy Playlist Link"],
-      albumMenu: [
-        "Remove from Your Library",
-        "Add to Playlist",
-        "Copy Album Link"
-      ]
+      playlistMenu: [],
+      albumMenu: [],
+      trackMenu: []
     };
   },
-
+  mixins: [getuserToken, isLoggedIn, getuserID],
   components: {
     VueContext
   },
@@ -37,7 +40,6 @@ export default {
     openMenu($event, id, type) {
       this.id = id;
       this.type = type;
-      console.log(id, type);
       switch (type) {
         case "artist":
           this.artist();
@@ -47,6 +49,9 @@ export default {
           break;
         case "album":
           this.album();
+          break;
+        case "track":
+          this.track();
           break;
       }
       this.$refs.menu.open($event);
@@ -62,6 +67,9 @@ export default {
           break;
         case "album":
           this.albumAction(option);
+          break;
+        case "track":
+          this.trackAction(option);
           break;
       }
     },
@@ -80,6 +88,26 @@ export default {
     playlistAction(action) {
       //switch on all options and then execute the suitable action
       switch (action) {
+        case "Make secret":
+          this.makePlaylistSecret();
+          break;
+
+        case "Make public":
+          this.makePlaylistPublic();
+          break;
+
+        case "Delete":
+          this.deleteUserPlaylist();
+          break;
+
+        case "Save to Your Library":
+          this.followPlaylist();
+          break;
+
+        case "Remove from your Library":
+          this.unfollowPlaylist();
+          break;
+
         case "Copy Playlist Link":
           this.copyToClipboard(
             `https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`
@@ -91,9 +119,46 @@ export default {
     albumAction(action) {
       //switch on all options and then execute the suitable action
       switch (action) {
+        case "Save to Your Library":
+          this.followAlbum();
+          break;
+
+        case "Remove from your Library":
+          this.unfollowAlbum();
+          break;
+
+        case "Add to Playlist":
+          this.addAlbumTracksToPlaylist();
+          break;
+
         case "Copy Album Link":
           this.copyToClipboard(
-            `https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`
+            `https://zasymphonia.ddns.net/webhome/album/${this.id}`
+          );
+          break;
+      }
+    },
+    trackAction(action) {
+      switch (action) {
+        case "Save to your Liked Songs":
+          this.saveTrack();
+          break;
+
+        case "Remove from your Liked Songs":
+          this.removeTrackForUser();
+          break;
+
+        case "Add to Playlist":
+          this.addToPlaylist();
+          break;
+
+        case "Remove from this Playlist":
+          this.removeTrackFromPlaylist();
+          break;
+
+        case "Copy Song Link":
+          this.copyToClipboard(
+            `https://zasymphonia.ddns.net/webhome/album/${this.id}`
           );
           break;
       }
@@ -103,15 +168,73 @@ export default {
       this.menuList = this.artistMenu;
       //add checks like follow/unfollow and modify menuList
     },
-    playlist() {
-      this.menuList = this.playlistMenu;
-      //checks
-    },
-    album() {
-      this.menuList = this.albumMenu;
-      //checks
-    },
+    async playlist() {
+      await this.$store.dispatch("playlist/getPlaylist", {
+        playlistID: this.id,
+        isMenu: true
+      });
+      await this.$store.dispatch("playlist/checkFollowed", {
+        playlistId: this.id,
+        usersID: [this.getuserID()],
+        token: this.getuserToken()
+      });
+      this.playlistMenu = [];
+      this.playlistMenu.push("Start Radio");
 
+      if (this.isOwnedPlaylist) {
+        if (this.isPublicPlaylist) this.playlistMenu.push("Make secret");
+        else this.playlistMenu.push("Make public");
+
+        this.playlistMenu.push("Delete");
+      } else {
+        if (this.isPlaylistSaved)
+          this.playlistMenu.push("Remove from your Library");
+        else this.playlistMenu.push("Save to Your Library");
+      }
+      this.playlistMenu.push("Copy Playlist Link");
+
+      this.menuList = this.playlistMenu;
+    },
+    async album() {
+      await this.$store.dispatch("album/checkFollowed", {
+        albumID: [this.id],
+        token: this.getuserToken()
+      });
+
+      this.albumMenu = [];
+      this.albumMenu.push("Start Radio");
+
+      if (this.isAlbumSaved) this.albumMenu.push("Remove from your Library");
+      else this.albumMenu.push("Save to Your Library");
+
+      this.albumMenu.push("Add to Playlist");
+
+      this.albumMenu.push("Copy Album Link");
+
+      this.menuList = this.albumMenu;
+    },
+    async track() {
+      await this.$store.dispatch("track/checkSaved", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+      this.trackMenu = [];
+
+      this.trackMenu.push("Start Radio");
+
+      if (this.isTrackSaved)
+        this.trackMenu.push("Remove from your Liked Songs");
+      else this.trackMenu.push("Save to your Liked Songs");
+
+      this.trackMenu.push("Add to Queue");
+      this.trackMenu.push("Add to Playlist");
+
+      if (this.inUserPlaylist) this.trackMenu.push("Remove from this Playlist");
+
+      this.trackMenu.push("Copy Song Link");
+
+      this.menuList = this.trackMenu;
+    },
     copyToClipboard(url) {
       var el = document.createElement("textarea");
       // Set value (string to be copied)
@@ -126,6 +249,173 @@ export default {
       document.execCommand("copy");
       // Remove temporary element
       document.body.removeChild(el);
+    },
+    //-----------------------------------------------------------------
+    //                        Track's Function
+    //-----------------------------------------------------------------
+    /**
+     * Function to save a track for user
+     * @public This is a public method
+     * @param {none}
+     */
+    saveTrack() {
+      this.$store.dispatch("track/saveTrack", {
+        id: [this.id],
+        token: this.getuserToken()
+      });
+    },
+
+    /**
+     * Function to remove this song from user's the saved tracks
+     * @public This is a public method
+     * @param {none}
+     */
+    async removeTrackForUser() {
+      await this.$store.dispatch("track/removeSavedTrack", {
+        id: [this.id],
+        token: this.getuserToken()
+      });
+      this.$store.commit("track/changeUpdateTracks");
+    },
+
+    /**
+     * Function to add this track to a user's playlist(already existing playlist or new playlist)
+     * @public This is a public method
+     * @param {none}
+     */
+    addToPlaylist() {
+      this.$store.commit("playlist/setAddedTracks", [this.id]);
+      this.$store.commit("playlist/changeAddTrackModel");
+    },
+
+    /**
+     * Function to remove this track from this playlist , get called only from user's playlists
+     * @public This is a public method
+     * @param {none}
+     */
+    async removeTrackFromPlaylist() {
+      await this.$store.dispatch("playlist/removePlaylistTrack", {
+        token: this.getuserToken(),
+        playlistID: this.$route.params.id,
+        ids: [this.id]
+      });
+    },
+    //-----------------------------------------------------------------
+    //                     Album Functions
+    //-----------------------------------------------------------------
+    followAlbum() {
+      this.$store.dispatch("album/followAlbum", {
+        albumID: this.id,
+        token: this.getuserToken()
+      });
+    },
+    async unfollowAlbum() {
+      await this.$store.dispatch("album/unfollowAlbum", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+    },
+    async addAlbumTracksToPlaylist() {
+      await this.$store.dispatch("album/getAlbum", this.id);
+      this.$store.commit(
+        "playlist/setAddedTracks",
+        this.$store.state.album.singleAlbum.tracks
+      );
+      this.$store.commit("playlist/changeAddTrackModel");
+    },
+    //----------------------------------------------------------------
+    //                       Playlist Functions
+    //----------------------------------------------------------------
+    /**
+     * Function to make an owned playlist secret from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
+    makePlaylistSecret() {
+      this.$store.dispatch("playlist/changeDetails", {
+        playlistID: this.id,
+        public: false,
+        token: this.getuserToken()
+      });
+    },
+
+    /**
+     * Function to make an owned playlist public from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
+    makePlaylistPublic() {
+      this.$store.dispatch("playlist/changeDetails", {
+        playlistID: this.id,
+        public: true,
+        token: this.getuserToken()
+      });
+    },
+
+    /**
+     * Function to delete an owned playlist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
+    deleteUserPlaylist() {
+      this.$store.commit("playlist/setPlaylistID", this.id);
+      this.$store.commit("playlist/changeDeleteModel");
+    },
+
+    /**
+     * Function to follow a playlist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
+    followPlaylist() {
+      this.$store.dispatch("playlist/followPlaylist", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+    },
+
+    /**
+     * Function to unfollow a playlist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
+    async unfollowPlaylist() {
+      await this.$store.dispatch("playlist/unfollowPlaylist", {
+        id: this.id,
+        token: this.getuserToken()
+      });
+    }
+  },
+  computed: {
+    /**
+     * Function to check if the user saves this song or not , gets called at the menu click
+     * @public This is a public method
+     * @param {none}
+     */
+    isTrackSaved() {
+      return this.$store.state.track.generalLiked;
+    },
+    inUserPlaylist() {
+      if (this.$route.name == "playlist/:id") {
+        return (
+          this.$store.state.playlist.singlePlaylist.owner._id ==
+          this.getuserID()
+        );
+      } else return false;
+    },
+    isAlbumSaved() {
+      return this.$store.state.album.isFollowdAlbum;
+    },
+    isPublicPlaylist() {
+      return this.$store.state.playlist.menuPlaylist.public;
+    },
+    isPlaylistSaved() {
+      return this.$store.state.playlist.isFollowed;
+    },
+    isOwnedPlaylist() {
+      return (
+        this.$store.state.playlist.menuPlaylist.owner._id == this.getuserID()
+      );
     }
   }
 };

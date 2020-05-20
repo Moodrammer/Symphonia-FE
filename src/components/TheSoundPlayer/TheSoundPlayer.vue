@@ -1,9 +1,21 @@
 <template>
   <v-footer app class="sound-player">
-    <audio ref="audiofile" :src="trackUrl" style="display:none;"></audio>
+    <audio
+      ref="audiofile"
+      :src="trackUrl"
+      style="display:none;"
+      preload="auto"
+    ></audio>
+
+    <v-row style="min-width: 100%;" flat color="rgba(0,0,0,0)">
+      <v-col cols="12">
+        <sound-grapher v-if="isSoundgrapherEnabled" />
+      </v-col>
+    </v-row>
+
     <!-- song info -->
     <v-row>
-      <v-col cols="4">
+      <v-col lg="4" md="4" sm="12" xs="12">
         <v-toolbar flat color="rgba(0,0,0,0)">
           <v-avatar tile size="56">
             <img :src="trackAlbumImageUrl" />
@@ -35,10 +47,61 @@
               mdi-heart
             </v-icon>
           </a>
+
+          <!-- share -->
+
+          <v-menu offset-y top transition="slide-y-transition">
+            <template v-slot:activator="{ on }">
+              <v-btn :ripple="false" id="no-background-hover" text v-on="on">
+                <span class="mdi mdi-18px mdi-share icons"></span>
+              </v-btn>
+            </template>
+
+            <v-list style="background-color: #282828 !important">
+              <v-list-item>
+                <v-list-item-title>
+                  <!-- Your share button code -->
+                  <a
+                    style="text-decoration: none;"
+                    target="_blank"
+                    :href="facebookUrl"
+                  >
+                    <v-icon color="blue">mdi-facebook</v-icon></a
+                  >
+                </v-list-item-title>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-title>
+                  <!-- Your share button code -->
+                  <a
+                    style="text-decoration: none;"
+                    target="_blank"
+                    :href="twitterUrl"
+                  >
+                    <v-icon color="cyan">mdi-twitter</v-icon></a
+                  >
+                </v-list-item-title>
+              </v-list-item>
+
+              <v-list-item>
+                <a @click="copyLink">
+                  <v-icon color="white" title="copy link"
+                    >mdi-content-copy</v-icon
+                  >
+                </a>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+
+          <!-- picture-in-picture -->
+          <a @click="picInPic">
+            <v-icon class="icons">mdi-picture-in-picture-bottom-right</v-icon>
+          </a>
         </v-toolbar>
       </v-col>
 
-      <v-col cols="5">
+      <v-col lg="5" md="5" sm="5" xs="5">
         <div class="audio-controls">
           <!-- shuffle -->
           <a
@@ -176,17 +239,31 @@
               isProgressBarPressed = false;
             "
             v-model="currentTimeInSec"
+            class="hidden-sm-and-down"
           />
+          
+          <input
+            id="songBar"
+            type="range"
+            min="0"
+            v-bind:max="trackTotalDuration"
+            @mousedown="isProgressBarPressed = true"
+            @mouseup="
+              audioElement.currentTime = currentTimeInSec;
+              isProgressBarPressed = false;
+            "
+            v-model="currentTimeInSec"
+            class="progress-slider-sm hidden-md-and-up"
+          />
+          
           <span class="time" style="padding-left: 10px; margin-top:0px;">{{
             duration
           }}</span>
         </v-toolbar>
       </v-col>
 
-      <v-spacer></v-spacer>
 
-      <v-col cols="2" style="background: rgba(0, 0, 0, 0);">
-        <!-- mute or change the volume-->
+      <v-col lg="2" md="2" sm="7" xs="7" style="background: rgba(0, 0, 0, 0);">
         <div style="padding-top: 20px;">
           <router-link
             to="/webhome/collection/queue"
@@ -198,7 +275,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened
+                icons: !isQueueOpened,
               }"
             >
               mdi-format-list-numbered-rtl
@@ -245,9 +322,14 @@
 
 import { mapMutations, mapActions, mapState } from "vuex";
 import getuserToken from "../../mixins/userService";
+import SoundGrapher from "./TheSoundGrapher.vue" 
 
 export default {
   name: "soundplayer",
+
+  components: {
+    SoundGrapher,
+  },
 
   mixins: [getuserToken],
 
@@ -279,6 +361,10 @@ export default {
       isShuffleEnabled: (state) => state.track.isShuffleEnabled,
       isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
       historyResponse: (state) => state.category.historyResponse,
+      facebookUrl: (state) => state.track.facebookUrl,
+      twitterUrl: (state) => state.track.twitterUrl,
+      picInPicCanvas: (state) => state.track.picInPicCanvas,
+      isPicInPicCanvasRdy: (state) => state.track.isPicInPicCanvasRdy,
     }),
   },
   data() {
@@ -293,9 +379,12 @@ export default {
       isMuted: false,
       isProgressBarPressed: false,
       isVolumePressed: false,
+      isSoundgrapherEnabled: false,
 
       devices: undefined,
       currentDeviceId: undefined,
+
+      picInPicVideo: undefined,
     };
   },
   methods: {
@@ -315,6 +404,7 @@ export default {
       "setContextType",
       "setContextId",
       "setContextUrl",
+      "setPicInPicCanvas",
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -330,6 +420,7 @@ export default {
       "toggleShuffle",
       "saveTrack",
       "removeSavedTrack",
+      "copyLink",
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -338,12 +429,13 @@ export default {
      * @public
      */
     convertTimeHHMMSS: function(value) {
-      //-val is the time passed from the start of the sound in integer seconds
-      //-new Data(val * 1000) get a date from 1970 2:00:00 and advance it with milli seconds
-      //-convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
-      //-take only the HH:mm:ss part
-      let hhmmss = new Date(value * 1000).toISOString().substr(11, 8);
-      //-if the hh part is 00: then show only mm:ss part. .indexOf('a')
+      /*val is the time passed from the start of the sound in integer seconds
+      new Data(val * 1000) get a date from 1970 2:00:00 and advance it with 
+      milli seconds convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
+      take only the HH:mm:ss part */
+      var hhmmss = new Date(value * 1000).toISOString().substr(11, 8);
+
+      //if the hh part is 00: then show only mm:ss part. .indexOf('a')
       //returns the index of the first element in an array starts with 'a'
       return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
     },
@@ -371,6 +463,7 @@ export default {
     },
     /**
      * play the next track in case previous and next are finished
+     *
      * @public
      */
     nextConditionally: function() {
@@ -380,10 +473,15 @@ export default {
     },
     /**
      * play the previous track in case previous and next are finished
+     *
      * @public
      */
     previousConditionally: function() {
-      if (this.isNextAndPreviousFinished && this.trackId != null) {
+      if (
+        (!this.isFirstTrackInQueue || this.isRepeatEnabled) &&
+        this.isNextAndPreviousFinished &&
+        this.trackId != null
+      ) {
         this.previous();
       }
     },
@@ -392,18 +490,20 @@ export default {
      *
      * @public
      */
-    saveToLikedSongs: function() {
+    saveToLikedSongs: async function() {
       if (this.trackId != null) {
         if (!this.isTrackLiked) {
-          this.saveTrack({
+          await this.saveTrack({
             token: this.getuserToken(),
             id: this.trackId,
           });
+          this.$store.commit("track/changeUpdateTracks");
         } else {
-          this.removeSavedTrack({
+          await this.removeSavedTrack({
             token: this.getuserToken(),
             id: this.trackId,
           });
+          this.$store.commit("track/changeUpdateTracks");
         }
       }
     },
@@ -452,6 +552,17 @@ export default {
       }
       this.volumeValue = this.isMuted ? 0 : this.previousVolumeValue;
       this.audioElement.volume = this.volumeValue / 100; //update the volume
+    },
+    /**
+     * open the picture in picture window
+     *
+     * @public
+     */
+    picInPic: async function() {
+      if (this.isPicInPicCanvasRdy == true) {
+        await this.picInPicVideo.play();
+        await this.picInPicVideo.requestPictureInPicture();
+      }
     },
     /**
      * This handler is invoked after track is loaded
@@ -523,6 +634,7 @@ export default {
     },
     /**
      * This handler is invoked when the track is finished
+     *
      * @public
      */
     _handleEndedTrack: function() {
@@ -536,6 +648,11 @@ export default {
         return;
       }
     },
+    /**
+     * This handler is invoked when there's an error in audio
+     *
+     * @public
+     */
     _handleAudioError: function() {
       let errorCode = this.audioElement.error.code;
       if (errorCode == 4) {
@@ -544,6 +661,26 @@ export default {
       } else {
         console.log(this.audioElement.error.code);
       }
+    },
+    /**
+     * when user press play in PicInPic canvas
+     *
+     * @public
+     */
+    _handlePicInPicPlay: function() {
+      this.togglePauseAndPlay();
+      if (document.pictureInPictureElement)
+        document.pictureInPictureElement.play();
+    },
+    /**
+     * when user press pause in PicInPic canvas
+     *
+     * @public
+     */
+    _handlePicInPicPause: function() {
+      this.togglePauseAndPlay();
+      if (document.pictureInPictureElement)
+        document.pictureInPictureElement.pause();
     },
     /**
      * This is the initialization function
@@ -563,15 +700,47 @@ export default {
         "playing",
         this._handlePlayingAfterBuffering
       );
-      // Add event to detect error and display error code
       this.audioElement.addEventListener(
         "error",
         this._handleAudioError,
         false
       );
 
+      //keysocket feature
+      //add keysocket extension to google chrome to enable this feature
+      document.addEventListener("MediaPlayPause", this.togglePauseAndPlay);
+      document.addEventListener("MediaPrev", this.previousConditionally);
+      document.addEventListener("MediaNext", this.nextConditionally);
+
       this.audioElement.volume = this.volumeValue / 100;
       this.volumeLevelStyle = `width:${this.volumeValue}%;`;
+
+      /* Picture-in-Picture Feature */
+      var picInPicCanvasTemp = document.createElement("canvas");
+      picInPicCanvasTemp.width = picInPicCanvasTemp.height = 512;
+
+      this.setPicInPicCanvas(picInPicCanvasTemp);
+
+      this.picInPicVideo = document.createElement("video");
+      this.picInPicVideo.srcObject = this.picInPicCanvas.captureStream();
+      this.picInPicVideo.muted = true;
+
+      /* Play & Pause */
+      navigator.mediaSession.setActionHandler("play", this._handlePicInPicPlay);
+      navigator.mediaSession.setActionHandler(
+        "pause",
+        this._handlePicInPicPause
+      );
+
+      /* Previous Track & Next Track */
+      navigator.mediaSession.setActionHandler(
+        "previoustrack",
+        this.previousConditionally
+      );
+      navigator.mediaSession.setActionHandler(
+        "nexttrack",
+        this.nextConditionally
+      );
 
       this.setToken("Bearer " + this.getuserToken());
 
@@ -596,6 +765,7 @@ export default {
   },
   mounted: function() {
     this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
+    this.isSoundgrapherEnabled = true;
     this.init();
   },
   beforeDestroy: function() {
@@ -609,7 +779,17 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
-  }
+    this.audioElement.removeEventListener(
+      "error",
+      this._handleAudioError,
+      false
+    );
+
+    document.removeEventListener("MediaPlayPause", this.togglePauseAndPlay);
+    document.removeEventListener("MediaPrev", this.previousConditionally);
+    document.removeEventListener("MediaNext", this.nextConditionally);
+
+  },
 };
 </script>
 

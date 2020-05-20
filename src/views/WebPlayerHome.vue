@@ -1,17 +1,22 @@
 <template>
   <v-app>
     <!--Sending a prop to the drawer to be updated after logout-->
-    <nav-drawer :loggedIn="isLoggedIn()"></nav-drawer>
-    <nav-bar></nav-bar>
+    <NavDrawer :loggedIn="isLoggedIn()" :contextMenu="contextMenu" />
+    <NavBar />
     <router-view
       :loggedIn="isLoggedIn()"
       :contextMenu="contextMenu"
     ></router-view>
-    <delete-playlist v-if="deletePlaylist" />
-    <add-track-to-playlist v-if="addTrack" />
-    <create-playlist v-if="createPlaylist" />
-    <sound-player v-if="isLoggedIn()" />
-    <sound-player-logout v-if="!isLoggedIn()" />
+
+    <!--Nesting the playlist's popups-->
+    <DeletePlaylist v-if="deletePlaylist" />
+    <AddTrackToPlaylist v-if="addTrack" />
+    <CreatePlaylist v-if="createPlaylist" />
+    <AdsPopup v-if="isAdsActive" />
+
+    <!--Nesting the sound player component-->
+    <SoundPlayer v-if="isLoggedIn()" />
+    <SoundPlayerLogout v-if="!isLoggedIn()" />
     <ContextMenu ref="context" />
   </v-app>
 </template>
@@ -26,6 +31,7 @@ import SoundPlayerLogout from "../components/TheSoundPlayer/TheSoundPlayerLogout
 import DeletePlaylist from "../components/DeletePlaylist.vue";
 import CreatePlaylist from "../components/CreatePlaylist.vue";
 import AddTrackToPlaylist from "../components/AddTrackToPlaylist.vue";
+import AdsPopup from "../components/Popups/AdsPopup.vue";
 
 /**
  * The webplayer view it contains (the side bar - the navigation bar - the sound player)
@@ -44,10 +50,11 @@ export default {
     SoundPlayerLogout,
     DeletePlaylist,
     CreatePlaylist,
-    AddTrackToPlaylist
+    AddTrackToPlaylist,
+    AdsPopup
   },
   watch: {
-    "contextMenu.id": function() {
+    contextID: function() {
       if (this.contextMenu.id != null) {
         this.$refs.context.openMenu(
           this.contextMenu.event,
@@ -56,13 +63,13 @@ export default {
         );
         this.contextMenu.id = null;
       }
+    },
+    isLogoutUpdate: function() {
+      if (this.isLogoutUpdate) {
+        this.$store.commit("category/changeLogoutUpdate");
+        this.$forceUpdate();
+      }
     }
-  },
-  mounted: function() {
-    //Handle the updateContent event by force the component to update
-    this.$root.$on("updateContent", () => {
-      this.$forceUpdate();
-    });
   },
   computed: {
     deletePlaylist() {
@@ -73,6 +80,15 @@ export default {
     },
     addTrack() {
       return this.$store.state.playlist.addTrack;
+    },
+    isAdsActive() {
+      return this.$store.state.playlist.adsPopup;
+    },
+    isLogoutUpdate() {
+      return this.$store.state.category.logoutUpdate;
+    },
+    contextID() {
+      return this.contextMenu.id;
     }
   },
   mixins: [isLoggedIn]

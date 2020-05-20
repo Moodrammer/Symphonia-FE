@@ -18,12 +18,13 @@ import ArtistUI from "../components/artistUI/ArtistUI";
 import Overview from "../components/artistUI/Overview";
 import RelatedArtists from "../components/artistUI/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
-import Genre from "../components/general/Genre.vue";
+import GenreView from "../components/general/GenreView.vue";
 import Google from "../components/oauth/google.vue";
 import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
-import ArtistActivation from "../views/ArtistActivation.vue"
+import ArtistActivation from "../views/ArtistActivation.vue";
+import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue"
 
 Vue.use(VueRouter);
 
@@ -117,7 +118,7 @@ const routes = [
       },
       {
         path: "/genre/:id",
-        component: Genre
+        component: GenreView
       }
     ]
   },
@@ -179,8 +180,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () =>
-      import("../views/ForgetPass.vue"),
+    component: () => import("../views/ForgetPass.vue"),
     redirect: "/password-reset/reset",
     children: [
       {
@@ -210,6 +210,11 @@ const routes = [
     path: "/artist-activation/:activationToken",
     name: "artistActivation",
     component: ArtistActivation
+  },
+  {
+    path: "/soundgrapher",
+    name: "soundGrapher",
+    component: soundGrapher
   }
 ];
 

@@ -61,11 +61,11 @@ export default {
   },
   computed: {
     ...mapGetters("playlist", ["likedPlaylists"]),
-    ...mapGetters("category", ["tracksGetter"])
+    ...mapGetters("track", ["tracksGetter"])
   },
   methods: {
     ...mapActions("playlist", ["getPlaylists"]),
-    ...mapActions("category", ["getTracks"])
+    ...mapActions("track", ["getTracks"])
     /**
      * called when the user clicks on an aption from the context menu
      * @param {string} menuItem the option chosen by user

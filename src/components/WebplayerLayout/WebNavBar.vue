@@ -297,7 +297,7 @@ export default {
     logOutAndRerender() {
       this.logOut();
       this.$forceUpdate();
-      this.$root.$emit("updateContent"); //like this
+      this.$store.commit("category/changeLogoutUpdate");
     }
   },
   mounted() {
@@ -305,7 +305,7 @@ export default {
     this.handleTransparency();
   },
   //Remove the listerner when the component is destroied
-  destroy() {
+  beforeDestroy() {
     window.removeEventListener("scroll", this.updateScroll);
   },
   mixins: [isLoggedIn, getusername]
