@@ -8,6 +8,7 @@ const state = {
   artistRelatedArtists: [],
   currentArtist: null,
   x: null,
+  simplifiedCategories: null,
 };
 
 const mutations = {
@@ -22,6 +23,9 @@ const mutations = {
   load_artistRelatedArtists: (state, list) =>
     (state.artistRelatedArtists = list),
   load_currentArtist: (state, artist) => (state.currentArtist = artist),
+  load_newAlbumTrack: (state, track) => (state.x = track),
+  load_simplifiedCategories: (state, list) =>
+    (state.simplifiedCategories = list),
 };
 
 const getters = {
@@ -84,10 +88,8 @@ const getters = {
   },
 
   allArtistAlbums: (state) => {
-
-    if(state.artistAlbums == null)
-      return null;
-    console.log("sss",state.artistAlbums.albums.items)
+    if (state.artistAlbums == null) return null;
+    console.log("sss", state.artistAlbums.albums.items);
     var newValue = state.artistAlbums.albums.items;
     var albums = [];
     newValue.forEach((element) => {
@@ -125,6 +127,58 @@ const actions = {
       .then((response) => {
         commit("load_newAlbum", response.data);
         console.log(response);
+      })
+      .catch((error) => console.log(error));
+  },
+
+  getSimplifiedCategories({ commit }, payload) {
+    var categories = [];
+    axios
+      .get("/v1/browse/categories", {
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        response.data.categories.items.forEach((element) => {
+          categories.push({
+            id: element._id,
+            name: element.name,
+          });
+        });
+        commit("load_simplifiedCategories", categories);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+
+  addTrackToAlbum({ commit }, payload) {
+    console.log(payload)
+    const FormData = require("form-data");
+    const form = new FormData();
+    form.append("name", payload.title);
+    form.append("track", payload.track);
+    form.append("album", payload.album);
+    form.append("explicit", payload.explicit);
+    form.append("premium", payload.premium);
+    // form.append("category",payload.categories.join())
+    payload.categories.forEach(category => {
+      form.append("category",category)
+      console.log(category)
+    });
+    
+    axios
+      .post("/v1/users/tracks", form, {
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        commit("load_newAlbumTrack", response.data);
       })
       .catch((error) => console.log(error));
   },
@@ -274,4 +328,5 @@ export default {
   mutations,
   actions,
   getters,
+  namespaced: true,
 };

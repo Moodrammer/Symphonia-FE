@@ -157,7 +157,7 @@
         <v-card-title class="headline"
           >Add Song to {{ operation.title }}</v-card-title
         >
-        <v-form ref="albumForm">
+        <v-form ref="songForm">
           <v-text-field
             outlined
             class="mx-9 mt-8"
@@ -177,6 +177,33 @@
             outlined
             prepend-icon="mdi-file-music"
           ></v-file-input>
+          <v-row no-gutters align="center" class="px-9">
+            <v-col cols="6">
+              <p>Categories</p>
+              <v-checkbox
+                v-for="(category, index) in categories"
+                :key="index"
+                v-model="selectedCategories"
+                :rules="categoriesRules"
+                :label="category.name"
+                :value="category.id"
+              >
+              </v-checkbox>
+            </v-col>
+
+            <v-col cols="6">
+              <v-switch
+                color="red"
+                v-model="explicit"
+                label="Explicit"
+              ></v-switch>
+              <v-switch
+                color="orange"
+                v-model="premium"
+                label="Premium"
+              ></v-switch>
+            </v-col>
+          </v-row>
 
           <v-col class="text-right">
             <v-btn
@@ -300,6 +327,14 @@ export default {
           value == null || value.length <= 50 || "MAX LENGTH IS 50 CHARACTERS",
         (value) => (value != null && value.length > 0) || "REQUIRED",
       ],
+      categoriesRules: [
+        (value) =>
+          value == null || value.length > 0 || "at least one category should be selected",
+      ],
+
+      selectedCategories: [],
+      explicit: false,
+      premium: false,
       cpyRules: [(value) => (value != null && value.length > 0) || "REQUIRED"],
       copyrightsText: null,
       copyrightsType: "C",
@@ -360,20 +395,36 @@ export default {
       ],
     };
   },
-  computed: mapGetters(["allArtistAlbums"]),
+  computed: {
+    ...mapGetters("artist", ["allArtistAlbums"]),
+    categories: function() {
+      let x = this.$store.state.artist.simplifiedCategories;
+      console.log(x);
+      return x;
+    },
+  },
   created: function() {
-    this.getArtistAlbums ({
-      token: this.getuserToken,
-      id: "5e8c77c1e37ac11ac4f0135f"      
+    this.getSimplifiedCategories({
+      token: this.getuserToken(),
+    });
+    this.getArtistAlbums({
+      token: this.getuserToken(),
+      id: "5e8c77c1e37ac11ac4f0135f",
     });
   },
   watch: {
     allArtistAlbums: function(newValue) {
       console.log(newValue);
-    }
+    },
   },
   methods: {
-    ...mapActions(["addNewAlbum", "getArtistAlbums"]),
+    ...mapActions("artist", [
+      "addNewAlbum",
+      "addTrackToAlbum",
+      "getArtistAlbums",
+      "getSimplifiedCategories",
+    ]),
+
     addAlbum() {
       console.log(this.title, this.cover);
       if (!this.$refs.albumForm.validate()) return;
@@ -388,7 +439,21 @@ export default {
       };
       this.addNewAlbum(payload);
     },
-
+    addSong() {
+      console.log(this.title, this.cover);
+      if (!this.$refs.songForm.validate()) return;
+      console.log("sdsadsada",this.selectedCategories)
+      let payload = {
+        token: this.getuserToken(),
+        title: this.title,
+        track: this.file,
+        explicit: this.explicit,
+        premium: this.premium,
+        categories: this.selectedCategories,
+        album:"5ec5c31ee2b6150842be9acb"
+      };
+      this.addTrackToAlbum(payload);
+    },
     remove() {
       this.dialog.remove = false;
     },
