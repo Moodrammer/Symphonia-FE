@@ -3,34 +3,36 @@ import { Math } from "core-js";
 
 const state = {
   followedArtists: [],
-  artistAlbums: [],
+  artistAlbums: null,
   artistTopTracks: [],
   artistRelatedArtists: [],
-  currentArtist: null
+  currentArtist: null,
+  x: null,
 };
 
 const mutations = {
   load_followedArtists: (state, list) => (state.followedArtists = list),
   unfollow_artists: (state, list) =>
     (state.followedArtists = state.followedArtists.filter(
-      artist => !list.includes(artist._id)
+      (artist) => !list.includes(artist._id)
     )),
   load_artistAlbums: (state, list) => (state.artistAlbums = list),
+  load_newAlbum: (state, album) => state.artistAlbums.albums.items.push(album),
   load_artistTopTracks: (state, list) => (state.artistTopTracks = list),
   load_artistRelatedArtists: (state, list) =>
     (state.artistRelatedArtists = list),
-  load_currentArtist: (state, artist) => (state.currentArtist = artist)
+  load_currentArtist: (state, artist) => (state.currentArtist = artist),
 };
 
 const getters = {
-  currentArtistGetter: state => {
+  currentArtistGetter: (state) => {
     return state.currentArtist;
   },
 
-  allArtistTopTracks: state => {
+  allArtistTopTracks: (state) => {
     var newValue = state.artistTopTracks;
     var artists = [];
-    newValue.forEach(element => {
+    newValue.forEach((element) => {
       var k = {
         name: element.name,
         image: element.album.images[0].url,
@@ -41,74 +43,103 @@ const getters = {
             ? Math.floor((element.duration_ms / 1000) % 60)
             : "0" + Math.floor((element.duration_ms / 1000) % 60)),
         id: element.id,
-        type: element.type
+        type: element.type,
       };
       artists.push(k);
     });
     return artists;
   },
 
-  allArtistRelatedArtists: state => {
+  allArtistRelatedArtists: (state) => {
     var newValue = state.artistRelatedArtists;
     var artists = [];
-    newValue.artists.forEach(element => {
+    newValue.artists.forEach((element) => {
       console.log("x", element);
       var k = {
         name: element.name,
         image: element.imageUrl,
         description: element.type,
         id: element._id,
-        type: element.type
+        type: element.type,
       };
       artists.push(k);
     });
     return artists;
   },
 
-  allFollowedArtists: state => {
+  allFollowedArtists: (state) => {
     var newValue = state.followedArtists;
     var artists = [];
-    newValue.forEach(element => {
+    newValue.forEach((element) => {
       var k = {
         name: element.name,
         image: element.imageUrl,
         description: element.type,
         id: element._id,
-        type: element.type
+        type: element.type,
       };
       artists.push(k);
     });
     return artists;
   },
 
-  allArtistAlbums: state => {
-    var newValue = state.artistAlbums;
+  allArtistAlbums: (state) => {
+
+    if(state.artistAlbums == null)
+      return null;
+    console.log("sss",state.artistAlbums.albums.items)
+    var newValue = state.artistAlbums.albums.items;
     var albums = [];
-    newValue.forEach(element => {
+    newValue.forEach((element) => {
       var k = {
         name: element.name,
-        image: element.images[0].url,
+        image: element.image,
         id: element.id,
-        type: element.type
+        type: element.type,
       };
       albums.push(k);
     });
     return albums;
-  }
+  },
 };
 
 const actions = {
+  addNewAlbum({ commit }, payload) {
+    console.log(payload);
+    console.log(payload.albumTitle, payload.albumPhoto);
+    const FormData = require("form-data");
+    const form = new FormData();
+    form.append("name", payload.title);
+    form.append("image", payload.cover);
+    form.append("type", payload.type);
+    form.append("releaseDate", payload.date);
+    form.append("copyrightsText", payload.copyrightsText);
+    form.append("copyrightsType", payload.copyrightsType);
+
+    axios
+      .post("/v1/albums", form, {
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      })
+      .then((response) => {
+        commit("load_newAlbum", response.data);
+        console.log(response);
+      })
+      .catch((error) => console.log(error));
+  },
+
   getCurrentArtist({ commit }, payload) {
     axios
       .get(`v1/artists/${payload.id}`, {
         headers: {
-          Authorization: `Bearer ${payload.token}`
-        }
+          Authorization: `Bearer ${payload.token}`,
+        },
       })
-      .then(response => {
+      .then((response) => {
         commit("load_currentArtist", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error in getCurrentArtist");
         console.log(error);
       });
@@ -122,14 +153,14 @@ const actions = {
     axios
       .get("/v1/me/following", {
         headers: {
-          Authorization: `Bearer ${payload.token}`
+          Authorization: `Bearer ${payload.token}`,
         },
-        params: { type: "artist", limit: 50 }
+        params: { type: "artist", limit: 50 },
       })
-      .then(response => {
+      .then((response) => {
         commit("load_followedArtists", response.data.artists.items);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error in getFollowedArtists");
         console.log(error);
       });
@@ -145,21 +176,21 @@ const actions = {
     axios
       .get(`/v1/artists/${payload.id}/albums`, {
         headers: {
-          Authorization: `Bearer ${payload.token}`
+          Authorization: `Bearer ${payload.token}`,
         },
         params: {
           //include_groups=appears_on&country=ES&limit=2&offset'
           // country: "from_token",
-          limit: 1,
-          offset: 1
+          limit: 50,
+          offset: 1,
           // include_groups: "album"
-        }
+        },
       })
-      .then(response => {
+      .then((response) => {
         commit("load_artistAlbums", response.data);
         console.log("ALBUMS", response);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error in getArtistAlbums");
         console.log(error);
       });
@@ -175,17 +206,17 @@ const actions = {
     axios
       .get(`/v1/artists/${payload.id}/top-tracks`, {
         headers: {
-          Authorization: `Bearer ${payload.token}`
+          Authorization: `Bearer ${payload.token}`,
         },
         params: {
-          country: "from_token"
-        }
+          country: "from_token",
+        },
       })
-      .then(response => {
+      .then((response) => {
         console.log("getArtistTopTracks", response.data);
         commit("load_artistTopTracks", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error in getArtistTopTracks");
         console.log(error);
       });
@@ -201,14 +232,14 @@ const actions = {
     axios
       .get(`/v1/artists/${payload.id}/related-artists`, {
         headers: {
-          Authorization: `Bearer ${payload.token}`
-        }
+          Authorization: `Bearer ${payload.token}`,
+        },
       })
-      .then(response => {
+      .then((response) => {
         console.log("getArtistRelatedArtists", response);
         commit("load_artistRelatedArtists", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error in getArtistTopTracks");
         console.log(error);
       });
@@ -223,24 +254,24 @@ const actions = {
     axios
       .delete("/v1/me/following", {
         headers: {
-          Authorization: `Bearer ${payload.token}`
+          Authorization: `Bearer ${payload.token}`,
         },
         params: {
           type: "artist",
-          ids: payload.artists.join()
-        }
+          ids: payload.artists.join(),
+        },
       })
       .then(commit("unfollow_artists", payload.artists))
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error in unfollowArtist");
         console.log(error);
       });
-  }
+  },
 };
 
 export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };

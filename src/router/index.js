@@ -24,6 +24,7 @@ import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
+import x from "../components/ArtistDashboard/Dashboard.vue"
 
 Vue.use(VueRouter);
 
