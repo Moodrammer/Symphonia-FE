@@ -9,6 +9,7 @@ const state = {
   currentArtist: null,
   x: null,
   simplifiedCategories: null,
+  percentCompleted: null,
 };
 
 const mutations = {
@@ -29,6 +30,7 @@ const mutations = {
 };
 
 const getters = {
+  uploadingDone:(state) => state.percentCompleted,
   currentArtistGetter: (state) => {
     return state.currentArtist;
   },
@@ -106,7 +108,7 @@ const getters = {
 };
 
 const actions = {
-  addNewAlbum({ commit }, payload) {
+  addNewAlbum({ commit, state }, payload) {
     console.log(payload);
     console.log(payload.albumTitle, payload.albumPhoto);
     const FormData = require("form-data");
@@ -117,12 +119,20 @@ const actions = {
     form.append("releaseDate", payload.date);
     form.append("copyrightsText", payload.copyrightsText);
     form.append("copyrightsType", payload.copyrightsType);
+    const config = {
+      onUploadProgress: function(progressEvent) {
+        state.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+      }
+    }
+  
 
     axios
-      .post("/v1/albums", form, {
+      .post("/v1/albums", form, config,{
         headers: {
           Authorization: `Bearer ${payload.token}`,
+          
         },
+        
       })
       .then((response) => {
         commit("load_newAlbum", response.data);

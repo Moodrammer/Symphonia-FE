@@ -2,7 +2,17 @@
   <v-container fluid>
     <!-- <img src="../../assets/s11 .png" alt=""> -->
     <h1 class="display-4 grey--text ml-12 my-4">Albums</h1>
+    <v-dialog persistent max-width="1000" v-model="startLoading">
+      <v-card-title class="white--text">Please Wait...</v-card-title>
+      <v-progress-linear
+      v-model="uploaded"
+      height="25"
+      reactive
+    >
+      <strong>{{ Math.ceil(uploaded) }}%</strong>
+    </v-progress-linear>
 
+    </v-dialog>
     <v-dialog dark v-model="dialog.remove" max-width="500">
       <v-card>
         <v-card-title class="headline"
@@ -15,7 +25,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn color="normal darken-1" text @click="dialog.remove = false">
+          <v-btn color="normal darken-1" text @click="reset()">
             Cancel
           </v-btn>
 
@@ -47,11 +57,7 @@
             <v-btn
               color="normal darken-1"
               text
-              @click="
-                dialog.rename = false;
-                title = null;
-              "
-            >
+              @click="reset()">
               Cancel
             </v-btn>
 
@@ -135,11 +141,7 @@
             <v-btn
               color="normal darken-1"
               text
-              @click="
-                dialog.addAlbum = false;
-                title = null;
-                cover = null;
-              "
+              @click="reset()"
             >
               Cancel
             </v-btn>
@@ -209,11 +211,7 @@
             <v-btn
               color="normal darken-1"
               text
-              @click="
-                dialog.addSong = false;
-                title = null;
-                file = null;
-              "
+              @click="reset()"
             >
               Cancel
             </v-btn>
@@ -225,7 +223,6 @@
         </v-form>
       </v-card>
     </v-dialog>
-
     <v-card max-width="1000" class="mx-auto mt-10" dark>
       <v-toolbar dark class="mt-12">
         <v-spacer></v-spacer>
@@ -331,11 +328,12 @@ export default {
         (value) =>
           value == null || value.length > 0 || "at least one category should be selected",
       ],
-
+      cpyRules: [(value) => (value != null && value.length > 0) || "REQUIRED"],
+      uploaded: 0,
+      startLoading: false,
       selectedCategories: [],
       explicit: false,
       premium: false,
-      cpyRules: [(value) => (value != null && value.length > 0) || "REQUIRED"],
       copyrightsText: null,
       copyrightsType: "C",
       date: new Date().toISOString().substr(0, 10),
@@ -396,7 +394,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("artist", ["allArtistAlbums"]),
+    ...mapGetters("artist", ["allArtistAlbums","uploadingDone"]),
     categories: function() {
       let x = this.$store.state.artist.simplifiedCategories;
       console.log(x);
@@ -416,6 +414,12 @@ export default {
     allArtistAlbums: function(newValue) {
       console.log(newValue);
     },
+    uploadingDone: function(newValue){
+      this.uploaded = newValue
+      console.log(newValue)
+      if(newValue == 100)
+        this.reset()
+    }
   },
   methods: {
     ...mapActions("artist", [
@@ -424,10 +428,25 @@ export default {
       "getArtistAlbums",
       "getSimplifiedCategories",
     ]),
+    reset() {
+      this.dialog.rename = false
+      this.dialog.remove = false 
+      this.dialog.addAlbum = false
+      this.dialog.addSong = false
 
+      this.startLoading = false
+      this.selectedCategories = []
+      this.explicit= false
+      this.premium= false
+      this.copyrightsText= null
+      this.title = null
+      this.cover = null
+      this.file = null
+    },
     addAlbum() {
       console.log(this.title, this.cover);
       if (!this.$refs.albumForm.validate()) return;
+      this.startLoading = true
       let payload = {
         token: this.getuserToken(),
         title: this.title,
