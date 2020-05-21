@@ -24,15 +24,15 @@ import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
-import x from "../components/ArtistDashboard/Dashboard.vue"
+import SymphoniaArtist from "../components/ArtistDashboard/Dashboard.vue"
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/x",
-    name: "x",
-    component: x
+    path: "/SymphoniaArtist/:id",
+    name: "SymphoniaArtist",
+    component: SymphoniaArtist
   },
   {
     path: "/",

@@ -115,6 +115,9 @@
 
 <script>
 import getuserToken from "../../mixins/userService";
+import getuserID from "../../mixins/userService";
+import getuserType from "../../mixins/userService";
+
 /**
  * @displayName Webplayer Navigation Drawer
  * @example [none]
@@ -146,6 +149,14 @@ export default {
       return this.$store.state.playlist.userSavedPlaylists;
     }
   },
+  created() {
+    if(this.getuserType() == 'artist')
+      this.items.push({
+        icon: "mdi-account-music",
+        text: "Go to Symphonia Artist",
+        route: `/SymphoniaArtist/${this.getuserID()}`
+      })
+  },
   data: function() {
     return {
       items: [
@@ -167,7 +178,7 @@ export default {
       ]
     };
   },
-  mixins: [getuserToken]
+  mixins: [getuserToken, getuserType, getuserID]
 };
 </script>
 

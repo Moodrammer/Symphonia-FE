@@ -1,7 +1,7 @@
 <template>
   <v-content
     :style="{
-      backgroundImage: 'url(' + artist.imageUrl + ')',
+      backgroundImage: 'url(' + artist.image + ')',
       backgroundSize: '100% Auto'
     }"
   >
