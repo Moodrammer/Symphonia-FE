@@ -61,13 +61,13 @@
           </div>
         </form>
       </div>
-      <bottomContent />
+      <bottom-content></bottom-content>
     </div>
   </div>
 </template>
 
 <script>
-import bottomContent from "./bottomContent.vue";
+import BottomContent from "./BottomContent.vue";
 import getuserID from "@/mixins/userService";
 export default {
   data() {
@@ -92,7 +92,7 @@ export default {
   },
   components: {
     // The review content
-    bottomContent: bottomContent
+    "bottom-content": BottomContent
   },
   methods: {
     check: function() {

@@ -107,13 +107,13 @@
           </div>
         </form>
       </div>
-      <bottomContent />
+      <bottom-content></bottom-content>
     </div>
   </div>
 </template>
 
 <script>
-import bottomContent from "./bottomContent.vue";
+import BottomContent from "./BottomContent.vue";
 export default {
   data() {
     return {
@@ -139,7 +139,7 @@ export default {
   },
   components: {
     // The review section
-    bottomContent: bottomContent
+    "bottom-content": BottomContent
   },
   created() {
     //TODO :: check the user if from facebook or not

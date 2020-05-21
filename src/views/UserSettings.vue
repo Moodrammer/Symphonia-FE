@@ -11,7 +11,7 @@
           <!-- the main container to the side bad & view router -->
           <div class="row" style="width: 1185px; margin:0px;">
             <!-- Side bar content -->
-            <side-bar />
+            <side-bar></side-bar>
             <!-- Views go here from side bar -->
             <router-view></router-view>
           </div>
@@ -24,13 +24,13 @@
 
 <script>
 import PreAds from "../components/User Settings/PremiumAds.vue";
-import sideBar from "../components/User Settings/sideBar.vue";
-import overview from "../components/User Settings/overview.vue";
-import editProfile from "../components/User Settings/editProfile.vue";
-import recoverPlaylists from "../components/User Settings/recoverPlaylist.vue";
+import SideBar from "../components/User Settings/SideBar.vue";
+import Overview from "../components/User Settings/Overview.vue";
+import EditProfile from "../components/User Settings/EditProfile.vue";
+import RecoverPlaylists from "../components/User Settings/RecoverPlaylist.vue";
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
-import changePassword from "../components/User Settings/changePass.vue";
+import ChangePassword from "../components/User Settings/ChangePassword.vue";
 import isLoggedIn from "@/mixins/userService";
 
 export default {
@@ -39,15 +39,15 @@ export default {
   },
   components: {
     premiumAds: PreAds,
-    sideBar: sideBar,
+    "side-bar": SideBar,
     // eslint-disable-next-line vue/no-unused-components
-    overview: overview,
+    overview: Overview,
     // eslint-disable-next-line vue/no-unused-components
-    editProfile: editProfile,
+    "edit=profile": EditProfile,
     // eslint-disable-next-line vue/no-unused-components
-    recoverPlaylists: recoverPlaylists,
+    "recover-playlists": RecoverPlaylists,
     // eslint-disable-next-line vue/no-unused-components
-    changePassword: changePassword,
+    "change-password": ChangePassword,
     navBar: navBar,
     appFooter: appFooter
   },

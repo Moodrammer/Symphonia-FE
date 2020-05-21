@@ -6,7 +6,7 @@ import Library from "../components/WebplayerContent/Library.vue";
 import Playlists from "../components/collection/Playlists.vue";
 import ALbums from "../components/collection/Albums.vue";
 import Artists from "../components/collection/Artists.vue";
-import User_Settings from "../views/User_Settings.vue";
+import UserSettings from "../views/UserSettings.vue";
 import Search from "../components/WebplayerContent/Search.vue";
 import HomeContent from "../components/WebplayerContent/HomeContentRouter.vue";
 import Tracks from "../views/LikedSongs.vue";
@@ -24,7 +24,7 @@ import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
-import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue"
+import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue";
 
 Vue.use(VueRouter);
 
@@ -148,28 +148,28 @@ const routes = [
   {
     path: "/account/",
     name: "Acccount Setting",
-    component: User_Settings,
+    component: UserSettings,
     children: [
       {
         path: "",
-        component: () => import("../components/User Settings/overview.vue")
+        component: () => import("../components/User Settings/Overview.vue")
       },
       {
         path: "edit",
-        component: () => import("../components/User Settings/editProfile.vue")
+        component: () => import("../components/User Settings/EditProfile.vue")
       },
       {
         path: "recover-playlists",
         component: () =>
-          import("../components/User Settings/recoverPlaylist.vue")
+          import("../components/User Settings/RecoverPlaylist.vue")
       },
       {
         path: "notifications",
-        component: () => import("../components/User Settings/notification.vue")
+        component: () => import("../components/User Settings/Notification.vue")
       },
       {
         path: "changePassword",
-        component: () => import("../components/User Settings/changePass.vue")
+        component: () => import("../components/User Settings/ChangePassword.vue")
       }
     ]
   },

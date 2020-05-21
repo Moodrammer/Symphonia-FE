@@ -43,13 +43,13 @@
           </table>
         </div>
       </section>
-      <bottomContent />
+      <bottom-content></bottom-content>
     </div>
   </div>
 </template>
 
 <script>
-import bottomContent from "./bottomContent.vue";
+import BottomContent from "./BottomContent.vue";
 export default {
   data() {
     return {
@@ -67,7 +67,7 @@ export default {
     };
   },
   components: {
-    bottomContent: bottomContent
+    "bottom-content": BottomContent
   },
   methods: {
     restore: function(index) {

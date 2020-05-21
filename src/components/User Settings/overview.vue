@@ -122,13 +122,13 @@
         </div>
         <a class="btn-class" href="#">Sign out everywhere</a>
       </article>
-      <bottomContent />
+      <bottom-content></bottom-content>
     </v-content>
   </v-col>
 </template>
 
 <script>
-import bottomContent from "./bottomContent.vue";
+import BottomContent from "./BottomContent.vue";
 
 export default {
   data() {
@@ -139,7 +139,7 @@ export default {
   },
   components: {
     // The review section
-    bottomContent: bottomContent
+    "bottom-content": BottomContent
   },
   //---------------------------------------------------------------------------------------------
   //todo: 4/3/2020
