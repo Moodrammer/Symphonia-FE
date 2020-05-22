@@ -10,13 +10,13 @@
           class="py-0"
         >
         <v-list-item>
-            <v-list-item-avatar size = 200  class="mx-auto">
-              <img src="https://randomuser.me/api/portraits/men/81.jpg">
+            <v-list-item-avatar size = 200  class="mx-auto mt-4">
+              <img :src="image">
             </v-list-item-avatar>
         </v-list-item>
          <v-list-item>
             <v-list-item-content>
-              <p align="center">Application</p>
+              <p align="center">{{name}}</p>
             </v-list-item-content>
         </v-list-item>  
 
@@ -26,6 +26,7 @@
             v-for="item in items"
             :key="item.title"
             link
+            :to="item.route"
           >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
@@ -40,36 +41,29 @@
 </template>
 
 <script>
+import getusername from "../../mixins/userService";
+import getimageUrl from "../../mixins/userService";
+
   export default {
+    mixins:[getusername, getimageUrl],
     name : "Drawer",
     data () {
       return {
         drawer: true,
         items: [
-          { title: 'Main', icon: 'mdi-view-dashboard' },
-          { title: 'Singles', icon: 'mdi-music-circle' },
-          { title: 'Albums', icon: 'mdi-album' },
-          { title: 'Back to Symphonia', icon: 'mdi-arrow-left-circle' },
+          { title: 'Main', icon: 'mdi-view-dashboard', route: "main"},
+          { title: 'Singles', icon: 'mdi-music-circle', route: "singles" },
+          { title: 'Albums', icon: 'mdi-album', route: "albums" },
+          { title: 'Back to Symphonia', icon: 'mdi-arrow-left-circle', route: "/webhome" },
         ],
-        color: 'primary',
-        colors: [
-          'primary',
-          'blue',
-          'success',
-          'red',
-          'teal',
-        ],
-        right: false,
-        permanent: true,
-        miniVariant: false,
-        expandOnHover: false,
-        background: false,
+      name: null,
+      image: null,
       }
     },
-    computed: {
-      bg () {
-        return this.background ? 'https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg' : undefined
-      },
+    
+    created: function(){
+      this.name = this.getusername();
+      this.image = this.getimageUrl();
     },
   }
 </script>

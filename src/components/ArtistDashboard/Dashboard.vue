@@ -6,10 +6,11 @@
     <Drawer></Drawer>
     
     <v-content class="content-container">
-        <Albums></Albums>
+        <!-- <Albums></Albums> -->
+    <router-view></router-view>   
+
     </v-content>
 
-    <router-view></router-view>   
 </v-app>
 
 </template>
@@ -20,7 +21,6 @@
 <script>
 
 import Drawer from "./Drawer.vue";
-import Albums from "./Albums.vue";
 import getuserType from "../../mixins/userService";
 import getuserID from "../../mixins/userService";
 
@@ -29,7 +29,6 @@ export default {
     mixins:[getuserType, getuserID],
     components :{
         Drawer,
-        Albums
     },
     created(){
         console.log('id',this.getuserID())
