@@ -56,14 +56,16 @@ import getimageUrl from "../../mixins/userService";
           { title: 'Albums', icon: 'mdi-album', route: "albums" },
           { title: 'Back to Symphonia', icon: 'mdi-arrow-left-circle', route: "/webhome" },
         ],
-      name: null,
-      image: null,
       }
     },
     
-    created: function(){
-      this.name = this.getusername();
-      this.image = this.getimageUrl();
-    },
+    computed: {
+      name: function() {
+        return this.getusername();
+      },
+      image: function() {
+        return this.getimageUrl();
+      },
+    }
   }
 </script>
