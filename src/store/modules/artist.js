@@ -32,28 +32,34 @@ const mutations = {
 const getters = {
   uploadingDone:(state) => state.percentCompleted,
   currentArtistGetter: (state) => {
+    console.log('artist', state.currentArtist)
     return state.currentArtist;
   },
 
   allArtistTopTracks: (state) => {
-    var newValue = state.artistTopTracks;
-    var artists = [];
+    if(!state.artistTopTracks || state.artistTopTracks.length < 1)
+      return null;
+    console.log("dsadsa", state.artistTopTracks)
+    var newValue = state.artistTopTracks.tracks.items;
+    console.log("top tracks", newValue)
+    var tracks = [];
+
     newValue.forEach((element) => {
       var k = {
-        name: element.name,
-        image: element.album.images[0].url,
-        duration:
-          Math.floor(element.duration_ms / 60000) +
-          ":" +
-          (Math.floor((element.duration_ms / 1000) % 60) > 9
-            ? Math.floor((element.duration_ms / 1000) % 60)
-            : "0" + Math.floor((element.duration_ms / 1000) % 60)),
-        id: element.id,
-        type: element.type,
+        album:{
+          name: element.album.name,
+          _id: element.album._id,
+          image: element.album.image
+        },
+        durationMs: element.durationMs,
+        explicit: element.explicit,
+        premium: element.premium,
+        _id: element._id
       };
-      artists.push(k);
+      tracks.push(k);
     });
-    return artists;
+    console.log(tracks)
+    return tracks;
   },
 
   allArtistRelatedArtists: (state) => {
@@ -164,7 +170,7 @@ const actions = {
       });
   },
 
-  addTrackToAlbum({ commit }, payload) {
+  addTrackToAlbum({ commit, state }, payload) {
     console.log(payload)
     const FormData = require("form-data");
     const form = new FormData();
@@ -173,14 +179,18 @@ const actions = {
     form.append("album", payload.album);
     form.append("explicit", payload.explicit);
     form.append("premium", payload.premium);
-    // form.append("category",payload.categories.join())
     payload.categories.forEach(category => {
       form.append("category",category)
       console.log(category)
     });
-    
+    const config = {
+      onUploadProgress: function(progressEvent) {
+        state.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+      }
+    }
+
     axios
-      .post("/v1/users/tracks", form, {
+      .post("/v1/users/tracks", form, config, {
         headers: {
           Authorization: `Bearer ${payload.token}`,
           'Content-Type': 'application/json',
@@ -266,14 +276,16 @@ const actions = {
    */
 
   getArtistTopTracks({ commit }, payload) {
-    console.log(payload.id);
+    console.log("load",payload);
     axios
       .get(`/v1/artists/${payload.id}/top-tracks`, {
         headers: {
           Authorization: `Bearer ${payload.token}`,
         },
         params: {
-          country: "from_token",
+          // country: "from_token",
+          limit: payload.limit,
+          offset: payload.offset,
         },
       })
       .then((response) => {

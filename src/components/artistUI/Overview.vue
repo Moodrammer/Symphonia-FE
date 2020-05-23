@@ -47,14 +47,14 @@ export default {
   components: {
     CardGrid
   },
-  computed: mapGetters([
+  computed: mapGetters("artist", [
     "allArtistAlbums",
     "allArtistTopTracks",
     "allArtistSingles",
     "allArtistAppearsOn"
   ]),
   methods: {
-    ...mapActions([
+    ...mapActions("artist", [
       "getArtistAlbums",
       "getArtistTopTracks",
       "getArtistSingles",

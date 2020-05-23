@@ -5,6 +5,7 @@
     @mouseleave="hover = false"
     @contextmenu.prevent="menuClick($event, ID)"
   >
+  
     <!--The song's icons-->
     <v-icon
       class="mr-2 pb-9"
@@ -24,6 +25,11 @@
     >
       mdi-music-note-eighth</v-icon
     >
+
+    <!--Display the song image -->
+    <v-list-item-avatar v-if="image" class="mx-4" tile size="70">
+      <img :src="image" />
+    </v-list-item-avatar>
 
     <!--Display the song data -->
     <v-list-item-title
@@ -97,6 +103,7 @@ export default {
     artistName: String,
     albumName: String,
     albumID: String,
+    image: String,
     artistID: String,
     songDuration: Number,
     playlistID: String,

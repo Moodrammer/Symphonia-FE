@@ -24,7 +24,6 @@ import Drawer from "./Drawer.vue";
 import getuserType from "../../mixins/userService";
 import getuserID from "../../mixins/userService";
 
-
 export default {
     mixins:[getuserType, getuserID],
     components :{

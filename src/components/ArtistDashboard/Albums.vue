@@ -461,6 +461,7 @@ export default {
     addSong() {
       console.log(this.title, this.cover);
       if (!this.$refs.songForm.validate()) return;
+      this.startLoading = true
       console.log("sdsadsada",this.selectedCategories)
       let payload = {
         token: this.getuserToken(),
