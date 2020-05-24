@@ -241,7 +241,7 @@
             v-model="currentTimeInSec"
             class="hidden-sm-and-down"
           />
-          
+
           <input
             id="songBar"
             type="range"
@@ -255,13 +255,12 @@
             v-model="currentTimeInSec"
             class="progress-slider-sm hidden-md-and-up"
           />
-          
+
           <span class="time" style="padding-left: 10px; margin-top:0px;">{{
             duration
           }}</span>
         </v-toolbar>
       </v-col>
-
 
       <v-col lg="2" md="2" sm="7" xs="7" style="background: rgba(0, 0, 0, 0);">
         <div style="padding-top: 20px;">
@@ -275,7 +274,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened,
+                icons: !isQueueOpened
               }"
             >
               mdi-format-list-numbered-rtl
@@ -322,13 +321,13 @@
 
 import { mapMutations, mapActions, mapState } from "vuex";
 import getuserToken from "../../mixins/userService";
-import SoundGrapher from "./TheSoundGrapher.vue" 
+import SoundGrapher from "./TheSoundGrapher.vue";
 
 export default {
   name: "soundplayer",
 
   components: {
-    SoundGrapher,
+    SoundGrapher
   },
 
   mixins: [getuserToken],
@@ -341,31 +340,30 @@ export default {
     },
 
     ...mapState({
-      isTrackLiked: (state) => state.track.isTrackLiked,
-      trackUrl: (state) => state.track.trackUrl,
-      trackName: (state) => state.track.trackName,
-      trackArtistName: (state) => state.track.trackArtistName,
-      trackAlbumImageUrl: (state) => state.track.trackAlbumImageUrl,
-      isFirstTrackInQueue: (state) => state.track.isFirstTrackInQueue,
-      trackTotalDuration: (state) => state.track.trackTotalDuration,
-      trackId: (state) => state.track.trackId,
-      audioElement: (state) => state.track.audioElement,
-      isTrackPaused: (state) => state.track.isTrackPaused,
-      isQueueOpened: (state) => state.track.isQueueOpened,
-      isNextAndPreviousFinished: (state) =>
-        state.track.isNextAndPreviousFinished,
-      isBuffering: (state) => state.track.isBuffering,
-      token: (state) => state.track.token,
-      isRepeatOnceEnabled: (state) => state.track.isRepeatOnceEnabled,
-      isRepeatEnabled: (state) => state.track.isRepeatEnabled,
-      isShuffleEnabled: (state) => state.track.isShuffleEnabled,
-      isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
-      historyResponse: (state) => state.category.historyResponse,
-      facebookUrl: (state) => state.track.facebookUrl,
-      twitterUrl: (state) => state.track.twitterUrl,
-      picInPicCanvas: (state) => state.track.picInPicCanvas,
-      isPicInPicCanvasRdy: (state) => state.track.isPicInPicCanvasRdy,
-    }),
+      isTrackLiked: state => state.track.isTrackLiked,
+      trackUrl: state => state.track.trackUrl,
+      trackName: state => state.track.trackName,
+      trackArtistName: state => state.track.trackArtistName,
+      trackAlbumImageUrl: state => state.track.trackAlbumImageUrl,
+      isFirstTrackInQueue: state => state.track.isFirstTrackInQueue,
+      trackTotalDuration: state => state.track.trackTotalDuration,
+      trackId: state => state.track.trackId,
+      audioElement: state => state.track.audioElement,
+      isTrackPaused: state => state.track.isTrackPaused,
+      isQueueOpened: state => state.track.isQueueOpened,
+      isNextAndPreviousFinished: state => state.track.isNextAndPreviousFinished,
+      isBuffering: state => state.track.isBuffering,
+      token: state => state.track.token,
+      isRepeatOnceEnabled: state => state.track.isRepeatOnceEnabled,
+      isRepeatEnabled: state => state.track.isRepeatEnabled,
+      isShuffleEnabled: state => state.track.isShuffleEnabled,
+      isLastTrackInQueue: state => state.track.isLastTrackInQueue,
+      historyResponse: state => state.category.historyResponse,
+      facebookUrl: state => state.track.facebookUrl,
+      twitterUrl: state => state.track.twitterUrl,
+      picInPicCanvas: state => state.track.picInPicCanvas,
+      isPicInPicCanvasRdy: state => state.track.isPicInPicCanvasRdy
+    })
   },
   data() {
     return {
@@ -384,7 +382,7 @@ export default {
       devices: undefined,
       currentDeviceId: undefined,
 
-      picInPicVideo: undefined,
+      picInPicVideo: undefined
     };
   },
   methods: {
@@ -404,7 +402,7 @@ export default {
       "setContextType",
       "setContextId",
       "setContextUrl",
-      "setPicInPicCanvas",
+      "setPicInPicCanvas"
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -420,7 +418,7 @@ export default {
       "toggleShuffle",
       "saveTrack",
       "removeSavedTrack",
-      "copyLink",
+      "copyLink"
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -495,13 +493,13 @@ export default {
         if (!this.isTrackLiked) {
           await this.saveTrack({
             token: this.getuserToken(),
-            id: this.trackId,
+            id: this.trackId
           });
           this.$store.commit("track/changeUpdateTracks");
         } else {
           await this.removeSavedTrack({
             token: this.getuserToken(),
-            id: this.trackId,
+            id: this.trackId
           });
           this.$store.commit("track/changeUpdateTracks");
         }
@@ -747,7 +745,7 @@ export default {
       var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
       this.getTrackInformation({
         token: this.token,
-        trackId: CurrentlyPlayingTrackId,
+        trackId: CurrentlyPlayingTrackId
       });
 
       await this.initQueueStatus(this.token);
@@ -761,7 +759,7 @@ export default {
       }
 
       this.playTrackInQueue(CurrentlyPlayingTrackId);
-    },
+    }
   },
   mounted: function() {
     this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
@@ -788,8 +786,7 @@ export default {
     document.removeEventListener("MediaPlayPause", this.togglePauseAndPlay);
     document.removeEventListener("MediaPrev", this.previousConditionally);
     document.removeEventListener("MediaNext", this.nextConditionally);
-
-  },
+  }
 };
 </script>
 

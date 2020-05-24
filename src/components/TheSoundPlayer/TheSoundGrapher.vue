@@ -1,9 +1,9 @@
 <template>
-    <canvas
-      ref="soundGrapher"
-      style="width: 100%; height: fit-content;"
-      :height="canvasHeight"
-    ></canvas>
+  <canvas
+    ref="soundGrapher"
+    style="width: 100%; height: fit-content;"
+    :height="canvasHeight"
+  ></canvas>
 </template>
 
 <script>
@@ -12,9 +12,9 @@ import { mapState, mapMutations } from "vuex";
 export default {
   computed: {
     ...mapState({
-      audioElement: (state) => state.track.audioElement,
-      audioContext: (state) => state.track.audioContext
-    }),
+      audioElement: state => state.track.audioElement,
+      audioContext: state => state.track.audioContext
+    })
   },
   data() {
     return {
@@ -25,7 +25,7 @@ export default {
 
       canvasWidth: 600,
       canvasHeight: 50,
-      ctx: undefined,
+      ctx: undefined
     };
   },
   methods: {
@@ -55,7 +55,7 @@ export default {
 
     drawTimeDomain: function() {
       //clean canvas
-      this.ctx.fillStyle = '#282828';
+      this.ctx.fillStyle = "#282828";
       this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
       for (let i = 0; i < this.amplitudeArray.length; i++) {
@@ -76,43 +76,43 @@ export default {
     },
     /**
      * initialize the component
-     * 
+     *
      * @public
      */
-    init: function () {
+    init: function() {
       this.initAudioContext();
 
-    // Set up the audio Analyser, the Source Buffer and javascriptNode
-    this.setupAudioNodes();
-    // setup the event handler that is triggered every time enough samples have been collected
-    // trigger the audio analysis and draw the results
-    this.javascriptNode.onaudioprocess = this._handleOnAudioProcess;
+      // Set up the audio Analyser, the Source Buffer and javascriptNode
+      this.setupAudioNodes();
+      // setup the event handler that is triggered every time enough samples have been collected
+      // trigger the audio analysis and draw the results
+      this.javascriptNode.onaudioprocess = this._handleOnAudioProcess;
 
-    // Hacks to deal with different function names in different browsers
-    window.requestAnimFrame = (function() {
-      return (
-        window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        function(callback) {
-          window.setTimeout(callback, 1000 / 60);
-        }
-      );
-    })();
-    window.AudioContext = (function() {
-      return (
-        window.webkitAudioContext ||
-        window.AudioContext ||
-        window.mozAudioContext
-      );
-    })();
+      // Hacks to deal with different function names in different browsers
+      window.requestAnimFrame = (function() {
+        return (
+          window.requestAnimationFrame ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame ||
+          function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+          }
+        );
+      })();
+      window.AudioContext = (function() {
+        return (
+          window.webkitAudioContext ||
+          window.AudioContext ||
+          window.mozAudioContext
+        );
+      })();
 
-    this.ctx = this.$refs.soundGrapher.getContext("2d");
+      this.ctx = this.$refs.soundGrapher.getContext("2d");
     }
   },
   mounted: function() {
-    this.init(); 
-  },
+    this.init();
+  }
 };
 </script>
 

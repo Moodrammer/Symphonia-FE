@@ -25,36 +25,39 @@ describe("TheSoundGrapher", () => {
           state: {
             audioElement: undefined,
             audioContext: {
-              createMediaElementSource: (audioElement) => {
+              createMediaElementSource: audioElement => {
                 return {
-                  connect: (connection) => {}
-                }
+                  connect: connection => {}
+                };
               },
               createAnalyser: () => {
                 return {
                   frequencyBinCount: 12,
-                  connect: (connection) => {},
+                  connect: connection => {},
                   getByteTimeDomainData: () => {}
-                }
+                };
               },
-              createScriptProcessor: 
-              (bufferSize,numberOfInputChannels, numberOfOutputChannels) => {
+              createScriptProcessor: (
+                bufferSize,
+                numberOfInputChannels,
+                numberOfOutputChannels
+              ) => {
                 return {
-                  connect: (connection) => {}
-                }
-              },
+                  connect: connection => {}
+                };
+              }
             }
           }
         }
       }
-    })
+    });
 
     wrapper = shallowMount(soundplayerGrapher, {
       vuetify,
       store,
-      router,
+      router
     });
-  })
+  });
 
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
@@ -68,10 +71,10 @@ describe("TheSoundGrapher", () => {
   it("draw Time Domain function", () => {
     wrapper.vm.ctx = {
       fillStyle: undefined,
-      fillRect: () => {},
-    }
+      fillRect: () => {}
+    };
     wrapper.vm.drawTimeDomain();
-  })
+  });
 
   it("handle OnAudioProcess event", () => {
     wrapper.vm._handleOnAudioProcess();
@@ -83,6 +86,6 @@ describe("TheSoundGrapher", () => {
     wrapper.vm.init();
 
     wrapper.vm._handleOnAudioProcess();
-    expect(window.requestAnimFrame()).toBeCalled;    
-  })
-})
+    expect(window.requestAnimFrame()).toBeCalled;
+  });
+});

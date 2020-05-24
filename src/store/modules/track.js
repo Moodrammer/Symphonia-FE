@@ -47,7 +47,7 @@ const state = {
   savedTracksNum: null,
   updateSavedTracks: false,
 
-  audioContext: undefined,
+  audioContext: undefined
 };
 
 const mutations = {
