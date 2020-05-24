@@ -184,7 +184,6 @@ export default {
       if (this.isOwnedPlaylist) {
         if (this.isPublicPlaylist) this.playlistMenu.push("Make secret");
         else this.playlistMenu.push("Make public");
-
         this.playlistMenu.push("Delete");
       } else {
         if (this.isPlaylistSaved)

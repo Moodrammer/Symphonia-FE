@@ -24,9 +24,9 @@ describe("Webplayer Home - user logged in", () => {
           },
           actions: {
             loadGenres: jest.fn(),
-            recentlyPlayedSection:jest.fn(),
-            getNewReleases:jest.fn(),
-            yourPlaylistsSection:jest.fn()
+            recentlyPlayedSection: jest.fn(),
+            getNewReleases: jest.fn(),
+            yourPlaylistsSection: jest.fn()
           }
         }
       }

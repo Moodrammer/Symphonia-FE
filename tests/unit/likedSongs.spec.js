@@ -5,7 +5,6 @@ import Vuex from "vuex";
 
 //importing the required components
 import likedSongs from "@/views/LikedSongs.vue";
-import SongItem from "@/components/general/SongItem.vue";
 
 describe("Liked Songs", () => {
   let wrapper;
@@ -35,7 +34,7 @@ describe("Liked Songs", () => {
             savedTracksNum: 1,
             updateSavedTracks: false
           },
-          mutation: {
+          mutations: {
             changeUpdateTracks: jest.fn()
           },
           actions: {
@@ -85,5 +84,6 @@ describe("Liked Songs", () => {
     wrapper.vm.$options.watch.isUpdateTracks.call(wrapper.vm);
     store.state.track.updateSavedTracks = true;
     expect("getTracks").toBeCalled;
+    expect("changeUpdateTracks").toBeCalled;
   });
 });

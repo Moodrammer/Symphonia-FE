@@ -9,7 +9,8 @@ const state = {
   //The needed data for a single album
   singleAlbum: null,
   albumTracks: [],
-  isFollowdAlbum: true
+  isFollowdAlbum: true,
+  isLoading: false
 };
 
 //-----------------------------------------------------------------
@@ -21,6 +22,7 @@ const mutations = {
   },
   setAlbumData(state, albumData) {
     state.singleAlbum = albumData;
+    state.isLoading = false;
   },
   setAlbumTracks(state, albumTracks) {
     state.albumTracks = albumTracks;
@@ -33,6 +35,9 @@ const mutations = {
   },
   followedAlbum(state) {
     state.isFollowdAlbum = true;
+  },
+  setLoading() {
+    state.isLoading = true;
   }
 };
 
@@ -77,6 +82,7 @@ const actions = {
   //        Get a single album's data
   //---------------------------------------------
   async getAlbum({ commit, dispatch }, albumID) {
+    commit("setLoading");
     dispatch("getAlbumTracks", albumID);
     await axios
       .get("/v1/albums/" + albumID)
