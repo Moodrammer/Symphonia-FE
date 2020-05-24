@@ -10,6 +10,7 @@ describe("Context Menu", () => {
   let wrapper;
   let vuetify;
   let store;
+  let $route;
 
   beforeEach(() => {
     vuetify = new Vuetify();
@@ -21,8 +22,11 @@ describe("Context Menu", () => {
         return name;
       }
     };
-    const $route = {
-      name: "playlist/:id"
+    $route = {
+      name: "playlist/:id",
+      params: {
+        id: ""
+      }
     };
     store = new Vuex.Store({
       modules: {
@@ -30,6 +34,10 @@ describe("Context Menu", () => {
           namespaced: true,
 
           state: {
+            singlePlaylist: {
+              name: "QuranPlaylist1",
+              owner: { _id: "1", name: "Bob" }
+            },
             menuPlaylist: {
               active: true,
               description: "playlist A",
@@ -136,20 +144,17 @@ describe("Context Menu", () => {
   });
 
   it("Check if the user follow a playlist", () => {
+    wrapper.vm.playlist();
     store.state.playlist.isFollowed = true;
     expect(wrapper.vm.isPlaylistSaved).toBe(true);
   });
 
-  it("Check if a user's playlist is public", () => {
-    store.state.playlist.menuPlaylist.public = false;
-    expect(wrapper.vm.isPublicPlaylist).toBe(false);
-  });
-
   it("Check if it is a user's playlist", () => {
+    store.state.playlist.menuPlaylist.public = false;
     store.state.playlist.menuPlaylist.owner._id = null;
-    store.state.playlist.menuPlaylist.public = true;
     wrapper.vm.playlist();
     expect(wrapper.vm.isOwnedPlaylist).toBe(true);
+    //expect(wrapper.vm.isPublicPlaylist).toBe(true);
   });
 
   it("Follow a playlist", () => {
@@ -157,8 +162,8 @@ describe("Context Menu", () => {
     expect("followPlaylist").toHaveBeenCalled;
   });
 
-  it("Unfollow a playlist", () => {
-    wrapper.vm.unfollowPlaylist();
+  it("Unfollow a playlist", async () => {
+    await wrapper.vm.unfollowPlaylist();
     expect("unfollowPlaylist").toHaveBeenCalled;
   });
 
@@ -217,12 +222,13 @@ describe("Context Menu", () => {
   });
 
   it("Check if the user follows this album", () => {
-    store.state.album.isFollowdAlbum = false;
-    expect(wrapper.vm.isAlbumSaved).toBe(false);
+    wrapper.vm.album();
+    store.state.album.isFollowdAlbum = true;
+    expect(wrapper.vm.isAlbumSaved).toBe(true);
   });
 
-  it("Add album's tracks to specific playlist", () => {
-    wrapper.vm.addAlbumTracksToPlaylist();
+  it("Add album's tracks to specific playlist", async () => {
+    await wrapper.vm.addAlbumTracksToPlaylist();
     expect("getAlbum").toHaveBeenCalled;
     expect("setAddedTracks").toHaveBeenCalled;
     expect("changeAddTrackModel").toHaveBeenCalled;
@@ -233,8 +239,8 @@ describe("Context Menu", () => {
     expect("followAlbum").toHaveBeenCalled;
   });
 
-  it("Unfollow an album", () => {
-    wrapper.vm.unfollowAlbum();
+  it("Unfollow an album", async () => {
+    await wrapper.vm.unfollowAlbum();
     expect("unfollowAlbum").toHaveBeenCalled;
   });
 
@@ -260,13 +266,14 @@ describe("Context Menu", () => {
   //--------------------------------------------------------
   //        Check the functions behaviour "Track"
   //--------------------------------------------------------
-  it("Gets the track's data", () => {
+  it("Gets the track's data", async () => {
     wrapper.vm.openMenu("", "2", "track");
-    expect(wrapper.vm.track()).toHaveBeenCalled;
+    expect(await wrapper.vm.track()).toHaveBeenCalled;
     expect("checkSaved").toHaveBeenCalled;
   });
 
   it("Check if the user saves this track", () => {
+    wrapper.vm.track();
     store.state.track.generalLiked = false;
     expect(wrapper.vm.isTrackSaved).toBe(false);
   });
@@ -276,8 +283,8 @@ describe("Context Menu", () => {
     expect("saveTrack").toHaveBeenCalled;
   });
 
-  it("Remove track from user's saved tracks", () => {
-    wrapper.vm.removeTrackForUser();
+  it("Remove track from user's saved tracks", async () => {
+    await wrapper.vm.removeTrackForUser();
     expect("removeSavedTrack").toHaveBeenCalled;
     expect("changeUpdateTracks").toHaveBeenCalled;
   });
@@ -288,8 +295,8 @@ describe("Context Menu", () => {
     expect("changeAddTrackModel").toHaveBeenCalled;
   });
 
-  it("Remove track from a specific playlist", () => {
-    wrapper.vm.removeTrackFromPlaylist();
+  it("Remove track from a specific playlist", async () => {
+    await wrapper.vm.removeTrackFromPlaylist();
     expect("removePlaylistTrack").toHaveBeenCalled;
   });
 
@@ -324,6 +331,11 @@ describe("Context Menu", () => {
     expect(wrapper.vm.copyToClipboard()).toHaveBeenCalled;
   });
 
+  it("Update the menu if track", () => {
+    wrapper.vm.track();
+    expect(wrapper.vm.trackMenu).toEqual([]);
+  });
+
   //--------------------------------------------------------
   //        Check the functions behaviour "Artist"
   //--------------------------------------------------------
@@ -341,8 +353,8 @@ describe("Context Menu", () => {
   //--------------------------------------------------------
   it("Call Artist Action", () => {
     wrapper.vm.type = "artist";
-    wrapper.vm.onClick();
-    expect(wrapper.vm.artistAction()).toHaveBeenCalled;
+    wrapper.vm.onClick("Copy Artist Link");
+    expect(wrapper.vm.artistAction("Copy Artist Link")).toHaveBeenCalled;
   });
 
   it("Call Playlist Action", () => {
@@ -353,14 +365,14 @@ describe("Context Menu", () => {
 
   it("Call Album Action", () => {
     wrapper.vm.type = "album";
-    wrapper.vm.onClick();
-    expect(wrapper.vm.albumAction()).toHaveBeenCalled;
+    wrapper.vm.onClick("Add to Playlist");
+    expect(wrapper.vm.albumAction("Add to Playlist")).toHaveBeenCalled;
   });
 
   it("Call Track Action", () => {
     wrapper.vm.type = "track";
-    wrapper.vm.onClick();
-    expect(wrapper.vm.trackAction()).toHaveBeenCalled;
+    wrapper.vm.onClick("Copy Song Link");
+    expect(wrapper.vm.trackAction("Copy Song Link")).toHaveBeenCalled;
   });
   //------------------------------------------------------
   //             Copy to clipboard
@@ -371,7 +383,21 @@ describe("Context Menu", () => {
   });
 
   it("At playlist View", () => {
-    Vue.use(VueRouter);
+    if (!process || process.env.NODE_ENV !== "test") {
+      Vue.use(VueRouter);
+    }
     expect(wrapper.vm.$route.name).toBe("playlist/:id");
+    $route.name = "album/:id";
+    wrapper.vm.track();
+    expect(wrapper.vm.inUserPlaylist).toBe(false);
+  });
+
+  it("At playlist View", () => {
+    if (!process || process.env.NODE_ENV !== "test") {
+      Vue.use(VueRouter);
+    }
+    store.state.playlist.singlePlaylist.owner._id = undefined;
+    wrapper.vm.track();
+    expect(wrapper.vm.inUserPlaylist).toBe(true);
   });
 });
