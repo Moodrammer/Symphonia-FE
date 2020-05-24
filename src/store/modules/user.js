@@ -16,7 +16,9 @@ const state = {
   //The country of the current user
   userCountry: "",
   //The gender of the current user
-  userGender: ""
+  userGender: "",
+  //The user image of the current user
+  userImage: ""
 };
 
 const mutations = {
@@ -39,6 +41,10 @@ const mutations = {
   //Set gender of the user
   setGender(state, payload) {
     state.userGender = payload;
+  },
+  //Set image of the user
+  setImage(state, payload) {
+    state.userImage = payload;
   }
 };
 
@@ -157,6 +163,7 @@ const actions = {
             commit("setCountry", "EG");
             commit("setGender", response.data.gender);
             commit("setuserDOB", response.data.dateOfBirth);
+            commit("setImage", response.data.imageUrl);
             resolve(true);
           }
         })

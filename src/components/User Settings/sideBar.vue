@@ -1,10 +1,7 @@
 <template>
   <div class="col-sm-3 hidden-xs-only" style=" padding: 0px;">
     <div class="sidebar">
-      <img
-        src="https://www.pngkey.com/png/full/230-2301779_best-classified-apps-default-user-profile.png"
-        class="user-img img-circle"
-      />
+      <img :src="image" class="user-img img-circle" />
       <ul class="nav-inverse nav-tabs nav-stacked" style="padding: 0px">
         <!-- the links to the user account options -->
         <!-- account overview router -->
@@ -45,7 +42,19 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      image: ""
+    };
+  },
+  created() {
+    // Request to get the current user's data
+    this.$store
+      .dispatch("userData")
+      .then(() => {
+        // If we got it set it into the data to display the user's info
+        this.image = this.$store.state.user.userImage;
+      })
+      .catch();
   }
 };
 </script>
