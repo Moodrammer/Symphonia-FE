@@ -215,6 +215,11 @@ const routes = [
     path: "/soundgrapher",
     name: "soundGrapher",
     component: soundGrapher
+  },
+  {
+    path: "/about",
+    name: "aboutUs",
+    component: () => import("../views/About.vue")
   }
 ];
 
