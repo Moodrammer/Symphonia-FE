@@ -70,7 +70,7 @@ const actions = {
             localStorage.setItem("imageUrl", response.data.user.imageUrl);
             //Resolve to direct the user to the application
           }
-          resolve(true);
+          resolve(payload.type);
         })
         .catch(error => {
           reject(error.response.data);

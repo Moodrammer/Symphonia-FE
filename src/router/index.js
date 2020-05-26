@@ -253,9 +253,9 @@ router.beforeEach((to, from, next) => {
     }
     else if(!to.meta.allowAnonymous && !(isLoggedIn.methods.isLoggedIn())){
       next({
-        path: '/login'
+        path: '/login',
+        query: {redirect: to.fullPath}
       })
-      localStorage.setItem('redirect', to.fullPath)
     }
     else{
       next()

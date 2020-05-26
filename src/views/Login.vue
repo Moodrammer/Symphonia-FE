@@ -165,7 +165,7 @@
               rounded
               large
               style="border: solid 3px grey !important"
-              to="/SignUp"
+              :to="{path: '/signup', query:{redirect: this.$route.query.redirect}}"
               >SIGN UP FOR SYMPHONIA</v-btn
             >
           </v-col>
@@ -249,16 +249,7 @@ export default {
             rm: this.formData.rememberMe
           })
           .then(() => {
-            if(localStorage.getItem('redirect')){
-              const redirectPath = localStorage.getItem('redirect');
-              console.log(redirectPath)
-              localStorage.removeItem('redirect');
-              this.$router.push(redirectPath)
-            }
-            else{
-              this.$router.push("/webhome/home");
-            }
-            
+              this.$router.push(this.$route.query.redirect || "/webhome/home");
           })
           .catch(err => {
             if (err.status == "fail") {
