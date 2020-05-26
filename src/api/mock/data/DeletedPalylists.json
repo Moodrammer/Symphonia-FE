@@ -1,0 +1,72 @@
+[
+    {
+      "collaborative": false,
+      "images": [
+        "https://thesymphonia.ddns.net/api/v1/images/playlists/playlist2.jpg"
+      ],
+      "public": true,
+      "tracks": [
+        "5e7d2ddd3429e24340ff1397",
+        "5e7d2e023429e24340ff1398",
+        "5e7d334860cd930408a5f995",
+        "5e8a1e0f7937ec4d40c6deba"
+      ],
+      "followers": [
+        "5e812db054660672fd699881",
+        "5e812a3454660672fd699880"
+      ],
+      "deleted": true,
+      "_id": "5e7ac3c7d43a2c49909c549c",
+      "name": "Young, Wild and Free",
+      "owner": "5e8125dc54660672fd69987f",
+      "description": "Soundtrack to My Whimsical, Quirky Life as an Unpaid Intern",
+      "category": "5e883e48c808fd1aa40ad1f8",
+      "deletedAt": "2020-04-16T09:22:11.758Z",
+      "id": "5e7ac3c7d43a2c49909c549c"
+    },
+    {
+      "collaborative": true,
+      "images": [
+        "https://thesymphonia.ddns.net/api/v1/images/playlists/playlist3.jpg"
+      ],
+      "public": true,
+      "tracks": [
+        "5e8a1ea07937ec4d40c6debf"
+      ],
+      "followers": [
+        "5e812db054660672fd699881",
+        "5e812a3454660672fd699880"
+      ],
+      "deleted": true,
+      "_id": "5e805a8a3711912168602afa",
+      "name": "Soak Up the Sun",
+      "owner": "5e8125dc54660672fd69987f",
+      "description": "My Parents Pay for my Premium Account, My Rent, and Literally Everything Else",
+      "category": "5e8076e6a9902a4328cc285c",
+      "deletedAt": "2020-04-16T09:09:03.128Z",
+      "id": "5e805a8a3711912168602afa"
+    },
+    {
+      "collaborative": false,
+      "images": [
+        "https://thesymphonia.ddns.net/api/v1/images/playlists/playlist13.jpg"
+      ],
+      "public": true,
+      "tracks": [
+        "5e7d2dc03429e24340ff1396",
+        "5e7d2ddd3429e24340ff1397",
+        "5e7d2e023429e24340ff1398"
+      ],
+      "followers": [],
+      "deleted": true,
+      "_id": "5e8a6d96d4be480ab1d91c95",
+      "name": "Sleep Sounds: Waterscapes",
+      "owner": "5e8125dc54660672fd69987f",
+      "description": "White Noise to Drown Out the Sounds of Police Sirens, Honking Trucks, and Overnight Construction Work Because I Live Right Next to the Brooklyn-Queens Expressway Because This Is the Only Studio Apartment I Can Afford",
+      "category": "5e8072e5e478cf39b47bd1ef",
+      "deletedAt": "2020-04-16T09:11:46.493Z",
+      "id": "5e8a6d96d4be480ab1d91c95"
+    }
+  ]
+  
+  

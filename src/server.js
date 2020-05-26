@@ -5,6 +5,7 @@ import artistJSON from "./api/mock/data/artist.json";
 import albumsJSON from "./api/mock/data/album.json";
 import categoryJSON from "./api/mock/data/category.json";
 import historyJSON from "./api/mock/data/history.json";
+import deletedPlaylist from "./api/mock/data/DeletedPalylists.json";
 // import usersJSON from "./api/mock/data/users.json";
 
 //The makeserver function to be used to enable Mirage to intercept your requests
@@ -48,6 +49,12 @@ export function makeServer({ environment = "development" } = {}) {
         imageUrl:
           "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
       });
+      ///////////////////////////////////////////////////////////////////
+      //                Create a deleted playlists for the user
+      ///////////////////////////////////////////////////////////////////
+      deletedPlaylist.forEach(function(element){
+        server.create("deletedPlaylist", element);
+      }); 
 
       server.create("deletedPlaylist", {
         name: "playlist",
@@ -692,7 +699,9 @@ export function makeServer({ environment = "development" } = {}) {
             }
           );
         }),
-        // Get the current user's data to the account overview(User's Settings)
+        /////////////////////////////////////////////////////////////////////////////////
+        //     Get the current user's data to the account overview(User's Settings)
+        /////////////////////////////////////////////////////////////////////////////////
         this.get("/v1/me", (schema, request) => {
           // get the user's data from seed if exist
           if (request.requestHeaders.Authorization) {
@@ -712,7 +721,9 @@ export function makeServer({ environment = "development" } = {}) {
             return new Response(400, {}, {});
           }
         });
-      // patch the user's password =>(change the current user's password)
+      /////////////////////////////////////////////////////////////////////////////////
+      //       patch the user's password =>(change the current user's password)
+      /////////////////////////////////////////////////////////////////////////////////
       this.patch("/v1/users/updatepassword", (schema, request) => {
         let id;
         if (localStorage.getItem("userToken") != null) {
@@ -734,7 +745,9 @@ export function makeServer({ environment = "development" } = {}) {
           return new Response(401, {}, {});
         }
       });
-      // update the current user profile data
+      /////////////////////////////////////////////////////////////////////////////////
+      //                update the current user profile data
+      /////////////////////////////////////////////////////////////////////////////////
       this.put("/v1/me/", (schema, request) => {
         if (request.requestBody) {
           let attr = JSON.parse(request.requestBody);
@@ -758,8 +771,9 @@ export function makeServer({ environment = "development" } = {}) {
           return new Response(401, {}, {});
         }
       });
-
-      // Get the current user's data to the account overview(User's Settings)
+      /////////////////////////////////////////////////////////////////////////////////
+      //     Get the current user's data to the account overview(User's Settings)
+      /////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me", (schema, request) => {
         // get the user's data from seed if exist
         if (request.requestHeaders.Authorization) {
@@ -779,6 +793,9 @@ export function makeServer({ environment = "development" } = {}) {
           return new Response(400, {}, {});
         }
       });
+      /////////////////////////////////////////////////////////////////////////////////
+      //              Get all the deleted playlists for current user
+      /////////////////////////////////////////////////////////////////////////////////
 
       //////////////////////////////////////////////////////////////////////////////////////
       //SOUNDPLAYER
