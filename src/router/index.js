@@ -23,7 +23,9 @@ import Google from "../components/oauth/google.vue";
 import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
-import ArtistActivation from "../views/ArtistActivation.vue"
+import ArtistActivation from "../views/ArtistActivation.vue";
+
+import isLoggedIn from "@/mixins/userService/isLoggedIn";
 
 Vue.use(VueRouter);
 
@@ -31,7 +33,10 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Homepage
+    component: Homepage,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/webhome",
@@ -42,7 +47,7 @@ const routes = [
       {
         name: "UserUI",
         path: "user/:id",
-        component: UserUI
+        component: UserUI,
       },
       {
         name: "ArtistUI",
@@ -54,6 +59,7 @@ const routes = [
             name: "Overview",
             path: "overview",
             component: Overview
+            
           },
           {
             name: "RelatedArtists",
@@ -65,12 +71,18 @@ const routes = [
       {
         name: "home",
         path: "home",
-        component: HomeContent
+        component: HomeContent,
+        meta: {
+          allowAnonymous: true
+        }
       },
       {
         name: "search",
         path: "search",
-        component: Search
+        component: Search,
+        meta: {
+          allowAnonymous: true
+        }
       },
       {
         name: "collection",
@@ -81,7 +93,10 @@ const routes = [
           {
             name: "Playlists",
             path: "playlists",
-            component: Playlists
+            component: Playlists,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             name: "Artists",
@@ -133,7 +148,10 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/SignUp.vue")
+      import(/* webpackChunkName: "about" */ "../views/SignUp.vue"),
+      meta: {
+        allowAnonymous: true
+      }  
   },
   {
     path: "/login",
@@ -142,7 +160,10 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Login.vue")
+      import(/* webpackChunkName: "about" */ "../views/Login.vue"),
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/account/",
@@ -218,5 +239,27 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
+
+router.beforeEach((to, from, next) => {
+    if(to.name == 'login' && isLoggedIn.methods.isLoggedIn()){
+      next({
+        path:'/webhome/home'
+      })
+    }
+    else if(to.name == 'signup' && isLoggedIn.methods.isLoggedIn()){
+      next({
+        path:'/'
+      })
+    }
+    else if(!to.meta.allowAnonymous && !(isLoggedIn.methods.isLoggedIn())){
+      next({
+        path: '/login'
+      })
+      localStorage.setItem('redirect', to.fullPath)
+    }
+    else{
+      next()
+    }
+})
 
 export default router;

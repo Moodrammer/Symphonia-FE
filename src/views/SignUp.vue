@@ -249,7 +249,6 @@
 
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
-import isLoggedIn from "@/mixins/userService";
 
 export default {
   components: {
@@ -348,13 +347,6 @@ export default {
         else
           return `${this.userData.yearSelected}-${monthnumber}-${this.userData.daySelected}`;
       }
-    }
-  },
-  mixins: [isLoggedIn],
-  created() {
-    //check if the user is logged in
-    if (this.isLoggedIn() == true) {
-      this.$router.push("/");
     }
   },
   methods: {

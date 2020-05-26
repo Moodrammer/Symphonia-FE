@@ -198,7 +198,6 @@
 
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
-import isLoggedIn from "@/mixins/userService";
 
 export default {
   name: "login",
@@ -223,11 +222,6 @@ export default {
       ],
       passwordRules: [v => !!v || "Please enter your password."]
     };
-  },
-  mixins: [isLoggedIn],
-  created() {
-    //check if the user is already logged in
-    if (this.isLoggedIn() == true) this.$router.push("/webhome/home");
   },
   methods: {
     /**
@@ -255,7 +249,16 @@ export default {
             rm: this.formData.rememberMe
           })
           .then(() => {
-            this.$router.push("/webhome/home");
+            if(localStorage.getItem('redirect')){
+              const redirectPath = localStorage.getItem('redirect');
+              console.log(redirectPath)
+              localStorage.removeItem('redirect');
+              this.$router.push(redirectPath)
+            }
+            else{
+              this.$router.push("/webhome/home");
+            }
+            
           })
           .catch(err => {
             if (err.status == "fail") {
