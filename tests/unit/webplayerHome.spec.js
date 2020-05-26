@@ -34,8 +34,8 @@ describe("Webplayer Home", () => {
             createPlaylist: false,
             addTrack: false
           },
-          actions:{
-            getPlaylists:jest.fn()
+          actions: {
+            getPlaylists: jest.fn()
           }
         },
         category: {

@@ -6,7 +6,6 @@ import VueRouter from "vue-router";
 
 //import the required componets
 import AlbumView from "@/components/general/AlbumView.vue";
-import SongItem from "@/components/general/SongItem.vue";
 
 describe("Album View", () => {
   let wrapper;
@@ -27,21 +26,20 @@ describe("Album View", () => {
           namespaced: true,
 
           state: {
-            singleAlbum:
-              {   
-                liked: true,
-                tracksCount:"3",
-                tracks: ["4","6","2"],
-                releaseDate: "2020-04-07T16:49:46.442Z",
-                _id: "1",
-                id: "1",
-                name: "Album 3",
-                year: 2020,
-                image: "http://source.unsplash.com/eSYCRwJEzO8",
-                artist: {
-                name:"Nasser Al-Qatami",
-                  _id: "2"
-                }
+            singleAlbum: {
+              liked: true,
+              tracksCount: "3",
+              tracks: ["4", "6", "2"],
+              releaseDate: "2020-04-07T16:49:46.442Z",
+              _id: "1",
+              id: "1",
+              name: "Album 3",
+              year: 2020,
+              image: "http://source.unsplash.com/eSYCRwJEzO8",
+              artist: {
+                name: "Nasser Al-Qatami",
+                _id: "2"
+              }
             },
             albumTracks: [
               {
@@ -92,7 +90,6 @@ describe("Album View", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
 
-
   //--------------------------------------------------
   //         Testing created hook cycle actions
   //--------------------------------------------------
@@ -126,5 +123,4 @@ describe("Album View", () => {
     wrapper.vm.unfollowAlbum();
     expect("unfollowAlbum").toHaveBeenCalled;
   });
-
 });

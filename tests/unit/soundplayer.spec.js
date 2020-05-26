@@ -42,6 +42,9 @@ describe("TheSoundplayer", () => {
             isBuffering: false,
             isRepeatOnceEnabled: false,
             isRepeatEnabled: false,
+            isPicInPicCanvasRdy: false,
+            picInPicCanvas: undefined,
+            token: "",
 
             trackAlbumImageUrl: null,
             trackAlbumId: null,
@@ -86,7 +89,8 @@ describe("TheSoundplayer", () => {
             removeSavedTrack({ state }, payload) {
               state.isTrackLiked = false;
             },
-            playTrackInQueue({ state }, trackId) {}
+            playTrackInQueue({ state }, trackId) {},
+            copyLink({ state }) {}
           },
           mutations: {
             setTrackUrl({ state }, trackUrl) {
@@ -136,7 +140,11 @@ describe("TheSoundplayer", () => {
             },
             setContextUrl(state, contextUrl) {
               state.contextUrl = contextUrl;
-            }
+            },
+            setPicInPicCanvas(state, picInPicCanvas) {
+              state.picInPicCanvas = picInPicCanvas;
+            },
+            changeUpdateTracks(state) {}
           }
         },
         category: {
@@ -443,6 +451,36 @@ describe("TheSoundplayer", () => {
 
   it("copy context Url", () => {
     wrapper.vm.copyLink();
+  });
+
+  it("picture in picture feature", () => {
+    store.state.track.isPicInPicCanvasRdy = true;
+    wrapper.vm.picInPic();
+    expect(wrapper.vm.picInPicVideo.play()).toBeCalled;
+
+    store.state.track.isPicInPicCanvasRdy = false;
+    wrapper.vm.picInPic();
+    expect(wrapper.vm.picInPicVideo.play()).not.toBeCalled;
+
+    //play
+    document.pictureInPictureElement = {
+      play: () => {}
+    };
+    wrapper.vm._handlePicInPicPlay();
+    expect(document.pictureInPictureElement.play()).toBeCalled;
+
+    document.pictureInPictureElement = false;
+    wrapper.vm._handlePicInPicPlay();
+
+    //pause
+    document.pictureInPictureElement = {
+      pause: () => {}
+    };
+    wrapper.vm._handlePicInPicPause();
+    expect(document.pictureInPictureElement.pause()).toBeCalled;
+
+    document.pictureInPictureElement = false;
+    wrapper.vm._handlePicInPicPause();
   });
 });
 

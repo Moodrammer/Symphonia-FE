@@ -31,7 +31,8 @@ const state = {
   historyResponse: [],
   newReleasesAlbums: [],
   genresList: [],
-  pushAgain: true
+  pushAgain: true,
+  singleCategory: null
 };
 
 const mutations = {
@@ -59,6 +60,7 @@ const mutations = {
     singleCategory.categoryName = state.categoryNameHolder;
     singleCategory.categoryID = state.categoryIDHolder;
     singleCategory.list.items = payload;
+    state.singleCategory = singleCategory;
     state.categories.push(singleCategory);
   },
   setGenreName(state, payload) {

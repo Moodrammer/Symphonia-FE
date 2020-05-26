@@ -27,8 +27,8 @@ describe("ًWebplayer Home- user logged out", () => {
               return state.categories;
             }
           },
-          mutations:{
-            emptyArray:jest.fn()
+          mutations: {
+            emptyArray: jest.fn()
           },
           actions: {
             loadGenres: jest.fn()

@@ -6,9 +6,16 @@
       style="display:none;"
       preload="auto"
     ></audio>
+
+    <v-row style="min-width: 100%;" flat color="rgba(0,0,0,0)">
+      <v-col cols="12">
+        <sound-grapher v-if="isSoundgrapherEnabled" />
+      </v-col>
+    </v-row>
+
     <!-- song info -->
     <v-row>
-      <v-col cols="4">
+      <v-col lg="4" md="4" sm="12" xs="12">
         <v-toolbar flat color="rgba(0,0,0,0)">
           <v-avatar tile size="56">
             <img :src="trackAlbumImageUrl" />
@@ -94,7 +101,7 @@
         </v-toolbar>
       </v-col>
 
-      <v-col cols="5">
+      <v-col lg="5" md="5" sm="5" xs="5">
         <div class="audio-controls">
           <!-- shuffle -->
           <a
@@ -232,17 +239,30 @@
               isProgressBarPressed = false;
             "
             v-model="currentTimeInSec"
+            class="hidden-sm-and-down"
           />
+
+          <input
+            id="songBar"
+            type="range"
+            min="0"
+            v-bind:max="trackTotalDuration"
+            @mousedown="isProgressBarPressed = true"
+            @mouseup="
+              audioElement.currentTime = currentTimeInSec;
+              isProgressBarPressed = false;
+            "
+            v-model="currentTimeInSec"
+            class="progress-slider-sm hidden-md-and-up"
+          />
+
           <span class="time" style="padding-left: 10px; margin-top:0px;">{{
             duration
           }}</span>
         </v-toolbar>
       </v-col>
 
-      <v-spacer></v-spacer>
-
-      <v-col cols="2" style="background: rgba(0, 0, 0, 0);">
-        <!-- mute or change the volume-->
+      <v-col lg="2" md="2" sm="7" xs="7" style="background: rgba(0, 0, 0, 0);">
         <div style="padding-top: 20px;">
           <router-link
             to="/webhome/collection/queue"
@@ -301,9 +321,14 @@
 
 import { mapMutations, mapActions, mapState } from "vuex";
 import getuserToken from "../../mixins/userService";
+import SoundGrapher from "./TheSoundGrapher.vue";
 
 export default {
   name: "soundplayer",
+
+  components: {
+    SoundGrapher
+  },
 
   mixins: [getuserToken],
 
@@ -352,6 +377,7 @@ export default {
       isMuted: false,
       isProgressBarPressed: false,
       isVolumePressed: false,
+      isSoundgrapherEnabled: false,
 
       devices: undefined,
       currentDeviceId: undefined,
@@ -401,12 +427,13 @@ export default {
      * @public
      */
     convertTimeHHMMSS: function(value) {
-      //-val is the time passed from the start of the sound in integer seconds
-      //-new Data(val * 1000) get a date from 1970 2:00:00 and advance it with milli seconds
-      //-convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
-      //-take only the HH:mm:ss part
+      /*val is the time passed from the start of the sound in integer seconds
+      new Data(val * 1000) get a date from 1970 2:00:00 and advance it with 
+      milli seconds convert it to ISO format YYYY-MM-DDTHH:mm:ss.sssZ
+      take only the HH:mm:ss part */
       var hhmmss = new Date(value * 1000).toISOString().substr(11, 8);
-      //-if the hh part is 00: then show only mm:ss part. .indexOf('a')
+
+      //if the hh part is 00: then show only mm:ss part. .indexOf('a')
       //returns the index of the first element in an array starts with 'a'
       return hhmmss.indexOf("00:") === 0 ? hhmmss.substr(3) : hhmmss;
     },
@@ -434,6 +461,7 @@ export default {
     },
     /**
      * play the next track in case previous and next are finished
+     *
      * @public
      */
     nextConditionally: function() {
@@ -443,6 +471,7 @@ export default {
     },
     /**
      * play the previous track in case previous and next are finished
+     *
      * @public
      */
     previousConditionally: function() {
@@ -524,6 +553,7 @@ export default {
     },
     /**
      * open the picture in picture window
+     *
      * @public
      */
     picInPic: async function() {
@@ -602,6 +632,7 @@ export default {
     },
     /**
      * This handler is invoked when the track is finished
+     *
      * @public
      */
     _handleEndedTrack: function() {
@@ -615,6 +646,11 @@ export default {
         return;
       }
     },
+    /**
+     * This handler is invoked when there's an error in audio
+     *
+     * @public
+     */
     _handleAudioError: function() {
       let errorCode = this.audioElement.error.code;
       if (errorCode == 4) {
@@ -626,6 +662,7 @@ export default {
     },
     /**
      * when user press play in PicInPic canvas
+     *
      * @public
      */
     _handlePicInPicPlay: function() {
@@ -635,6 +672,7 @@ export default {
     },
     /**
      * when user press pause in PicInPic canvas
+     *
      * @public
      */
     _handlePicInPicPause: function() {
@@ -660,7 +698,6 @@ export default {
         "playing",
         this._handlePlayingAfterBuffering
       );
-      // Add event to detect error and display error code
       this.audioElement.addEventListener(
         "error",
         this._handleAudioError,
@@ -668,8 +705,7 @@ export default {
       );
 
       //keysocket feature
-      //add this extension to google chrome to enable this feature
-      //https://chrome.google.com/webstore/detail/key-socket-media-keys/fphfgdknbpakeedbaenojjdcdoajihik?hl=en
+      //add keysocket extension to google chrome to enable this feature
       document.addEventListener("MediaPlayPause", this.togglePauseAndPlay);
       document.addEventListener("MediaPrev", this.previousConditionally);
       document.addEventListener("MediaNext", this.nextConditionally);
@@ -727,6 +763,7 @@ export default {
   },
   mounted: function() {
     this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
+    this.isSoundgrapherEnabled = true;
     this.init();
   },
   beforeDestroy: function() {
@@ -740,6 +777,15 @@ export default {
       "playing",
       this._handlePlayingAfterBuffering
     );
+    this.audioElement.removeEventListener(
+      "error",
+      this._handleAudioError,
+      false
+    );
+
+    document.removeEventListener("MediaPlayPause", this.togglePauseAndPlay);
+    document.removeEventListener("MediaPrev", this.previousConditionally);
+    document.removeEventListener("MediaNext", this.nextConditionally);
   }
 };
 </script>
