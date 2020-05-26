@@ -4,14 +4,9 @@
     <h1 class="display-4 grey--text ml-12 my-4">Albums</h1>
     <v-dialog persistent max-width="1000" v-model="startLoading">
       <v-card-title class="white--text">Please Wait...</v-card-title>
-      <v-progress-linear
-      v-model="uploadingDone"
-      height="25"
-      reactive
-    >
-      <strong>{{ Math.ceil(uploadingDone) }}%</strong>
-    </v-progress-linear>
-
+      <v-progress-linear v-model="uploadingDone" height="25" reactive>
+        <strong>{{ Math.ceil(uploadingDone) }}%</strong>
+      </v-progress-linear>
     </v-dialog>
     <v-dialog dark v-model="dialog.remove" max-width="500">
       <v-card>
@@ -54,10 +49,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn
-              color="normal darken-1"
-              text
-              @click="reset()">
+            <v-btn color="normal darken-1" text @click="reset()">
               Cancel
             </v-btn>
 
@@ -138,11 +130,7 @@
           </div>
 
           <v-col class="text-right">
-            <v-btn
-              color="normal darken-1"
-              text
-              @click="reset()"
-            >
+            <v-btn color="normal darken-1" text @click="reset()">
               Cancel
             </v-btn>
 
@@ -208,11 +196,7 @@
           </v-row>
 
           <v-col class="text-right">
-            <v-btn
-              color="normal darken-1"
-              text
-              @click="reset()"
-            >
+            <v-btn color="normal darken-1" text @click="reset()">
               Cancel
             </v-btn>
 
@@ -259,18 +243,18 @@
               small
               text
               title="add songs to the album"
-              @click="setOperationData('addSong', item.title, item.id, null)"
+              @click="setOperationData('addSong', item.name, item.id, null)"
               ><v-icon>mdi-plus</v-icon></v-btn
             >
             <v-btn fab small text class="mx-6" title="edit album name"
               ><v-icon
-                @click="setOperationData('rename', item.title, item.id, null)"
+                @click="setOperationData('rename', item.name, item.id, null)"
                 >mdi-pencil</v-icon
               ></v-btn
             >
             <v-btn fab small text title="delete album"
               ><v-icon
-                @click="setOperationData('remove', item.title, item.id, null)"
+                @click="setOperationData('remove', item.name, item.id, null)"
                 >mdi-delete</v-icon
               ></v-btn
             >
@@ -290,13 +274,27 @@
             <v-spacer></v-spacer>
             <v-btn fab x-small text title="edit song name" class="mx-6"
               ><v-icon
-                @click="setOperationData('rename', subItem.title, item.id, subItem._id)"
+                @click="
+                  setOperationData(
+                    'rename',
+                    subItem.name,
+                    item.id,
+                    subItem._id
+                  )
+                "
                 >mdi-pencil</v-icon
               ></v-btn
             >
             <v-btn fab x-small text title="delete song"
               ><v-icon
-                @click="setOperationData('remove', subItem.title, item.id, subItem._id)"
+                @click="
+                  setOperationData(
+                    'remove',
+                    subItem.name,
+                    item.id,
+                    subItem._id
+                  )
+                "
                 >mdi-delete</v-icon
               ></v-btn
             >
@@ -326,7 +324,9 @@ export default {
       ],
       categoriesRules: [
         (value) =>
-          value == null || value.length > 0 || "at least one category should be selected",
+          value == null ||
+          value.length > 0 ||
+          "at least one category should be selected",
       ],
       cpyRules: [(value) => (value != null && value.length > 0) || "REQUIRED"],
       // uploaded: 0,
@@ -394,18 +394,17 @@ export default {
     };
   },
   computed: {
-    startLoading: 
-    {
-      get(){
+    startLoading: {
+      get() {
         console.log(this.uploadingDone != 0);
         console.log(this.uploadingDone);
-        return (this.uploadingDone != 0 && this.uploadingDone);
+        return this.uploadingDone != 0 && this.uploadingDone;
       },
-      set(value){
+      set(value) {
         value;
-      }
+      },
     },
-    ...mapGetters("artist", ["allArtistAlbums","uploadingDone"]),
+    ...mapGetters("artist", ["allArtistAlbums", "uploadingDone"]),
     categories: function() {
       let x = this.$store.state.artist.simplifiedCategories;
       console.log(x);
@@ -434,27 +433,28 @@ export default {
       "getSimplifiedCategories",
       "renameAlbum",
       "renameTrack",
-      "deleteAlbum"
+      "deleteAlbum",
+      "deleteTrack",
     ]),
     reset() {
-      this.dialog.rename = false
-      this.dialog.remove = false 
-      this.dialog.addAlbum = false
-      this.dialog.addSong = false
+      this.dialog.rename = false;
+      this.dialog.remove = false;
+      this.dialog.addAlbum = false;
+      this.dialog.addSong = false;
 
-      this.startLoading = false
-      this.selectedCategories = []
-      this.explicit= false
-      this.premium= false
-      this.copyrightsText= null
-      this.title = null
-      this.cover = null
-      this.file = null
+      this.startLoading = false;
+      this.selectedCategories = [];
+      this.explicit = false;
+      this.premium = false;
+      this.copyrightsText = null;
+      this.title = null;
+      this.cover = null;
+      this.file = null;
     },
     addAlbum() {
       console.log(this.title, this.cover);
       if (!this.$refs.albumForm.validate()) return;
-      this.startLoading = true
+      this.startLoading = true;
       let payload = {
         token: this.getuserToken(),
         title: this.title,
@@ -469,8 +469,8 @@ export default {
     addSong() {
       console.log(this.title, this.cover);
       if (!this.$refs.songForm.validate()) return;
-      this.startLoading = true
-      console.log("sdsadsada",this.selectedCategories)
+      this.startLoading = true;
+      console.log("sdsadsada", this.selectedCategories);
       let payload = {
         token: this.getuserToken(),
         title: this.title,
@@ -478,7 +478,7 @@ export default {
         explicit: this.explicit,
         premium: this.premium,
         categories: this.selectedCategories,
-        album: this.operation.albumID
+        album: this.operation.albumID,
       };
       this.addTrackToAlbum(payload);
     },
@@ -487,10 +487,13 @@ export default {
         //rename album by this.title
         this.deleteAlbum({
           token: this.getuserToken(),
-          id: this.operation.albumID
-        })
+          id: this.operation.albumID,
+        });
       } else {
-        console.log("yaba a7la 4o8l")
+        this.deleteTrack({
+          token: this.getuserToken(),
+          id: this.operation.songID,
+        });
       }
       this.title = null;
       this.dialog.remove = false;
@@ -502,15 +505,15 @@ export default {
         this.renameAlbum({
           token: this.getuserToken(),
           name: this.title,
-          id: this.operation.albumID
-        })
+          id: this.operation.albumID,
+        });
       } else {
-        console.log("yaba a7la 4o8l")
+        console.log("yaba a7la 4o8l");
         this.renameTrack({
           token: this.getuserToken(),
           name: this.title,
-          id: this.operation.songID
-        })
+          id: this.operation.songID,
+        });
       }
       this.title = null;
       this.dialog.rename = false;
@@ -519,7 +522,7 @@ export default {
       this.operation.title = title;
       this.operation.albumID = albumID;
       this.operation.songID = songID;
-      console.log(this.operation,"sdsadsads")
+      console.log(this.operation, "sdsadsads");
       if (type == "remove") this.dialog.remove = true;
       else if (type == "rename") this.dialog.rename = true;
       else if (type == "addSong") this.dialog.addSong = true;

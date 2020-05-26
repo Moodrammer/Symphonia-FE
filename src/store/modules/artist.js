@@ -24,29 +24,44 @@ const mutations = {
   load_artistRelatedArtists: (state, list) =>
     (state.artistRelatedArtists = list),
   load_currentArtist: (state, artist) => (state.currentArtist = artist),
-  load_newAlbumTrack: (state, track) => (state.x = track),
+  load_newAlbumTrack: (state, track) => {
+    console.log("homaaaaa");
+    console.log(track);
+    console.log(state.artistAlbums);
+    for (let i = 0; i < state.artistAlbums.albums.items.length; i++) {
+      if (state.artistAlbums.albums.items[i]._id == track.album) {
+        state.artistAlbums.albums.items[i].tracks.push({
+          name: track.name,
+          _id: track._id,
+        });
+        return;
+      }
+    }
+  },
   load_simplifiedCategories: (state, list) =>
     (state.simplifiedCategories = list),
-  set_latestAlbumID: (state, id) => state.latestAlbumID = id,
+  set_latestAlbumID: (state, id) => (state.latestAlbumID = id),
   load_renameAlbum: (state, album) => {
-
-    console.log("dsadsasssssssssssssssssss",state.artistAlbums)
-    for(let i = 0; i < state.artistAlbums.albums.items.length; i++){
-      console.log(state.artistAlbums.albums.items[i]._id, album._id)
-      if(state.artistAlbums.albums.items[i]._id == album._id) {
+    console.log("dsadsasssssssssssssssssss", state.artistAlbums);
+    for (let i = 0; i < state.artistAlbums.albums.items.length; i++) {
+      console.log(state.artistAlbums.albums.items[i]._id, album._id);
+      if (state.artistAlbums.albums.items[i]._id == album._id) {
         state.artistAlbums.albums.items[i].name = album.name;
         break;
       }
     }
   },
   load_renameTrack: (state, track) => {
-
-    for(let i = 0; i < state.artistAlbums.albums.items.length; i++){
-      
-      if(state.artistAlbums.albums.items[i]._id == track.album) {
-        for(let j = 0; j < state.artistAlbums.albums.items[i].tracks.length; j++) {
+    console.log("ana", track);
+    for (let i = 0; i < state.artistAlbums.albums.items.length; i++) {
+      if (state.artistAlbums.albums.items[i]._id == track.album) {
+        for (
+          let j = 0;
+          j < state.artistAlbums.albums.items[i].tracks.length;
+          j++
+        ) {
           if (state.artistAlbums.albums.items[i].tracks[j]._id == track._id) {
-            state.artistAlbums.albums.items[i].tracks[j].name == track.name;
+            state.artistAlbums.albums.items[i].tracks[j].name = track.name;
             return;
           }
         }
@@ -54,43 +69,56 @@ const mutations = {
       }
     }
   },
-  delete_album: (state, id) =>{
-   console.log(id,state.artistAlbums.albums.items)
-   state.artistAlbums.albums.items = state.artistAlbums.albums.items.filter(x => x._id != id)
-  }
+  delete_album: (state, id) => {
+    console.log(id, state.artistAlbums.albums.items);
+    state.artistAlbums.albums.items = state.artistAlbums.albums.items.filter(
+      (x) => x._id != id
+    );
+  },
+  delete_track: (state, id) => {
+    console.log(id, state.artistAlbums.albums.items);
+    for (let i = 0; i < state.artistAlbums.albums.items.length; i++) {
+      let len = state.artistAlbums.albums.items[i].tracks.length;
+      state.artistAlbums.albums.items[
+        i
+      ].tracks = state.artistAlbums.albums.items[i].tracks.filter(
+        (x) => x._id != id
+      );
+      if (state.artistAlbums.albums.items[i].tracks.length < len) return;
+    }
+  },
 };
 
 const getters = {
   latestAlbumIDGetter: (state) => state.latestAlbumID,
-  uploadingDone:(state) => state.percentCompleted,
+  uploadingDone: (state) => state.percentCompleted,
   currentArtistGetter: (state) => {
-    console.log('artist', state.currentArtist)
+    console.log("artist", state.currentArtist);
     return state.currentArtist;
   },
 
   allArtistTopTracks: (state) => {
-    if(!state.artistTopTracks || state.artistTopTracks.length < 1)
-      return null;
-    console.log("dsadsa", state.artistTopTracks)
+    if (!state.artistTopTracks || state.artistTopTracks.length < 1) return null;
+    console.log("dsadsa", state.artistTopTracks);
     var newValue = state.artistTopTracks.tracks.items;
-    console.log("top tracks", newValue)
+    console.log("top tracks", newValue);
     var tracks = [];
 
     newValue.forEach((element) => {
       var k = {
-        album:{
+        album: {
           name: element.album.name,
           _id: element.album._id,
-          image: element.album.image
+          image: element.album.image,
         },
         durationMs: element.durationMs,
         explicit: element.explicit,
         premium: element.premium,
-        _id: element._id
+        _id: element._id,
       };
       tracks.push(k);
     });
-    console.log(tracks)
+    console.log(tracks);
     return tracks;
   },
 
@@ -138,7 +166,7 @@ const getters = {
         image: element.image,
         id: element.id,
         type: element.type,
-        tracks: element.tracks
+        tracks: element.tracks,
       };
       albums.push(k);
     });
@@ -147,6 +175,19 @@ const getters = {
 };
 
 const actions = {
+  deleteTrack({ commit }, payload) {
+    axios
+      .delete(`/v1/users/track/${payload.id}`, {
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      })
+      .then(commit("delete_track", payload.id))
+      .catch((error) => {
+        console.log("axios caught an error in deleteTrack");
+        console.log(error);
+      });
+  },
   deleteAlbum({ commit }, payload) {
     axios
       .delete(`/v1/albums/${payload.id}`, {
@@ -163,47 +204,52 @@ const actions = {
   renameAlbum({ commit }, payload) {
     console.log(payload);
     console.log(payload.albumTitle, payload.albumPhoto);
-    
+
     axios
-    .patch(`/v1/albums/${payload.id}`, {
-      name: payload.name
-    }
-    ,{
-      headers: {
-        Authorization: `Bearer ${payload.token}`,
-      },
-    })
-    .then((response) => {
-      console.log(response.data);
-      commit("load_renameAlbum", response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-},
+      .patch(
+        `/v1/albums/${payload.id}`,
+        {
+          name: payload.name,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        commit("load_renameAlbum", response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
 
-renameTrack({ commit }, payload) {
-  console.log(payload);
-  console.log(payload.albumTitle, payload.albumPhoto);
-  
-  axios
-  .patch(`/v1/users/track/${payload.id}`, {
-    name: payload.name
-  }
-  ,{
-    headers: {
-      Authorization: `Bearer ${payload.token}`,
-    },
-  })
-  .then((response) => {
-    console.log(response.data);
-    commit("load_renameTrack", response.data);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-},
+  renameTrack({ commit }, payload) {
+    console.log(payload);
+    console.log(payload.albumTitle, payload.albumPhoto);
 
+    axios
+      .patch(
+        `/v1/users/track/${payload.id}`,
+        {
+          name: payload.name,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${payload.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        commit("load_renameTrack", response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
 
   addNewAlbum({ commit, state }, payload) {
     console.log(payload);
@@ -224,9 +270,8 @@ renameTrack({ commit }, payload) {
       headers: {
         Authorization: `Bearer ${payload.token}`,
       },
+    };
 
-    }
-    
     axios
       .post("/v1/albums", form, config)
       .then((response) => {
@@ -261,7 +306,7 @@ renameTrack({ commit }, payload) {
   },
 
   addTrackToAlbum({ commit, state }, payload) {
-    console.log(payload)
+    console.log(payload);
     const FormData = require("form-data");
     const form = new FormData();
     form.append("name", payload.title);
@@ -269,9 +314,9 @@ renameTrack({ commit }, payload) {
     form.append("album", payload.album);
     form.append("explicit", payload.explicit);
     form.append("premium", payload.premium);
-    payload.categories.forEach(category => {
-      form.append("category",category)
-      console.log(category)
+    payload.categories.forEach((category) => {
+      form.append("category", category);
+      console.log(category);
     });
     const config = {
       onUploadProgress: function(progressEvent) {
@@ -281,7 +326,7 @@ renameTrack({ commit }, payload) {
       headers: {
         Authorization: `Bearer ${payload.token}`,
       },
-    }
+    };
 
     axios
       .post("/v1/users/tracks", form, config)
@@ -365,7 +410,7 @@ renameTrack({ commit }, payload) {
    */
 
   getArtistTopTracks({ commit }, payload) {
-    console.log("load",payload);
+    console.log("load", payload);
     axios
       .get(`/v1/artists/${payload.id}/top-tracks`, {
         headers: {
