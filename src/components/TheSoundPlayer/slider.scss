@@ -32,6 +32,13 @@ $fit-thumb-in-slider: -5px; //must be equal to -$thumb-radius
   margin-right: 0px;
 }
 
+.progress-slider-sm {
+  max-width: 200px;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  margin-right: 0px;
+}
+
 input:hover::-webkit-slider-thumb {
   background: white;
 }

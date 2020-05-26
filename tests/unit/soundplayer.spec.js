@@ -4,6 +4,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
 import soundplayer from "@/components/TheSoundplayer/TheSoundplayer.vue";
+import soundplayerLogout from "@/components/TheSoundplayer/TheSoundplayerLogout.vue";
 
 describe("TheSoundplayer", () => {
   let wrapper;
@@ -40,6 +41,10 @@ describe("TheSoundplayer", () => {
             isNextAndPreviousFinished: true,
             isBuffering: false,
             isRepeatOnceEnabled: false,
+            isRepeatEnabled: false,
+            isPicInPicCanvasRdy: false,
+            picInPicCanvas: undefined,
+            token: "",
 
             trackAlbumImageUrl: null,
             trackAlbumId: null,
@@ -74,10 +79,21 @@ describe("TheSoundplayer", () => {
             playTrackInQueue() {},
             toggleRepeatOnce({ state }) {
               state.isRepeatOnceEnabled = !state.isRepeatOnceEnabled;
-            }
+            },
+            toggleRepeat({ state }) {
+              state.isRepeatEnabled = !state.isRepeatEnabled;
+            },
+            saveTrack({ state }, payload) {
+              state.isTrackLiked = true;
+            },
+            removeSavedTrack({ state }, payload) {
+              state.isTrackLiked = false;
+            },
+            playTrackInQueue({ state }, trackId) {},
+            copyLink({ state }) {}
           },
           mutations: {
-            setTrackUrl(state, trackUrl) {
+            setTrackUrl({ state }, trackUrl) {
               state.trackUrl = trackUrl;
             },
             setId(state, id) {
@@ -110,9 +126,6 @@ describe("TheSoundplayer", () => {
             setIsTrackLoaded(state, isTrackLoaded) {
               state.isTrackLoaded = isTrackLoaded;
             },
-            setIsTrackLiked(state, isTrackLiked) {
-              state.isTrackLiked = isTrackLiked;
-            },
             setIsBuffering(state, isBuffering) {
               state.isBuffering = isBuffering;
             },
@@ -127,7 +140,11 @@ describe("TheSoundplayer", () => {
             },
             setContextUrl(state, contextUrl) {
               state.contextUrl = contextUrl;
-            }
+            },
+            setPicInPicCanvas(state, picInPicCanvas) {
+              state.picInPicCanvas = picInPicCanvas;
+            },
+            changeUpdateTracks(state) {}
           }
         },
         category: {
@@ -158,6 +175,9 @@ describe("TheSoundplayer", () => {
 
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
+
+    store.state.category.historyResponse = [];
+    wrapper.vm.init();
   });
 
   //check if it is a vue instance
@@ -166,12 +186,17 @@ describe("TheSoundplayer", () => {
   });
 
   // test like song
-  it("song is disliked", () => {
-    wrapper.vm.setIsTrackLiked(true);
+  it("song is liked or disliked", () => {
+    wrapper.vm.setTrackId("12");
+    store.state.track.isTrackLiked = true;
     wrapper.vm.saveToLikedSongs();
     expect(wrapper.vm.isTrackLiked).toEqual(false);
 
-    wrapper.vm.setIsTrackLiked(false);
+    store.state.track.isTrackLiked = false;
+    wrapper.vm.saveToLikedSongs();
+    expect(wrapper.vm.isTrackLiked).toEqual(true);
+
+    wrapper.vm.setTrackId(null);
     wrapper.vm.saveToLikedSongs();
     expect(wrapper.vm.isTrackLiked).toEqual(true);
   });
@@ -233,6 +258,17 @@ describe("TheSoundplayer", () => {
     expect(wrapper.vm.isRepeatOnceEnabled).toBe(false);
   });
 
+  it("toggle Repeat Conditionally", () => {
+    store.state.track.isRepeatEnabled = true;
+    store.state.track.isNextAndPreviousFinished = true;
+    wrapper.vm.toggleRepeatConditionally();
+    expect(wrapper.vm.isRepeatEnabled).toBe(false);
+
+    store.state.track.isNextAndPreviousFinished = false;
+    wrapper.vm.toggleRepeatConditionally();
+    expect(wrapper.vm.isRepeatEnabled).toBe(false);
+  });
+
   //mute
   it("mute the volume", () => {
     wrapper.vm.isMuted = false;
@@ -286,8 +322,27 @@ describe("TheSoundplayer", () => {
   });
 
   it("handle ended track", () => {
+    store.state.track.isRepeatOnceEnabled = true;
+    wrapper.vm.setAudioElement({
+      autoplay: false,
+      play: function() {}
+    });
     wrapper.vm._handleEndedTrack();
-    expect(wrapper.vm.next).toBeCalled;
+    expect(wrapper.vm.audioElement.play()).toBeCalled;
+
+    store.state.track.isRepeatOnceEnabled = false;
+    store.state.track.isRepeatEnabled = true;
+    store.state.track.isLastTrackInQueue = true;
+    wrapper.vm._handleEndedTrack();
+    expect(wrapper.vm.next()).toBeCalled;
+
+    store.state.track.isRepeatEnabled = false;
+    store.state.track.isLastTrackInQueue = false;
+    wrapper.vm._handleEndedTrack();
+    expect(wrapper.vm.next()).toBeCalled;
+
+    store.state.track.isLastTrackInQueue = true;
+    wrapper.vm._handleEndedTrack();
   });
 
   it("pause handler", () => {
@@ -327,6 +382,8 @@ describe("TheSoundplayer", () => {
     wrapper.vm.setAudioElement({
       autoplay: false
     });
+    store.state.track.trackId = "12";
+
     store.state.track.isNextAndPreviousFinished = true;
     wrapper.vm.nextConditionally();
     expect(wrapper.vm.audioElement.autoplay).toEqual(true);
@@ -352,7 +409,10 @@ describe("TheSoundplayer", () => {
     wrapper.vm.setAudioElement({
       autoplay: false
     });
+    store.state.track.isRepeatEnabled = true;
     store.state.track.isNextAndPreviousFinished = true;
+    store.state.track.trackId = "12";
+
     wrapper.vm.previousConditionally();
     expect(wrapper.vm.audioElement.autoplay).toEqual(true);
 
@@ -370,5 +430,80 @@ describe("TheSoundplayer", () => {
 
     result = wrapper.vm.convertTimeHHMMSS(3600);
     expect(result).toEqual("01:00:00");
+  });
+
+  it("handle audio error", () => {
+    wrapper.vm.setAudioElement({
+      error: {
+        code: 4
+      }
+    });
+    wrapper.vm._handleAudioError();
+    expect(wrapper.vm.playTrackInQueue()).toBeCalled;
+
+    wrapper.vm.setAudioElement({
+      error: {
+        code: 5
+      }
+    });
+    wrapper.vm._handleAudioError();
+  });
+
+  it("copy context Url", () => {
+    wrapper.vm.copyLink();
+  });
+
+  it("picture in picture feature", () => {
+    store.state.track.isPicInPicCanvasRdy = true;
+    wrapper.vm.picInPic();
+    expect(wrapper.vm.picInPicVideo.play()).toBeCalled;
+
+    store.state.track.isPicInPicCanvasRdy = false;
+    wrapper.vm.picInPic();
+    expect(wrapper.vm.picInPicVideo.play()).not.toBeCalled;
+
+    //play
+    document.pictureInPictureElement = {
+      play: () => {}
+    };
+    wrapper.vm._handlePicInPicPlay();
+    expect(document.pictureInPictureElement.play()).toBeCalled;
+
+    document.pictureInPictureElement = false;
+    wrapper.vm._handlePicInPicPlay();
+
+    //pause
+    document.pictureInPictureElement = {
+      pause: () => {}
+    };
+    wrapper.vm._handlePicInPicPause();
+    expect(document.pictureInPictureElement.pause()).toBeCalled;
+
+    document.pictureInPictureElement = false;
+    wrapper.vm._handlePicInPicPause();
+  });
+});
+
+describe("TheSoundplayerLogout", () => {
+  let wrapper;
+  let vuetify;
+
+  beforeEach(() => {
+    vuetify = new Vuetify();
+    Vue.use(Vuetify);
+
+    wrapper = shallowMount(soundplayerLogout, {
+      vuetify
+    });
+  });
+
+  it("renders", () => {
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it("snack bar", () => {
+    wrapper.vm.signIn();
+
+    expect(wrapper.vm.snackbar).toBe(true);
   });
 });

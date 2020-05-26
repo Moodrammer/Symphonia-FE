@@ -6,7 +6,7 @@ import VueRouter from "vue-router";
 
 //import the required componets
 import PlaylistView from "@/components/general/PlaylistView.vue";
-import Song from "@/components/general/Song.vue";
+import Song from "@/components/general/SongItem.vue";
 
 describe("Playlist View", () => {
   let wrapper;
@@ -20,6 +20,12 @@ describe("Playlist View", () => {
     Vue.use(VueRouter);
     Vue.use(Vuex);
 
+    const localStorageMock = {
+      getItem: jest.fn(),
+      setItem: jest.fn(),
+      clear: jest.fn()
+    };
+
     //Mocking the store
     store = new Vuex.Store({
       modules: {
@@ -28,6 +34,8 @@ describe("Playlist View", () => {
 
           state: {
             singlePlaylist: {
+              tracksCount: 1,
+              owner: { _id: "5e8b6d866253cb184eaac150", name: "User" },
               images: [
                 "https://zasymphonia.ddns.net/api/v1/images/playlists/playlist9.jpg"
               ],
@@ -43,22 +51,23 @@ describe("Playlist View", () => {
                 name: "Sulk",
                 durationMs: 30000,
                 _id: "5e8a39f24e11cd46c8bde654",
-                artist: "5e8b6d866253cb184eaac150",
-                album: "5e8b6d866253cb184eaac150"
+                artist: { _id: "5e8b6d866253cb184eaac150", name: "Symphonia" },
+                album: { _id: "5e8b6d866253cb184eaac150", name: "New Album" }
               }
             ],
-            followed: false
+            isFollowed: false,
+            updateTracksFlag: false
           },
           mutations: {
-            setPlaylistID: jest.fn(),
-            changeDeleteModel: jest.fn()
+            changeAdsPopup: jest.fn(),
+            changeUpdatePlaylistTracks: jest.fn()
           },
           actions: {
-            playSongStore: jest.fn(),
             followPlaylist: jest.fn(),
             unfollowPlaylist: jest.fn(),
             checkFollowed: jest.fn(),
-            getPlaylist: jest.fn()
+            getPlaylist: jest.fn(),
+            getPlaylistTracks: jest.fn()
           }
         }
       }
@@ -70,7 +79,15 @@ describe("Playlist View", () => {
       router,
       stubs: {
         RouterLink: RouterLinkStub
-      }
+      },
+      propsData: {
+        contextMenu: {
+          event: "event",
+          type: "type",
+          id: "1234"
+        }
+      },
+      localStorageMock
     });
   });
 
@@ -105,29 +122,53 @@ describe("Playlist View", () => {
   //--------------------------------------------------
   //         Testing created hook cycle actions
   //--------------------------------------------------
-  it("Gets a playlist at the begining", () => {
+  it("Gets the playlist's data", () => {
     expect("getPlaylist").toHaveBeenCalled;
   });
 
-  //---------------------------------------------------
-  //       Test user functionalities (logged out)
-  //---------------------------------------------------
-  it("Show Snack Bar at play button click", () => {
-    wrapper.vm.snackbar = false;
-    const playBtn = wrapper.find("#playBtn");
-    playBtn.vm.$emit("click");
-    expect(wrapper.vm.snackbar).toBe(true);
+  it("Gets the playlist's tracks", () => {
+    expect("getPlaylistTracks").toHaveBeenCalled;
   });
 
-  it("Show Snack Bar at follow click", () => {
-    wrapper.vm.snackbar = false;
+  it("Check if the user's follow this playlist", () => {
+    expect("checkFollowed").toHaveBeenCalled;
+  });
+  //---------------------------------------------------
+  //       Test user functionalities
+  //---------------------------------------------------
+  it("Set menu data", () => {
+    wrapper.vm.$emit("contextmenu.prevent");
+    expect(wrapper.vm.menuClick()).toHaveBeenCalled;
+  });
+
+  it("Play a playlist", () => {
+    const btn = wrapper.find("#playBtn");
+    btn.vm.$emit("click");
+    expect(wrapper.vm.play()).toHaveBeenCalled;
+  });
+
+  it("Follow a playlist", () => {
     wrapper.vm.followPlaylist();
-    expect(wrapper.vm.snackbar).toBe(true);
+    expect("followPlaylist").toHaveBeenCalled;
   });
 
-  it("Show Snack Bar at unfollow click", () => {
-    wrapper.vm.snackbar = false;
+  it("Unfollow a playlist", () => {
     wrapper.vm.unfollowPlaylist();
-    expect(wrapper.vm.snackbar).toBe(true);
+    expect("unfollowPlaylist").toHaveBeenCalled;
+  });
+
+  it("Update Saved tracks", () => {
+    wrapper.vm.$options.watch.updatePlaylistTracks.call(wrapper.vm);
+    store.state.playlist.updateTracksFlag = true;
+    expect(wrapper.vm.getPlaylistData()).toBeCalled;
+    expect(wrapper.vm.getPlaylistTracks()).toBeCalled;
+    expect("changeUpdatePlaylistTracks").toBeCalled;
+  });
+
+  it("Update content after routing", () => {
+    wrapper.vm.$options.watch.playlistID.call(wrapper.vm);
+    expect("getPlaylist").toHaveBeenCalled;
+    expect("getPlaylistTracks").toHaveBeenCalled;
+    expect("checkFollowed").toHaveBeenCalled;
   });
 });

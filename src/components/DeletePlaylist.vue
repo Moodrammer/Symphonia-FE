@@ -48,7 +48,7 @@ import getuserToken from "../mixins/userService";
 import getuserID from "../mixins/userService";
 
 /**
- * @displayName Create Playlist
+ * @displayName Delete Playlist
  * @example [none]
  */
 export default {

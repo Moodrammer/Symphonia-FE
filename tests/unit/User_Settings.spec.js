@@ -1,5 +1,5 @@
 //Importing plugins and helpers
-import { mount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
@@ -14,9 +14,7 @@ describe("User_Settings", () => {
     vuetify = new Vuetify();
     Vue.use(Vuetify);
     Vue.use(VueRouter);
-    //using mount not shallowMount to render the true html behind vuetify's components which are child components
-    //in order to find the elements by their ids
-    wrapper = mount(User_Settings, {
+    wrapper = shallowMount(User_Settings, {
       router,
       vuetify,
       data() {

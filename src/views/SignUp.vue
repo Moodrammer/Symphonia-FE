@@ -206,15 +206,18 @@
                   ></v-radio>
                 </v-radio-group>
               </v-row>
-                <v-alert v-if="userData.type == 'artist'"
-                 outlined
-                 color="indigo"
-                 class="white--text"
-                >
+              <v-alert
+                v-if="userData.type == 'artist'"
+                outlined
+                color="indigo"
+                class="white--text"
+              >
                 <div style="text-align: center;">
-                  An email with an attached activation link will be sent to the email address you provided inorder to activate your artist account
+                  An email with an attached activation link will be sent to the
+                  email address you provided inorder to activate your artist
+                  account
                 </div>
-                </v-alert>
+              </v-alert>
               <!-- Sign up button -->
               <v-row justify="center">
                 <v-col cols="8" class="py-2">

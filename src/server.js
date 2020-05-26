@@ -20,7 +20,7 @@ export function makeServer({ environment = "development" } = {}) {
       artist: Model,
       soundplayer: Model,
       category: Model,
-      deletedPlaylist: Model,
+      deletedPlaylist: Model
     },
 
     seeds(server) {
@@ -34,7 +34,7 @@ export function makeServer({ environment = "development" } = {}) {
         type: "user",
         country: "EG",
         imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
       });
       //creating an artist for testing purposes
       server.create("user", {
@@ -46,12 +46,12 @@ export function makeServer({ environment = "development" } = {}) {
         type: "artist",
         country: "EG",
         imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
       });
 
       server.create("deletedPlaylist", {
         name: "playlist",
-        deletedAt: "2020-04-18T04:19:11.758Z",
+        deletedAt: "2020-04-18T04:19:11.758Z"
       });
 
       //This part is just to fake mirage in order to persist the data of only one user
@@ -64,29 +64,29 @@ export function makeServer({ environment = "development" } = {}) {
         localStorage.removeItem("SignedUpUser");
       }
 
-      playlistJson.items.forEach((element) => {
+      playlistJson.items.forEach(element => {
         server.create("playlist", element);
       });
 
-      trackJSON.forEach((element) => {
+      trackJSON.forEach(element => {
         server.create("track", element);
       });
 
-      artistJSON.artists.items.forEach((element) => {
+      artistJSON.artists.items.forEach(element => {
         server.create("artist", element);
       });
 
-      albumsJSON.items.forEach((element) => server.create("album", element));
+      albumsJSON.items.forEach(element => server.create("album", element));
       // usersJSON.data.forEach(element => server.create("user", element));
 
-      categoryJSON.data.categorys.forEach((element) => {
+      categoryJSON.data.categorys.forEach(element => {
         server.create("category", element);
       });
     },
 
     //Define serializers to format the responses
     serializers: {
-      application: JSONAPISerializer,
+      application: JSONAPISerializer
     },
     routes() {
       //namespace will be prepended to any route (it acts like the server base address)
@@ -105,8 +105,8 @@ export function makeServer({ environment = "development" } = {}) {
           public: false,
           tracks: [],
           tracksCount: 0,
-          owner: user_id,
-          active: true,
+          owner: { _id: user_id, name: "Bob" },
+          active: true
         });
         console.log(schema.playlists.all().length);
         let ID = schema.playlists.all().length;
@@ -115,7 +115,7 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Current User's Playlists
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/playlists", (schema) => {
+      this.get("/v1/me/playlists", schema => {
         let owned = schema.playlists.where({ active: true }).models;
         let followed = schema.playlists.where({ liked: true }).models;
         for (let i = 0; i < followed.length; i++) owned.push(followed[i]);
@@ -124,38 +124,40 @@ export function makeServer({ environment = "development" } = {}) {
           {},
           {
             playlists: {
-              items: owned,
-            },
+              items: owned
+            }
           }
         );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a User's Saved Tracks                "Liked Songs"
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/tracks", (schema) => {
+      this.get("/v1/me/tracks", schema => {
+        let likedSongs = schema.tracks.where({ liked: true }).models;
+        let totalNum = likedSongs.length;
         return new Response(
           200,
           {},
           {
             tracks: {
-              items: schema.tracks.where({ liked: true }).models,
-            },
+              items: likedSongs,
+              total: totalNum
+            }
           }
         );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Popular Playlists
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/popularPlaylists", (schema) => {
+      this.get("/v1/me/popularPlaylists", schema => {
         return schema.playlists.where({ popularity: 90 }).models;
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Popular Artists
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/popularArtists", (schema) => {
+      this.get("/v1/me/popularArtists", schema => {
         return schema.artists.where({ popularity: 90 }).models;
       });
-
       ///////////////////////////////////////////////////////////////////////////////////
       //Get a List of Genre Playlists
       ///////////////////////////////////////////////////////////////////////////////////
@@ -168,8 +170,8 @@ export function makeServer({ environment = "development" } = {}) {
             {},
             {
               playlists: {
-                items: schema.playlists.where({ genre: id }).models,
-              },
+                items: schema.playlists.where({ genre: id }).models
+              }
             }
           );
         }
@@ -216,21 +218,21 @@ export function makeServer({ environment = "development" } = {}) {
           {
             name: schema.categories.where({ id: categoryID }).models[0].name,
             id: schema.categories.where({ id: categoryID }).models[0].id,
-            href: schema.categories.where({ id: categoryID }).models[0].href,
+            href: schema.categories.where({ id: categoryID }).models[0].href
           }
         );
       });
       ///////////////////////////////////////////////////////////////////////////////////
       //Get List of Categories
       ///////////////////////////////////////////////////////////////////////////////////
-      this.get("v1/browse/categories", (schema) => {
+      this.get("v1/browse/categories", schema => {
         return new Response(
           200,
           {},
           {
             categories: {
-              items: schema.categories.all().models,
-            },
+              items: schema.categories.all().models
+            }
           }
         );
       });
@@ -262,8 +264,8 @@ export function makeServer({ environment = "development" } = {}) {
         }
         return {
           tracks: {
-            items: tracksList,
-          },
+            items: tracksList
+          }
         };
       });
       //////////////////////////////////////////////////////////////////////////////////////
@@ -292,7 +294,7 @@ export function makeServer({ environment = "development" } = {}) {
         schema.playlists.where({ id: playlistID }).update({ active: false });
         server.create("deletedPlaylist", {
           name: schema.playlists.where({ id: playlistID }).name,
-          deletedAt: "2020-04-18T04:19:11.758Z",
+          deletedAt: "2020-04-18T04:19:11.758Z"
         });
         return new Response(200, {}, {});
       });
@@ -308,10 +310,15 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/albums/:ID/tracks", (schema, request) => {
         let albumID = request.params.ID;
+        let tracksID = schema.albums.where({ id: albumID }).models[0].tracks;
+        let tracksList = [];
+        for (let i = 0; i < tracksID.length; i++) {
+          tracksList.push(schema.tracks.where({ id: tracksID[i] }).models[0]);
+        }
         return {
           tracks: {
-            items: schema.albums.where({ _id: albumID }).models[0].tracks,
-          },
+            items: tracksList
+          }
         };
       });
       ////////////////////////////////////////////////////////////////////////////////////////
@@ -325,21 +332,21 @@ export function makeServer({ environment = "development" } = {}) {
       //Save Albums for Current User
       /////////////////////////////////////////////////////////////////////////////////////////
       this.put("/v1/me/albums", (schema, request) => {
-        let albumID = JSON.parse(request.requestBody);
+        let albumID = request.queryParams.ids[0];
         schema.albums.where({ _id: albumID[0] }).update({ liked: true });
         return new Response(200, {}, {});
       });
       /////////////////////////////////////////////////////////////////////////////////////////
       //Get current user followed playlists
       /////////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/following/playlists", (schema) => {
+      this.get("/v1/me/following/playlists", schema => {
         return schema.playlists.where({ liked: true }).models;
       });
       /////////////////////////////////////////////////////////////////////////////////////////
       //Remove Albums for Current User
       /////////////////////////////////////////////////////////////////////////////////////////
       this.delete("/v1/me/albums", (schema, request) => {
-        let albumID = request.queryParams.ids;
+        let albumID = request.queryParams.ids[0];
         schema.albums.where({ _id: albumID }).update({ liked: false });
         return new Response(200, {}, {});
       });
@@ -357,13 +364,60 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////////////
       // Get Current User Owned Playlists
       /////////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/playlists/owned", (schema) => {
-        return schema.playlists.where({ active: true }).models;
+      this.get("/v1/me/playlists/owned", schema => {
+        return {
+          playlists: {
+            items: schema.playlists.where({ active: true }).models
+          }
+        };
       });
       /////////////////////////////////////////////////////////////////////////////////////////
       // Add Tracks to Playlist
       /////////////////////////////////////////////////////////////////////////////////////////
-
+      this.post("/v1/playlists/:ID/tracks", (schema, request) => {
+        let playlistID = request.params.ID;
+        let playlistTracks = schema.playlists.where({ id: playlistID })
+          .models[0].tracks;
+        let numOfTracks = schema.playlists.where({ id: playlistID }).models[0]
+          .tracksCount;
+        let newTracks = JSON.parse(request.requestBody).tracks;
+        for (let i = 0; i < newTracks.length; i++) {
+          let exist = playlistTracks.indexOf(newTracks[i]);
+          if (exist == -1) {
+            numOfTracks = numOfTracks + 1;
+            playlistTracks.push(newTracks[i]);
+          }
+        }
+        schema.playlists
+          .where({ id: playlistID })
+          .update({ tracks: playlistTracks });
+        schema.playlists
+          .where({ id: playlistID })
+          .update({ tracksCount: numOfTracks });
+        return new Response(200, {}, {});
+      });
+      /////////////////////////////////////////////////////////////////////////////////////////
+      // Remove Track from Playlist
+      /////////////////////////////////////////////////////////////////////////////////////////
+      this.delete("/v1/playlists/:playlistID/tracks", (schema, request) => {
+        let playlistID = request.params.playlistID;
+        let trackID = request.queryParams.ids;
+        let numOfTracks = schema.playlists.where({ id: playlistID }).models[0]
+          .tracksCount;
+        let playlistTracks = schema.playlists.where({ id: playlistID })
+          .models[0].tracks;
+        playlistTracks = playlistTracks.filter(function(item) {
+          return item !== trackID;
+        });
+        numOfTracks -= 1;
+        schema.playlists
+          .where({ id: playlistID })
+          .update({ tracks: playlistTracks });
+        schema.playlists
+          .where({ id: playlistID })
+          .update({ tracksCount: numOfTracks });
+        return new Response(200, {}, {});
+      });
       /////////////////////////////////////////////////////////////////////////////////////////
       //Get User's History
       /////////////////////////////////////////////////////////////////////////////////////////
@@ -373,28 +427,19 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////////////
       //Get List of new-releases
       /////////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/browse/new-releases", (schema) => {
+      this.get("/v1/browse/new-releases", schema => {
         return {
           albums: {
-            items: schema.albums.all().models,
-          },
+            items: schema.albums.all().models
+          }
         };
       });
       /////////////////////////////////////////////////////////////////////////////////////////
-      this.get("/v1/me/albums", (schema) => {
+      this.get("/v1/me/albums", schema => {
         return {
-          Albums: { items: schema.albums.where({ liked: true }).models },
+          Albums: { items: schema.albums.where({ liked: true }).models }
         };
       });
-
-      // this.delete("/v1/me/albums", (schema, request) => {
-      //   var x = "";
-
-      //   for (var i = 2; i < request.requestBody.length - 2; i++)
-      //     x += request.requestBody[i];
-      //   return schema.albums.findBy(album => album._id === x).destroy();
-      // });
-
       //////////////  Artist /////////////////////////////////////////////////////////
       this.get("/v1/me/following", (schema, request) => {
         if (request.queryParams.type === "artist")
@@ -404,23 +449,23 @@ export function makeServer({ environment = "development" } = {}) {
       this.delete("/v1/me/following", (schema, request) => {
         if (request.queryParams.type === "artist") {
           return schema.artists
-            .findBy((artist) => artist._id === request.queryParams.ids)
+            .findBy(artist => artist._id === request.queryParams.ids)
             .destroy();
         }
       });
       ///////////////////////////////////////////////////////////////////////////////
 
       ///////////////////////USER UI/////////////////////////////////////////////////
-      this.get("/v1/users/:id/playlists", (schema) => {
+      this.get("/v1/users/:id/playlists", schema => {
         let x = schema.playlists.all().models;
         let z = [];
-        x.forEach((element) => {
+        x.forEach(element => {
           let y = {
             name: x.name,
             images: element.images,
             _id: element.id,
             owner: { name: "user" },
-            public: true,
+            public: true
           };
           z.push(y);
         });
@@ -428,7 +473,7 @@ export function makeServer({ environment = "development" } = {}) {
         return { playlists: { items: z } };
       });
       this.get("/v1/me/:id", (schema, request) => {
-        let x = schema.users.findBy((user) => user.id === request.params.id);
+        let x = schema.users.findBy(user => user.id === request.params.id);
         return { name: x.name, imageUrl: x.imageUrl };
       });
       //////////////////////////////////////////////////////////////////////////////
@@ -454,8 +499,8 @@ export function makeServer({ environment = "development" } = {}) {
                   name: schema.users.find(i).name,
                   type: schema.users.find(i).type,
                   imageUrl:
-                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
-                },
+                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+                }
               }
             );
           }
@@ -465,7 +510,7 @@ export function makeServer({ environment = "development" } = {}) {
           {},
           {
             status: "fail",
-            msg: "Incorrect email or password",
+            msg: "Incorrect email or password"
           }
         );
       }),
@@ -491,7 +536,7 @@ export function makeServer({ environment = "development" } = {}) {
               password: attrs.password,
               dateOfBirth: attrs.dateOfBirth,
               gender: attrs.gender,
-              type: attrs.type,
+              type: attrs.type
             });
 
             //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
@@ -513,8 +558,8 @@ export function makeServer({ environment = "development" } = {}) {
                   type: attrs.type,
                   imageUrl:
                     "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
-                  __v: 0,
-                },
+                  __v: 0
+                }
               }
             );
           } else {
@@ -524,7 +569,7 @@ export function makeServer({ environment = "development" } = {}) {
               {},
               {
                 status: "fail",
-                msg: "email address already exists",
+                msg: "email address already exists"
               }
             );
           }
@@ -567,36 +612,47 @@ export function makeServer({ environment = "development" } = {}) {
           );
         }),
         //route for activating the artist account
-        this.patch("/v1/users/activate/:artistActivationToken", (schema, request) => {
+        this.patch(
+          "/v1/users/activate/:artistActivationToken",
+          (schema, request) => {
             /*To simulate mocking backend acceptance of refusal let
               artistActivationToken: 1 => acceptance
               artistActivationToken: 0 => refusal
             */
-           let isAccountActivated = parseInt(request.params.artistActivationToken);
-           if(isAccountActivated) {
-            return new Response(201, {}, 
-              {
-                token:
-                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
-                user: {
-                  _id: schema.users.find(2).id,
-                  email: schema.users.find(2).email,
-                  name: schema.users.find(2).name,
-                  type: schema.users.find(2).type,
-                  imageUrl:
-                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+            let isAccountActivated = parseInt(
+              request.params.artistActivationToken
+            );
+            if (isAccountActivated) {
+              return new Response(
+                201,
+                {},
+                {
+                  token:
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
+                  user: {
+                    _id: schema.users.find(2).id,
+                    email: schema.users.find(2).email,
+                    name: schema.users.find(2).name,
+                    type: schema.users.find(2).type,
+                    imageUrl:
+                      "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+                  }
                 }
-              })
-           }
-           else {
-              return new Response(400,{},
+              );
+            } else {
+              return new Response(
+                400,
+                {},
                 {
                   status: "fail",
-                  msg: "Your activation link is invalid , make sure to check the link sent by email"
-                })
-           }
-        }, 
-        {timing: 2000}),
+                  msg:
+                    "Your activation link is invalid , make sure to check the link sent by email"
+                }
+              );
+            }
+          },
+          { timing: 2000 }
+        ),
         //route for the currently used device
         this.get("/v1/me/player/devices", () => {
           return new Response(
@@ -694,7 +750,7 @@ export function makeServer({ environment = "development" } = {}) {
           currentUser.update({
             email: attr.email,
             gender: attr.gender,
-            dateOfBirth: attr.dateOfBirth,
+            dateOfBirth: attr.dateOfBirth
           });
 
           return new Response(201, {}, {});
@@ -734,7 +790,7 @@ export function makeServer({ environment = "development" } = {}) {
       const mockTracks = [
         "http://thesymphonia.ddns.net/api/v1/me/player/tracks/123",
         "http://thesymphonia.ddns.net/api/v1/me/player/tracks/456",
-        "http://thesymphonia.ddns.net/api/v1/me/player/tracks/789",
+        "http://thesymphonia.ddns.net/api/v1/me/player/tracks/789"
       ];
       var currentlyPlaying = mockTracks[1];
       var currentlyPlayingIndex = 1;
@@ -749,15 +805,15 @@ export function makeServer({ environment = "development" } = {}) {
           {
             data: {
               currentlyPlaying: {
-                currentTrack: currentlyPlaying,
+                currentTrack: currentlyPlaying
               },
               queueTracks: mockTracks,
               previousTrack: previousTrack,
               nextTrack: nextTrack,
               repeat: repeat,
               repeatOnce: repeatOnce,
-              shuffle: shuffle,
-            },
+              shuffle: shuffle
+            }
           }
         );
       });
@@ -785,7 +841,7 @@ export function makeServer({ environment = "development" } = {}) {
           200,
           {},
           {
-            data: "123",
+            data: "123"
           }
         );
       });
@@ -847,20 +903,24 @@ export function makeServer({ environment = "development" } = {}) {
           {},
           {
             data: {
-              currentTrack: currentlyPlaying,
-            },
+              currentTrack: currentlyPlaying
+            }
           }
         );
       });
 
       this.get("/v1/me/checkout-session", () => {
-        return new Response(200, {}, {
-          session: {
-            id: "12"
+        return new Response(
+          200,
+          {},
+          {
+            session: {
+              id: "12"
+            }
           }
-        });
+        );
       });
-    },
+    }
   });
 
   return server;

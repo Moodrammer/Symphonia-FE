@@ -3,9 +3,9 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import loggedIn from "@/components/WebplayerContent/HomeContentLogin.vue";
+import AdsPopup from "@/components/Popups/AdsPopup.vue";
 
-describe("Webplayer Home - user logged in", () => {
+describe("CreatePlaylist", () => {
   let wrapper;
   let vuetify;
   let store;
@@ -17,35 +17,35 @@ describe("Webplayer Home - user logged in", () => {
 
     store = new Vuex.Store({
       modules: {
-        category: {
+        playlist: {
           namespaced: true,
-          state: {
-            categories: []
-          },
-          actions: {
-            loadGenres: jest.fn(),
-            recentlyPlayedSection: jest.fn(),
-            getNewReleases: jest.fn(),
-            yourPlaylistsSection: jest.fn()
+          mutations: {
+            changeAdsPopup: jest.fn()
           }
         }
       }
     });
 
-    wrapper = shallowMount(loggedIn, {
+    wrapper = shallowMount(AdsPopup, {
       vuetify,
       store
     });
   });
 
-  //--------------------------------------------------
-  //              Test Rendering
-  //--------------------------------------------------
+  //--------------------------------------------------------
+  //                     Rendering
+  //--------------------------------------------------------
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
   });
 
   it("renders a vue instance", () => {
     expect(wrapper.isVueInstance()).toBe(true);
+  });
+
+  it("Change the popup model at closing", () => {
+    wrapper.vm.close();
+    expect("changeAdsPopup").toBeCalled;
+    expect(wrapper.vm.dialog).toBe(false);
   });
 });
