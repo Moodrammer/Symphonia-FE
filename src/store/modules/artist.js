@@ -161,6 +161,7 @@ const getters = {
     var newValue = state.artistAlbums.albums.items;
     var albums = [];
     newValue.forEach((element) => {
+      if(element.type == "album") {
       var k = {
         name: element.name,
         image: element.image,
@@ -169,9 +170,31 @@ const getters = {
         tracks: element.tracks,
       };
       albums.push(k);
+    }
     });
     return albums;
   },
+  
+  allArtistSingels: (state) => {
+    if (state.artistAlbums == null) return null;
+    console.log("sss", state.artistAlbums.albums.items);
+    var newValue = state.artistAlbums.albums.items;
+    var albums = [];
+    newValue.forEach((element) => {
+      if(element.type == "single") {
+      var k = {
+        name: element.name,
+        image: element.image,
+        id: element.id,
+        type: element.type,
+        tracks: element.tracks,
+      };
+      albums.push(k);
+    }
+    });
+    return albums;
+  },
+
 };
 
 const actions = {

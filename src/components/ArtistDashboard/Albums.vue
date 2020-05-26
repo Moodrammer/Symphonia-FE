@@ -329,8 +329,6 @@ export default {
           "at least one category should be selected",
       ],
       cpyRules: [(value) => (value != null && value.length > 0) || "REQUIRED"],
-      // uploaded: 0,
-      // startLoading: false,
       selectedCategories: [],
       explicit: false,
       premium: false,
@@ -342,55 +340,6 @@ export default {
       title: null,
       cover: null,
       file: null,
-      items: [
-        {
-          action: "local_activity",
-          title: "Attractions",
-          id: 0,
-          items: [{ title: "List Item" }],
-        },
-        {
-          action: "restaurant",
-          title: "Dining",
-          id: 1,
-          active: true,
-          items: [
-            { title: "Breakfast & brunch" },
-            { title: "New American" },
-            { title: "Sushi" },
-          ],
-        },
-        {
-          action: "school",
-          title: "Education",
-          id: 2,
-          items: [{ title: "List Item" }],
-        },
-        {
-          action: "directions_run",
-          title: "Family",
-          id: 3,
-          items: [{ title: "List Item" }],
-        },
-        {
-          action: "healing",
-          title: "Health",
-          id: 4,
-          items: [{ title: "List Item" }],
-        },
-        {
-          action: "content_cut",
-          title: "Office",
-          id: 5,
-          items: [{ title: "List Item" }],
-        },
-        {
-          action: "local_offer",
-          title: "Promotions",
-          id: 6,
-          items: [{ title: "List Item" }],
-        },
-      ],
     };
   },
   computed: {
@@ -398,6 +347,8 @@ export default {
       get() {
         console.log(this.uploadingDone != 0);
         console.log(this.uploadingDone);
+        if(this.uploadingDone == 0)
+          this.reset();
         return this.uploadingDone != 0 && this.uploadingDone;
       },
       set(value) {
@@ -441,8 +392,6 @@ export default {
       this.dialog.remove = false;
       this.dialog.addAlbum = false;
       this.dialog.addSong = false;
-
-      this.startLoading = false;
       this.selectedCategories = [];
       this.explicit = false;
       this.premium = false;

@@ -4,14 +4,9 @@
     <h1 class="display-4 grey--text ml-12 my-4">Singles</h1>
     <v-dialog persistent max-width="1000" v-model="startLoading">
       <v-card-title class="white--text">Please Wait...</v-card-title>
-      <v-progress-linear
-      v-model="uploadingDone"
-      height="25"
-      reactive
-    >
-      <strong>{{ Math.ceil(uploadingDone) }}%</strong>
-    </v-progress-linear>
-
+      <v-progress-linear v-model="uploadingDone" height="25" reactive>
+        <strong>{{ Math.ceil(uploadingDone) }}%</strong>
+      </v-progress-linear>
     </v-dialog>
     <v-dialog dark v-model="dialog.remove" max-width="500">
       <v-card>
@@ -54,10 +49,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn
-              color="normal darken-1"
-              text
-              @click="reset()">
+            <v-btn color="normal darken-1" text @click="reset()">
               Cancel
             </v-btn>
 
@@ -138,11 +130,7 @@
           </div>
 
           <v-col class="text-right">
-            <v-btn
-              color="normal darken-1"
-              text
-              @click="reset()"
-            >
+            <v-btn color="normal darken-1" text @click="reset()">
               Cancel
             </v-btn>
 
@@ -208,11 +196,7 @@
           </v-row>
 
           <v-col class="text-right">
-            <v-btn
-              color="normal darken-1"
-              text
-              @click="reset()"
-            >
+            <v-btn color="normal darken-1" text @click="reset()">
               Cancel
             </v-btn>
 
@@ -226,12 +210,12 @@
     <v-card max-width="1000" class="mx-auto mt-10" dark>
       <v-toolbar dark class="mt-12">
         <v-spacer></v-spacer>
-        <v-btn @click="dialog.addAlbum = true">+ new single</v-btn>
+        <v-btn @click="dialog.addAlbum = true">+ new album</v-btn>
       </v-toolbar>
 
       <v-list dark>
         <v-list-group
-          v-for="(item, index) in allArtistAlbums"
+          v-for="(item, index) in allArtistSingles"
           :key="index"
           v-model="item.active"
         >
@@ -259,22 +243,23 @@
               small
               text
               title="add songs to the album"
-              @click="setOperationData('addSong', item.title, item.id, null)"
+              @click="setOperationData('addSong', item.name, item.id, null)"
               ><v-icon>mdi-plus</v-icon></v-btn
             >
             <v-btn fab small text class="mx-6" title="edit album name"
               ><v-icon
-                @click="setOperationData('rename', item.title, item.id, null)"
+                @click="setOperationData('rename', item.name, item.id, null)"
                 >mdi-pencil</v-icon
               ></v-btn
             >
             <v-btn fab small text title="delete album"
               ><v-icon
-                @click="setOperationData('remove', item.title, item.id, null)"
+                @click="setOperationData('remove', item.name, item.id, null)"
                 >mdi-delete</v-icon
               ></v-btn
             >
           </v-row>
+
           <v-list-item
             v-for="(subItem, i) in item.tracks"
             :key="i"
@@ -289,20 +274,32 @@
             <v-spacer></v-spacer>
             <v-btn fab x-small text title="edit song name" class="mx-6"
               ><v-icon
-                @click="setOperationData('rename', subItem.title, item.id, subItem.id)"
+                @click="
+                  setOperationData(
+                    'rename',
+                    subItem.name,
+                    item.id,
+                    subItem._id
+                  )
+                "
                 >mdi-pencil</v-icon
               ></v-btn
             >
             <v-btn fab x-small text title="delete song"
               ><v-icon
-                @click="setOperationData('remove', subItem.title, item.id, subItem.id)"
+                @click="
+                  setOperationData(
+                    'remove',
+                    subItem.name,
+                    item.id,
+                    subItem._id
+                  )
+                "
                 >mdi-delete</v-icon
               ></v-btn
             >
           </v-list-item>
-
         </v-list-group>
-        
       </v-list>
     </v-card>
   </v-container>
@@ -327,11 +324,11 @@ export default {
       ],
       categoriesRules: [
         (value) =>
-          value == null || value.length > 0 || "at least one category should be selected",
+          value == null ||
+          value.length > 0 ||
+          "at least one category should be selected",
       ],
       cpyRules: [(value) => (value != null && value.length > 0) || "REQUIRED"],
-      // uploaded: 0,
-      // startLoading: false,
       selectedCategories: [],
       explicit: false,
       premium: false,
@@ -343,70 +340,22 @@ export default {
       title: null,
       cover: null,
       file: null,
-      items: [
-        {
-          action: "local_activity",
-          title: "Attractions",
-          id: 0,
-          items: [{ title: "List Item" }],
-        },
-        {
-          action: "restaurant",
-          title: "Dining",
-          id: 1,
-          active: true,
-          items: [
-            { title: "Breakfast & brunch" },
-            { title: "New American" },
-            { title: "Sushi" },
-          ],
-        },
-        {
-          action: "school",
-          title: "Education",
-          id: 2,
-          items: [{ title: "List Item" }],
-        },
-        {
-          action: "directions_run",
-          title: "Family",
-          id: 3,
-          items: [{ title: "List Item" }],
-        },
-        {
-          action: "healing",
-          title: "Health",
-          id: 4,
-          items: [{ title: "List Item" }],
-        },
-        {
-          action: "content_cut",
-          title: "Office",
-          id: 5,
-          items: [{ title: "List Item" }],
-        },
-        {
-          action: "local_offer",
-          title: "Promotions",
-          id: 6,
-          items: [{ title: "List Item" }],
-        },
-      ],
     };
   },
   computed: {
-    startLoading: 
-    {
-      get(){
+    startLoading: {
+      get() {
         console.log(this.uploadingDone != 0);
         console.log(this.uploadingDone);
-        return (this.uploadingDone != 0 && this.uploadingDone);
+        if(this.uploadingDone == 0)
+          this.reset();
+        return this.uploadingDone != 0 && this.uploadingDone;
       },
-      set(value){
+      set(value) {
         value;
-      }
+      },
     },
-    ...mapGetters("artist", ["allArtistAlbums","uploadingDone", "latestAlbumIDGetter"]),
+    ...mapGetters("artist", ["allArtistSingles", "uploadingDone"]),
     categories: function() {
       let x = this.$store.state.artist.simplifiedCategories;
       console.log(x);
@@ -422,50 +371,35 @@ export default {
       id: this.getuserID(),
     });
   },
-  watch: {
-    latestAlbumIDGetter: function(newValue){
-      if(newValue){
-        this.dialog.addAlbum = false;
-        this.dialog.addSong = true;
-      }
-    },
-    allArtistAlbums: function(newValue) {
-      console.log(newValue);
-    },
-    startLoading: function(newValue) {
-      if(newValue)
-        return;
-      if(this.dialog.addSong == true) {
-        this.reset();
-      }
-    }
-  },
+
   methods: {
     ...mapActions("artist", [
       "addNewAlbum",
       "addTrackToAlbum",
       "getArtistAlbums",
       "getSimplifiedCategories",
+      "renameAlbum",
+      "renameTrack",
+      "deleteAlbum",
+      "deleteTrack",
     ]),
     reset() {
-      this.dialog.rename = false
-      this.dialog.remove = false 
-      this.dialog.addAlbum = false
-      this.dialog.addSong = false
-
-      this.startLoading = false
-      this.selectedCategories = []
-      this.explicit= false
-      this.premium= false
-      this.copyrightsText= null
-      this.title = null
-      this.cover = null
-      this.file = null
+      this.dialog.rename = false;
+      this.dialog.remove = false;
+      this.dialog.addAlbum = false;
+      this.dialog.addSong = false;
+      this.selectedCategories = [];
+      this.explicit = false;
+      this.premium = false;
+      this.copyrightsText = null;
+      this.title = null;
+      this.cover = null;
+      this.file = null;
     },
     addAlbum() {
       console.log(this.title, this.cover);
       if (!this.$refs.albumForm.validate()) return;
-      this.startLoading = true
+      this.startLoading = true;
       let payload = {
         token: this.getuserToken(),
         title: this.title,
@@ -480,8 +414,8 @@ export default {
     addSong() {
       console.log(this.title, this.cover);
       if (!this.$refs.songForm.validate()) return;
-      this.startLoading = true
-      console.log("sdsadsada",this.selectedCategories)
+      this.startLoading = true;
+      console.log("sdsadsada", this.selectedCategories);
       let payload = {
         token: this.getuserToken(),
         title: this.title,
@@ -489,20 +423,42 @@ export default {
         explicit: this.explicit,
         premium: this.premium,
         categories: this.selectedCategories,
-        album: this.latestAlbumIDGetter,
+        album: this.operation.albumID,
       };
-      // this.$store.commit("set_latestAlbumID", null);
       this.addTrackToAlbum(payload);
     },
     remove() {
+      if (this.operation.songID == null) {
+        //rename album by this.title
+        this.deleteAlbum({
+          token: this.getuserToken(),
+          id: this.operation.albumID,
+        });
+      } else {
+        this.deleteTrack({
+          token: this.getuserToken(),
+          id: this.operation.songID,
+        });
+      }
+      this.title = null;
       this.dialog.remove = false;
     },
     rename() {
       if (!this.$refs.renameForm.validate()) return;
       if (this.operation.songID == null) {
         //rename album by this.title
+        this.renameAlbum({
+          token: this.getuserToken(),
+          name: this.title,
+          id: this.operation.albumID,
+        });
       } else {
-        //rename single by this.title
+        console.log("yaba a7la 4o8l");
+        this.renameTrack({
+          token: this.getuserToken(),
+          name: this.title,
+          id: this.operation.songID,
+        });
       }
       this.title = null;
       this.dialog.rename = false;
@@ -511,12 +467,11 @@ export default {
       this.operation.title = title;
       this.operation.albumID = albumID;
       this.operation.songID = songID;
-
+      console.log(this.operation, "sdsadsads");
       if (type == "remove") this.dialog.remove = true;
       else if (type == "rename") this.dialog.rename = true;
       else if (type == "addSong") this.dialog.addSong = true;
     },
-    
   },
 };
 </script>
