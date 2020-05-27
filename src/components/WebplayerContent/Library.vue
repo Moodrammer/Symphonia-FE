@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import getuserToken from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
 
 export default {
   name: "Library",

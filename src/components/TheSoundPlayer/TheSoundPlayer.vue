@@ -320,7 +320,7 @@
  */
 
 import { mapMutations, mapActions, mapState } from "vuex";
-import getuserToken from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
 import SoundGrapher from "./TheSoundGrapher.vue";
 
 export default {

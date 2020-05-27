@@ -178,8 +178,9 @@
 </template>
 
 <script>
-import isLoggedIn from "../../mixins/userService";
-import getusername from "../../mixins/userService";
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
+import getusername from "../../mixins/userService/getusername";
+import logOut from "../../mixins/userService/logOut"
 /**
  * @displayName Webplayer Navigation Bar
  * @example [none]
@@ -308,7 +309,7 @@ export default {
   beforeDestroy() {
     window.removeEventListener("scroll", this.updateScroll);
   },
-  mixins: [isLoggedIn, getusername]
+  mixins: [isLoggedIn, getusername, logOut]
 };
 </script>
 

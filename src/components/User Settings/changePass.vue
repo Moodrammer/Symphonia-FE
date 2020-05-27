@@ -68,7 +68,7 @@
 
 <script>
 import bottomContent from "./bottomContent.vue";
-import getuserID from "@/mixins/userService";
+import getuserID from "@/mixins/userService/getuserID";
 export default {
   data() {
     return {

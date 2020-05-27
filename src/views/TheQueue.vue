@@ -46,7 +46,7 @@
 <script>
 import SongItem from "../components/general/SongItem";
 import { mapState, mapActions, mapMutations } from "vuex";
-import getuserToken from "../mixins/userService";
+import getuserToken from "../mixins/userService/getUserToken";
 
 export default {
   name: "TheQueue",

@@ -12,7 +12,7 @@ import NavigationBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import Content from "../components/Homepage/TheHomepageContent.vue";
 import Footer from "../components/Homepage/TheHomepageFooter";
 import ContentLoggedIn from "../components/Homepage/TheHomepageLoginContent.vue";
-import isLoggedIn from "../mixins/userService";
+import isLoggedIn from "../mixins/userService/isLoggedIn";
 import { mapMutations } from "vuex";
 
 /**

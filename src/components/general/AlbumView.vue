@@ -167,9 +167,9 @@
 <script>
 import SongItem from "./SongItem";
 import getDeviceSize from "../../mixins/getDeviceSize";
-import getuserToken from "../../mixins/userService";
-import getuserID from "../../mixins/userService";
-import isLoggedIn from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
+import getuserID from "../../mixins/userService/getuserID";
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
 /**
