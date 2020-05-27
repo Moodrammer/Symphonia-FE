@@ -347,8 +347,6 @@ export default {
       get() {
         console.log(this.uploadingDone != 0);
         console.log(this.uploadingDone);
-        if(this.uploadingDone == 0)
-          this.reset();
         return this.uploadingDone != 0 && this.uploadingDone;
       },
       set(value) {
@@ -375,6 +373,11 @@ export default {
     allArtistAlbums: function(newValue) {
       console.log(newValue);
     },
+    startLoading: function(newValue) {
+      console.log(newValue);
+      if(newValue == 0)
+        this.reset();
+    }
   },
   methods: {
     ...mapActions("artist", [
@@ -403,7 +406,6 @@ export default {
     addAlbum() {
       console.log(this.title, this.cover);
       if (!this.$refs.albumForm.validate()) return;
-      this.startLoading = true;
       let payload = {
         token: this.getuserToken(),
         title: this.title,
@@ -418,7 +420,6 @@ export default {
     addSong() {
       console.log(this.title, this.cover);
       if (!this.$refs.songForm.validate()) return;
-      this.startLoading = true;
       console.log("sdsadsada", this.selectedCategories);
       let payload = {
         token: this.getuserToken(),

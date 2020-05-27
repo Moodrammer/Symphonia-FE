@@ -148,15 +148,6 @@
           >Add Song to {{ operation.title }}</v-card-title
         >
         <v-form ref="songForm">
-          <v-text-field
-            outlined
-            class="mx-9 mt-8"
-            v-model="title"
-            :rules="titleRules"
-            label="Song Title"
-            prepend-icon="mdi-text-short"
-          ></v-text-field>
-
           <v-file-input
             class="mx-9 my-5"
             label="Song .mp3"
@@ -210,7 +201,7 @@
     <v-card max-width="1000" class="mx-auto mt-10" dark>
       <v-toolbar dark class="mt-12">
         <v-spacer></v-spacer>
-        <v-btn @click="dialog.addAlbum = true">+ new album</v-btn>
+        <v-btn @click="dialog.addAlbum = true">+ new single</v-btn>
       </v-toolbar>
 
       <v-list dark>
@@ -242,17 +233,25 @@
               fab
               small
               text
-              title="add songs to the album"
+              title="add song file to the single"
+              v-if="item.tracks.length == 0"
               @click="setOperationData('addSong', item.name, item.id, null)"
               ><v-icon>mdi-plus</v-icon></v-btn
             >
-            <v-btn fab small text class="mx-6" title="edit album name"
+            <v-btn fab small text class="mx-6" title="edit single name"
               ><v-icon
-                @click="setOperationData('rename', item.name, item.id, null)"
+                @click="
+                  setOperationData(
+                    'rename',
+                    item.name,
+                    item.id,
+                    item.tracks[0]._id
+                  )
+                "
                 >mdi-pencil</v-icon
               ></v-btn
             >
-            <v-btn fab small text title="delete album"
+            <v-btn fab small text title="delete single"
               ><v-icon
                 @click="setOperationData('remove', item.name, item.id, null)"
                 >mdi-delete</v-icon
@@ -272,28 +271,10 @@
               <v-list-item-title v-text="subItem.name"></v-list-item-title>
             </v-list-item-content>
             <v-spacer></v-spacer>
-            <v-btn fab x-small text title="edit song name" class="mx-6"
+            <v-btn fab x-small text title="delete song file"
               ><v-icon
                 @click="
-                  setOperationData(
-                    'rename',
-                    subItem.name,
-                    item.id,
-                    subItem._id
-                  )
-                "
-                >mdi-pencil</v-icon
-              ></v-btn
-            >
-            <v-btn fab x-small text title="delete song"
-              ><v-icon
-                @click="
-                  setOperationData(
-                    'remove',
-                    subItem.name,
-                    item.id,
-                    subItem._id
-                  )
+                  setOperationData('remove', subItem.name, item.id, subItem._id)
                 "
                 >mdi-delete</v-icon
               ></v-btn
@@ -347,15 +328,17 @@ export default {
       get() {
         console.log(this.uploadingDone != 0);
         console.log(this.uploadingDone);
-        if(this.uploadingDone == 0)
-          this.reset();
         return this.uploadingDone != 0 && this.uploadingDone;
       },
       set(value) {
         value;
       },
     },
-    ...mapGetters("artist", ["allArtistSingles", "uploadingDone"]),
+    ...mapGetters("artist", [
+      "allArtistSingles",
+      "uploadingDone",
+      "latestAlbumIDGetter",
+    ]),
     categories: function() {
       let x = this.$store.state.artist.simplifiedCategories;
       console.log(x);
@@ -371,7 +354,20 @@ export default {
       id: this.getuserID(),
     });
   },
-
+  watch: {
+    latestAlbumIDGetter: function(newValue) {
+      if (!newValue) this.dialog.addSong = false;
+      else {
+        this.operation.albumID = newValue;
+        this.dialog.addAlbum = false;
+        this.dialog.addSong = true;
+      }
+    },
+    startLoading: function(newValue) {
+      if (newValue == 0 && this.dialog.addAlbum == false)
+        this.reset();
+    }
+  },
   methods: {
     ...mapActions("artist", [
       "addNewAlbum",
@@ -399,7 +395,6 @@ export default {
     addAlbum() {
       console.log(this.title, this.cover);
       if (!this.$refs.albumForm.validate()) return;
-      this.startLoading = true;
       let payload = {
         token: this.getuserToken(),
         title: this.title,
@@ -410,15 +405,15 @@ export default {
         date: this.date,
       };
       this.addNewAlbum(payload);
+      this.operation.title = this.title;
     },
     addSong() {
       console.log(this.title, this.cover);
       if (!this.$refs.songForm.validate()) return;
-      this.startLoading = true;
       console.log("sdsadsada", this.selectedCategories);
       let payload = {
         token: this.getuserToken(),
-        title: this.title,
+        title: this.operation.title,
         track: this.file,
         explicit: this.explicit,
         premium: this.premium,
@@ -445,21 +440,19 @@ export default {
     },
     rename() {
       if (!this.$refs.renameForm.validate()) return;
-      if (this.operation.songID == null) {
-        //rename album by this.title
-        this.renameAlbum({
-          token: this.getuserToken(),
-          name: this.title,
-          id: this.operation.albumID,
-        });
-      } else {
-        console.log("yaba a7la 4o8l");
+      console.log(this.operation);
+      //rename album by this.title
+      if (this.operation.songID)
         this.renameTrack({
           token: this.getuserToken(),
           name: this.title,
           id: this.operation.songID,
         });
-      }
+      this.renameAlbum({
+        token: this.getuserToken(),
+        name: this.title,
+        id: this.operation.albumID,
+      });
       this.title = null;
       this.dialog.rename = false;
     },
@@ -467,7 +460,6 @@ export default {
       this.operation.title = title;
       this.operation.albumID = albumID;
       this.operation.songID = songID;
-      console.log(this.operation, "sdsadsads");
       if (type == "remove") this.dialog.remove = true;
       else if (type == "rename") this.dialog.rename = true;
       else if (type == "addSong") this.dialog.addSong = true;

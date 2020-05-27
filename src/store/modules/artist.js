@@ -28,6 +28,7 @@ const mutations = {
     console.log("homaaaaa");
     console.log(track);
     console.log(state.artistAlbums);
+    state.latestAlbumID = null;
     for (let i = 0; i < state.artistAlbums.albums.items.length; i++) {
       if (state.artistAlbums.albums.items[i]._id == track.album) {
         state.artistAlbums.albums.items[i].tracks.push({
@@ -161,12 +162,12 @@ const getters = {
     var newValue = state.artistAlbums.albums.items;
     var albums = [];
     newValue.forEach((element) => {
-      if(element.type == "album") {
+      console.log(element.albumType)
+      if(element.albumType == "album") {
       var k = {
         name: element.name,
         image: element.image,
         id: element.id,
-        type: element.type,
         tracks: element.tracks,
       };
       albums.push(k);
@@ -175,18 +176,17 @@ const getters = {
     return albums;
   },
   
-  allArtistSingels: (state) => {
+  allArtistSingles: (state) => {
     if (state.artistAlbums == null) return null;
     console.log("sss", state.artistAlbums.albums.items);
     var newValue = state.artistAlbums.albums.items;
     var albums = [];
     newValue.forEach((element) => {
-      if(element.type == "single") {
+      if(element.albumType == "single") {
       var k = {
         name: element.name,
         image: element.image,
         id: element.id,
-        type: element.type,
         tracks: element.tracks,
       };
       albums.push(k);
@@ -281,7 +281,7 @@ const actions = {
     const form = new FormData();
     form.append("name", payload.title);
     form.append("image", payload.cover);
-    form.append("type", payload.type);
+    form.append("albumType", payload.type);
     form.append("releaseDate", payload.date);
     form.append("copyrightsText", payload.copyrightsText);
     form.append("copyrightsType", payload.copyrightsType);
