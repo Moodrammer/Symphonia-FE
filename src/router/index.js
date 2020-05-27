@@ -24,6 +24,7 @@ import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
+import notfound from "../views/TheNotFoundPage.vue"
 
 import isLoggedIn from "@/mixins/userService/isLoggedIn";
 
@@ -283,6 +284,14 @@ const routes = [
     path: "/artist-activation/:activationToken",
     name: "artistActivation",
     component: ArtistActivation,
+    meta: {
+      allowAnonymous: true
+    }
+  },
+  {
+    path: '*',
+    name: 'notfound', 
+    component: notfound,
     meta: {
       allowAnonymous: true
     }
