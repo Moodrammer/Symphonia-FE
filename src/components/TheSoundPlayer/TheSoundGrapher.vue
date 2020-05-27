@@ -31,9 +31,11 @@ export default {
   methods: {
     ...mapMutations("track", ["initAudioContext"]),
 
-    // When the Start button is clicked, finish setting up the audio nodes, play the sound,
-    // gather samples for the analysis, update the canvas
-
+    /**
+     * setup the web audio API nodes
+     * 
+     * @public
+     */
     setupAudioNodes: function() {
       this.sourceNode = this.audioContext.createMediaElementSource(
         this.audioElement
@@ -52,7 +54,11 @@ export default {
       this.analyserNode.connect(this.javascriptNode);
       this.javascriptNode.connect(this.audioContext.destination);
     },
-
+    /**
+     * this function is responsible of graph drawing
+     * 
+     * @public
+     */
     drawTimeDomain: function() {
       //clean canvas
       this.ctx.fillStyle = "#282828";
