@@ -39,7 +39,11 @@ describe("signup", () => {
       actions,
       mutations
     });
-
+    const $route = {
+      query: {
+        redirect: "webhome/home"
+      }
+    }
     vuetify = new Vuetify();
     Vue.use(Vuetify);
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
@@ -47,7 +51,8 @@ describe("signup", () => {
     wrapper = mount(signup, {
       vuetify,
       store,
-      stubs: ["router-link"]
+      stubs: ["router-link"],
+      mocks: {$route}
     });
   });
   //-------------------------------------------------------------------------//

@@ -42,13 +42,18 @@ describe("login", () => {
     //tell vue global constructor to use the other plugins
     Vue.use(Vuetify);
     const $router = [];
+    const $route = {
+      query: {
+        redirect: "/webhome/home"
+      }
+    }
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
     //in order to find the elements by their ids
     wrapper = mount(login, {
       vuetify,
       store,
       stubs: ["router-link"],
-      mocks: { $router }
+      mocks: { $router, $route }
     });
     //console.log(wrapper)
   });
