@@ -237,10 +237,13 @@
               <v-row justify="center">
                 <span class="text--center">
                   Already Have an account?
-                  <router-link 
-                  :to="{ path: '/login', query: {redirect: this.$route.query.redirect}}" 
-                  class="green--text"
-                  >Log in
+                  <router-link
+                    :to="{
+                      path: '/login',
+                      query: { redirect: this.$route.query.redirect }
+                    }"
+                    class="green--text"
+                    >Log in
                   </router-link>
                 </span>
               </v-row>
@@ -254,7 +257,7 @@
 
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
-import getuserType from "@/mixins/userService/getuserType"
+import getuserType from "@/mixins/userService/getuserType";
 
 export default {
   components: {
@@ -392,11 +395,10 @@ export default {
         //This action returns a promise to show whether the user had sighned up successfully or not
         this.$store
           .dispatch("registerUser", this.userData)
-          .then((userType) => {
-            if(userType == 'artist'){
-              this.$router.push("webhome/home")
-            }
-            else{
+          .then(userType => {
+            if (userType == "artist") {
+              this.$router.push("webhome/home");
+            } else {
               this.$router.push(this.$route.query.redirect || "/webhome/home");
             }
           })

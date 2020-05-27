@@ -180,7 +180,7 @@
 <script>
 import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import getusername from "../../mixins/userService/getusername";
-import logOut from "../../mixins/userService/logOut"
+import logOut from "../../mixins/userService/logOut";
 /**
  * @displayName Webplayer Navigation Bar
  * @example [none]

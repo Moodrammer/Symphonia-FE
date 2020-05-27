@@ -59,7 +59,7 @@ const actions = {
         })
         .then(response => {
           //if a response returned
-          if(payload.type == 'user'){
+          if (payload.type == "user") {
             //Store the current user token in the local storage
             localStorage.setItem("userToken", response.data.token);
             //Store the frequently needed user data in the localStorage

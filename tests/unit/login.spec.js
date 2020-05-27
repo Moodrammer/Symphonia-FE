@@ -46,7 +46,7 @@ describe("login", () => {
       query: {
         redirect: "/webhome/home"
       }
-    }
+    };
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
     //in order to find the elements by their ids
     wrapper = mount(login, {

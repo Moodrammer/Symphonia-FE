@@ -24,7 +24,7 @@ import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
-import notfound from "../views/TheNotFoundPage.vue"
+import notfound from "../views/TheNotFoundPage.vue";
 
 import isLoggedIn from "@/mixins/userService/isLoggedIn";
 
@@ -73,7 +73,7 @@ const routes = [
             component: RelatedArtists,
             meta: {
               allowAnonymous: false
-            }    
+            }
           }
         ]
       },
@@ -177,17 +177,15 @@ const routes = [
   {
     path: "/signup",
     name: "signup",
-    component: () =>
-      import("../views/SignUp.vue"),
-      meta: {
-        allowAnonymous: true
-      }  
+    component: () => import("../views/SignUp.vue"),
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/login",
     name: "login",
-    component: () =>
-      import("../views/Login.vue"),
+    component: () => import("../views/Login.vue"),
     meta: {
       allowAnonymous: true
     }
@@ -215,9 +213,9 @@ const routes = [
         path: "recover-playlists",
         component: () =>
           import("../components/User Settings/recoverPlaylist.vue"),
-          meta: {
-            allowAnonymous: false
-          }
+        meta: {
+          allowAnonymous: false
+        }
       },
       {
         path: "notifications",
@@ -289,8 +287,8 @@ const routes = [
     }
   },
   {
-    path: '*',
-    name: 'notfound', 
+    path: "*",
+    name: "notfound",
     component: notfound,
     meta: {
       allowAnonymous: true
@@ -305,25 +303,22 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if(to.name == 'login' && isLoggedIn.methods.isLoggedIn()){
-      next({
-        path:'/webhome/home'
-      })
-    }
-    else if(to.name == 'signup' && isLoggedIn.methods.isLoggedIn()){
-      next({
-        path:'/'
-      })
-    }
-    else if(!to.meta.allowAnonymous && !(isLoggedIn.methods.isLoggedIn())){
-      next({
-        path: '/login',
-        query: {redirect: to.fullPath}
-      })
-    }
-    else{
-      next()
-    }
-})
+  if (to.name == "login" && isLoggedIn.methods.isLoggedIn()) {
+    next({
+      path: "/webhome/home"
+    });
+  } else if (to.name == "signup" && isLoggedIn.methods.isLoggedIn()) {
+    next({
+      path: "/"
+    });
+  } else if (!to.meta.allowAnonymous && !isLoggedIn.methods.isLoggedIn()) {
+    next({
+      path: "/login",
+      query: { redirect: to.fullPath }
+    });
+  } else {
+    next();
+  }
+});
 
 export default router;

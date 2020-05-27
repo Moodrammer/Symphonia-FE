@@ -165,7 +165,10 @@
               rounded
               large
               style="border: solid 3px grey !important"
-              :to="{path: '/signup', query:{redirect: this.$route.query.redirect}}"
+              :to="{
+                path: '/signup',
+                query: { redirect: this.$route.query.redirect }
+              }"
               >SIGN UP FOR SYMPHONIA</v-btn
             >
           </v-col>
@@ -249,7 +252,7 @@ export default {
             rm: this.formData.rememberMe
           })
           .then(() => {
-              this.$router.push(this.$route.query.redirect || "/webhome/home");
+            this.$router.push(this.$route.query.redirect || "/webhome/home");
           })
           .catch(err => {
             if (err.status == "fail") {
