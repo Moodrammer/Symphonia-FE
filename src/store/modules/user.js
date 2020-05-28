@@ -301,9 +301,37 @@ const actions = {
         .then(response => {
           // check that the changes are done to make success alert
           if (response.status == 201 || response.status == 200) {
-            //create user object to send it to the setter
-            console.log(response.data);
             state.deletedPlaylists = response.data;
+            resolve(true);
+          }
+        })
+        .catch(error => {
+          // check if there is error to send danger alert
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-empty-pattern
+  restorePlaylist({}, payload) {
+    let token;
+    //If the user checks rememberMe his token will be found in the localStorage
+    if (localStorage.getItem("userToken") != null) {
+      token = localStorage.getItem("userToken");
+    }
+    //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+    else if (sessionStorage.getItem("userToken") != null) {
+      token = sessionStorage.getItem("userToken");
+    }
+    return new Promise((resolve, reject) => {
+      axios
+        .patch("/v1/me/playlists/" + payload, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(response => {
+          // check that the changes are done to make success alert
+          if (response.status == 201 || response.status == 200) {
             resolve(true);
           }
         })

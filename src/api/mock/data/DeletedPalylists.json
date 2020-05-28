@@ -66,6 +66,17 @@
       "category": "5e8072e5e478cf39b47bd1ef",
       "deletedAt": "2020-04-16T09:11:46.493Z",
       "id": "5e8a6d96d4be480ab1d91c95"
+    },
+    {
+      "name": "playlist",
+      "deletedAt": "2020-04-18T04:19:11.758Z",
+      "id":"15",
+      "tracks": [
+        "5e7d2dc03429e24340ff1396",
+        "5e7d2ddd3429e24340ff1397",
+        "5e7d2e023429e24340ff1398"
+      ],
+      "deleted": true
     }
   ]
   

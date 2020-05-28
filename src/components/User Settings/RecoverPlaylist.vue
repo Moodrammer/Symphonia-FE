@@ -56,7 +56,7 @@ export default {
       playlists: [],
       noPlaylists: false,
       playlistNoRecover: false,
-      playlistsRecover: true
+      playlistsRecover: false
     };
   },
   components: {
@@ -64,27 +64,39 @@ export default {
   },
   methods: {
     restore: function(index) {
-      this.playlists[index].restored = true;
+      this.$store
+        .dispatch("restorePlaylist", this.playlists[index].id)
+        .then(() => {
+          this.playlists[index].restored = true;
+        })
+        .catch();
     }
   },
   created() {
     this.$store
       .dispatch("deletedPlaylist", { limit: 15, offset: 0 })
       .then(() => {
-        this.$store.state.user.deletedPlaylists.forEach(element => {
-          let date = element.deletedAt.slice(0, 10);
-          let title = element.name;
-          let songs = element.tracks.length;
-          let restored = false;
-          let id = element.id;
-          this.playlists.push({
-            date: date,
-            title: title,
-            songs: songs,
-            restored: restored,
-            id: id
+        if (this.$store.state.user.deletedPlaylists.length) {
+          this.$store.state.user.deletedPlaylists.forEach(element => {
+            if (element.deleted == true) {
+              let date = element.deletedAt.slice(0, 10);
+              let title = element.name;
+              let songs = element.tracks.length;
+              let restored = false;
+              let id = element.id;
+              this.playlists.push({
+                date: date,
+                title: title,
+                songs: songs,
+                restored: restored,
+                id: id
+              });
+            }
           });
-        });
+          this.playlistsRecover = true;
+        } else {
+          this.playlistNoRecover = true;
+        }
       })
       .catch();
   }
