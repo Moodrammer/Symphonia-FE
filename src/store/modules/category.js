@@ -32,7 +32,8 @@ const state = {
   newReleasesAlbums: [],
   genresList: [],
   pushAgain: true,
-  singleCategory: null
+  singleCategory: null,
+  savedGenres: []
 };
 
 const mutations = {
@@ -95,6 +96,11 @@ const mutations = {
   setNewReleases(state, newReleasesList) {
     state.newReleases.list.items = newReleasesList;
     state.categories.push(state.newReleases);
+  },
+  savedGenres(state, payload) {
+    payload.forEach(element => {
+      state.savedGenres.push(element);
+    });
   }
 };
 
@@ -156,6 +162,7 @@ const actions = {
             var id = genres[i].id;
             genresIDs.push(id);
           }
+          commit("savedGenres", response.data.categories.items);
           commit("setGenresList", genresIDs);
           for (let index = 0; index < genresIDs.length; index++) {
             await dispatch("getGenrePlaylists", genresIDs[index]);

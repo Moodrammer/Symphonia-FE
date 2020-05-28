@@ -33,6 +33,8 @@
       color="black"
       class="tf ml-3 py-0"
       v-show="showSearch"
+      v-model="search"
+      @input="request()"
     ></v-text-field>
     <!--The tabs of the the library-->
     <div
@@ -196,12 +198,14 @@ export default {
       selectedItem: "More..",
       moreMenu: ["More..", "Artists", "Albums"],
       scrollPosition: null,
-      scrolled: null
+      scrolled: null,
+      search: ""
     };
   },
   created() {
     this.itemChosen(this.$route.name);
     this.handleTabs(this.$route.name);
+    this.search = this.$route.params.name;
   },
   watch: {
     $route: function() {
@@ -234,7 +238,7 @@ export default {
      * @param {string} item route name
      */
     handleTabs: function(item) {
-      if (item === "search") {
+      if (item === "search" || item === "searchItem") {
         this.showSearch = true;
         this.showCollection = false;
         this.showUpgrade = false;
@@ -299,6 +303,15 @@ export default {
       this.logOut();
       this.$forceUpdate();
       this.$store.commit("category/changeLogoutUpdate");
+    },
+    /**
+     * Gets called when the user input text for search
+     * @public This is a public method
+     * @param {none}
+     */
+    request() {
+      this.$router.push("/webhome/search/" + this.search);
+      return;
     }
   },
   mounted() {

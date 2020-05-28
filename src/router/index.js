@@ -91,6 +91,24 @@ const routes = [
         component: Search,
         meta: {
           allowAnonymous: true
+        },
+        children:[
+          {
+            name: "search",
+            path: "/",
+            component: Search,
+            meta: {
+              allowAnonymous: true
+            }
+          }
+        ]
+      },
+      {
+        name: "searchItem",
+        path: "search/:name",
+        component: () => import("../components/Search/SearchResult.vue"),
+        meta: {
+          allowAnonymous: true
         }
       },
       {
