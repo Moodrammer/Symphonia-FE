@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import getusername from "../../mixins/userService";
+import getusername from "../../mixins/userService/getusername";
 
 export default {
   mixins: [getusername],

@@ -28,7 +28,7 @@ import SymphoniaArtist from "../components/ArtistDashboard/Dashboard.vue"
 import SymphoniaArtistMain from "../components/ArtistDashboard/Main.vue"
 import SymphoniaArtistAlbums from "../components/ArtistDashboard/Albums.vue"
 import SymphoniaArtistSingles from "../components/ArtistDashboard/Singles.vue"
-import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue";
+// import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue";
 import notfound from "../views/TheNotFoundPage.vue";
 
 import isLoggedIn from "@/mixins/userService/isLoggedIn";

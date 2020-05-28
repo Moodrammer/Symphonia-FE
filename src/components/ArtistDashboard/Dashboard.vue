@@ -21,8 +21,8 @@
 <script>
 
 import Drawer from "./Drawer.vue";
-import getuserType from "../../mixins/userService";
-import getuserID from "../../mixins/userService";
+import getuserID from "../../mixins/userService/getuserID";
+import getuserType from "../../mixins/userService/getuserType";
 
 export default {
     mixins:[getuserType, getuserID],

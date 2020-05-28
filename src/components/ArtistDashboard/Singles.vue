@@ -288,10 +288,11 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import getuserToken from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
+import getuserID from "../../mixins/userService/getuserID";
 
 export default {
-  mixins: [getuserToken],
+  mixins: [getuserToken, getuserID],
   data() {
     return {
       fileRules: [

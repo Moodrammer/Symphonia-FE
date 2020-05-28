@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import getusername from "../../mixins/userService";
-import getimageUrl from "../../mixins/userService";
+import getusername from "../../mixins/userService/getusername";
+import getimageUrl from "../../mixins/userService/getimageUrl";
 
   export default {
     mixins:[getusername, getimageUrl],
