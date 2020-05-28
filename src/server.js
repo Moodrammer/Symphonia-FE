@@ -933,7 +933,7 @@ export function makeServer({ environment = "development" } = {}) {
             b.forEach(track => {
               tracks.push({
                 name: track.name,
-                _id: track.id
+                _id: track.trackId
               })
             });
             
