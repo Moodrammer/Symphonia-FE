@@ -920,6 +920,36 @@ export function makeServer({ environment = "development" } = {}) {
           }
         );
       });
+      ////////////////////////////////////////////////////////////////////////
+      //////////////////////// ARTIST DASHBOARD //////////////////////////////
+      ////////////////////////////////////////////////////////////////////////
+      this.get("/v1/artists/:artistID/albums/", (schema, request) => {
+
+        let x = schema.albums.all().models.filter(x => x.artist._id == request.params.artistID);
+        let resp = [];
+        x.forEach(album => {
+
+            let b = schema.tracks.all().models.filter(x => x.attrs.album.id == album.id)
+            let tracks =[];
+            b.forEach(track => {
+              tracks.push({
+                name: track.name,
+                _id: track.id
+              })
+            });
+
+          resp.push({
+            name: album.name,
+            id: album.id,
+            image: album.image,
+            albumType: album.albumType,
+            tracks: tracks
+          })
+        });
+        console.log(resp)
+        return {albums: {items: resp}};
+      });
+
     }
   });
 

@@ -6,6 +6,13 @@
     "durationMs": 21354,
     "artist": "5e7d2ad6491be620ac9ea056",
     "trackPath": "assets/Amr/sample2.mp3",
+    "album": {
+      "album_type": "single",
+      "id": "115",
+      "_id": "115",
+      "image":"http://source.unsplash.com/hiFpJqA4FcE",
+      "name": "ALbum0"
+    },
     "__v": 0
   },
   {

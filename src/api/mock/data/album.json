@@ -10,6 +10,7 @@
         "id": "1",
         "name": "Album 3",
         "year": 2020,
+        "albumType": "album",
         "image": "http://source.unsplash.com/eSYCRwJEzO8",
         "artist": {
           "name":"Nasser Al-Qatami",
@@ -25,6 +26,7 @@
         "id": "2",
         "name": "TRST",
         "year": 2012,
+        "albumType": "album",
         "image": "http://source.unsplash.com/2Qg4y32pdCc",
         "artist": {
           "name": "Nasser Al-Qatami",
@@ -40,6 +42,7 @@
         "id": "3",
         "name": "Album1",
         "year": 2018,
+        "albumType": "album",
         "image": "http://source.unsplash.com/wnd7te34T-0",
         "artist": {
           "name": "Nasser Al-Qatami",
@@ -55,6 +58,7 @@
         "id": "4",
         "name": "Album2",
         "year": 2015,
+        "albumType": "album",
         "image": "http://source.unsplash.com/H7sHkM9eilw",
         "artist": {
           "_id": "1",
@@ -70,6 +74,7 @@
         "id": "5",
         "name": "Quran ALbum1",
         "year": 2014,
+        "albumType": "album",
         "image": "http://source.unsplash.com/7xP5BJ34ybg",
         "artist": {
           "_id": "1",
@@ -85,6 +90,7 @@
         "id": "6",
         "name": "Quran ALbum2",
         "year": 2014,
+        "albumType": "single",
         "image": "http://source.unsplash.com/xMMh-VFGL9M",
         "artist": {
           "name": "Nasser Al-Qatami",
