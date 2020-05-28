@@ -8,16 +8,25 @@
     ></audio>
 
     <v-row style="min-width: 100%;" flat color="rgba(0,0,0,0)">
-      <v-col cols="12">
+      <v-col cols="12" v-bind:class="{ 'no-padding-xs': isXs() }">
         <sound-grapher v-if="isSoundgrapherEnabled" />
       </v-col>
     </v-row>
 
     <!-- song info -->
     <v-row>
-      <v-col lg="4" md="4" sm="12" xs="12">
+      <v-col
+        lg="4"
+        md="4"
+        sm="12"
+        xs="12"
+        v-bind:class="{ 'no-padding-xs': isXs() }"
+      >
         <v-toolbar flat color="rgba(0,0,0,0)">
-          <v-avatar tile size="56">
+          <v-avatar tile size="56" class="hidden-sm-and-down">
+            <img :src="trackAlbumImageUrl" />
+          </v-avatar>
+          <v-avatar tile size="40" class="hidden-md-and-up">
             <img :src="trackAlbumImageUrl" />
           </v-avatar>
           <div
@@ -101,7 +110,13 @@
         </v-toolbar>
       </v-col>
 
-      <v-col lg="5" md="5" sm="5" xs="5">
+      <v-col
+        lg="5"
+        md="5"
+        sm="5"
+        xs="5"
+        v-bind:class="{ 'no-padding-xs': isXs() }"
+      >
         <div class="audio-controls">
           <!-- shuffle -->
           <a
@@ -262,7 +277,14 @@
         </v-toolbar>
       </v-col>
 
-      <v-col lg="2" md="2" sm="7" xs="7" style="background: rgba(0, 0, 0, 0);">
+      <v-col
+        lg="2"
+        md="2"
+        sm="7"
+        xs="7"
+        style="background: rgba(0, 0, 0, 0);"
+        v-bind:class="{ 'no-padding-xs': isXs() }"
+      >
         <div style="padding-top: 20px;">
           <router-link
             to="/webhome/collection/queue"
@@ -274,7 +296,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened
+                icons: !isQueueOpened,
               }"
             >
               mdi-format-list-numbered-rtl
@@ -320,17 +342,18 @@
  */
 
 import { mapMutations, mapActions, mapState } from "vuex";
-import getuserToken from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
 import SoundGrapher from "./TheSoundGrapher.vue";
+import getDeviceSize from "../../mixins/getDeviceSize";
 
 export default {
   name: "soundplayer",
 
   components: {
-    SoundGrapher
+    SoundGrapher,
   },
 
-  mixins: [getuserToken],
+  mixins: [getuserToken, getDeviceSize],
 
   computed: {
     duration: function() {
@@ -340,30 +363,31 @@ export default {
     },
 
     ...mapState({
-      isTrackLiked: state => state.track.isTrackLiked,
-      trackUrl: state => state.track.trackUrl,
-      trackName: state => state.track.trackName,
-      trackArtistName: state => state.track.trackArtistName,
-      trackAlbumImageUrl: state => state.track.trackAlbumImageUrl,
-      isFirstTrackInQueue: state => state.track.isFirstTrackInQueue,
-      trackTotalDuration: state => state.track.trackTotalDuration,
-      trackId: state => state.track.trackId,
-      audioElement: state => state.track.audioElement,
-      isTrackPaused: state => state.track.isTrackPaused,
-      isQueueOpened: state => state.track.isQueueOpened,
-      isNextAndPreviousFinished: state => state.track.isNextAndPreviousFinished,
-      isBuffering: state => state.track.isBuffering,
-      token: state => state.track.token,
-      isRepeatOnceEnabled: state => state.track.isRepeatOnceEnabled,
-      isRepeatEnabled: state => state.track.isRepeatEnabled,
-      isShuffleEnabled: state => state.track.isShuffleEnabled,
-      isLastTrackInQueue: state => state.track.isLastTrackInQueue,
-      historyResponse: state => state.category.historyResponse,
-      facebookUrl: state => state.track.facebookUrl,
-      twitterUrl: state => state.track.twitterUrl,
-      picInPicCanvas: state => state.track.picInPicCanvas,
-      isPicInPicCanvasRdy: state => state.track.isPicInPicCanvasRdy
-    })
+      isTrackLiked: (state) => state.track.isTrackLiked,
+      trackUrl: (state) => state.track.trackUrl,
+      trackName: (state) => state.track.trackName,
+      trackArtistName: (state) => state.track.trackArtistName,
+      trackAlbumImageUrl: (state) => state.track.trackAlbumImageUrl,
+      isFirstTrackInQueue: (state) => state.track.isFirstTrackInQueue,
+      trackTotalDuration: (state) => state.track.trackTotalDuration,
+      trackId: (state) => state.track.trackId,
+      audioElement: (state) => state.track.audioElement,
+      isTrackPaused: (state) => state.track.isTrackPaused,
+      isQueueOpened: (state) => state.track.isQueueOpened,
+      isNextAndPreviousFinished: (state) =>
+        state.track.isNextAndPreviousFinished,
+      isBuffering: (state) => state.track.isBuffering,
+      token: (state) => state.track.token,
+      isRepeatOnceEnabled: (state) => state.track.isRepeatOnceEnabled,
+      isRepeatEnabled: (state) => state.track.isRepeatEnabled,
+      isShuffleEnabled: (state) => state.track.isShuffleEnabled,
+      isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
+      historyResponse: (state) => state.category.historyResponse,
+      facebookUrl: (state) => state.track.facebookUrl,
+      twitterUrl: (state) => state.track.twitterUrl,
+      picInPicCanvas: (state) => state.track.picInPicCanvas,
+      isPicInPicCanvasRdy: (state) => state.track.isPicInPicCanvasRdy,
+    }),
   },
   data() {
     return {
@@ -382,7 +406,7 @@ export default {
       devices: undefined,
       currentDeviceId: undefined,
 
-      picInPicVideo: undefined
+      picInPicVideo: undefined,
     };
   },
   methods: {
@@ -402,7 +426,7 @@ export default {
       "setContextType",
       "setContextId",
       "setContextUrl",
-      "setPicInPicCanvas"
+      "setPicInPicCanvas",
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -418,7 +442,7 @@ export default {
       "toggleShuffle",
       "saveTrack",
       "removeSavedTrack",
-      "copyLink"
+      "copyLink",
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -489,20 +513,24 @@ export default {
      * @public
      */
     saveToLikedSongs: async function() {
-      if (this.trackId != null) {
-        if (!this.isTrackLiked) {
-          await this.saveTrack({
-            token: this.getuserToken(),
-            id: this.trackId
-          });
-          this.$store.commit("track/changeUpdateTracks");
-        } else {
-          await this.removeSavedTrack({
-            token: this.getuserToken(),
-            id: this.trackId
-          });
-          this.$store.commit("track/changeUpdateTracks");
+      try {
+        if (this.trackId != null) {
+          if (!this.isTrackLiked) {
+            await this.saveTrack({
+              token: this.getuserToken(),
+              id: this.trackId,
+            });
+            this.$store.commit("track/changeUpdateTracks");
+          } else {
+            await this.removeSavedTrack({
+              token: this.getuserToken(),
+              id: this.trackId,
+            });
+            this.$store.commit("track/changeUpdateTracks");
+          }
         }
+      } catch (error) {
+        console.error(error);
       }
     },
     /**
@@ -557,9 +585,13 @@ export default {
      * @public
      */
     picInPic: async function() {
-      if (this.isPicInPicCanvasRdy == true) {
-        await this.picInPicVideo.play();
-        await this.picInPicVideo.requestPictureInPicture();
+      try {
+        if (this.isPicInPicCanvasRdy == true) {
+          await this.picInPicVideo.play();
+          await this.picInPicVideo.requestPictureInPicture();
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
     /**
@@ -688,7 +720,8 @@ export default {
      * @public
      */
     init: async function() {
-      this.audioElement.addEventListener("timeupdate", this._handlePlayingUI);
+      try {
+        this.audioElement.addEventListener("timeupdate", this._handlePlayingUI);
       this.audioElement.addEventListener("loadeddata", this._handleLoaded);
       this.audioElement.addEventListener("pause", this._handlePause);
       this.audioElement.addEventListener("play", this._handlePlay);
@@ -745,7 +778,7 @@ export default {
       var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
       this.getTrackInformation({
         token: this.token,
-        trackId: CurrentlyPlayingTrackId
+        trackId: CurrentlyPlayingTrackId,
       });
 
       await this.initQueueStatus(this.token);
@@ -759,7 +792,11 @@ export default {
       }
 
       this.playTrackInQueue(CurrentlyPlayingTrackId);
-    }
+      
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
   mounted: function() {
     this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
@@ -786,7 +823,7 @@ export default {
     document.removeEventListener("MediaPlayPause", this.togglePauseAndPlay);
     document.removeEventListener("MediaPrev", this.previousConditionally);
     document.removeEventListener("MediaNext", this.nextConditionally);
-  }
+  },
 };
 </script>
 

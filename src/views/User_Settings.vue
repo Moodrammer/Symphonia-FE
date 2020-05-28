@@ -31,7 +31,7 @@ import recoverPlaylists from "../components/User Settings/recoverPlaylist.vue";
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
 import changePassword from "../components/User Settings/changePass.vue";
-import isLoggedIn from "@/mixins/userService";
+import isLoggedIn from "@/mixins/userService/isLoggedIn";
 
 export default {
   data() {

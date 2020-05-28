@@ -8,13 +8,14 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import getDeviceSize from "../../mixins/getDeviceSize";
 
 export default {
   computed: {
     ...mapState({
-      audioElement: state => state.track.audioElement,
-      audioContext: state => state.track.audioContext
-    })
+      audioElement: (state) => state.track.audioElement,
+      audioContext: (state) => state.track.audioContext,
+    }),
   },
   data() {
     return {
@@ -25,15 +26,18 @@ export default {
 
       canvasWidth: 600,
       canvasHeight: 50,
-      ctx: undefined
+      ctx: undefined,
     };
   },
+  mixins: [getDeviceSize],
   methods: {
     ...mapMutations("track", ["initAudioContext"]),
 
-    // When the Start button is clicked, finish setting up the audio nodes, play the sound,
-    // gather samples for the analysis, update the canvas
-
+    /**
+     * setup the web audio API nodes
+     *
+     * @public
+     */
     setupAudioNodes: function() {
       this.sourceNode = this.audioContext.createMediaElementSource(
         this.audioElement
@@ -52,8 +56,18 @@ export default {
       this.analyserNode.connect(this.javascriptNode);
       this.javascriptNode.connect(this.audioContext.destination);
     },
-
+    /**
+     * this function is responsible of graph drawing
+     *
+     * @public
+     */
     drawTimeDomain: function() {
+      if (this.isXs()) {
+        this.canvasHeight = 20;
+      } else {
+        this.canvasHeight = 50;
+      }
+
       //clean canvas
       this.ctx.fillStyle = "#282828";
       this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
@@ -108,11 +122,11 @@ export default {
       })();
 
       this.ctx = this.$refs.soundGrapher.getContext("2d");
-    }
+    },
   },
   mounted: function() {
     this.init();
-  }
+  },
 };
 </script>
 

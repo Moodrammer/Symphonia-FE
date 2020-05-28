@@ -90,8 +90,8 @@
 </template>
 
 <script>
-import getuserToken from "../../mixins/userService";
-import isLoggedIn from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
 /**
  * Song component contains the track name , duration , artist's name , album's name
  * @displayName Song Item

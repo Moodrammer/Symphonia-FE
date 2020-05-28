@@ -132,7 +132,7 @@
 
 <script>
 import getDeviceSize from "../../mixins/getDeviceSize";
-import getuserToken from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
 
 import { mapMutations, mapActions } from "vuex";
 

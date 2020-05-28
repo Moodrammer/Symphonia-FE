@@ -114,10 +114,7 @@
 </template>
 
 <script>
-import getuserToken from "../../mixins/userService";
-import getuserID from "../../mixins/userService";
-import getuserType from "../../mixins/userService";
-
+import getuserToken from "../../mixins/userService/getUserToken";
 /**
  * @displayName Webplayer Navigation Drawer
  * @example [none]

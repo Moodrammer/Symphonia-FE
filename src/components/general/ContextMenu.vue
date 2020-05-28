@@ -10,9 +10,9 @@
 
 <script>
 import { VueContext } from "vue-context";
-import getuserToken from "../../mixins/userService";
-import getuserID from "../../mixins/userService";
-import isLoggedIn from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
+import getuserID from "../../mixins/userService/getuserID";
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
 /**
  * @displayName Context Menu
  * @example [none]

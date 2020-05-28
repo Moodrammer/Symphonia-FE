@@ -237,9 +237,14 @@
               <v-row justify="center">
                 <span class="text--center">
                   Already Have an account?
-                  <router-link to="/Login" class="green--text"
-                    >Log in</router-link
-                  >
+                  <router-link
+                    :to="{
+                      path: '/login',
+                      query: { redirect: this.$route.query.redirect }
+                    }"
+                    class="green--text"
+                    >Log in
+                  </router-link>
                 </span>
               </v-row>
             </v-form>
@@ -252,7 +257,7 @@
 
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
-import isLoggedIn from "@/mixins/userService";
+import getuserType from "@/mixins/userService/getuserType";
 
 export default {
   components: {
@@ -317,6 +322,7 @@ export default {
       ]
     };
   },
+  mixins: [getuserType],
   //Taken from : https://stackoverflow.com/questions/47213703/vuetify-form-validation-defining-es6-rules-for-matching-inputs
   computed: {
     /**
@@ -351,13 +357,6 @@ export default {
         else
           return `${this.userData.yearSelected}-${monthnumber}-${this.userData.daySelected}`;
       }
-    }
-  },
-  mixins: [isLoggedIn],
-  created() {
-    //check if the user is logged in
-    if (this.isLoggedIn() == true) {
-      this.$router.push("/");
     }
   },
   methods: {
@@ -396,8 +395,12 @@ export default {
         //This action returns a promise to show whether the user had sighned up successfully or not
         this.$store
           .dispatch("registerUser", this.userData)
-          .then(() => {
-            this.$router.push("/webhome/home");
+          .then(userType => {
+            if (userType == "artist") {
+              this.$router.push("webhome/home");
+            } else {
+              this.$router.push(this.$route.query.redirect || "/webhome/home");
+            }
           })
           //if an error object was caught temporarily display it in the console
           .catch(error => {

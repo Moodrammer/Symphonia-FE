@@ -54,8 +54,8 @@
 
 <script>
 import getDeviceSize from "../mixins/getDeviceSize";
-import getuserToken from "../mixins/userService";
-import getuserID from "../mixins/userService";
+import getuserToken from "../mixins/userService/getUserToken";
+import getuserID from "../mixins/userService/getuserID";
 
 /**
  * @displayName Create Playlist

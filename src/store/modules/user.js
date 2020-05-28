@@ -59,7 +59,7 @@ const actions = {
         })
         .then(response => {
           //if a response returned
-          if (response.data.user.type == "user") {
+          if (payload.type == "user") {
             //Store the current user token in the local storage
             localStorage.setItem("userToken", response.data.token);
             //Store the frequently needed user data in the localStorage
@@ -70,7 +70,7 @@ const actions = {
             localStorage.setItem("imageUrl", response.data.user.imageUrl);
             //Resolve to direct the user to the application
           }
-          resolve(true);
+          resolve(payload.type);
         })
         .catch(error => {
           reject(error.response.data);
