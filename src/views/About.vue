@@ -149,7 +149,7 @@
                 </v-card>
               </v-col>
               <v-col cols="6">
-                <v-card class="mx-auto" max-width="350" tile  shaped>
+                <v-card class="mx-auto" max-width="350" tile shaped>
                   <v-img
                     height="100%"
                     style="background-color: #08AEEA;background-image: linear-gradient(0deg, #08AEEA 0%, #2AF598 100%);"
@@ -301,11 +301,7 @@
             min-height="200"
             transition="fade-transition"
           >
-            <v-row
-              justify="center"
-              align="center"
-              style="margin-bottom: 5rem;"
-            >
+            <v-row justify="center" align="center" style="margin-bottom: 5rem;">
               <v-col cols="4" id="frontEnd">
                 <v-card class="mx-auto" max-width="350" tile shaped>
                   <v-img
@@ -494,11 +490,7 @@
             min-height="200"
             transition="fade-transition"
           >
-            <v-row
-              justify="center"
-              align="center"
-              style="margin-bottom: 5rem;"
-            >
+            <v-row justify="center" align="center" style="margin-bottom: 5rem;">
               <v-col cols="4" id="backEnd">
                 <v-card class="mx-auto" max-width="350" tile shaped>
                   <v-img
@@ -654,16 +646,12 @@
             min-height="200"
             transition="fade-transition"
           >
-            <v-row
-              justify="center"
-              align="center"
-              style="margin-bottom: 5rem;"
-            >
+            <v-row justify="center" align="center" style="margin-bottom: 5rem;">
               <v-col cols="4" id="android">
                 <v-card class="mx-auto" max-width="350" tile shaped>
                   <v-img
                     height="100%"
-                    style="background-color: #FEE140;background-image: linear-gradient(180deg, #FEE140 0%, #FA709A 100%);"
+                    style="background: #373B44;background: -webkit-linear-gradient(to right, #4286f4, #373B44);background: linear-gradient(to right, #4286f4, #373B44);"
                   >
                     <v-row align="end" class="fill-height">
                       <v-col align-self="start" class="pa-0" cols="12">
@@ -696,7 +684,7 @@
                 <v-card class="mx-auto" max-width="350" tile shaped>
                   <v-img
                     height="100%"
-                    style="background-color: #FEE140;background-image: linear-gradient(180deg, #FEE140 0%, #FA709A 100%);"
+                    style="background: #373B44;background: -webkit-linear-gradient(to right, #4286f4, #373B44);background: linear-gradient(to right, #4286f4, #373B44);"
                   >
                     <v-row align="end" class="fill-height">
                       <v-col align-self="start" class="pa-0" cols="12">
@@ -729,7 +717,7 @@
                 <v-card class="mx-auto" max-width="350" tile shaped>
                   <v-img
                     height="100%"
-                    style="background-color: #FEE140;background-image: linear-gradient(180deg, #FEE140 0%, #FA709A 100%);"
+                    style="background: #373B44;background: -webkit-linear-gradient(to right, #4286f4, #373B44);background: linear-gradient(to right, #4286f4, #373B44);"
                   >
                     <v-row align="end" class="fill-height">
                       <v-col align-self="start" class="pa-0" cols="12">
@@ -776,7 +764,7 @@
                 <v-card class="mx-auto" max-width="350" tile shaped>
                   <v-img
                     height="100%"
-                    style="background-color: #FEE140;background-image: linear-gradient(180deg, #FEE140 0%, #FA709A 100%);"
+                    style="background: #373B44;background: -webkit-linear-gradient(to right, #4286f4, #373B44);background: linear-gradient(to right, #4286f4, #373B44);"
                   >
                     <v-row align="end" class="fill-height">
                       <v-col align-self="start" class="pa-0" cols="12">
