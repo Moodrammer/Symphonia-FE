@@ -80,7 +80,7 @@ describe("Playlist View", () => {
           type: "type",
           id: "1234"
         }
-      },
+      }
       //localStorageMock
     });
   });
@@ -166,16 +166,15 @@ describe("Playlist View", () => {
     expect("checkFollowed").toHaveBeenCalled;
   });
 
-  it("Open ads popup after route changing",()=>{
-    Storage.prototype.getItem = jest.fn(() => 'bla');
+  it("Open ads popup after route changing", () => {
+    Storage.prototype.getItem = jest.fn(() => "bla");
     wrapper.vm.$options.watch.playlistID.call(wrapper.vm);
-    expect("changeAdsPopup").toHaveBeenCalled
-    expect(wrapper.vm.isLoggedIn()).toBe(true)
+    expect("changeAdsPopup").toHaveBeenCalled;
+    expect(wrapper.vm.isLoggedIn()).toBe(true);
   });
 
-  it("Open ads popup if the user logged in",()=>{
-    Storage.prototype.getItem = jest.fn(() => 'bla');
-    expect("changeAdsPopup").toHaveBeenCalled
+  it("Open ads popup if the user logged in", () => {
+    Storage.prototype.getItem = jest.fn(() => "bla");
+    expect("changeAdsPopup").toHaveBeenCalled;
   });
-
 });

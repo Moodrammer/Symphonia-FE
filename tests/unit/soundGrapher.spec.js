@@ -48,8 +48,8 @@ describe("TheSoundGrapher", () => {
               }
             }
           },
-          mutations:{
-            initAudioContext:jest.fn()
+          mutations: {
+            initAudioContext: jest.fn()
           }
         }
       }
@@ -59,9 +59,9 @@ describe("TheSoundGrapher", () => {
       vuetify,
       store,
       router,
-      getContextStub : jest
-      .spyOn(window.HTMLCanvasElement.prototype, 'getContext')
-      .mockImplementation(() => {})
+      getContextStub: jest
+        .spyOn(window.HTMLCanvasElement.prototype, "getContext")
+        .mockImplementation(() => {})
     });
   });
 

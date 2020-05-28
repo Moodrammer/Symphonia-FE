@@ -177,9 +177,9 @@ describe("TheSoundplayer", () => {
       vuetify,
       store,
       router,
-      playStub : jest
-      .spyOn(window.HTMLMediaElement.prototype, 'play')
-      .mockImplementation(() => {})
+      playStub: jest
+        .spyOn(window.HTMLMediaElement.prototype, "play")
+        .mockImplementation(() => {})
     });
   });
 

@@ -33,7 +33,7 @@ export default {
 
     /**
      * setup the web audio API nodes
-     * 
+     *
      * @public
      */
     setupAudioNodes: function() {
@@ -56,7 +56,7 @@ export default {
     },
     /**
      * this function is responsible of graph drawing
-     * 
+     *
      * @public
      */
     drawTimeDomain: function() {

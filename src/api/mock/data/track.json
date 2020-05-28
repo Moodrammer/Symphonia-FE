@@ -12,7 +12,7 @@
     "liked": true,
     "trackId": "2",
     "album": {
-      "album_type": "single",
+      "album_type": "album",
       "id": "5",
       "_id": "5",
       "image":"http://source.unsplash.com/hiFpJqA4FcE",
@@ -36,10 +36,10 @@
     "id": "3",
     "_id": "3",
     "album": {
-      "album_type": "single",
-      "id": "6",
-      "_id": "6",
-      "name": "Quran ALbum2"
+      "album_type": "album",
+      "id": "5",
+      "_id": "5",
+      "name": "Quran ALbum1"
     },
     "artist": 
       {
@@ -57,11 +57,11 @@
     "id": "4",
     "_id": "4",
     "album": {
-      "album_type": "single",
-      "id": "6",
-      "_id": "6",
+      "album_type": "album",
+      "id": "5",
+      "_id": "5",
       "image": "http://source.unsplash.com/Gmb4U6JFyHo",
-      "name": "Quran ALbum2"
+      "name": "Quran ALbum1"
     },
     "artist": 
       {
@@ -80,10 +80,10 @@
     "_id":"5",
     "album": {
       "album_type": "single",
-      "id": "3",
-      "_id": "3",
+      "id": "4",
+      "_id": "4",
       "image":"http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "Album1"
+      "name": "Album2"
     },
     "artist": 
       {
@@ -122,11 +122,11 @@
     "id": "123",
     "_id": "123",
     "album": {
-      "album_type": "single",
-      "id": "3",
-      "_id": "3",
+      "album_type": "album",
+      "id": "6",
+      "_id": "6",
       "image": "http://source.unsplash.com/FPz-Dd-xx4c",
-      "name": "Album1"
+      "name": "Game Of Thrones"
     },
     "artist": 
       {
@@ -147,12 +147,12 @@
     "id": "456",
     "_id": "456",
     "album": {
-      "album_type": "single",
+      "album_type": "album",
       "href": "https://api.symphonia.com/v1/albums/1",
-      "id": "3",
-      "_id": "3",
+      "id": "6",
+      "_id": "6",
       "image": "http://source.unsplash.com/EOHXjmXIBjI",
-      "name": "Album1",
+      "name": "Game Of Thrones",
       "type": "album"
     },
     "artist": 
@@ -177,12 +177,12 @@
     "id": "789",
     "_id": "789",
     "album": {
-      "album_type": "single",
+      "album_type": "album",
       "href": "https://api.symphonia.com/v1/albums/1",
-      "id": "3",
-      "_id": "3",
+      "id": "6",
+      "_id": "6",
       "image": "http://source.unsplash.com/FPz-Dd-xx4c",
-      "name": "Album1",
+      "name": "Game Of Thrones",
       "type": "album"
     },
     "artist": 
