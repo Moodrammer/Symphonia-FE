@@ -1,8 +1,9 @@
 {
   "href": "https://api.spotify.com/v1/me/albums?offset=0&limit=20",
   "items": [
-    {   
+    {
         "liked": true,
+        "albumType": "album",
         "tracksCount":"3",
         "tracks": ["4","6","2"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
@@ -19,6 +20,7 @@
     },
     {
         "liked": false,
+        "albumType":"album",
         "tracksCount": "2",
         "tracks": ["3","5"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
@@ -35,8 +37,9 @@
     },
     {
         "liked": true,
-        "tracksCount": "2",
-        "tracks": ["6","4"],
+        "albumType":"single",
+        "tracksCount": "1",
+        "tracks": ["6"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "3",
         "id": "3",
@@ -51,8 +54,9 @@
     },
     {
         "liked": true,
-        "tracksCount":"4",
-        "tracks": ["5","4","2","6"],
+        "albumType":"single",
+        "tracksCount":"1",
+        "tracks": ["5"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "4",
         "id": "4",
@@ -67,8 +71,9 @@
     },
     {
         "liked": false,
+        "albumType":"album",
         "tracksCount":"3",
-        "tracks": ["2","3","6"],
+        "tracks": ["2","3","4"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "5",
         "id": "5",
@@ -83,21 +88,21 @@
     },
     {
         "liked": false,
-        "tracksCount":"1",
-        "tracks": ["2"],
+        "albumType":"album",
+        "tracksCount":"3",
+        "tracks": ["123","456","789"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "6",
         "id": "6",
-        "name": "Quran ALbum2",
+        "name": "Game Of Thrones",
         "year": 2014,
         "albumType": "single",
         "image": "http://source.unsplash.com/xMMh-VFGL9M",
         "artist": {
-          "name": "Nasser Al-Qatami",
-          "_id": "2"
+          "name": "Artist",
+          "_id": "6"
         }
     }
-
 ],
 
   "limit": 20,

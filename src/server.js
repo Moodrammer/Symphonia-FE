@@ -49,11 +49,6 @@ export function makeServer({ environment = "development" } = {}) {
           "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
       });
 
-      server.create("deletedPlaylist", {
-        name: "playlist",
-        deletedAt: "2020-04-18T04:19:11.758Z"
-      });
-
       //This part is just to fake mirage in order to persist the data of only one user
       if (sessionStorage.getItem("SignedUpUser") != null) {
         //The signed up user should remain in the localstorage so that when mirage loads each time it loads his data
@@ -293,7 +288,10 @@ export function makeServer({ environment = "development" } = {}) {
         let playlistID = request.params.ID;
         schema.playlists.where({ id: playlistID }).update({ active: false });
         server.create("deletedPlaylist", {
-          name: schema.playlists.where({ id: playlistID }).name,
+          name: schema.playlists.where({ id: playlistID }).models[0].name,
+          id: playlistID,
+          tracksCount: schema.playlists.where({ id: playlistID }).models[0]
+            .tracksCount,
           deletedAt: "2020-04-18T04:19:11.758Z"
         });
         return new Response(200, {}, {});
