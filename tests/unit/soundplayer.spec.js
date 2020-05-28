@@ -12,7 +12,7 @@ describe("TheSoundplayer", () => {
   let store;
   navigator.mediaSession = {
     setActionHandler: () => {}
-  }
+  };
 
   global.document.execCommand = function execCommandMock() {};
   const document = {
@@ -157,7 +157,7 @@ describe("TheSoundplayer", () => {
               state.picInPicCanvas = {
                 captureStream: () => {},
                 requestPictureInPicture: () => {}
-              }
+              };
             },
             changeUpdateTracks(state) {}
           }
@@ -475,7 +475,7 @@ describe("TheSoundplayer", () => {
     wrapper.vm.picInPicVideo = {
       play: () => {},
       requestPictureInPicture: () => {}
-    }
+    };
     store.state.track.isPicInPicCanvasRdy = true;
     wrapper.vm.picInPic();
     expect(wrapper.vm.picInPicVideo.play()).toBeCalled;

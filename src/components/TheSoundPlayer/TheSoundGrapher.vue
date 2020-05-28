@@ -13,9 +13,9 @@ import getDeviceSize from "../../mixins/getDeviceSize";
 export default {
   computed: {
     ...mapState({
-      audioElement: (state) => state.track.audioElement,
-      audioContext: (state) => state.track.audioContext,
-    }),
+      audioElement: state => state.track.audioElement,
+      audioContext: state => state.track.audioContext
+    })
   },
   data() {
     return {
@@ -26,7 +26,7 @@ export default {
 
       canvasWidth: 600,
       canvasHeight: 50,
-      ctx: undefined,
+      ctx: undefined
     };
   },
   mixins: [getDeviceSize],
@@ -122,11 +122,11 @@ export default {
       })();
 
       this.ctx = this.$refs.soundGrapher.getContext("2d");
-    },
+    }
   },
   mounted: function() {
     this.init();
-  },
+  }
 };
 </script>
 

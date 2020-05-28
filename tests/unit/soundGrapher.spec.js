@@ -81,8 +81,10 @@ describe("TheSoundGrapher", () => {
     };
     wrapper.vm.drawTimeDomain();
 
-    wrapper.vm.isXs = () => { return true;}
-    wrapper.vm.drawTimeDomain();    
+    wrapper.vm.isXs = () => {
+      return true;
+    };
+    wrapper.vm.drawTimeDomain();
   });
 
   it("handle OnAudioProcess event", () => {
