@@ -18,7 +18,9 @@ const state = {
   //The gender of the current user
   userGender: "",
   //The user image of the current user
-  userImage: ""
+  userImage: "",
+  //The user deleted playlist array of the current user
+  deletedPlaylists: []
 };
 
 const mutations = {
@@ -263,6 +265,45 @@ const actions = {
             commit("setuserDOB", payload.dateOfBirth);
             commit("setUserData", user);
             commit("setGender", payload.gender);
+            resolve(true);
+          }
+        })
+        .catch(error => {
+          // check if there is error to send danger alert
+          reject(error);
+        });
+    });
+  },
+  //Get the user deleted playlists to restore
+  deletedPlaylist({ state }, payload) {
+    let token;
+    //If the user checks rememberMe his token will be found in the localStorage
+    if (localStorage.getItem("userToken") != null) {
+      token = localStorage.getItem("userToken");
+    }
+    //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+    else if (sessionStorage.getItem("userToken") != null) {
+      token = sessionStorage.getItem("userToken");
+    }
+    return new Promise((resolve, reject) => {
+      axios
+        .get(
+          "/v1/me/playlists/deleted?limit=" +
+            payload.limit +
+            "&offset=" +
+            payload.offset,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+        .then(response => {
+          // check that the changes are done to make success alert
+          if (response.status == 201 || response.status == 200) {
+            //create user object to send it to the setter
+            console.log(response.data);
+            state.deletedPlaylists = response.data;
             resolve(true);
           }
         })

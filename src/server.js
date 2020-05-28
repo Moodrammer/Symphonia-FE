@@ -52,10 +52,31 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////
       //                Create a deleted playlists for the user
       ///////////////////////////////////////////////////////////////////
-      deletedPlaylist.forEach(function(element){
+      deletedPlaylist.forEach(element => {
         server.create("deletedPlaylist", element);
-      }); 
-
+      });
+      server.create("deletedPlaylist", {
+        collaborative: false,
+        images: [
+          "https://thesymphonia.ddns.net/api/v1/images/playlists/playlist13.jpg"
+        ],
+        public: true,
+        tracks: [
+          "5e7d2dc03429e24340ff1396",
+          "5e7d2ddd3429e24340ff1397",
+          "5e7d2e023429e24340ff1398"
+        ],
+        followers: [],
+        deleted: true,
+        _id: "5e8a6d96d4be480ab1d91c95",
+        name: "Sleep Sounds: Waterscapes",
+        owner: "5e8125dc54660672fd69987f",
+        description:
+          "White Noise to Drown Out the Sounds of Police Sirens, Honking Trucks, and Overnight Construction Work Because I Live Right Next to the Brooklyn-Queens Expressway Because This Is the Only Studio Apartment I Can Afford",
+        category: "5e8072e5e478cf39b47bd1ef",
+        deletedAt: "2020-04-16T09:11:46.493Z",
+        id: "5e8a6d96d4be480ab1d91c95"
+      });
       server.create("deletedPlaylist", {
         name: "playlist",
         deletedAt: "2020-04-18T04:19:11.758Z"
@@ -796,6 +817,15 @@ export function makeServer({ environment = "development" } = {}) {
       /////////////////////////////////////////////////////////////////////////////////
       //              Get all the deleted playlists for current user
       /////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/playlists/deleted", (schema, request) => {
+        if (request.requestHeaders.Authorization) {
+          let result = schema.deletedPlaylists.all().models;
+          return new Response(200, {}, result);
+        } else {
+          // if the data isn't valid so return error status(400)
+          return new Response(400, {}, {});
+        }
+      });
 
       //////////////////////////////////////////////////////////////////////////////////////
       //SOUNDPLAYER

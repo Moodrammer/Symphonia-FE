@@ -25,12 +25,8 @@
 <script>
 import PreAds from "../components/User Settings/PremiumAds.vue";
 import SideBar from "../components/User Settings/SideBar.vue";
-import Overview from "../components/User Settings/Overview.vue";
-import EditProfile from "../components/User Settings/EditProfile.vue";
-import RecoverPlaylists from "../components/User Settings/RecoverPlaylist.vue";
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
-import ChangePassword from "../components/User Settings/ChangePassword.vue";
 import isLoggedIn from "@/mixins/userService";
 
 export default {
@@ -40,14 +36,6 @@ export default {
   components: {
     premiumAds: PreAds,
     "side-bar": SideBar,
-    // eslint-disable-next-line vue/no-unused-components
-    overview: Overview,
-    // eslint-disable-next-line vue/no-unused-components
-    "edit=profile": EditProfile,
-    // eslint-disable-next-line vue/no-unused-components
-    "recover-playlists": RecoverPlaylists,
-    // eslint-disable-next-line vue/no-unused-components
-    "change-password": ChangePassword,
     navBar: navBar,
     appFooter: appFooter
   },

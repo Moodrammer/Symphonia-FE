@@ -53,14 +53,7 @@ import BottomContent from "./BottomContent.vue";
 export default {
   data() {
     return {
-      playlists: [
-        {
-          date: "3/18/20",
-          title: "list",
-          songs: 1,
-          restored: false
-        }
-      ],
+      playlists: [],
       noPlaylists: false,
       playlistNoRecover: false,
       playlistsRecover: true
@@ -73,6 +66,27 @@ export default {
     restore: function(index) {
       this.playlists[index].restored = true;
     }
+  },
+  created() {
+    this.$store
+      .dispatch("deletedPlaylist", { limit: 15, offset: 0 })
+      .then(() => {
+        this.$store.state.user.deletedPlaylists.forEach(element => {
+          let date = element.deletedAt.slice(0, 10);
+          let title = element.name;
+          let songs = element.tracks.length;
+          let restored = false;
+          let id = element.id;
+          this.playlists.push({
+            date: date,
+            title: title,
+            songs: songs,
+            restored: restored,
+            id: id
+          });
+        });
+      })
+      .catch();
   }
 };
 </script>

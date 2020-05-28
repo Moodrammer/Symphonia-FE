@@ -147,29 +147,34 @@ const routes = [
   },
   {
     path: "/account/",
-    name: "Acccount Setting",
     component: UserSettings,
     children: [
       {
+        name: "overview",
         path: "",
         component: () => import("../components/User Settings/Overview.vue")
       },
       {
+        name: "EditProfile",
         path: "edit",
         component: () => import("../components/User Settings/EditProfile.vue")
       },
       {
+        name: "RecoverPlaylists",
         path: "recover-playlists",
         component: () =>
           import("../components/User Settings/RecoverPlaylist.vue")
       },
       {
+        name: "Notifications",
         path: "notifications",
         component: () => import("../components/User Settings/Notification.vue")
       },
       {
+        name: "ChangePassword",
         path: "changePassword",
-        component: () => import("../components/User Settings/ChangePassword.vue")
+        component: () =>
+          import("../components/User Settings/ChangePassword.vue")
       }
     ]
   },
