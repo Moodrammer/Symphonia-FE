@@ -108,6 +108,7 @@ const actions = {
   //   Get a single playlist's data
   //--------------------------------------------------------
   async getPlaylist({ commit }, payload) {
+    if(!payload.isMenu)
     commit("setLoading");
     await axios
       .get("/v1/playlists/" + payload.playlistID)
