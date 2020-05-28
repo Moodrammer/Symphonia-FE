@@ -11,6 +11,13 @@ describe("TheSoundplayer", () => {
   let vuetify;
   let store;
 
+  global.document.execCommand = function execCommandMock() {};
+  const document = {
+    createElement(name) {
+      return name;
+    }
+  };
+
   beforeEach(() => {
     vuetify = new Vuetify();
     const router = new VueRouter();
@@ -169,7 +176,10 @@ describe("TheSoundplayer", () => {
     wrapper = shallowMount(soundplayer, {
       vuetify,
       store,
-      router
+      router,
+      playStub : jest
+      .spyOn(window.HTMLMediaElement.prototype, 'play')
+      .mockImplementation(() => {})
     });
   });
 
