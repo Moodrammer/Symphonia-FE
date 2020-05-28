@@ -7,11 +7,7 @@
       preload="auto"
     ></audio>
 
-    <v-row
-      style="min-width: 100%;"
-      flat
-      color="rgba(0,0,0,0)"
-    >
+    <v-row style="min-width: 100%;" flat color="rgba(0,0,0,0)">
       <v-col cols="12" v-bind:class="{ 'no-padding-xs': isXs() }">
         <sound-grapher v-if="isSoundgrapherEnabled" />
       </v-col>
@@ -517,20 +513,24 @@ export default {
      * @public
      */
     saveToLikedSongs: async function() {
-      if (this.trackId != null) {
-        if (!this.isTrackLiked) {
-          await this.saveTrack({
-            token: this.getuserToken(),
-            id: this.trackId,
-          });
-          this.$store.commit("track/changeUpdateTracks");
-        } else {
-          await this.removeSavedTrack({
-            token: this.getuserToken(),
-            id: this.trackId,
-          });
-          this.$store.commit("track/changeUpdateTracks");
+      try {
+        if (this.trackId != null) {
+          if (!this.isTrackLiked) {
+            await this.saveTrack({
+              token: this.getuserToken(),
+              id: this.trackId,
+            });
+            this.$store.commit("track/changeUpdateTracks");
+          } else {
+            await this.removeSavedTrack({
+              token: this.getuserToken(),
+              id: this.trackId,
+            });
+            this.$store.commit("track/changeUpdateTracks");
+          }
         }
+      } catch (error) {
+        console.error(error);
       }
     },
     /**
@@ -585,9 +585,13 @@ export default {
      * @public
      */
     picInPic: async function() {
-      if (this.isPicInPicCanvasRdy == true) {
-        await this.picInPicVideo.play();
-        await this.picInPicVideo.requestPictureInPicture();
+      try {
+        if (this.isPicInPicCanvasRdy == true) {
+          await this.picInPicVideo.play();
+          await this.picInPicVideo.requestPictureInPicture();
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
     /**
@@ -716,7 +720,8 @@ export default {
      * @public
      */
     init: async function() {
-      this.audioElement.addEventListener("timeupdate", this._handlePlayingUI);
+      try {
+        this.audioElement.addEventListener("timeupdate", this._handlePlayingUI);
       this.audioElement.addEventListener("loadeddata", this._handleLoaded);
       this.audioElement.addEventListener("pause", this._handlePause);
       this.audioElement.addEventListener("play", this._handlePlay);
@@ -787,6 +792,10 @@ export default {
       }
 
       this.playTrackInQueue(CurrentlyPlayingTrackId);
+      
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
   mounted: function() {

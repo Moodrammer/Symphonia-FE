@@ -10,6 +10,9 @@ describe("TheSoundplayer", () => {
   let wrapper;
   let vuetify;
   let store;
+  navigator.mediaSession = {
+    setActionHandler: () => {}
+  }
 
   global.document.execCommand = function execCommandMock() {};
   const document = {
@@ -97,7 +100,8 @@ describe("TheSoundplayer", () => {
               state.isTrackLiked = false;
             },
             playTrackInQueue({ state }, trackId) {},
-            copyLink({ state }) {}
+            copyLink({ state }) {},
+            initQueueStatus({ state }) {}
           },
           mutations: {
             setTrackUrl({ state }, trackUrl) {
@@ -150,6 +154,10 @@ describe("TheSoundplayer", () => {
             },
             setPicInPicCanvas(state, picInPicCanvas) {
               state.picInPicCanvas = picInPicCanvas;
+              state.picInPicCanvas = {
+                captureStream: () => {},
+                requestPictureInPicture: () => {}
+              }
             },
             changeUpdateTracks(state) {}
           }
@@ -464,6 +472,10 @@ describe("TheSoundplayer", () => {
   });
 
   it("picture in picture feature", () => {
+    wrapper.vm.picInPicVideo = {
+      play: () => {},
+      requestPictureInPicture: () => {}
+    }
     store.state.track.isPicInPicCanvasRdy = true;
     wrapper.vm.picInPic();
     expect(wrapper.vm.picInPicVideo.play()).toBeCalled;
