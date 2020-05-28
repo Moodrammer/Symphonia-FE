@@ -5,13 +5,12 @@
         "liked": true,
         "albumType": "album",
         "tracksCount":"3",
-        "tracks": ["4","6","2"],
+        "tracks": ["4","2"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "1",
         "id": "1",
         "name": "Album 3",
         "year": 2020,
-        "albumType": "album",
         "image": "http://source.unsplash.com/eSYCRwJEzO8",
         "artist": {
           "name":"Nasser Al-Qatami",
@@ -28,7 +27,6 @@
         "id": "2",
         "name": "TRST",
         "year": 2012,
-        "albumType": "album",
         "image": "http://source.unsplash.com/2Qg4y32pdCc",
         "artist": {
           "name": "Nasser Al-Qatami",
@@ -43,9 +41,8 @@
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "3",
         "id": "3",
-        "name": "Album1",
+        "name": "Surah Ibrahim",
         "year": 2018,
-        "albumType": "album",
         "image": "http://source.unsplash.com/wnd7te34T-0",
         "artist": {
           "name": "Nasser Al-Qatami",
@@ -62,7 +59,6 @@
         "id": "4",
         "name": "Album2",
         "year": 2015,
-        "albumType": "album",
         "image": "http://source.unsplash.com/H7sHkM9eilw",
         "artist": {
           "_id": "1",
@@ -79,7 +75,6 @@
         "id": "5",
         "name": "Quran ALbum1",
         "year": 2014,
-        "albumType": "album",
         "image": "http://source.unsplash.com/7xP5BJ34ybg",
         "artist": {
           "_id": "1",
@@ -96,13 +91,28 @@
         "id": "6",
         "name": "Game Of Thrones",
         "year": 2014,
-        "albumType": "single",
         "image": "http://source.unsplash.com/xMMh-VFGL9M",
         "artist": {
           "name": "Artist",
           "_id": "6"
         }
-    }
+    },
+    {
+      "liked": false,
+      "albumType":"single",
+      "tracksCount":"1",
+      "tracks": ["116"],
+      "releaseDate": "2020-04-07T16:49:46.442Z",
+      "_id": "7",
+      "id": "7",
+      "name": "Game Of Thrones",
+      "year": 2014,
+      "image": "http://source.unsplash.com/xMMh-VFGL9M",
+      "artist": {
+        "name": "Artist",
+        "_id": "6"
+      }
+  }
 ],
 
   "limit": 20,

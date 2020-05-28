@@ -1,29 +1,29 @@
 [
   {
     "category": [],
-    "trackId": "1",
+    "trackId": "116",
     "name": "nigga",
     "durationMs": 21354,
     "artist": "5e7d2ad6491be620ac9ea056",
     "trackPath": "assets/Amr/sample2.mp3",
+    "__v": 0,
     "album": {
       "album_type": "single",
       "id": "115",
       "_id": "115",
       "image":"http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "ALbum0"
-    },
-    "__v": 0
+      "name": "ALbum115"
+    }
   },
   {
     "liked": true,
     "trackId": "2",
     "album": {
       "album_type": "album",
-      "id": "5",
-      "_id": "5",
-      "image":"http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "Quran ALbum1"
+      "id": "1",
+      "_id": "1",
+      "image":"http://source.unsplash.com/eSYCRwJEzO8",
+      "name": "Album 3"
     },
     "artist": 
       {
@@ -65,10 +65,10 @@
     "_id": "4",
     "album": {
       "album_type": "album",
-      "id": "5",
-      "_id": "5",
-      "image": "http://source.unsplash.com/Gmb4U6JFyHo",
-      "name": "Quran ALbum1"
+      "id": "1",
+      "_id": "1",
+      "image": "http://source.unsplash.com/eSYCRwJEzO8",
+      "name": "Album 3"
     },
     "artist": 
       {
@@ -86,11 +86,11 @@
     "id": "5",
     "_id":"5",
     "album": {
-      "album_type": "single",
-      "id": "4",
-      "_id": "4",
-      "image":"http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "Album2"
+      "album_type": "album",
+      "id": "2",
+      "_id": "2",
+      "image":"http://source.unsplash.com/2Qg4y32pdCc",
+      "name": "TRST"
     },
     "artist": 
       {
@@ -112,7 +112,7 @@
       "id": "3",
       "_id": "3",
       "image": "http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "Album1"
+      "name": "Surah Ibrahim"
     },
     "artist":
       {

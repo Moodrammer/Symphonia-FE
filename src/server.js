@@ -928,6 +928,7 @@ export function makeServer({ environment = "development" } = {}) {
         x.forEach(album => {
 
             let b = schema.tracks.all().models.filter(x => x.attrs.album.id == album.id)
+            console.log("sadsa",b)
             let tracks =[];
             b.forEach(track => {
               tracks.push({
@@ -935,7 +936,7 @@ export function makeServer({ environment = "development" } = {}) {
                 _id: track.id
               })
             });
-
+            
           resp.push({
             name: album.name,
             id: album.id,
