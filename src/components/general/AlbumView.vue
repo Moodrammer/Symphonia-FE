@@ -141,7 +141,7 @@
                     color="white"
                     class="mx-2"
                     id="menuDots"
-                    @mousedown.prevent="menuClick($event)"
+                    @click.stop="menuClick($event)"
                   >
                     mdi-dots-horizontal
                   </v-icon>

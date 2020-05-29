@@ -85,7 +85,7 @@
       v-if="hover"
       id="menu"
       v-bind:class="{ 'disabled-2': isDisabled }"
-      @mousedown.prevent="menuClick($event, ID)"
+      @click.stop="menuClick($event, ID)"
     >
       mdi-dots-horizontal
     </v-icon>
