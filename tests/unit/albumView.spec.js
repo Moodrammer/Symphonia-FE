@@ -11,6 +11,7 @@ describe("Album View", () => {
   let wrapper;
   let vuetify;
   let store;
+  let $route;
 
   beforeEach(() => {
     vuetify = new Vuetify();
@@ -19,9 +20,33 @@ describe("Album View", () => {
     Vue.use(VueRouter);
     Vue.use(Vuex);
 
+    $route = {
+      name: "album/:id",
+      params: {
+        id: ""
+      }
+    };
+
     //Mocking the store
     store = new Vuex.Store({
       modules: {
+        track:{
+          namespaced:true,
+          state:{
+            contextId:"1",
+            isTrackPaused:true
+          },
+          mutations:{
+            setContextData:jest.fn(),
+            setIsTrackPaused:jest.fn()
+          },
+          actions:{
+            playTrackInQueue:jest.fn(),
+            updateQueue:jest.fn(),
+            getTrackInformation:jest.fn(),
+            togglePauseAndPlay:jest.fn()
+          }
+        },
         album: {
           namespaced: true,
 
@@ -122,5 +147,20 @@ describe("Album View", () => {
   it("Unfollow an album", () => {
     wrapper.vm.unfollowAlbum();
     expect("unfollowAlbum").toHaveBeenCalled;
+  });
+
+  it("Pause the currently playing album",()=>{
+    wrapper.vm.pause();
+    expect("togglePauseAndPlay").toHaveBeenCalled;
+    expect("setIsTrackPaused").toHaveBeenCalled;
+  });
+
+  it("Play the album",()=>{
+    if (!process || process.env.NODE_ENV !== "test") {
+      Vue.use(VueRouter);
+    }
+    wrapper.vm.id = "1";
+    wrapper.vm.play();
+    expect("togglePauseAndPlay").toHaveBeenCalled;
   });
 });
