@@ -180,7 +180,6 @@ export default {
      * @param {none}
      */
     playTrack: async function() {
-      if (!this.isPlaying) {
         this.$store.commit("track/setContextData", {
           contextID: this.contextID,
           contextType: this.contextType,
@@ -195,9 +194,6 @@ export default {
           token: "Bearer " + this.getuserToken(),
           trackId: this.ID
         });
-      } else {
-        this.$store.dispatch("track/togglePauseAndPlay");
-      }
       this.$store.commit("track/setIsTrackPaused", this.isPaused);
     },
     /**
