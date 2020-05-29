@@ -14,6 +14,7 @@
             :artistName="curTrkArtistName"
             :albumName="albumName"
             :songDuration="trackTotalDurationMs"
+            :ID="curTrkId"
           />
         </v-list>
       </v-col>
@@ -71,6 +72,7 @@ export default {
     ...mapState({
       curTrkName: state => state.track.trackName,
       curTrkArtistName: state => state.track.trackArtistName,
+      curTrkId: state => state.track.trackId,
       queueNextTracks: state => state.track.queueNextTracks,
       trackTotalDurationMs: state => state.track.trackTotalDurationMs,
       albumName: state => state.track.trackAlbumName,
