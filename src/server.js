@@ -91,6 +91,7 @@ export function makeServer({ environment = "development" } = {}) {
     routes() {
       //namespace will be prepended to any route (it acts like the server base address)
       this.namespace = "/api";
+      
       /////////////////////////////////////////////////////////////////////////////////
       // Create Playlist Request
       /////////////////////////////////////////////////////////////////////////////////
@@ -922,6 +923,7 @@ export function makeServer({ environment = "development" } = {}) {
       });
     }
   });
+
 
   return server;
 }
