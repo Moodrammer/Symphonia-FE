@@ -1,13 +1,12 @@
 <template>
     <div>
     <v-snackbar
-    :value ="snackbar"
-    :timeout ="timeout"
+    :value ="notificationData.isNotificationShown"
+    :timeout ="notificationData.timeout"
     top
     right
-    :text = text
     >
-    {{ text }}
+    {{ notificationData.text }}
     <v-btn
     color="blue"
     text
@@ -22,14 +21,19 @@
 <script>
     export default {
         name: "NotificationPopup",
-        props: {
-            snackbar: Boolean,
-            text: String,
-            timeout: Number
-        },
         methods: {
             closeSnackbar() {
-                this.$emit('closeNotification')
+                const resetNotificationData = {
+                    notificationState: false,
+                    notificationText: '',
+                    timeout: 0
+                }
+                this.$store.dispatch("notification/setNotification", resetNotificationData)
+            }
+        },
+        computed: {
+            notificationData(){
+                return this.$store.state.notification.notificationData
             }
         }
     }
