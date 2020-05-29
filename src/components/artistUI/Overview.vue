@@ -41,20 +41,20 @@
 <script>
 import CardGrid from "../general/CardGrid";
 import { mapGetters, mapActions } from "vuex";
-import getuserToken from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
 
 export default {
   components: {
     CardGrid
   },
-  computed: mapGetters([
+  computed: mapGetters("artist", [
     "allArtistAlbums",
     "allArtistTopTracks",
     "allArtistSingles",
     "allArtistAppearsOn"
   ]),
   methods: {
-    ...mapActions([
+    ...mapActions("artist", [
       "getArtistAlbums",
       "getArtistTopTracks",
       "getArtistSingles",

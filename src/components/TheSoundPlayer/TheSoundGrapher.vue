@@ -1,9 +1,9 @@
 <template>
-    <canvas
-      ref="soundGrapher"
-      style="width: 100%; height: fit-content;"
-      :height="canvasHeight"
-    ></canvas>
+  <canvas
+    ref="soundGrapher"
+    style="width: 100%; height: fit-content;"
+    :height="canvasHeight"
+  ></canvas>
 </template>
 
 <script>
@@ -12,9 +12,9 @@ import { mapState, mapMutations } from "vuex";
 export default {
   computed: {
     ...mapState({
-      audioElement: (state) => state.track.audioElement,
-      audioContext: (state) => state.track.audioContext
-    }),
+      audioElement: state => state.track.audioElement,
+      audioContext: state => state.track.audioContext
+    })
   },
   data() {
     return {
@@ -24,16 +24,18 @@ export default {
       sampleSize: 1024, // number of samples to collect before analyzing data
 
       canvasWidth: 600,
-      canvasHeight: 50,
-      ctx: undefined,
+      canvasHeight: 20,
+      ctx: undefined
     };
   },
   methods: {
     ...mapMutations("track", ["initAudioContext"]),
 
-    // When the Start button is clicked, finish setting up the audio nodes, play the sound,
-    // gather samples for the analysis, update the canvas
-
+    /**
+     * setup the web audio API nodes
+     *
+     * @public
+     */
     setupAudioNodes: function() {
       this.sourceNode = this.audioContext.createMediaElementSource(
         this.audioElement
@@ -52,10 +54,14 @@ export default {
       this.analyserNode.connect(this.javascriptNode);
       this.javascriptNode.connect(this.audioContext.destination);
     },
-
+    /**
+     * this function is responsible of graph drawing
+     *
+     * @public
+     */
     drawTimeDomain: function() {
       //clean canvas
-      this.ctx.fillStyle = '#282828';
+      this.ctx.fillStyle = "#282828";
       this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
       for (let i = 0; i < this.amplitudeArray.length; i++) {
@@ -71,48 +77,50 @@ export default {
      * @public
      */
     _handleOnAudioProcess: function() {
-      this.analyserNode.getByteTimeDomainData(this.amplitudeArray);
-      window.requestAnimFrame(this.drawTimeDomain);
+      if (!document.hidden) {
+        this.analyserNode.getByteTimeDomainData(this.amplitudeArray);
+        window.requestAnimFrame(this.drawTimeDomain);
+      }
     },
     /**
      * initialize the component
-     * 
+     *
      * @public
      */
-    init: function () {
+    init: function() {
       this.initAudioContext();
 
-    // Set up the audio Analyser, the Source Buffer and javascriptNode
-    this.setupAudioNodes();
-    // setup the event handler that is triggered every time enough samples have been collected
-    // trigger the audio analysis and draw the results
-    this.javascriptNode.onaudioprocess = this._handleOnAudioProcess;
+      // Set up the audio Analyser, the Source Buffer and javascriptNode
+      this.setupAudioNodes();
+      // setup the event handler that is triggered every time enough samples have been collected
+      // trigger the audio analysis and draw the results
+      this.javascriptNode.onaudioprocess = this._handleOnAudioProcess;
 
-    // Hacks to deal with different function names in different browsers
-    window.requestAnimFrame = (function() {
-      return (
-        window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        function(callback) {
-          window.setTimeout(callback, 1000 / 60);
-        }
-      );
-    })();
-    window.AudioContext = (function() {
-      return (
-        window.webkitAudioContext ||
-        window.AudioContext ||
-        window.mozAudioContext
-      );
-    })();
+      // Hacks to deal with different function names in different browsers
+      window.requestAnimFrame = (function() {
+        return (
+          window.requestAnimationFrame ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame ||
+          function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+          }
+        );
+      })();
+      window.AudioContext = (function() {
+        return (
+          window.webkitAudioContext ||
+          window.AudioContext ||
+          window.mozAudioContext
+        );
+      })();
 
-    this.ctx = this.$refs.soundGrapher.getContext("2d");
+      this.ctx = this.$refs.soundGrapher.getContext("2d");
     }
   },
   mounted: function() {
-    this.init(); 
-  },
+    this.init();
+  }
 };
 </script>
 

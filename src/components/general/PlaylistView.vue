@@ -1,7 +1,19 @@
 <template>
   <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
     <v-container class="pt-0">
-      <v-row justify="center">
+      <v-row
+        justify="center"
+        align-content="center"
+        v-if="isLoading"
+        class="centering"
+      >
+        <pulse-loader
+          :loading="isLoading"
+          color="white"
+          size="20px"
+        ></pulse-loader>
+      </v-row>
+      <v-row justify="center" v-else>
         <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">
           <v-container class="pt-0">
             <v-row justify-lg="center">
@@ -44,17 +56,27 @@
                       absolute
                       opacity="0.8"
                     >
-                      <v-btn
-                        fab
-                        outlined
-                        color="white"
-                        id="playIcon"
-                        @click="iconClick = !iconClick"
-                      >
-                        <v-icon large color="white" v-if="iconClick">
+                      <v-btn fab outlined color="white">
+                        <v-icon
+                          large
+                          color="white"
+                          v-if="!isPaused"
+                          @click="pause"
+                          id="pauseIcon"
+                          class="mb-2"
+                        >
                           mdi-pause
                         </v-icon>
-                        <v-icon large color="white" v-else>mdi-play</v-icon>
+                        <v-icon
+                          large
+                          color="white"
+                          v-else
+                          @click="play"
+                          id="playIcon"
+                          class="mb-2"
+                        >
+                          mdi-play
+                        </v-icon>
                       </v-btn>
                     </v-overlay>
                   </v-img>
@@ -79,10 +101,19 @@
                 <v-row justify-lg="center" class="mt-1">
                   <v-btn
                     rounded
+                    class="white--text px-8 my-4"
+                    id="playBtn"
+                    @click="pause"
+                    v-if="!isPaused"
+                  >
+                    Pause
+                  </v-btn>
+                  <v-btn
+                    rounded
                     class="white--text px-8"
                     id="playBtn"
                     @click="play"
-                    v-if="playlist.tracksCount"
+                    v-else-if="playlist.tracksCount"
                   >
                     Play
                   </v-btn>
@@ -159,6 +190,8 @@
                 :ID="track._id"
                 :isDisabled="track.premium"
                 :contextMenu="contextMenu"
+                :contextType="'playlist'"
+                :contextID="id"
               />
             </div>
           </v-list>
@@ -184,17 +217,18 @@
 <script>
 import SongItem from "./SongItem";
 import getDeviceSize from "../../mixins/getDeviceSize";
-import getuserToken from "../../mixins/userService";
-import getuserID from "../../mixins/userService";
-import isLoggedIn from "../../mixins/userService";
-
+import getuserToken from "../../mixins/userService/getUserToken";
+import getuserID from "../../mixins/userService/getuserID";
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 /**
  * @displayName Playlist View
  * @example [none]
  */
 export default {
   components: {
-    SongItem
+    SongItem,
+    PulseLoader
   },
   data: function() {
     return {
@@ -210,8 +244,39 @@ export default {
      * @public This is a public method
      * @param {none}
      */
-    play: function() {},
-
+    play: async function() {
+      if (this.id != this.contextID) {
+        this.$store.commit("track/setContextData", {
+          contextID: this.id,
+          contextType: "playlist",
+          contextUrl: "https://thesymphonia.ddns.net/api"
+        });
+        await this.$store.dispatch(
+          "track/playTrackInQueue",
+          this.tracks[0]._id
+        );
+        await this.$store.dispatch(
+          "track/updateQueue",
+          "Bearer " + this.getuserToken()
+        );
+        await this.$store.dispatch("track/getTrackInformation", {
+          token: "Bearer " + this.getuserToken(),
+          trackId: this.tracks[0]._id
+        });
+      } else {
+        this.$store.dispatch("track/togglePauseAndPlay");
+      }
+      this.$store.commit("track/setIsTrackPaused", this.isPaused);
+    },
+    /**
+     * Gets called when the user clicks on the pause button/icon
+     * @public This is a public method
+     * @param {none}
+     */
+    pause: function() {
+      this.$store.dispatch("track/togglePauseAndPlay");
+      this.$store.commit("track/setIsTrackPaused", this.isPaused);
+    },
     /**
      *Function to follow this playlist,gets called when the user clicks on white heart icon
      * @public This is a public method
@@ -326,6 +391,17 @@ export default {
     },
     playlistID() {
       return this.$route.params.id;
+    },
+    isLoading() {
+      return this.$store.state.playlist.isLoading;
+    },
+    isPaused() {
+      if (this.id == this.contextID)
+        return this.$store.state.track.isTrackPaused;
+      else return true;
+    },
+    contextID() {
+      return this.$store.state.track.contextId;
     }
   },
   props: {
@@ -371,5 +447,16 @@ h5 {
 .small-col {
   width: 157px;
   height: 157px;
+}
+
+.centering {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  margin: auto;
 }
 </style>

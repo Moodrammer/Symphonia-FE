@@ -1,7 +1,7 @@
 <template>
   <v-content
     :style="{
-      backgroundImage: 'url(' + artist.imageUrl + ')',
+      backgroundImage: 'url(' + artist.image + ')',
       backgroundSize: '100% Auto'
     }"
   >
@@ -37,13 +37,13 @@
 </template>
 
 <script>
-import getuserToken from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  computed: mapGetters(["currentArtistGetter"]),
+  computed: mapGetters("artist", ["currentArtistGetter"]),
   methods: {
-    ...mapActions(["getCurrentArtist"]),
+    ...mapActions("artist", ["getCurrentArtist"]),
     updateArtist() {
       try {
         this.getCurrentArtist({

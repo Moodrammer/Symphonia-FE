@@ -230,10 +230,10 @@
 </template>
 
 <script>
-import isLoggedIn from "../../mixins/userService";
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import getDeviceSize from "../../mixins/getDeviceSize";
-import getimageUrl from "../../mixins/userService";
-import logOut from "../../mixins/userService";
+import getimageUrl from "../../mixins/userService/getimageUrl";
+import logOut from "../../mixins/userService/logOut";
 import { mapState } from "vuex";
 
 /**

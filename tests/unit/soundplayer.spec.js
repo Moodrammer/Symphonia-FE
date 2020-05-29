@@ -10,6 +10,16 @@ describe("TheSoundplayer", () => {
   let wrapper;
   let vuetify;
   let store;
+  navigator.mediaSession = {
+    setActionHandler: () => {}
+  };
+
+  global.document.execCommand = function execCommandMock() {};
+  const document = {
+    createElement(name) {
+      return name;
+    }
+  };
 
   beforeEach(() => {
     vuetify = new Vuetify();
@@ -56,7 +66,7 @@ describe("TheSoundplayer", () => {
 
             isQueueOpened: false,
             queueTracks: [],
-            queueNextTracks: [],
+            queueNextTracks: []
           },
           actions: {
             next({ state }) {
@@ -90,7 +100,8 @@ describe("TheSoundplayer", () => {
               state.isTrackLiked = false;
             },
             playTrackInQueue({ state }, trackId) {},
-            copyLink({ state }) {}
+            copyLink({ state }) {},
+            initQueueStatus({ state }) {}
           },
           mutations: {
             setTrackUrl({ state }, trackUrl) {
@@ -143,9 +154,13 @@ describe("TheSoundplayer", () => {
             },
             setPicInPicCanvas(state, picInPicCanvas) {
               state.picInPicCanvas = picInPicCanvas;
+              state.picInPicCanvas = {
+                captureStream: () => {},
+                requestPictureInPicture: () => {}
+              };
             },
             changeUpdateTracks(state) {}
-          },
+          }
         },
         category: {
           namespaced: true,
@@ -155,21 +170,24 @@ describe("TheSoundplayer", () => {
               {
                 contextType: "",
                 contextId: "",
-                contextUrl: "",
-              },
-            ],
+                contextUrl: ""
+              }
+            ]
           },
           actions: {
-            recentlyPlayed() {},
-          },
-        },
-      },
+            recentlyPlayed() {}
+          }
+        }
+      }
     });
 
     wrapper = shallowMount(soundplayer, {
       vuetify,
       store,
       router,
+      playStub: jest
+        .spyOn(window.HTMLMediaElement.prototype, "play")
+        .mockImplementation(() => {})
     });
   });
 
@@ -283,7 +301,7 @@ describe("TheSoundplayer", () => {
     wrapper.vm.setAudioElement({
       readyState: 3,
       duration: 3000,
-      play: function() {},
+      play: function() {}
     });
 
     wrapper.vm._handleLoaded();
@@ -295,7 +313,7 @@ describe("TheSoundplayer", () => {
     wrapper.vm.setAudioElement({
       readyState: 1,
       duration: 2000,
-      play: function() {},
+      play: function() {}
     });
 
     wrapper.vm._handleLoaded();
@@ -306,7 +324,7 @@ describe("TheSoundplayer", () => {
 
   it("playing handler", () => {
     wrapper.vm.setAudioElement({
-      currentTime: 3000,
+      currentTime: 3000
     });
     wrapper.vm.currentTimeInSec = 10;
 
@@ -325,7 +343,7 @@ describe("TheSoundplayer", () => {
     store.state.track.isRepeatOnceEnabled = true;
     wrapper.vm.setAudioElement({
       autoplay: false,
-      play: function() {},
+      play: function() {}
     });
     wrapper.vm._handleEndedTrack();
     expect(wrapper.vm.audioElement.play()).toBeCalled;
@@ -371,7 +389,7 @@ describe("TheSoundplayer", () => {
 
   it("play the next track", () => {
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     wrapper.vm.next();
 
@@ -380,7 +398,7 @@ describe("TheSoundplayer", () => {
 
   it("play the next track conditionally", () => {
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     store.state.track.trackId = "12";
 
@@ -389,7 +407,7 @@ describe("TheSoundplayer", () => {
     expect(wrapper.vm.audioElement.autoplay).toEqual(true);
 
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     store.state.track.isNextAndPreviousFinished = false;
     wrapper.vm.nextConditionally();
@@ -398,7 +416,7 @@ describe("TheSoundplayer", () => {
 
   it("play the previous track", () => {
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     wrapper.vm.previous();
 
@@ -407,7 +425,7 @@ describe("TheSoundplayer", () => {
 
   it("play the previous track conditionally", () => {
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     store.state.track.isRepeatEnabled = true;
     store.state.track.isNextAndPreviousFinished = true;
@@ -417,7 +435,7 @@ describe("TheSoundplayer", () => {
     expect(wrapper.vm.audioElement.autoplay).toEqual(true);
 
     wrapper.vm.setAudioElement({
-      autoplay: false,
+      autoplay: false
     });
     store.state.track.isNextAndPreviousFinished = false;
     wrapper.vm.previousConditionally();
@@ -435,16 +453,16 @@ describe("TheSoundplayer", () => {
   it("handle audio error", () => {
     wrapper.vm.setAudioElement({
       error: {
-        code: 4,
-      },
+        code: 4
+      }
     });
     wrapper.vm._handleAudioError();
     expect(wrapper.vm.playTrackInQueue()).toBeCalled;
 
     wrapper.vm.setAudioElement({
       error: {
-        code: 5,
-      },
+        code: 5
+      }
     });
     wrapper.vm._handleAudioError();
   });
@@ -454,6 +472,10 @@ describe("TheSoundplayer", () => {
   });
 
   it("picture in picture feature", () => {
+    wrapper.vm.picInPicVideo = {
+      play: () => {},
+      requestPictureInPicture: () => {}
+    };
     store.state.track.isPicInPicCanvasRdy = true;
     wrapper.vm.picInPic();
     expect(wrapper.vm.picInPicVideo.play()).toBeCalled;
@@ -464,7 +486,7 @@ describe("TheSoundplayer", () => {
 
     //play
     document.pictureInPictureElement = {
-      play: () => {},
+      play: () => {}
     };
     wrapper.vm._handlePicInPicPlay();
     expect(document.pictureInPictureElement.play()).toBeCalled;
@@ -474,7 +496,7 @@ describe("TheSoundplayer", () => {
 
     //pause
     document.pictureInPictureElement = {
-      pause: () => {},
+      pause: () => {}
     };
     wrapper.vm._handlePicInPicPause();
     expect(document.pictureInPictureElement.pause()).toBeCalled;
@@ -493,7 +515,7 @@ describe("TheSoundplayerLogout", () => {
     Vue.use(Vuetify);
 
     wrapper = shallowMount(soundplayerLogout, {
-      vuetify,
+      vuetify
     });
   });
 

@@ -12,7 +12,7 @@ const mutations = {
   },
   setNavigationBarColor: (state, navigationBarColor) => {
     state.navigationBarColor = navigationBarColor;
-  },
+  }
 };
 
 const actions = {
@@ -21,18 +21,18 @@ const actions = {
 
     const session = await axios.get("/v1/me/checkout-session", {
       headers: {
-        Authorization: payload.token,
-      },
+        Authorization: payload.token
+      }
     });
     await payload.stripe.redirectToCheckout({
-      sessionId: session.data.session.id,
+      sessionId: session.data.session.id
     });
-  },
+  }
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions,
+  actions
 };

@@ -10,9 +10,9 @@
 
 <script>
 import { VueContext } from "vue-context";
-import getuserToken from "../../mixins/userService";
-import getuserID from "../../mixins/userService";
-import isLoggedIn from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
+import getuserID from "../../mixins/userService/getuserID";
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
 /**
  * @displayName Context Menu
  * @example [none]
@@ -184,7 +184,6 @@ export default {
       if (this.isOwnedPlaylist) {
         if (this.isPublicPlaylist) this.playlistMenu.push("Make secret");
         else this.playlistMenu.push("Make public");
-
         this.playlistMenu.push("Delete");
       } else {
         if (this.isPlaylistSaved)

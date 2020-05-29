@@ -17,7 +17,7 @@
 
 <script>
 import Category from "../general/Category";
-import getuserToken from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
 /**
  * The webplayer home content if the user is logged in
  * @displayName Home Content Login

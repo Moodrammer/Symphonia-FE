@@ -10,11 +10,11 @@
         <v-list color="transparent">
           <!--Nesting the song component-->
           <SongItem
-            :isPlaying="true"
             :songName="curTrkName"
             :artistName="curTrkArtistName"
             :albumName="albumName"
             :songDuration="trackTotalDurationMs"
+            :ID="curTrkId"
           />
         </v-list>
       </v-col>
@@ -46,7 +46,7 @@
 <script>
 import SongItem from "../components/general/SongItem";
 import { mapState, mapActions, mapMutations } from "vuex";
-import getuserToken from "../mixins/userService";
+import getuserToken from "../mixins/userService/getUserToken";
 
 export default {
   name: "TheQueue",
@@ -72,6 +72,7 @@ export default {
     ...mapState({
       curTrkName: state => state.track.trackName,
       curTrkArtistName: state => state.track.trackArtistName,
+      curTrkId: state => state.track.trackId,
       queueNextTracks: state => state.track.queueNextTracks,
       trackTotalDurationMs: state => state.track.trackTotalDurationMs,
       albumName: state => state.track.trackAlbumName,

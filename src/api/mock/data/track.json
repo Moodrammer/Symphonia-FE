@@ -1,22 +1,29 @@
 [
   {
     "category": [],
-    "trackId": "1",
+    "trackId": "116",
     "name": "nigga",
     "durationMs": 21354,
     "artist": "5e7d2ad6491be620ac9ea056",
     "trackPath": "assets/Amr/sample2.mp3",
-    "__v": 0
+    "__v": 0,
+    "album": {
+      "album_type": "single",
+      "id": "115",
+      "_id": "115",
+      "image":"http://source.unsplash.com/hiFpJqA4FcE",
+      "name": "ALbum115"
+    }
   },
   {
     "liked": true,
     "trackId": "2",
     "album": {
-      "album_type": "single",
-      "id": "5",
-      "_id": "5",
-      "image":"http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "Quran ALbum1"
+      "album_type": "album",
+      "id": "1",
+      "_id": "1",
+      "image":"http://source.unsplash.com/eSYCRwJEzO8",
+      "name": "Album 3"
     },
     "artist": 
       {
@@ -36,10 +43,10 @@
     "id": "3",
     "_id": "3",
     "album": {
-      "album_type": "single",
-      "id": "6",
-      "_id": "6",
-      "name": "Quran ALbum2"
+      "album_type": "album",
+      "id": "5",
+      "_id": "5",
+      "name": "Quran ALbum1"
     },
     "artist": 
       {
@@ -57,11 +64,11 @@
     "id": "4",
     "_id": "4",
     "album": {
-      "album_type": "single",
-      "id": "6",
-      "_id": "6",
-      "image": "http://source.unsplash.com/Gmb4U6JFyHo",
-      "name": "Quran ALbum2"
+      "album_type": "album",
+      "id": "1",
+      "_id": "1",
+      "image": "http://source.unsplash.com/eSYCRwJEzO8",
+      "name": "Album 3"
     },
     "artist": 
       {
@@ -79,11 +86,11 @@
     "id": "5",
     "_id":"5",
     "album": {
-      "album_type": "single",
-      "id": "3",
-      "_id": "3",
-      "image":"http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "Album1"
+      "album_type": "album",
+      "id": "2",
+      "_id": "2",
+      "image":"http://source.unsplash.com/2Qg4y32pdCc",
+      "name": "TRST"
     },
     "artist": 
       {
@@ -105,7 +112,7 @@
       "id": "3",
       "_id": "3",
       "image": "http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "Album1"
+      "name": "Surah Ibrahim"
     },
     "artist":
       {
@@ -122,11 +129,11 @@
     "id": "123",
     "_id": "123",
     "album": {
-      "album_type": "single",
-      "id": "3",
-      "_id": "3",
+      "album_type": "album",
+      "id": "6",
+      "_id": "6",
       "image": "http://source.unsplash.com/FPz-Dd-xx4c",
-      "name": "Album1"
+      "name": "Game Of Thrones"
     },
     "artist": 
       {
@@ -147,12 +154,12 @@
     "id": "456",
     "_id": "456",
     "album": {
-      "album_type": "single",
+      "album_type": "album",
       "href": "https://api.symphonia.com/v1/albums/1",
-      "id": "3",
-      "_id": "3",
+      "id": "6",
+      "_id": "6",
       "image": "http://source.unsplash.com/EOHXjmXIBjI",
-      "name": "Album1",
+      "name": "Game Of Thrones",
       "type": "album"
     },
     "artist": 
@@ -177,12 +184,12 @@
     "id": "789",
     "_id": "789",
     "album": {
-      "album_type": "single",
+      "album_type": "album",
       "href": "https://api.symphonia.com/v1/albums/1",
-      "id": "3",
-      "_id": "3",
+      "id": "6",
+      "_id": "6",
       "image": "http://source.unsplash.com/FPz-Dd-xx4c",
-      "name": "Album1",
+      "name": "Game Of Thrones",
       "type": "album"
     },
     "artist": 

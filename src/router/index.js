@@ -14,9 +14,9 @@ import HomepagePremium from "../views/PremiumOffer.vue";
 import PlaylistView from "../components/general/PlaylistView.vue";
 import PassReset from "../components/PasswordMangement/PassReset.vue";
 import PassChange from "../components/PasswordMangement/PassChange.vue";
-import ArtistUI from "../components/artistUI/ArtistUI";
-import Overview from "../components/artistUI/Overview";
-import RelatedArtists from "../components/artistUI/RelatedArtists";
+import ArtistUI from "../components/ArtistInterface/ArtistInterface.vue";
+import Overview from "../components/ArtistInterface/Overview";
+import RelatedArtists from "../components/ArtistInterface/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
 import GenreView from "../components/general/GenreView.vue";
 import Google from "../components/oauth/google.vue";
@@ -24,15 +24,52 @@ import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
+<<<<<<< HEAD
 import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue";
+=======
+import SymphoniaArtist from "../components/ArtistDashboard/Dashboard.vue";
+import SymphoniaArtistMain from "../components/ArtistDashboard/Main.vue";
+import SymphoniaArtistAlbums from "../components/ArtistDashboard/Albums.vue";
+import SymphoniaArtistSingles from "../components/ArtistDashboard/Singles.vue";
+// import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue";
+import notfound from "../views/TheNotFoundPage.vue";
+
+import isLoggedIn from "@/mixins/userService/isLoggedIn";
+>>>>>>> master
 
 Vue.use(VueRouter);
 
 const routes = [
   {
+    path: "/SymphoniaArtist/:id",
+    name: "SymphoniaArtist",
+    component: SymphoniaArtist,
+    redirect: "/SymphoniaArtist/:id/main",
+    children: [
+      {
+        name: "main",
+        path: "main",
+        component: SymphoniaArtistMain
+      },
+      {
+        name: "albums",
+        path: "albums",
+        component: SymphoniaArtistAlbums
+      },
+      {
+        name: "singles",
+        path: "singles",
+        component: SymphoniaArtistSingles
+      }
+    ]
+  },
+  {
     path: "/",
     name: "Home",
-    component: Homepage
+    component: Homepage,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/webhome",
@@ -43,7 +80,10 @@ const routes = [
       {
         name: "UserUI",
         path: "user/:id",
-        component: UserUI
+        component: UserUI,
+        meta: {
+          allowAnonymous: false
+        }
       },
       {
         name: "ArtistUI",
@@ -54,24 +94,36 @@ const routes = [
           {
             name: "Overview",
             path: "overview",
-            component: Overview
+            component: Overview,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             name: "RelatedArtists",
             path: "related-artists",
-            component: RelatedArtists
+            component: RelatedArtists,
+            meta: {
+              allowAnonymous: false
+            }
           }
         ]
       },
       {
         name: "home",
         path: "home",
-        component: HomeContent
+        component: HomeContent,
+        meta: {
+          allowAnonymous: true
+        }
       },
       {
         name: "search",
         path: "search",
-        component: Search
+        component: Search,
+        meta: {
+          allowAnonymous: true
+        }
       },
       {
         name: "collection",
@@ -82,68 +134,93 @@ const routes = [
           {
             name: "Playlists",
             path: "playlists",
-            component: Playlists
+            component: Playlists,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             name: "Artists",
             path: "artists",
-            component: Artists
+            component: Artists,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             name: "Albums",
             path: "albums",
-            component: ALbums
+            component: ALbums,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             name: "tracks",
             path: "tracks",
-            component: Tracks
+            component: Tracks,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             name: "queue",
             path: "queue",
-            component: Queue
+            component: Queue,
+            meta: {
+              allowAnonymous: false
+            }
           }
         ]
       },
       {
         name: "playlist/:id",
         path: "playlist/:id",
-        component: PlaylistView
+        component: PlaylistView,
+        meta: {
+          allowAnonymous: true
+        }
       },
       {
         name: "album/:id",
         path: "album/:id",
-        component: AlbumView
+        component: AlbumView,
+        meta: {
+          allowAnonymous: true
+        }
       },
       {
         path: "/genre/:id",
-        component: GenreView
+        component: GenreView,
+        meta: {
+          allowAnonymous: true
+        }
       }
     ]
   },
   {
     path: "/premium/",
     name: "HomePremium",
-    component: HomepagePremium
+    component: HomepagePremium,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/signup",
     name: "signup",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/SignUp.vue")
+    component: () => import("../views/SignUp.vue"),
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/login",
     name: "login",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Login.vue")
+    component: () => import("../views/Login.vue"),
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/account/",
@@ -152,29 +229,64 @@ const routes = [
       {
         name: "overview",
         path: "",
+<<<<<<< HEAD
         component: () => import("../components/User Settings/Overview.vue")
+=======
+        component: () => import("../components/User Settings/overview.vue"),
+        meta: {
+          allowAnonymous: false
+        }
+>>>>>>> master
       },
       {
         name: "EditProfile",
         path: "edit",
+<<<<<<< HEAD
         component: () => import("../components/User Settings/EditProfile.vue")
+=======
+        component: () => import("../components/User Settings/editProfile.vue"),
+        meta: {
+          allowAnonymous: false
+        }
+>>>>>>> master
       },
       {
         name: "RecoverPlaylists",
         path: "recover-playlists",
         component: () =>
+<<<<<<< HEAD
           import("../components/User Settings/RecoverPlaylist.vue")
+=======
+          import("../components/User Settings/recoverPlaylist.vue"),
+        meta: {
+          allowAnonymous: false
+        }
+>>>>>>> master
       },
       {
         name: "Notifications",
         path: "notifications",
+<<<<<<< HEAD
         component: () => import("../components/User Settings/Notification.vue")
+=======
+        component: () => import("../components/User Settings/notification.vue"),
+        meta: {
+          allowAnonymous: false
+        }
+>>>>>>> master
       },
       {
         name: "ChangePassword",
         path: "changePassword",
+<<<<<<< HEAD
         component: () =>
           import("../components/User Settings/ChangePassword.vue")
+=======
+        component: () => import("../components/User Settings/changePass.vue"),
+        meta: {
+          allowAnonymous: false
+        }
+>>>>>>> master
       }
     ]
   },
@@ -191,12 +303,18 @@ const routes = [
       {
         path: "reset",
         name: "reset",
-        component: PassReset
+        component: PassReset,
+        meta: {
+          allowAnonymous: true
+        }
       },
       {
         path: "change/:resettoken",
         name: "change",
-        component: PassChange
+        component: PassChange,
+        meta: {
+          allowAnonymous: true
+        }
       }
     ]
   },
@@ -204,19 +322,29 @@ const routes = [
   {
     path: "/google/:userToken",
     name: "googleroute",
-    component: Google
+    component: Google,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/facebook/:userToken",
     name: "facebookroute",
-    component: Facebook
+    component: Facebook,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/artist-activation/:activationToken",
     name: "artistActivation",
-    component: ArtistActivation
+    component: ArtistActivation,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
+<<<<<<< HEAD
     path: "/soundgrapher",
     name: "soundGrapher",
     component: soundGrapher
@@ -225,6 +353,14 @@ const routes = [
     path: "/about",
     name: "aboutUs",
     component: () => import("../views/About.vue")
+=======
+    path: "*",
+    name: "notfound",
+    component: notfound,
+    meta: {
+      allowAnonymous: true
+    }
+>>>>>>> master
   }
 ];
 
@@ -232,6 +368,25 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name == "login" && isLoggedIn.methods.isLoggedIn()) {
+    next({
+      path: "/webhome/home"
+    });
+  } else if (to.name == "signup" && isLoggedIn.methods.isLoggedIn()) {
+    next({
+      path: "/"
+    });
+  } else if (!to.meta.allowAnonymous && !isLoggedIn.methods.isLoggedIn()) {
+    next({
+      path: "/login",
+      query: { redirect: to.fullPath }
+    });
+  } else {
+    next();
+  }
 });
 
 export default router;

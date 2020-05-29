@@ -19,8 +19,8 @@ describe("CreatePlaylist", () => {
       modules: {
         playlist: {
           namespaced: true,
-          mutations:{
-            changeCreateModel:jest.fn()
+          mutations: {
+            changeCreateModel: jest.fn()
           },
           actions: {
             createPlaylist: jest.fn()

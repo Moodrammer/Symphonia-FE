@@ -2,7 +2,19 @@
   <!--The Album view wil be used later-->
   <v-content color="#b3b3b3" class="root white--text" fluid fill-height>
     <v-container class="pt-0">
-      <v-row justify="center">
+      <v-row
+        justify="center"
+        align-content="center"
+        v-if="isLoading"
+        class="centering"
+      >
+        <pulse-loader
+          :loading="isLoading"
+          color="white"
+          size="20px"
+        ></pulse-loader>
+      </v-row>
+      <v-row justify="center" v-else>
         <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">
           <v-container class="pt-0">
             <v-row justify-lg="center">
@@ -45,17 +57,27 @@
                       absolute
                       opacity="0.8"
                     >
-                      <v-btn
-                        fab
-                        outlined
-                        color="white"
-                        id="playIcon"
-                        @click="iconClick = !iconClick"
-                      >
-                        <v-icon large color="white" v-if="iconClick">
+                      <v-btn fab outlined color="white">
+                        <v-icon
+                          large
+                          color="white"
+                          v-if="!isPaused"
+                          @click="pause"
+                          id="pauseIcon"
+                          class="mb-2"
+                        >
                           mdi-pause
                         </v-icon>
-                        <v-icon large color="white" v-else>mdi-play</v-icon>
+                        <v-icon
+                          large
+                          color="white"
+                          v-else
+                          @click="play"
+                          id="playIcon"
+                          class="mb-2"
+                        >
+                          mdi-play
+                        </v-icon>
                       </v-btn>
                     </v-overlay>
                   </v-img>
@@ -80,8 +102,18 @@
                     class="white--text px-8 my-4"
                     id="playBtn"
                     @click="play"
+                    v-if="isPaused"
                   >
                     Play
+                  </v-btn>
+                  <v-btn
+                    rounded
+                    class="white--text px-8 my-4"
+                    id="playBtn"
+                    @click="pause"
+                    v-else
+                  >
+                    Pause
                   </v-btn>
                 </v-row>
 
@@ -143,6 +175,8 @@
                 :ID="track._id"
                 :isDisabled="track.premium"
                 :contextMenu="contextMenu"
+                :contextType="'album'"
+                :contextID="id"
               />
             </div>
           </v-list>
@@ -155,9 +189,10 @@
 <script>
 import SongItem from "./SongItem";
 import getDeviceSize from "../../mixins/getDeviceSize";
-import getuserToken from "../../mixins/userService";
-import getuserID from "../../mixins/userService";
-import isLoggedIn from "../../mixins/userService";
+import getuserToken from "../../mixins/userService/getUserToken";
+import getuserID from "../../mixins/userService/getuserID";
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
 /**
  * @displayName Album View
@@ -165,23 +200,53 @@ import isLoggedIn from "../../mixins/userService";
  */
 export default {
   components: {
-    SongItem
+    SongItem,
+    PulseLoader
   },
   data: function() {
     return {
       hover: false,
-      iconClick: false,
       id: this.$route.params.id
     };
   },
   methods: {
     /**
-     * Gets called when the user clicks on the play button to play the album
+     * Gets called when the user clicks on the play button/icon to play the album
      * @public This is a public method
      * @param {none}
      */
-    play: function() {
-      //To be added
+    play: async function() {
+      if (this.id != this.contextID) {
+        this.$store.commit("track/setContextData", {
+          contextID: this.id,
+          contextType: "album",
+          contextUrl: "https://thesymphonia.ddns.net/api"
+        });
+        await this.$store.dispatch(
+          "track/playTrackInQueue",
+          this.tracks[0]._id
+        );
+        await this.$store.dispatch(
+          "track/updateQueue",
+          "Bearer " + this.getuserToken()
+        );
+        await this.$store.dispatch("track/getTrackInformation", {
+          token: "Bearer " + this.getuserToken(),
+          trackId: this.tracks[0]._id
+        });
+      } else {
+        this.$store.dispatch("track/togglePauseAndPlay");
+      }
+      this.$store.commit("track/setIsTrackPaused", this.isPaused);
+    },
+    /**
+     * Gets called when the user clicks on the pause button/icon
+     * @public This is a public method
+     * @param {none}
+     */
+    pause: function() {
+      this.$store.dispatch("track/togglePauseAndPlay");
+      this.$store.commit("track/setIsTrackPaused", this.isPaused);
     },
     /**
      * Gets called when the user clicks on heart icon to follow the album
@@ -189,10 +254,10 @@ export default {
      * @param {none}
      */
     followAlbum: function() {
-        this.$store.dispatch("album/followAlbum", {
-          albumID: this.id,
-          token: this.getuserToken()
-        });
+      this.$store.dispatch("album/followAlbum", {
+        albumID: this.id,
+        token: this.getuserToken()
+      });
     },
     /**
      * Gets called when the user clicks on heart icon to unfollow the album
@@ -200,10 +265,10 @@ export default {
      * @param {none}
      */
     unfollowAlbum: async function() {
-        await this.$store.dispatch("album/unfollowAlbum", {
-          id: this.id,
-          token: this.getuserToken()
-        });
+      await this.$store.dispatch("album/unfollowAlbum", {
+        id: this.id,
+        token: this.getuserToken()
+      });
     },
     /**
      * Function to set the right click menu data
@@ -248,6 +313,17 @@ export default {
     },
     followed() {
       return this.$store.state.album.isFollowdAlbum;
+    },
+    isLoading() {
+      return this.$store.state.album.isLoading;
+    },
+    isPaused() {
+      if (this.id == this.contextID)
+        return this.$store.state.track.isTrackPaused;
+      else return true;
+    },
+    contextID() {
+      return this.$store.state.track.contextId;
     }
   },
   props: ["contextMenu"],
@@ -292,5 +368,16 @@ export default {
 
 #year {
   opacity: 0.6;
+}
+
+.centering {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  margin: auto;
 }
 </style>
