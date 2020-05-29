@@ -374,11 +374,6 @@ export default {
     allArtistAlbums: function(newValue) {
       console.log(newValue);
     },
-    startLoading: function(newValue) {
-      console.log(newValue);
-      if(newValue == 0)
-        this.reset();
-    }
   },
   methods: {
     ...mapActions("artist", [
@@ -392,17 +387,17 @@ export default {
       "deleteTrack",
     ]),
     reset() {
+      this.dialog.addSong = false;
+      this.dialog.addAlbum = false;
       this.dialog.rename = false;
       this.dialog.remove = false;
-      this.dialog.addAlbum = false;
-      this.dialog.addSong = false;
-      this.selectedCategories = [];
       this.explicit = false;
       this.premium = false;
       this.copyrightsText = null;
       this.title = null;
       this.cover = null;
       this.file = null;
+      this.selectedCategories = [];
     },
     addAlbum() {
       console.log(this.title, this.cover);
@@ -417,6 +412,7 @@ export default {
         date: this.date,
       };
       this.addNewAlbum(payload);
+      this.reset();
     },
     addSong() {
       console.log(this.title, this.cover);
@@ -432,6 +428,7 @@ export default {
         album: this.operation.albumID,
       };
       this.addTrackToAlbum(payload);
+      this.reset();
     },
     remove() {
       if (this.operation.songID == null) {

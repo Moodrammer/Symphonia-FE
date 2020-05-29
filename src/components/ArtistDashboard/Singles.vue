@@ -63,21 +63,21 @@
 
     <v-dialog dark v-model="dialog.addAlbum" max-width="700">
       <v-card>
-        <v-card-title class="headline">Add new album</v-card-title>
+        <v-card-title class="headline">Add new single</v-card-title>
         <v-form ref="albumForm">
           <v-text-field
             outlined
             class="mx-9 mt-8"
             v-model="title"
             :rules="titleRules"
-            label="Album Title"
+            label="Single Title"
             prepend-icon="mdi-text-short"
             required
           ></v-text-field>
 
           <v-file-input
             class="mx-9 my-5"
-            label="Album Cover"
+            label="Single Cover"
             :rules="fileRules"
             v-model="cover"
             show-size
@@ -234,7 +234,7 @@
               small
               text
               title="add song file to the single"
-              v-if="item.tracks.length == 0"
+              v-if="item.tracks.length < 1"
               @click="setOperationData('addSong', item.name, item.id, null)"
               ><v-icon>mdi-plus</v-icon></v-btn
             >
@@ -364,10 +364,6 @@ export default {
         this.dialog.addSong = true;
       }
     },
-    startLoading: function(newValue) {
-      if (newValue == 0 && this.dialog.addAlbum == false)
-        this.reset();
-    }
   },
   methods: {
     ...mapActions("artist", [
@@ -381,17 +377,17 @@ export default {
       "deleteTrack",
     ]),
     reset() {
+      this.dialog.addSong = false;
+      this.dialog.addAlbum = false;
       this.dialog.rename = false;
       this.dialog.remove = false;
-      this.dialog.addAlbum = false;
-      this.dialog.addSong = false;
-      this.selectedCategories = [];
       this.explicit = false;
       this.premium = false;
       this.copyrightsText = null;
       this.title = null;
       this.cover = null;
       this.file = null;
+      this.selectedCategories = [];
     },
     addAlbum() {
       console.log(this.title, this.cover);
@@ -407,6 +403,7 @@ export default {
       };
       this.addNewAlbum(payload);
       this.operation.title = this.title;
+      this.dialog.addAlbum = false;
     },
     addSong() {
       console.log(this.title, this.cover);
@@ -422,6 +419,7 @@ export default {
         album: this.operation.albumID,
       };
       this.addTrackToAlbum(payload);
+      this.reset();
     },
     remove() {
       if (this.operation.songID == null) {

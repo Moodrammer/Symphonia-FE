@@ -25,9 +25,6 @@ const mutations = {
     (state.artistRelatedArtists = list),
   load_currentArtist: (state, artist) => (state.currentArtist = artist),
   load_newAlbumTrack: (state, track) => {
-    console.log("homaaaaa");
-    console.log(track);
-    console.log(state.artistAlbums);
     state.latestAlbumID = null;
     for (let i = 0; i < state.artistAlbums.albums.items.length; i++) {
       if (state.artistAlbums.albums.items[i]._id == track.album) {
@@ -43,9 +40,7 @@ const mutations = {
     (state.simplifiedCategories = list),
   set_latestAlbumID: (state, id) => (state.latestAlbumID = id),
   load_renameAlbum: (state, album) => {
-    console.log("dsadsasssssssssssssssssss", state.artistAlbums);
     for (let i = 0; i < state.artistAlbums.albums.items.length; i++) {
-      console.log(state.artistAlbums.albums.items[i]._id, album._id);
       if (state.artistAlbums.albums.items[i]._id == album._id) {
         state.artistAlbums.albums.items[i].name = album.name;
         break;
@@ -53,7 +48,6 @@ const mutations = {
     }
   },
   load_renameTrack: (state, track) => {
-    console.log("ana", track);
     for (let i = 0; i < state.artistAlbums.albums.items.length; i++) {
       if (state.artistAlbums.albums.items[i]._id == track.album) {
         for (
@@ -71,13 +65,11 @@ const mutations = {
     }
   },
   delete_album: (state, id) => {
-    console.log(id, state.artistAlbums.albums.items);
     state.artistAlbums.albums.items = state.artistAlbums.albums.items.filter(
       (x) => x._id != id
     );
   },
   delete_track: (state, id) => {
-    console.log(id, state.artistAlbums.albums.items);
     for (let i = 0; i < state.artistAlbums.albums.items.length; i++) {
       let len = state.artistAlbums.albums.items[i].tracks.length;
       state.artistAlbums.albums.items[
@@ -100,7 +92,6 @@ const getters = {
 
   allArtistTopTracks: (state) => {
     if (!state.artistTopTracks || state.artistTopTracks.length < 1) return null;
-    console.log("dsadsa", state.artistTopTracks);
     var newValue = state.artistTopTracks.tracks.items;
     console.log("top tracks", newValue);
     var tracks = [];
@@ -162,39 +153,38 @@ const getters = {
     var newValue = state.artistAlbums.albums.items;
     var albums = [];
     newValue.forEach((element) => {
-      console.log(element.albumType)
-      if(element.albumType == "album") {
-      var k = {
-        name: element.name,
-        image: element.image,
-        id: element.id,
-        tracks: element.tracks,
-      };
-      albums.push(k);
-    }
+      console.log(element.albumType);
+      if (element.albumType == "album") {
+        var k = {
+          name: element.name,
+          image: element.image,
+          id: element.id,
+          tracks: element.tracks,
+        };
+        albums.push(k);
+      }
     });
     return albums;
   },
-  
+
   allArtistSingles: (state) => {
     if (state.artistAlbums == null) return null;
     console.log("sss", state.artistAlbums.albums.items);
     var newValue = state.artistAlbums.albums.items;
     var albums = [];
     newValue.forEach((element) => {
-      if(element.albumType == "single") {
-      var k = {
-        name: element.name,
-        image: element.image,
-        id: element.id,
-        tracks: element.tracks,
-      };
-      albums.push(k);
-    }
+      if (element.albumType == "single") {
+        var k = {
+          name: element.name,
+          image: element.image,
+          id: element.id,
+          tracks: element.tracks,
+        };
+        albums.push(k);
+      }
     });
     return albums;
   },
-
 };
 
 const actions = {
