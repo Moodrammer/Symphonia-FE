@@ -8,7 +8,6 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import getDeviceSize from "../../mixins/getDeviceSize";
 
 export default {
   computed: {
@@ -25,11 +24,10 @@ export default {
       sampleSize: 1024, // number of samples to collect before analyzing data
 
       canvasWidth: 600,
-      canvasHeight: 50,
-      ctx: undefined
+      canvasHeight: 20,
+      ctx: undefined,
     };
   },
-  mixins: [getDeviceSize],
   methods: {
     ...mapMutations("track", ["initAudioContext"]),
 
@@ -62,12 +60,6 @@ export default {
      * @public
      */
     drawTimeDomain: function() {
-      if (this.isXs()) {
-        this.canvasHeight = 20;
-      } else {
-        this.canvasHeight = 50;
-      }
-
       //clean canvas
       this.ctx.fillStyle = "#282828";
       this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
@@ -85,8 +77,10 @@ export default {
      * @public
      */
     _handleOnAudioProcess: function() {
-      this.analyserNode.getByteTimeDomainData(this.amplitudeArray);
-      window.requestAnimFrame(this.drawTimeDomain);
+      if (!document.hidden) {
+        this.analyserNode.getByteTimeDomainData(this.amplitudeArray);
+        window.requestAnimFrame(this.drawTimeDomain);
+      }
     },
     /**
      * initialize the component
