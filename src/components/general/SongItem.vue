@@ -198,7 +198,7 @@ export default {
       } else {
         this.$store.dispatch("track/togglePauseAndPlay");
       }
-      this.$store.commit("track/setIsTrackPaused", this.isPaused());
+      this.$store.commit("track/setIsTrackPaused", this.isPaused);
     },
     /**
      * Gets called when the user clicks on pause icon on the currently playing song
@@ -207,7 +207,7 @@ export default {
      */
     pauseTrack: function() {
       this.$store.dispatch("track/togglePauseAndPlay");
-      this.$store.commit("track/setIsTrackPaused", this.isPaused());
+      this.$store.commit("track/setIsTrackPaused", this.isPaused);
     }
   },
   mixins: [getuserToken, isLoggedIn]

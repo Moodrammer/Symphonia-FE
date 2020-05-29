@@ -266,7 +266,7 @@ export default {
       } else {
         this.$store.dispatch("track/togglePauseAndPlay");
       }
-      this.$store.commit("track/setIsTrackPaused", this.isPaused());
+      this.$store.commit("track/setIsTrackPaused", this.isPaused);
     },
     /**
      * Gets called when the user clicks on the pause button/icon
@@ -275,7 +275,7 @@ export default {
      */
     pause: function() {
       this.$store.dispatch("track/togglePauseAndPlay");
-      this.$store.commit("track/setIsTrackPaused", this.isPaused());
+      this.$store.commit("track/setIsTrackPaused", this.isPaused);
     },
     /**
      *Function to follow this playlist,gets called when the user clicks on white heart icon
