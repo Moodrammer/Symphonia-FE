@@ -4,7 +4,7 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
-import recoverPlaylist from "@/components/User Settings/recoverPlaylist.vue";
+import recoverPlaylist from "@/components/User Settings/RecoverPlaylist.vue";
 
 describe("recoverPlaylist", () => {
   let wrapper;

@@ -5,8 +5,8 @@ import Vuex from "vuex";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
-import editProfile from "@/components/User Settings/editProfile.vue";
-import bottomContent from "@/components/User Settings/bottomContent.vue";
+import editProfile from "@/components/User Settings/EditProfile.vue";
+import bottomContent from "@/components/User Settings/BottomContent.vue";
 
 describe("editProfile", () => {
   let wrapper;

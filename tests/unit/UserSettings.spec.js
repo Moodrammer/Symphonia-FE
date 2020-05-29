@@ -4,17 +4,18 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
-import User_Settings from "@/views/User_Settings.vue";
+import UserSettings from "@/views/UserSettings.vue";
 
 describe("User_Settings", () => {
   let wrapper;
   let vuetify;
+
   beforeEach(() => {
     const router = new VueRouter();
     vuetify = new Vuetify();
     Vue.use(Vuetify);
     Vue.use(VueRouter);
-    wrapper = shallowMount(User_Settings, {
+    wrapper = shallowMount(UserSettings, {
       router,
       vuetify,
       data() {

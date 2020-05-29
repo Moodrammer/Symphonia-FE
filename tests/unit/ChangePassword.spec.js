@@ -5,7 +5,7 @@ import Vuex from "vuex";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
-import changePass from "@/components/User Settings/changePass.vue";
+import changePass from "@/components/User Settings/ChangePassword.vue";
 import bottomContent from "@/components/User Settings/bottomContent.vue";
 
 describe("changePass", () => {

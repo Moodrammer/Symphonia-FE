@@ -4,7 +4,7 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
-import bottomContent from "@/components/User Settings/bottomContent.vue";
+import bottomContent from "@/components/User Settings/BottomContent.vue";
 
 describe("bottomContent", () => {
   let wrapper;

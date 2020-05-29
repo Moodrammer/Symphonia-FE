@@ -45,12 +45,6 @@ export default {
     if (!this.isLoggedIn()) {
       this.$router.push("/login");
     }
-  },
-  beforeUpdate() {
-    //check if the user is logged in ?
-    if (!this.isLoggedIn()) {
-      this.$router.push("/login");
-    }
   }
 };
 </script>
