@@ -297,7 +297,7 @@
               small
               v-bind:class="{
                 'green-icon': isQueueOpened,
-                icons: !isQueueOpened,
+                icons: !isQueueOpened
               }"
             >
               mdi-format-list-numbered-rtl
@@ -351,7 +351,7 @@ export default {
   name: "soundplayer",
 
   components: {
-    SoundGrapher,
+    SoundGrapher
   },
 
   mixins: [getuserToken, getDeviceSize],
@@ -364,31 +364,30 @@ export default {
     },
 
     ...mapState({
-      isTrackLiked: (state) => state.track.isTrackLiked,
-      trackUrl: (state) => state.track.trackUrl,
-      trackName: (state) => state.track.trackName,
-      trackArtistName: (state) => state.track.trackArtistName,
-      trackAlbumImageUrl: (state) => state.track.trackAlbumImageUrl,
-      isFirstTrackInQueue: (state) => state.track.isFirstTrackInQueue,
-      trackTotalDuration: (state) => state.track.trackTotalDuration,
-      trackId: (state) => state.track.trackId,
-      audioElement: (state) => state.track.audioElement,
-      isTrackPaused: (state) => state.track.isTrackPaused,
-      isQueueOpened: (state) => state.track.isQueueOpened,
-      isNextAndPreviousFinished: (state) =>
-        state.track.isNextAndPreviousFinished,
-      isBuffering: (state) => state.track.isBuffering,
-      token: (state) => state.track.token,
-      isRepeatOnceEnabled: (state) => state.track.isRepeatOnceEnabled,
-      isRepeatEnabled: (state) => state.track.isRepeatEnabled,
-      isShuffleEnabled: (state) => state.track.isShuffleEnabled,
-      isLastTrackInQueue: (state) => state.track.isLastTrackInQueue,
-      historyResponse: (state) => state.category.historyResponse,
-      facebookUrl: (state) => state.track.facebookUrl,
-      twitterUrl: (state) => state.track.twitterUrl,
-      picInPicCanvas: (state) => state.track.picInPicCanvas,
-      isPicInPicCanvasRdy: (state) => state.track.isPicInPicCanvasRdy,
-    }),
+      isTrackLiked: state => state.track.isTrackLiked,
+      trackUrl: state => state.track.trackUrl,
+      trackName: state => state.track.trackName,
+      trackArtistName: state => state.track.trackArtistName,
+      trackAlbumImageUrl: state => state.track.trackAlbumImageUrl,
+      isFirstTrackInQueue: state => state.track.isFirstTrackInQueue,
+      trackTotalDuration: state => state.track.trackTotalDuration,
+      trackId: state => state.track.trackId,
+      audioElement: state => state.track.audioElement,
+      isTrackPaused: state => state.track.isTrackPaused,
+      isQueueOpened: state => state.track.isQueueOpened,
+      isNextAndPreviousFinished: state => state.track.isNextAndPreviousFinished,
+      isBuffering: state => state.track.isBuffering,
+      token: state => state.track.token,
+      isRepeatOnceEnabled: state => state.track.isRepeatOnceEnabled,
+      isRepeatEnabled: state => state.track.isRepeatEnabled,
+      isShuffleEnabled: state => state.track.isShuffleEnabled,
+      isLastTrackInQueue: state => state.track.isLastTrackInQueue,
+      historyResponse: state => state.category.historyResponse,
+      facebookUrl: state => state.track.facebookUrl,
+      twitterUrl: state => state.track.twitterUrl,
+      picInPicCanvas: state => state.track.picInPicCanvas,
+      isPicInPicCanvasRdy: state => state.track.isPicInPicCanvasRdy
+    })
   },
   data() {
     return {
@@ -407,7 +406,7 @@ export default {
       devices: undefined,
       currentDeviceId: undefined,
 
-      picInPicVideo: undefined,
+      picInPicVideo: undefined
     };
   },
   methods: {
@@ -427,7 +426,7 @@ export default {
       "setContextType",
       "setContextId",
       "setContextUrl",
-      "setPicInPicCanvas",
+      "setPicInPicCanvas"
     ]),
     ...mapActions("track", [
       "getTrackInformation",
@@ -443,7 +442,7 @@ export default {
       "toggleShuffle",
       "saveTrack",
       "removeSavedTrack",
-      "copyLink",
+      "copyLink"
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -519,13 +518,13 @@ export default {
           if (!this.isTrackLiked) {
             await this.saveTrack({
               token: this.getuserToken(),
-              id: this.trackId,
+              id: this.trackId
             });
             this.$store.commit("track/changeUpdateTracks");
           } else {
             await this.removeSavedTrack({
               token: this.getuserToken(),
-              id: this.trackId,
+              id: this.trackId
             });
             this.$store.commit("track/changeUpdateTracks");
           }
@@ -723,81 +722,83 @@ export default {
     init: async function() {
       try {
         this.audioElement.addEventListener("timeupdate", this._handlePlayingUI);
-      this.audioElement.addEventListener("loadeddata", this._handleLoaded);
-      this.audioElement.addEventListener("pause", this._handlePause);
-      this.audioElement.addEventListener("play", this._handlePlay);
-      this.audioElement.addEventListener("ended", this._handleEndedTrack);
-      this.audioElement.addEventListener("waiting", this._handlerWaiting);
-      this.audioElement.addEventListener(
-        "playing",
-        this._handlePlayingAfterBuffering
-      );
-      this.audioElement.addEventListener(
-        "error",
-        this._handleAudioError,
-        false
-      );
+        this.audioElement.addEventListener("loadeddata", this._handleLoaded);
+        this.audioElement.addEventListener("pause", this._handlePause);
+        this.audioElement.addEventListener("play", this._handlePlay);
+        this.audioElement.addEventListener("ended", this._handleEndedTrack);
+        this.audioElement.addEventListener("waiting", this._handlerWaiting);
+        this.audioElement.addEventListener(
+          "playing",
+          this._handlePlayingAfterBuffering
+        );
+        this.audioElement.addEventListener(
+          "error",
+          this._handleAudioError,
+          false
+        );
 
-      //keysocket feature
-      //add keysocket extension to google chrome to enable this feature
-      document.addEventListener("MediaPlayPause", this.togglePauseAndPlay);
-      document.addEventListener("MediaPrev", this.previousConditionally);
-      document.addEventListener("MediaNext", this.nextConditionally);
+        //keysocket feature
+        //add keysocket extension to google chrome to enable this feature
+        document.addEventListener("MediaPlayPause", this.togglePauseAndPlay);
+        document.addEventListener("MediaPrev", this.previousConditionally);
+        document.addEventListener("MediaNext", this.nextConditionally);
 
-      this.audioElement.volume = this.volumeValue / 100;
-      this.volumeLevelStyle = `width:${this.volumeValue}%;`;
+        this.audioElement.volume = this.volumeValue / 100;
+        this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
-      /* Picture-in-Picture Feature */
-      var picInPicCanvasTemp = document.createElement("canvas");
-      picInPicCanvasTemp.width = picInPicCanvasTemp.height = 512;
+        /* Picture-in-Picture Feature */
+        var picInPicCanvasTemp = document.createElement("canvas");
+        picInPicCanvasTemp.width = picInPicCanvasTemp.height = 512;
 
-      this.setPicInPicCanvas(picInPicCanvasTemp);
+        this.setPicInPicCanvas(picInPicCanvasTemp);
 
-      this.picInPicVideo = document.createElement("video");
-      this.picInPicVideo.srcObject = this.picInPicCanvas.captureStream();
-      this.picInPicVideo.muted = true;
+        this.picInPicVideo = document.createElement("video");
+        this.picInPicVideo.srcObject = this.picInPicCanvas.captureStream();
+        this.picInPicVideo.muted = true;
 
-      /* Play & Pause */
-      navigator.mediaSession.setActionHandler("play", this._handlePicInPicPlay);
-      navigator.mediaSession.setActionHandler(
-        "pause",
-        this._handlePicInPicPause
-      );
+        /* Play & Pause */
+        navigator.mediaSession.setActionHandler(
+          "play",
+          this._handlePicInPicPlay
+        );
+        navigator.mediaSession.setActionHandler(
+          "pause",
+          this._handlePicInPicPause
+        );
 
-      /* Previous Track & Next Track */
-      navigator.mediaSession.setActionHandler(
-        "previoustrack",
-        this.previousConditionally
-      );
-      navigator.mediaSession.setActionHandler(
-        "nexttrack",
-        this.nextConditionally
-      );
+        /* Previous Track & Next Track */
+        navigator.mediaSession.setActionHandler(
+          "previoustrack",
+          this.previousConditionally
+        );
+        navigator.mediaSession.setActionHandler(
+          "nexttrack",
+          this.nextConditionally
+        );
 
-      this.setToken("Bearer " + this.getuserToken());
+        this.setToken("Bearer " + this.getuserToken());
 
-      var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
-      this.getTrackInformation({
-        token: this.token,
-        trackId: CurrentlyPlayingTrackId,
-      });
+        var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
+        this.getTrackInformation({
+          token: this.token,
+          trackId: CurrentlyPlayingTrackId
+        });
 
-      await this.initQueueStatus(this.token);
-      await this.updateQueue(this.token);
+        await this.initQueueStatus(this.token);
+        await this.updateQueue(this.token);
 
-      await this.recentlyPlayed(this.getuserToken());
-      if (this.historyResponse.length != 0) {
-        this.setContextId(this.historyResponse[0].contextId);
-        this.setContextType(this.historyResponse[0].contextType);
-        this.setContextUrl(this.historyResponse[0].contextUrl);
-      }
+        await this.recentlyPlayed(this.getuserToken());
+        if (this.historyResponse.length != 0) {
+          this.setContextId(this.historyResponse[0].contextId);
+          this.setContextType(this.historyResponse[0].contextType);
+          this.setContextUrl(this.historyResponse[0].contextUrl);
+        }
 
-      this.playTrackInQueue(CurrentlyPlayingTrackId);
-      
+        this.playTrackInQueue(CurrentlyPlayingTrackId);
       } catch (error) {
         console.error(error);
       }
-    },
+    }
   },
   mounted: function() {
     this.setAudioElement(this.$el.querySelectorAll("audio")[0]);
@@ -824,7 +825,7 @@ export default {
     document.removeEventListener("MediaPlayPause", this.togglePauseAndPlay);
     document.removeEventListener("MediaPrev", this.previousConditionally);
     document.removeEventListener("MediaNext", this.nextConditionally);
-  },
+  }
 };
 </script>
 

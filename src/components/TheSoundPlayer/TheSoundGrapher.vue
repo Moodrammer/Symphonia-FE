@@ -12,9 +12,9 @@ import { mapState, mapMutations } from "vuex";
 export default {
   computed: {
     ...mapState({
-      audioElement: (state) => state.track.audioElement,
-      audioContext: (state) => state.track.audioContext,
-    }),
+      audioElement: state => state.track.audioElement,
+      audioContext: state => state.track.audioContext
+    })
   },
   data() {
     return {
@@ -116,11 +116,11 @@ export default {
       })();
 
       this.ctx = this.$refs.soundGrapher.getContext("2d");
-    },
+    }
   },
   mounted: function() {
     this.init();
-  },
+  }
 };
 </script>
 

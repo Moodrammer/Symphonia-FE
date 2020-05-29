@@ -1,8 +1,6 @@
 module.exports = {
   // set your styleguidist configuration here
   title: "Symphonia Documentation",
-  // components: 'src/components/**/[A-Z]*.vue',
-  // defaultExample: true,
   sections: [
     {
       name: "Views",
@@ -23,12 +21,25 @@ module.exports = {
     }
   ],
   theme: {
-    color: {
-      base: "black"
-    }
+    fontFamily: {
+      base: '"Lucida Sans Unicode", "Lucida Grande", sans-serif'
+    },
+    sidebarWidth: 250,
+    fontSize: {
+      base: 16,
+      text: 14,
+      small: 14,
+      h4: 20,
+      h5: 18,
+      h6: 18
+    },
+    space: [4,8,16,18,24,24,24]
   },
-  // webpackConfig: {
-  //   // custom config goes here
-  // },
-  exampleMode: "expand"
+  usageMode: "expand",
+  tocMode: "collapse",
+  sortProps: props => props,
+  template: {
+    favicon: "public/favicon.png"
+  },
+
 };
