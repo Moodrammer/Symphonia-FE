@@ -113,10 +113,6 @@ export default {
       type: Boolean,
       default: false
     },
-    isPlaying: {
-      type: Boolean,
-      default: false
-    },
     contextMenu: {}
   },
   data: function() {
@@ -130,7 +126,11 @@ export default {
     this.hover = false;
     this.convert(this.$props.songDuration);
   },
-
+  computed: {
+    isPlaying() {
+      return this.ID == this.$store.state.track.trackId;
+    }
+  },
   methods: {
     /**
      * Convert the duration from milliseconds to minutes and seconds

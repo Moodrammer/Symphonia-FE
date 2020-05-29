@@ -142,6 +142,12 @@ const mutations = {
         alert("Web Audio API is not supported in this browser");
       }
     }
+  },
+  setContextData(state, payload) {
+    state.contextId = payload.contextID;
+    state.contextType = payload.contextType;
+    state.contextUrl = payload.contextUrl;
+    state.audioElement.autoplay = true;
   }
 };
 

@@ -10,7 +10,6 @@
         <v-list color="transparent">
           <!--Nesting the song component-->
           <SongItem
-            :isPlaying="true"
             :songName="curTrkName"
             :artistName="curTrkArtistName"
             :albumName="albumName"
