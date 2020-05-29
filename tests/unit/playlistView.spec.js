@@ -23,9 +23,25 @@ describe("Playlist View", () => {
     //Mocking the store
     store = new Vuex.Store({
       modules: {
+        track:{
+          namespaced:true,
+          state:{
+            contextId:"1",
+            isTrackPaused:true
+          },
+          mutations:{
+            setContextData:jest.fn(),
+            setIsTrackPaused:jest.fn()
+          },
+          actions:{
+            playTrackInQueue:jest.fn(),
+            updateQueue:jest.fn(),
+            getTrackInformation:jest.fn(),
+            togglePauseAndPlay:jest.fn()
+          }
+        },
         playlist: {
           namespaced: true,
-
           state: {
             singlePlaylist: {
               tracksCount: 1,
@@ -167,14 +183,26 @@ describe("Playlist View", () => {
   });
 
   it("Open ads popup after route changing", () => {
-    Storage.prototype.getItem = jest.fn(() => "bla");
+    Storage.prototype.getItem = jest.fn(() => "token");
     wrapper.vm.$options.watch.playlistID.call(wrapper.vm);
     expect("changeAdsPopup").toHaveBeenCalled;
     expect(wrapper.vm.isLoggedIn()).toBe(true);
   });
 
   it("Open ads popup if the user logged in", () => {
-    Storage.prototype.getItem = jest.fn(() => "bla");
+    Storage.prototype.getItem = jest.fn(() => "token");
     expect("changeAdsPopup").toHaveBeenCalled;
+  });
+
+  it("Play the playlist",()=>{
+    wrapper.vm.id = "1";
+    wrapper.vm.play();
+    expect("togglePauseAndPlay").toHaveBeenCalled;
+  });
+
+  it("Pause the currently playing playlist",()=>{
+    wrapper.vm.pause();
+    expect("togglePauseAndPlay").toHaveBeenCalled;
+    expect("setIsTrackPaused").toHaveBeenCalled;
   });
 });

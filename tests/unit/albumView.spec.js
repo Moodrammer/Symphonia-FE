@@ -11,7 +11,6 @@ describe("Album View", () => {
   let wrapper;
   let vuetify;
   let store;
-  let $route;
 
   beforeEach(() => {
     vuetify = new Vuetify();
@@ -19,13 +18,6 @@ describe("Album View", () => {
     Vue.use(Vuetify);
     Vue.use(VueRouter);
     Vue.use(Vuex);
-
-    $route = {
-      name: "album/:id",
-      params: {
-        id: ""
-      }
-    };
 
     //Mocking the store
     store = new Vuex.Store({
@@ -156,9 +148,6 @@ describe("Album View", () => {
   });
 
   it("Play the album",()=>{
-    if (!process || process.env.NODE_ENV !== "test") {
-      Vue.use(VueRouter);
-    }
     wrapper.vm.id = "1";
     wrapper.vm.play();
     expect("togglePauseAndPlay").toHaveBeenCalled;
