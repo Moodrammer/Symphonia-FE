@@ -23,21 +23,21 @@ describe("Playlist View", () => {
     //Mocking the store
     store = new Vuex.Store({
       modules: {
-        track:{
-          namespaced:true,
-          state:{
-            contextId:"1",
-            isTrackPaused:true
+        track: {
+          namespaced: true,
+          state: {
+            contextId: "1",
+            isTrackPaused: true
           },
-          mutations:{
-            setContextData:jest.fn(),
-            setIsTrackPaused:jest.fn()
+          mutations: {
+            setContextData: jest.fn(),
+            setIsTrackPaused: jest.fn()
           },
-          actions:{
-            playTrackInQueue:jest.fn(),
-            updateQueue:jest.fn(),
-            getTrackInformation:jest.fn(),
-            togglePauseAndPlay:jest.fn()
+          actions: {
+            playTrackInQueue: jest.fn(),
+            updateQueue: jest.fn(),
+            getTrackInformation: jest.fn(),
+            togglePauseAndPlay: jest.fn()
           }
         },
         playlist: {
@@ -194,13 +194,13 @@ describe("Playlist View", () => {
     expect("changeAdsPopup").toHaveBeenCalled;
   });
 
-  it("Play the playlist",()=>{
+  it("Play the playlist", () => {
     wrapper.vm.id = "1";
     wrapper.vm.play();
     expect("togglePauseAndPlay").toHaveBeenCalled;
   });
 
-  it("Pause the currently playing playlist",()=>{
+  it("Pause the currently playing playlist", () => {
     wrapper.vm.pause();
     expect("togglePauseAndPlay").toHaveBeenCalled;
     expect("setIsTrackPaused").toHaveBeenCalled;

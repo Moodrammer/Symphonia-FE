@@ -23,20 +23,20 @@ describe("Song Component", () => {
           state: {
             generalLiked: true,
             trackId: "1",
-            isTrackPaused:true
+            isTrackPaused: true
           },
-          mutations:{
-            setContextData:jest.fn(),
-            setIsTrackPaused:jest.fn()
+          mutations: {
+            setContextData: jest.fn(),
+            setIsTrackPaused: jest.fn()
           },
           actions: {
             removeSavedTrack: jest.fn(),
             checkSaved: jest.fn(),
             saveTrack: jest.fn(),
-            togglePauseAndPlay:jest.fn(),
-            getTrackInformation:jest.fn(),
-            playTrackInQueue:jest.fn(),
-            updateQueue:jest.fn()
+            togglePauseAndPlay: jest.fn(),
+            getTrackInformation: jest.fn(),
+            playTrackInQueue: jest.fn(),
+            updateQueue: jest.fn()
           }
         }
       }
@@ -54,7 +54,7 @@ describe("Song Component", () => {
           type: "type",
           id: "1234"
         },
-        ID:"2"
+        ID: "2"
       }
     });
   });
@@ -90,7 +90,7 @@ describe("Song Component", () => {
   //---------------------------------------------------
   //    Test soundplayer interaction with song item
   //---------------------------------------------------
-  it("Play a new track",()=>{
+  it("Play a new track", () => {
     wrapper.vm.playTrack();
     expect("playTrackInQueue").toHaveBeenCalled;
     expect("setContextData").toHaveBeenCalled;
@@ -98,19 +98,19 @@ describe("Song Component", () => {
     expect("setIsTrackPaused").toHaveBeenCalled;
   });
 
-  it("Check if the track is the currently playing track",()=>{
+  it("Check if the track is the currently playing track", () => {
     wrapper.setProps({ ID: "1" });
     expect(wrapper.vm.isPlaying).toBe(true);
     expect(wrapper.vm.isPaused).toBe(true);
   });
 
-  it("Check if the track is paused",()=>{
+  it("Check if the track is paused", () => {
     wrapper.setProps({ ID: "2" });
     expect(wrapper.vm.isPlaying).toBe(false);
     expect(wrapper.vm.isPaused).toBe(true);
   });
 
-  it("Pause the currently playing track",()=>{
+  it("Pause the currently playing track", () => {
     wrapper.vm.pauseTrack();
     expect("togglePauseAndPlay").toHaveBeenCalled;
     expect("setIsTrackPaused").toHaveBeenCalled;

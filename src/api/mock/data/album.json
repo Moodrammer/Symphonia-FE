@@ -4,7 +4,7 @@
     {
         "liked": true,
         "albumType": "album",
-        "tracksCount":"3",
+        "tracksCount":"2",
         "tracks": ["4","2"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "1",
@@ -41,7 +41,7 @@
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "3",
         "id": "3",
-        "name": "Surah Ibrahim",
+        "name": "Surah Al-Asr",
         "year": 2018,
         "image": "http://source.unsplash.com/wnd7te34T-0",
         "artist": {
@@ -91,7 +91,7 @@
         "id": "6",
         "name": "Game Of Thrones",
         "year": 2014,
-        "image": "http://source.unsplash.com/xMMh-VFGL9M",
+        "image": "http://source.unsplash.com/FPz-Dd-xx4c",
         "artist": {
           "name": "Artist",
           "_id": "6"
@@ -105,12 +105,12 @@
       "releaseDate": "2020-04-07T16:49:46.442Z",
       "_id": "7",
       "id": "7",
-      "name": "Game Of Thrones",
+      "name": "Album 5",
       "year": 2014,
       "image": "http://source.unsplash.com/xMMh-VFGL9M",
       "artist": {
-        "name": "Artist",
-        "_id": "6"
+        "name": "Yasser Al-Dosari",
+        "_id": "1"
       }
   }
 ],

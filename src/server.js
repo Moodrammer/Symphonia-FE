@@ -178,7 +178,6 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/users/track/:track_id", (schema, request) => {
         let trackId = request.params.track_id;
-        console.log(trackId);
         return schema.tracks.find(trackId).attrs;
       });
       ///////////////////////////////////////////////////////////////////////////////////
@@ -787,7 +786,7 @@ export function makeServer({ environment = "development" } = {}) {
       var repeatOnce = false;
       var shuffle = false;
 
-      const mockTracks = [
+      let mockTracks = [
         "http://thesymphonia.ddns.net/api/v1/me/player/tracks/123",
         "http://thesymphonia.ddns.net/api/v1/me/player/tracks/456",
         "http://thesymphonia.ddns.net/api/v1/me/player/tracks/789"
@@ -825,6 +824,26 @@ export function makeServer({ environment = "development" } = {}) {
           "http://thesymphonia.ddns.net/api/v1/me/player/tracks/" +
           request.params.track_id;
 
+        let contextID = JSON.parse(request.requestBody).contextId;
+        let contextType = JSON.parse(request.requestBody).context_type;
+        let contextTracks = [];
+        if (contextType == "album") {
+          contextTracks = schema.albums.where({ id: contextID }).models[0]
+            .tracks;
+
+          mockTracks = [];
+          for (let i = 0; i < contextTracks.length; i++) {
+            mockTracks.push(
+              schema.tracks.where({ id: contextTracks[i] }).models[0].link
+            );
+            console.log(
+              schema.tracks.where({ id: contextTracks[i] }).models[0].link
+            );
+            console.log(mockTracks);
+          }
+        }
+
+        console.log(contextTracks);
         currentlyPlayingIndex = mockTracks.indexOf(link);
 
         currentlyPlaying = mockTracks[currentlyPlayingIndex];
