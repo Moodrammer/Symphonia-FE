@@ -1048,7 +1048,37 @@ export function makeServer({ environment = "development" } = {}) {
         return track;
       });
 
+      ////////////////////////////////////////////////////////////////////////
+      //////////////////////// ARTIST INTERFACE //////////////////////////////
+      ////////////////////////////////////////////////////////////////////////
+      
+      ///// GET ARTIST INFO
 
+      this.get("/v1/artists/:artistID", (schema, request) => {
+
+        let x = schema.artists.where({_id : request.params.artistID}).models[0].attrs;
+        console.log("ssssssss",x);
+        return x;
+      });
+
+      ///// GET ARTIST TOP TRACKS
+
+      this.get("/v1/artists/:artistID/top-tracks", (schema, request) => {
+        let x = schema.tracks.all().models;
+        console.log("ssdawdwcssda",x);
+        x = x.filter(e => e.artist.id == request.params.artistID).slice(request.queryParams.offset, request.queryParams.limit);
+        return {tracks:{items:x}};
+      });
+
+      ///// GET ARTIST RELATED ARTISTS
+
+      this.get("/v1/artists/:id/related-artists", (schema) => {
+        
+        return {artists: schema.artists.all().models};
+      });
+
+
+      
     }
   });
 

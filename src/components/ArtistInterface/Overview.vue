@@ -30,7 +30,7 @@
     <!--Display albums -->
     <v-card-title
       class="mt-4 display-3 white--text"
-      v-if="albumsCardItems.items.length > 0"
+      v-show="albumsCardItems.items.length > 0"
     >
       Albums
     </v-card-title>
@@ -49,7 +49,7 @@
     <!--Display singles -->
     <v-card-title
       class="mt-4 display-3 white--text"
-      v-if="singlesCardItems.items.length > 0"
+      v-show="singlesCardItems.items.length > 0"
     >
       Singles
     </v-card-title>
@@ -92,17 +92,11 @@ export default {
       token: this.getuserToken(),
     });
 
-    this.getArtistSingles({
-      id: this.$props.artistID,
-      token: this.getuserToken(),
-    });
   },
   methods: {
     ...mapActions("artist", [
       "getArtistAlbums",
       "getArtistTopTracks",
-      "getArtistSingles",
-      "getArtistAppearsOn",
     ]),
     menuOrder() {},
   },
@@ -111,7 +105,6 @@ export default {
       "allArtistAlbums",
       "allArtistTopTracks",
       "allArtistSingles",
-      "allArtistAppearsOn",
     ]),
   },
   props: ["artistID", "artistName"],
@@ -141,16 +134,12 @@ export default {
   },
   watch: {
     allArtistAlbums(newValue) {
-      var albums = [];
-      var singles = [];
+      console.log("sdasd1", newValue);
       this.albumsCardItems.items = newValue;
-      newValue.forEach((element) => {
-        if (element.type == "album") albums.push(element);
-        else singles.push(element);
-      });
-      console.log("saaaaaaaad", newValue);
-      this.albumsCardItems.items = albums;
-      this.singlesCardItems.items = singles;
+    },
+    allArtistSingles(newValue) {
+      console.log("sdasd2", newValue);
+      this.singlesCardItems.items = newValue;
     },
   },
 };

@@ -107,6 +107,7 @@ const getters = {
         explicit: element.explicit,
         premium: element.premium,
         _id: element._id,
+        name: element.name,
       };
       tracks.push(k);
     });
@@ -116,6 +117,8 @@ const getters = {
 
   allArtistRelatedArtists: (state) => {
     var newValue = state.artistRelatedArtists;
+    if(!newValue || !newValue.artists) return;
+    console.log("NRWWWW", newValue)
     var artists = [];
     newValue.artists.forEach((element) => {
       console.log("x", element);

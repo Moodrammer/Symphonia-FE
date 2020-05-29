@@ -34,6 +34,7 @@ export default {
   mixins: [getuserToken],
   props: ["artistID"],
   created() {
+    console.log("ID", this.$props.artistID, "TOKEN", this.getuserToken())
     this.getArtistRelatedArtists({
       id: this.$props.artistID,
       token: this.getuserToken(),
