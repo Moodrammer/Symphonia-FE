@@ -5,7 +5,7 @@
         "liked": true,
         "albumType": "album",
         "tracksCount":"3",
-        "tracks": ["4","6","2"],
+        "tracks": ["4","2"],
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "1",
         "id": "1",
@@ -41,7 +41,7 @@
         "releaseDate": "2020-04-07T16:49:46.442Z",
         "_id": "3",
         "id": "3",
-        "name": "Album1",
+        "name": "Surah Ibrahim",
         "year": 2018,
         "image": "http://source.unsplash.com/wnd7te34T-0",
         "artist": {
@@ -96,7 +96,23 @@
           "name": "Artist",
           "_id": "6"
         }
-    }
+    },
+    {
+      "liked": false,
+      "albumType":"single",
+      "tracksCount":"1",
+      "tracks": ["116"],
+      "releaseDate": "2020-04-07T16:49:46.442Z",
+      "_id": "7",
+      "id": "7",
+      "name": "Game Of Thrones",
+      "year": 2014,
+      "image": "http://source.unsplash.com/xMMh-VFGL9M",
+      "artist": {
+        "name": "Artist",
+        "_id": "6"
+      }
+  }
 ],
 
   "limit": 20,

@@ -14,9 +14,9 @@ import HomepagePremium from "../views/PremiumOffer.vue";
 import PlaylistView from "../components/general/PlaylistView.vue";
 import PassReset from "../components/PasswordMangement/PassReset.vue";
 import PassChange from "../components/PasswordMangement/PassChange.vue";
-import ArtistUI from "../components/artistUI/ArtistUI";
-import Overview from "../components/artistUI/Overview";
-import RelatedArtists from "../components/artistUI/RelatedArtists";
+import ArtistUI from "../components/ArtistInterface/ArtistInterface.vue";
+import Overview from "../components/ArtistInterface/Overview";
+import RelatedArtists from "../components/ArtistInterface/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
 import GenreView from "../components/general/GenreView.vue";
 import Google from "../components/oauth/google.vue";
@@ -24,6 +24,11 @@ import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
+import SymphoniaArtist from "../components/ArtistDashboard/Dashboard.vue"
+import SymphoniaArtistMain from "../components/ArtistDashboard/Main.vue"
+import SymphoniaArtistAlbums from "../components/ArtistDashboard/Albums.vue"
+import SymphoniaArtistSingles from "../components/ArtistDashboard/Singles.vue"
+// import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue";
 import notfound from "../views/TheNotFoundPage.vue";
 
 import isLoggedIn from "@/mixins/userService/isLoggedIn";
@@ -31,6 +36,30 @@ import isLoggedIn from "@/mixins/userService/isLoggedIn";
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/SymphoniaArtist/:id",
+    name: "SymphoniaArtist",
+    component: SymphoniaArtist,
+    redirect: "/SymphoniaArtist/:id/main",
+    children: [
+      {
+        name: "main",
+        path: "main",
+        component: SymphoniaArtistMain
+      },      
+      {
+        name: "albums",
+        path: "albums",
+        component: SymphoniaArtistAlbums
+      },
+      {
+        name: "singles",
+        path: "singles",
+        component: SymphoniaArtistSingles
+      },
+      
+]
+  },
   {
     path: "/",
     name: "Home",

@@ -1,16 +1,16 @@
 <template>
   <v-content
     :style="{
-      backgroundImage: 'url(' + artist.image + ')',
+      backgroundImage: 'url(' + currentArtistGetter.imageUrl + ')',
       backgroundSize: '100% Auto'
     }"
   >
     <div class="pl-10 pt-12 mt-12 gradient-body py-7">
-      <p class="caption grey--text">
-        {{ artist.followedUsers.length }} MONTHLY LISTENERS
+      <p class="caption white--text">
+        {{ currentArtistGetter.followedUsers.length }} Followers
       </p>
       <h1 class="display-3 font-weight-bold white--text my-5">
-        {{ artist.name }}
+        {{ currentArtistGetter.name }}
       </h1>
       <v-btn rounded color="success" min-width="110" min-height="40" dark
         >Play</v-btn
@@ -31,7 +31,7 @@
         </v-btn>
       </div>
 
-      <router-view />
+      <router-view :artistID="artistID" :artistName="currentArtistGetter.name" />
     </div>
   </v-content>
 </template>
@@ -41,35 +41,34 @@ import getuserToken from "../../mixins/userService/getUserToken";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  computed: mapGetters("artist", ["currentArtistGetter"]),
   methods: {
     ...mapActions("artist", ["getCurrentArtist"]),
     updateArtist() {
-      try {
         this.getCurrentArtist({
           token: this.getuserToken(),
-          id: this.$route.params.id
+          id: this.artistID
         });
-      } catch (error) {
-        console.log(error);
-      }
     }
   },
   created() {
     this.updateArtist();
   },
+  computed:{
+    ...mapGetters("artist", ["currentArtistGetter"]),
+    artistID() {
+      return this.$route.params.id;
+    }
+  },
   watch: {
     currentArtistGetter: function(newValue) {
       console.log(newValue);
-      this.artist = newValue;
     },
-    "$route.params.id": function() {
+    artistID: function() {
       this.updateArtist();
     }
   },
   data: function() {
     return {
-      artist: null
     };
   },
   mixins: [getuserToken]
