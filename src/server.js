@@ -441,21 +441,6 @@ export function makeServer({ environment = "development" } = {}) {
           Albums: { items: schema.albums.where({ liked: true }).models }
         };
       });
-      //////////////  Artist /////////////////////////////////////////////////////////
-      this.get("/v1/me/following", (schema, request) => {
-        if (request.queryParams.type === "artist")
-          return { artists: { items: schema.artists.all().models } };
-      });
-
-      this.delete("/v1/me/following", (schema, request) => {
-        if (request.queryParams.type === "artist") {
-          return schema.artists
-            .findBy(artist => artist._id === request.queryParams.ids)
-            .destroy();
-        }
-      });
-      ///////////////////////////////////////////////////////////////////////////////
-
       ///////////////////////USER UI/////////////////////////////////////////////////
       this.get("/v1/users/:id/playlists", schema => {
         let x = schema.playlists.all().models;
@@ -1077,7 +1062,25 @@ export function makeServer({ environment = "development" } = {}) {
         return {artists: schema.artists.all().models};
       });
 
+      ///// GET FOLLOWED ARTISTS 
 
+      this.get("/v1/me/following", (schema, request) => {
+        if (request.queryParams.type === "artist")
+          return { artists: { items: schema.artists.all().models } };
+      });
+
+      ///// UNFOLLOW FOLLOWED ARTISTS 
+
+      this.delete("/v1/me/following", (schema, request) => {
+        if (request.queryParams.type === "artist") {
+          return schema.artists
+            .findBy(artist => artist._id === request.queryParams.ids)
+            .destroy();
+        }
+      });
+      
+      
+      
       
     }
   });
