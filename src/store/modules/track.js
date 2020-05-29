@@ -149,6 +149,7 @@ const mutations = {
     state.contextType = payload.contextType;
     state.contextUrl = payload.contextUrl;
     state.audioElement.autoplay = true;
+    state.isBuffering = true;
   }
 };
 

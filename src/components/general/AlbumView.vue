@@ -26,7 +26,7 @@
                 cols="12"
                 v-bind:class="{
                   'small-col': isSm() || isXs() || isMd(),
-                  'lg-col': isLg(),
+                  'lg-col': isLg()
                 }"
               >
                 <!--The album's image-->
@@ -35,7 +35,7 @@
                   color="trasparent"
                   v-bind:class="{
                     'small-card': isSm() || isXs() || isMd(),
-                    'lg-card': isLg(),
+                    'lg-card': isLg()
                   }"
                 >
                   <v-img
@@ -47,7 +47,7 @@
                     elevation="12"
                     v-bind:class="{
                       'lg-img': isLg(),
-                      'sm-img': isSm() || isXs() || isMd(),
+                      'sm-img': isSm() || isXs() || isMd()
                     }"
                   >
                     <!--Overlay for the button that is showed at hover-->
@@ -199,13 +199,12 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 export default {
   components: {
     SongItem,
-    PulseLoader,
+    PulseLoader
   },
   data: function() {
     return {
       hover: false,
-      iconClick: false,
-      id: this.$route.params.id,
+      id: this.$route.params.id
     };
   },
   methods: {
@@ -219,7 +218,7 @@ export default {
         this.$store.commit("track/setContextData", {
           contextID: this.id,
           contextType: "album",
-          contextUrl: "https://thesymphonia.ddns.net/api",
+          contextUrl: "https://thesymphonia.ddns.net/api"
         });
         await this.$store.dispatch(
           "track/playTrackInQueue",
@@ -231,13 +230,12 @@ export default {
         );
         await this.$store.dispatch("track/getTrackInformation", {
           token: "Bearer " + this.getuserToken(),
-          trackId: this.tracks[0]._id,
+          trackId: this.tracks[0]._id
         });
       } else {
         this.$store.dispatch("track/togglePauseAndPlay");
       }
-      this.$store.commit("track/setIsTrackPaused", this.iconClick);
-      this.iconClick = !this.iconClick;
+      this.$store.commit("track/setIsTrackPaused", this.isPaused());
     },
     /**
      * Gets called when the user clicks on the pause button/icon
@@ -246,8 +244,7 @@ export default {
      */
     pause: function() {
       this.$store.dispatch("track/togglePauseAndPlay");
-      this.$store.commit("track/setIsTrackPaused", this.iconClick);
-      this.iconClick = !this.iconClick;
+      this.$store.commit("track/setIsTrackPaused", this.isPaused());
     },
     /**
      * Gets called when the user clicks on heart icon to follow the album
@@ -257,7 +254,7 @@ export default {
     followAlbum: function() {
       this.$store.dispatch("album/followAlbum", {
         albumID: this.id,
-        token: this.getuserToken(),
+        token: this.getuserToken()
       });
     },
     /**
@@ -268,7 +265,7 @@ export default {
     unfollowAlbum: async function() {
       await this.$store.dispatch("album/unfollowAlbum", {
         id: this.id,
-        token: this.getuserToken(),
+        token: this.getuserToken()
       });
     },
     /**
@@ -297,9 +294,9 @@ export default {
     isFollowedAlbum() {
       this.$store.dispatch("album/checkFollowed", {
         albumID: [this.$route.params.id],
-        token: this.getuserToken(),
+        token: this.getuserToken()
       });
-    },
+    }
   },
   created: function() {
     this.getAlbumData();
@@ -325,10 +322,10 @@ export default {
     },
     contextID() {
       return this.$store.state.track.contextId;
-    },
+    }
   },
   props: ["contextMenu"],
-  mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID],
+  mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID]
 };
 </script>
 
