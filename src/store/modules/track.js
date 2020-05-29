@@ -87,6 +87,7 @@ const mutations = {
   },
   setAudioElement(state, audioElement) {
     state.audioElement = audioElement;
+    state.audioElement.crossOrigin = "anonymous";
   },
   setIsTrackPaused(state, isTrackPaused) {
     state.isTrackPaused = isTrackPaused;
