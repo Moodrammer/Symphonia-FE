@@ -5,7 +5,6 @@
     @mouseleave="hover = false"
     @contextmenu.prevent="menuClick($event, ID)"
   >
-  
     <!--The song's icons-->
     <v-icon
       class="mr-2 pb-9"

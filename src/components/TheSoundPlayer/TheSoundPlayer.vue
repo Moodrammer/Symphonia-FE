@@ -14,7 +14,7 @@
     </v-row>
 
     <!-- song info -->
-    <v-row >
+    <v-row>
       <v-col
         lg="4"
         md="4"

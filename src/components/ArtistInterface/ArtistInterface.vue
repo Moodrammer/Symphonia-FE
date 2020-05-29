@@ -31,7 +31,10 @@
         </v-btn>
       </div>
 
-      <router-view :artistID="artistID" :artistName="currentArtistGetter.name" />
+      <router-view
+        :artistID="artistID"
+        :artistName="currentArtistGetter.name"
+      />
     </div>
   </v-content>
 </template>
@@ -44,16 +47,16 @@ export default {
   methods: {
     ...mapActions("artist", ["getCurrentArtist"]),
     updateArtist() {
-        this.getCurrentArtist({
-          token: this.getuserToken(),
-          id: this.artistID
-        });
+      this.getCurrentArtist({
+        token: this.getuserToken(),
+        id: this.artistID
+      });
     }
   },
   created() {
     this.updateArtist();
   },
-  computed:{
+  computed: {
     ...mapGetters("artist", ["currentArtistGetter"]),
     artistID() {
       return this.$route.params.id;
@@ -68,8 +71,7 @@ export default {
     }
   },
   data: function() {
-    return {
-    };
+    return {};
   },
   mixins: [getuserToken]
 };

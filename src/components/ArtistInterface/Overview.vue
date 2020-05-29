@@ -76,7 +76,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     SongItem,
-    CardGrid,
+    CardGrid
   },
   mixins: [getuserToken],
   created() {
@@ -84,17 +84,17 @@ export default {
       id: this.$props.artistID,
       token: this.getuserToken(),
       limit: 5,
-      offset: 0,
+      offset: 0
     });
 
     this.getArtistAlbums({
       id: this.$props.artistID,
-      token: this.getuserToken(),
+      token: this.getuserToken()
     });
 
     this.getArtistSingles({
       id: this.$props.artistID,
-      token: this.getuserToken(),
+      token: this.getuserToken()
     });
   },
   methods: {
@@ -102,26 +102,26 @@ export default {
       "getArtistAlbums",
       "getArtistTopTracks",
       "getArtistSingles",
-      "getArtistAppearsOn",
+      "getArtistAppearsOn"
     ]),
-    menuOrder() {},
+    menuOrder() {}
   },
   computed: {
     ...mapGetters("artist", [
       "allArtistAlbums",
       "allArtistTopTracks",
       "allArtistSingles",
-      "allArtistAppearsOn",
-    ]),
+      "allArtistAppearsOn"
+    ])
   },
   props: ["artistID", "artistName"],
   data() {
     return {
       albumsCardItems: {
-        items: [],
+        items: []
       },
       singlesCardItems: {
-        items: [],
+        items: []
       },
       tracks: [
         {
@@ -129,14 +129,14 @@ export default {
           name: "saad",
           album: {
             name: "sa",
-            _id: "dsa",
+            _id: "dsa"
           },
           artist: {
             name: "dsadsa",
-            _id: "dsadssadsa",
-          },
-        },
-      ],
+            _id: "dsadssadsa"
+          }
+        }
+      ]
     };
   },
   watch: {
@@ -144,15 +144,15 @@ export default {
       var albums = [];
       var singles = [];
       this.albumsCardItems.items = newValue;
-      newValue.forEach((element) => {
+      newValue.forEach(element => {
         if (element.type == "album") albums.push(element);
         else singles.push(element);
       });
       console.log("saaaaaaaad", newValue);
       this.albumsCardItems.items = albums;
       this.singlesCardItems.items = singles;
-    },
-  },
+    }
+  }
 };
 </script>
 

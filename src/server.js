@@ -5,10 +5,9 @@ import artistJSON from "./api/mock/data/artist.json";
 import albumsJSON from "./api/mock/data/album.json";
 import categoryJSON from "./api/mock/data/category.json";
 import historyJSON from "./api/mock/data/history.json";
-import getuserID from "./mixins/userService/getuserID.js"
-import getusername from "./mixins/userService/getusername.js"
+import getuserID from "./mixins/userService/getuserID.js";
+import getusername from "./mixins/userService/getusername.js";
 // import usersJSON from "./api/mock/data/users.json";
-
 
 //The makeserver function to be used to enable Mirage to intercept your requests
 export function makeServer({ environment = "development" } = {}) {
@@ -407,7 +406,7 @@ export function makeServer({ environment = "development" } = {}) {
           .tracksCount;
         let playlistTracks = schema.playlists.where({ id: playlistID })
           .models[0].tracks;
-        playlistTracks = playlistTracks.filter(function (item) {
+        playlistTracks = playlistTracks.filter(function(item) {
           return item !== trackID;
         });
         numOfTracks -= 1;
@@ -927,19 +926,21 @@ export function makeServer({ environment = "development" } = {}) {
 
       ///// GET ARTIST ALBUMS
       this.get("/v1/artists/:artistID/albums/", (schema, request) => {
-
-        let x = schema.albums.all().models.filter(x => x.artist._id == request.params.artistID);
+        let x = schema.albums
+          .all()
+          .models.filter(x => x.artist._id == request.params.artistID);
         let resp = [];
         x.forEach(album => {
-
-          let b = schema.tracks.all().models.filter(x => x.attrs.album.id == album.id)
-          console.log("sadsa", b)
+          let b = schema.tracks
+            .all()
+            .models.filter(x => x.attrs.album.id == album.id);
+          console.log("sadsa", b);
           let tracks = [];
           b.forEach(track => {
             tracks.push({
               name: track.name,
               _id: track.trackId
-            })
+            });
           });
 
           resp.push({
@@ -949,16 +950,15 @@ export function makeServer({ environment = "development" } = {}) {
             image: album.image,
             albumType: album.albumType,
             tracks: tracks
-          })
+          });
         });
-        console.log(resp)
+        console.log(resp);
         return { albums: { items: resp } };
       });
 
       ///// ADD ARTIST ALBUM
 
       this.post("/v1/albums", (schema, request) => {
-
         upload(request);
         let id = schema.albums.all().models.length + 223;
         let x = {
@@ -975,7 +975,7 @@ export function makeServer({ environment = "development" } = {}) {
             name: getusername.methods.getusername(),
             _id: getuserID.methods.getuserID()
           }
-        }
+        };
         server.create("album", x);
         return x;
       });
@@ -983,7 +983,6 @@ export function makeServer({ environment = "development" } = {}) {
       ///// ADD ARTIST TRACK
 
       this.post("/v1/users/tracks", (schema, request) => {
-
         upload(request);
 
         let id = schema.albums.all().models.length + 117;
@@ -997,7 +996,7 @@ export function makeServer({ environment = "development" } = {}) {
           album: {
             id: album.id,
             _id: album._id,
-            name: album.name,
+            name: album.name
           },
           _id: id,
           id: id,
@@ -1008,7 +1007,7 @@ export function makeServer({ environment = "development" } = {}) {
             name: getusername.methods.getusername(),
             _id: getuserID.methods.getuserID()
           }
-        }
+        };
         server.create("track", x);
         x.album = album.id;
         return x;
@@ -1034,7 +1033,9 @@ export function makeServer({ environment = "development" } = {}) {
 
       this.patch("/v1/albums/:ID", (schema, request) => {
         let albumID = request.params.ID;
-        schema.albums.where({ id: albumID }).update({ name: JSON.parse(request.requestBody).name });
+        schema.albums
+          .where({ id: albumID })
+          .update({ name: JSON.parse(request.requestBody).name });
         return schema.albums.find(albumID).attrs;
       });
 
@@ -1042,35 +1043,34 @@ export function makeServer({ environment = "development" } = {}) {
 
       this.patch("/v1/users/track/:ID", (schema, request) => {
         let trackID = request.params.ID;
-        schema.tracks.where({ _id: trackID }).update({ name: JSON.parse(request.requestBody).name });
+        schema.tracks
+          .where({ _id: trackID })
+          .update({ name: JSON.parse(request.requestBody).name });
         let track = schema.tracks.find(trackID).attrs;
         track.album = track.album.id;
         return track;
       });
-
-
     }
   });
 
   return server;
 }
 
-
 function upload(request) {
-  setTimeout(function () {
+  setTimeout(function() {
     request.upload._eventListeners.progress[1]({
       loaded: 400,
       total: 1000
     });
   }, 1000);
 
-  setTimeout(function () {
+  setTimeout(function() {
     request.upload._eventListeners.progress[1]({
       loaded: 900,
       total: 1000
     });
   }, 2000);
-  setTimeout(function () {
+  setTimeout(function() {
     request.upload._eventListeners.progress[1]({
       loaded: 1000,
       total: 1000

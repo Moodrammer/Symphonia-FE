@@ -275,12 +275,7 @@
             <v-btn fab x-small text title="edit song name" class="mx-6"
               ><v-icon
                 @click="
-                  setOperationData(
-                    'rename',
-                    subItem.name,
-                    item.id,
-                    subItem._id
-                  )
+                  setOperationData('rename', subItem.name, item.id, subItem._id)
                 "
                 >mdi-pencil</v-icon
               ></v-btn
@@ -288,12 +283,7 @@
             <v-btn fab x-small text title="delete song"
               ><v-icon
                 @click="
-                  setOperationData(
-                    'remove',
-                    subItem.name,
-                    item.id,
-                    subItem._id
-                  )
+                  setOperationData('remove', subItem.name, item.id, subItem._id)
                 "
                 >mdi-delete</v-icon
               ></v-btn
@@ -315,21 +305,21 @@ export default {
   data() {
     return {
       fileRules: [
-        (value) => value != null || "REQUIRED",
-        (value) => value == null || value.size <= 1000000 || "MAX SIZE IS 1 MB",
+        value => value != null || "REQUIRED",
+        value => value == null || value.size <= 1000000 || "MAX SIZE IS 1 MB"
       ],
       titleRules: [
-        (value) =>
+        value =>
           value == null || value.length <= 50 || "MAX LENGTH IS 50 CHARACTERS",
-        (value) => (value != null && value.length > 0) || "REQUIRED",
+        value => (value != null && value.length > 0) || "REQUIRED"
       ],
       categoriesRules: [
-        (value) =>
+        value =>
           value == null ||
           value.length > 0 ||
-          "at least one category should be selected",
+          "at least one category should be selected"
       ],
-      cpyRules: [(value) => (value != null && value.length > 0) || "REQUIRED"],
+      cpyRules: [value => (value != null && value.length > 0) || "REQUIRED"],
       selectedCategories: [],
       explicit: false,
       premium: false,
@@ -340,7 +330,7 @@ export default {
       operation: { title: null, albumID: null, songID: null },
       title: null,
       cover: null,
-      file: null,
+      file: null
     };
   },
   computed: {
@@ -352,28 +342,28 @@ export default {
       },
       set(value) {
         value;
-      },
+      }
     },
     ...mapGetters("artist", ["allArtistAlbums", "uploadingDone"]),
     categories: function() {
       let x = this.$store.state.artist.simplifiedCategories;
       console.log(x);
       return x;
-    },
+    }
   },
   created: function() {
     this.getSimplifiedCategories({
-      token: this.getuserToken(),
+      token: this.getuserToken()
     });
     this.getArtistAlbums({
       token: this.getuserToken(),
-      id: this.getuserID(),
+      id: this.getuserID()
     });
   },
   watch: {
     allArtistAlbums: function(newValue) {
       console.log(newValue);
-    },
+    }
   },
   methods: {
     ...mapActions("artist", [
@@ -384,7 +374,7 @@ export default {
       "renameAlbum",
       "renameTrack",
       "deleteAlbum",
-      "deleteTrack",
+      "deleteTrack"
     ]),
     reset() {
       this.dialog.addSong = false;
@@ -409,7 +399,7 @@ export default {
         type: "album",
         copyrightsText: this.copyrightsText,
         copyrightsType: this.copyrightsType,
-        date: this.date,
+        date: this.date
       };
       this.addNewAlbum(payload);
       this.reset();
@@ -425,7 +415,7 @@ export default {
         explicit: this.explicit,
         premium: this.premium,
         categories: this.selectedCategories,
-        album: this.operation.albumID,
+        album: this.operation.albumID
       };
       this.addTrackToAlbum(payload);
       this.reset();
@@ -435,12 +425,12 @@ export default {
         //rename album by this.title
         this.deleteAlbum({
           token: this.getuserToken(),
-          id: this.operation.albumID,
+          id: this.operation.albumID
         });
       } else {
         this.deleteTrack({
           token: this.getuserToken(),
-          id: this.operation.songID,
+          id: this.operation.songID
         });
       }
       this.title = null;
@@ -453,14 +443,14 @@ export default {
         this.renameAlbum({
           token: this.getuserToken(),
           name: this.title,
-          id: this.operation.albumID,
+          id: this.operation.albumID
         });
       } else {
         console.log("yaba a7la 4o8l");
         this.renameTrack({
           token: this.getuserToken(),
           name: this.title,
-          id: this.operation.songID,
+          id: this.operation.songID
         });
       }
       this.title = null;
@@ -474,7 +464,7 @@ export default {
       if (type == "remove") this.dialog.remove = true;
       else if (type == "rename") this.dialog.rename = true;
       else if (type == "addSong") this.dialog.addSong = true;
-    },
-  },
+    }
+  }
 };
 </script>

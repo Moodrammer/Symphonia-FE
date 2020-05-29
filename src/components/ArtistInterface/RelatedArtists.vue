@@ -9,7 +9,7 @@ import getuserToken from "../../mixins/userService/getUserToken";
 
 export default {
   components: {
-    CardGrid,
+    CardGrid
   },
 
   methods: {
@@ -18,7 +18,7 @@ export default {
       console.log(menuItem, cardIndex, name);
       this.albumsContextMenuChoice = menuItem;
       this.albumsContextMenuCardIndex = cardIndex;
-    },
+    }
   },
 
   computed: mapGetters("artist", ["allArtistRelatedArtists"]),
@@ -26,8 +26,8 @@ export default {
   data: function() {
     return {
       cardItems: {
-        items: [],
-      },
+        items: []
+      }
     };
   },
 
@@ -36,7 +36,7 @@ export default {
   created() {
     this.getArtistRelatedArtists({
       id: this.$props.artistID,
-      token: this.getuserToken(),
+      token: this.getuserToken()
     });
   },
 
@@ -44,8 +44,8 @@ export default {
     allArtistRelatedArtists(newValue) {
       this.cardItems.items = newValue;
       console.log(newValue);
-    },
-  },
+    }
+  }
 };
 </script>
 
