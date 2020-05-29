@@ -190,6 +190,8 @@
                 :ID="track._id"
                 :isDisabled="track.premium"
                 :contextMenu="contextMenu"
+                :contextType="'playlist'"
+                :contextID="id"
               />
             </div>
           </v-list>

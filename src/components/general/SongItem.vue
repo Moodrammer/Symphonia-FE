@@ -7,9 +7,18 @@
   >
     <!--The song's icons-->
     <v-icon
+      v-if="!isPaused"
       class="mr-2 pb-9"
-      v-if="hover && !isDisabled"
       v-bind:class="{ enabled: !isPlaying, playing: isPlaying }"
+      @click="pauseTrack"
+    >
+      mdi-pause
+    </v-icon>
+    <v-icon
+      class="mr-2 pb-9"
+      v-else-if="hover && !isDisabled"
+      v-bind:class="{ enabled: !isPlaying, playing: isPlaying }"
+      @click="playTrack"
       >mdi-play</v-icon
     >
 
@@ -119,6 +128,8 @@ export default {
       type: Boolean,
       default: false
     },
+    contextType: String,
+    contextID: String,
     contextMenu: {}
   },
   data: function() {
@@ -135,6 +146,10 @@ export default {
   computed: {
     isPlaying() {
       return this.ID == this.$store.state.track.trackId;
+    },
+    isPaused() {
+      if (this.isPlaying) return this.$store.state.track.isTrackPaused;
+      else return true;
     }
   },
   methods: {
@@ -158,6 +173,41 @@ export default {
       this.$props.contextMenu.event = event;
       this.$props.contextMenu.id = trackID;
       this.$props.contextMenu.type = "track";
+    },
+    /**
+     * Gets called when the user clicks on play icon on a specific song
+     * @public This is a public method
+     * @param {none}
+     */
+    playTrack: async function() {
+      if (!this.isPlaying) {
+        this.$store.commit("track/setContextData", {
+          contextID: this.contextID,
+          contextType: this.contextType,
+          contextUrl: "https://thesymphonia.ddns.net/api"
+        });
+        await this.$store.dispatch("track/playTrackInQueue", this.ID);
+        await this.$store.dispatch(
+          "track/updateQueue",
+          "Bearer " + this.getuserToken()
+        );
+        await this.$store.dispatch("track/getTrackInformation", {
+          token: "Bearer " + this.getuserToken(),
+          trackId: this.ID
+        });
+      } else {
+        this.$store.dispatch("track/togglePauseAndPlay");
+      }
+      this.$store.commit("track/setIsTrackPaused", this.isPaused());
+    },
+    /**
+     * Gets called when the user clicks on pause icon on the currently playing song
+     * @public This is a public method
+     * @param {none}
+     */
+    pauseTrack: function() {
+      this.$store.dispatch("track/togglePauseAndPlay");
+      this.$store.commit("track/setIsTrackPaused", this.isPaused());
     }
   },
   mixins: [getuserToken, isLoggedIn]

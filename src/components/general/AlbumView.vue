@@ -175,6 +175,8 @@
                 :ID="track._id"
                 :isDisabled="track.premium"
                 :contextMenu="contextMenu"
+                :contextType="'album'"
+                :contextID="id"
               />
             </div>
           </v-list>
