@@ -8,18 +8,19 @@
     ></audio>
 
     <v-row style="min-width: 100%;" flat color="rgba(0,0,0,0)">
-      <v-col cols="12" v-bind:class="{ 'no-padding-xs': isXs() }">
+      <v-col cols="12" class="no-padding-xs">
         <sound-grapher v-if="isSoundgrapherEnabled" />
       </v-col>
     </v-row>
 
     <!-- song info -->
-    <v-row>
+    <v-row >
       <v-col
         lg="4"
         md="4"
         sm="12"
         xs="12"
+        style="padding-top: 0px;"
         v-bind:class="{ 'no-padding-xs': isXs() }"
       >
         <v-toolbar flat color="rgba(0,0,0,0)">
