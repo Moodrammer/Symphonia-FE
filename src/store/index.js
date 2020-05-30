@@ -8,6 +8,7 @@ import album from "./modules/album";
 import artist from "./modules/artist";
 import userPublicProfile from "./modules/userPublicProfile";
 import homepage from "./modules/homepage";
+import notification from "./modules/notification"
 
 Vue.use(Vuex);
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     category,
     album,
     artist,
-    homepage
+    homepage,
+    notification
   }
 });

@@ -25,7 +25,7 @@ import getuserToken from "../../mixins/userService/getUserToken";
  */
 export default {
   components: {
-    Category
+    Category,
   },
   created: function() {
     this.$store.dispatch("category/recentlyPlayedSection", this.getuserToken());
