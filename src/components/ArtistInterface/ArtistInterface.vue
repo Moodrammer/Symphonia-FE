@@ -16,6 +16,7 @@
       <v-btn rounded color="success" min-width="110" min-height="40" dark
         >Play</v-btn
       >
+      <template v-if="isVisitor">
       <v-btn rounded outlined color="success" min-width="160" min-height="40" dark class="mx-3"
         v-if=" !isFollowed || !isFollowed[0]"
         @click="follow()"
@@ -28,7 +29,7 @@
         alert
         >Unfollow</v-btn
       >
-
+    </template>
     </div>
     <div class="pl-3 content-container">
       <div class="pl-9 mb-10">
@@ -48,6 +49,7 @@
 
 <script>
 import getuserToken from "../../mixins/userService/getUserToken";
+import getuserID from "../../mixins/userService/getuserID";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -87,6 +89,9 @@ export default {
     ...mapGetters("artist", ["currentArtistGetter", "isFollowed"]),
     artistID() {
       return this.$route.params.id;
+    },
+    isVisitor() {
+      return this.artistID != this.getuserID(); 
     }
   },
   watch: {
@@ -104,7 +109,7 @@ export default {
     return {
     };
   },
-  mixins: [getuserToken]
+  mixins: [getuserToken, getuserID]
 };
 </script>
 

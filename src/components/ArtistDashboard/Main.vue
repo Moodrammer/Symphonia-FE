@@ -1,5 +1,5 @@
 <template>
-  <v-content class="mx-0 mt-5 pl-0 pr-5 pt-12">
+  <v-container class="mx-0 mt-5 pl-0 pr-5 pt-12" fluid fill>
     <v-row fill-height justify="left" align="center" class="mx-0 px-0">>
       <v-col cols="5">
         <v-img src="../../assets/logo_artist.png" alt="" > </v-img>
@@ -11,7 +11,7 @@
         </v-card-title>
       </v-col>
     </v-row>
-  </v-content>
+  </v-container>
 </template>
 
 <script>

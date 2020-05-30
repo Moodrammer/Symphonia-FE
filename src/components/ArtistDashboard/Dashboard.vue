@@ -6,9 +6,7 @@
     <Drawer></Drawer>
     
     <v-content class="content-container">
-        <!-- <Albums></Albums> -->
     <router-view></router-view>   
-
     </v-content>
 
 </v-app>
