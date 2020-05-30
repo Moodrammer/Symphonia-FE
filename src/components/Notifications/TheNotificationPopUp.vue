@@ -1,11 +1,11 @@
 <template>
   <div>
     <v-snackbar
-      :value="notificationData.isNotificationShown"
+      v-model="notificationData.isNotificationShown"
       :timeout="notificationData.timeout"
       top
       right
-      color="rgba(18, 17, 17, 0.9)"
+      :color="notificationData.color"
       multi-line
     >
       <v-img

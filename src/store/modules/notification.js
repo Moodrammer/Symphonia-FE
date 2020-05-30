@@ -8,6 +8,7 @@ const state = {
     notificationTitle: "",
     notificationBody: "",
     notificationIcon: "/s11.png",
+    color: "",
     timeout: 0
   },
   isTokenSentToServer: false,
@@ -23,6 +24,11 @@ const mutations = {
     state.notificationData.notificationBody = payload.notificationBody;
     state.notificationData.notificationIcon = payload.notificationIcon;
     state.notificationData.timeout = payload.timeout;
+    state.notificationData.color = payload.color;
+  },
+
+  setIsNotificationShown(state, payload){
+    state.notificationData.isNotificationShown = payload;
   },
 
   setIsTokenSentToServer(state, payload) {
@@ -115,6 +121,19 @@ const actions = {
       .catch(err => {
         console.log(err);
         commit("setIsTokenSentToServer", false);
+        dispatch("unsubscribeUser");
+        commit("setPushNotificationsPermission", false);
+        localStorage.setItem("allowNotifications", false);
+        //show the user a snackbar
+        const notificationData = {
+          notificationState: true,
+          notificationTitle: "",
+          notificationBody: "Push notifications are blocked from the browser. You can unblock them later from the browser then enable them from the settings page",
+          notificationIcon: "",
+          color: "rgba(197, 57, 57, 0.93)",
+          timeout: 0
+        };
+        dispatch("setNotification", notificationData)
       });
   },
   //--------------------------------------------------------------------------------------------------------------//
@@ -125,6 +144,7 @@ const actions = {
         notificationTitle: payload.notification.title,
         notificationBody: payload.notification.body,
         notificationIcon: payload.notification.icon,
+        color: "rgba(18, 17, 17, 0.9)",
         timeout: 0
       };
       dispatch("setNotification", notificationData);
