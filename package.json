@@ -15,6 +15,7 @@
         "axios": "^0.19.2",
         "bourbon": "^7.0.0",
         "core-js": "^3.6.4",
+        "firebase": "^7.14.5",
         "vue": "^2.6.11",
         "vue-context": "^5.1.0",
         "vue-image-crop-upload": "^2.5.0",

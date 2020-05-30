@@ -260,9 +260,6 @@ describe("Homepage Premium Content", () => {
             setNavigationBarColor: (state, navigationBarColor) => {
               state.navigationBarColor = navigationBarColor;
             }
-          },
-          actions: {
-            async openStripeForm({ state }, payload) {}
           }
         }
       }

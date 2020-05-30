@@ -271,8 +271,6 @@ export default {
       this.logOut();
       this.$forceUpdate();
 
-      console.log(this.homepageInstance);
-
       this.homepageInstance.$forceUpdate();
     }
   },

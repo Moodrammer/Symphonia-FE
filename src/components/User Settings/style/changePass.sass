@@ -1,0 +1,306 @@
+@font-face
+  font-family: Circular
+  src: url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.woff2") format("woff2"), url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.woff") format("woff"), url("https://open.scdn.co/fonts/CircularSpUIv3T-Book.ttf") format("ttf")
+  font-style: normal
+  font-weight: 400
+
+*
+  box-sizing: border-box
+
+body
+  font-family: Circular, Helvetica, Arial, sans-serif
+  font-size: 16px
+  line-height: 1.5
+  color: #222326
+  box-sizing: border-box
+  font-weight: 400
+
+@media (max-width: 360px)
+  .content
+    width: 380px
+
+@media (max-width: 576px) and (min-width: 361px)
+  .content
+    width: 576px
+
+@media (max-width: 768px) and (min-width: 577px)
+  .content
+    width: 480px
+
+@media (max-width: 960px) and (min-width: 769px)
+  .content
+    width: 670px
+
+@media (max-width: 1264px) and (min-width: 961px)
+  .content
+    width: 603px !important
+  .col-sm-9
+    width: 603px !important
+    flex: 0.668 !important
+
+.col-sm-9
+  width: 75%
+  position: relative
+  padding: 0 15px
+  background-color: white
+
+.content
+  padding: 60px
+  background-color: #f8f8f8
+  justify-content: space-between
+  margin-left: -15px
+  margin-right: -15px
+
+h1
+  font-size: 26px
+  margin: 0.5em 0
+  color: #1db954
+  font-weight: 400
+  letter-spacing: -0.02em
+  line-height: 1.2
+
+.header-container
+  padding-bottom: 0
+  margin-top: 0
+  margin-right: 0px
+  margin-bottom: 24px
+  margin-left: 0px
+  border-bottom: 1px solid #efefef
+
+.form-container
+  padding: 40px
+  margin-bottom: 10px
+  border-radius: 0
+  box-shadow: none
+  background-color: #fff
+  border: 1px solid transparent
+  min-height: 20px
+
+  &::before
+    content: " "
+    display: table
+
+  &::after
+    clear: both
+    content: " "
+    display: table
+
+.form-group
+  margin-bottom: 20px
+
+label
+  color: #919496
+  font-weight: 400
+  display: inline-block
+  max-width: 100%
+  margin-bottom: 5px
+
+p
+  padding-top: 7px
+  padding-bottom: 7px
+  margin-bottom: 0
+  min-height: 40px
+  margin-top: 0.5em
+  margin-right: 0px
+  margin-left: 0px
+
+#country
+  background-image: url("https://img.icons8.com/ios/90/000000/expand-arrow--v2.png")
+  background-position: right 12px center
+  background-repeat: no-repeat
+  background-size: 16px
+  color: #222326
+  padding-right: 48px
+  text-indent: 0.01px
+  text-overflow: ""
+  -webkit-appearance: none
+  -moz-appearance: none
+  appearance: none
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s
+  -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s
+  transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s
+  display: block
+  width: 100%
+  height: 40px
+  padding-top: 6px
+  padding-bottom: 6px
+  padding-left: 12px
+  font-size: 16px
+  line-height: 1.5
+  background-color: #fff
+  border: 1px solid #d9dadc
+  border-radius: 0
+  text-transform: none
+  margin: 0
+
+  &::placeholder
+    transition: color 0.15s ease-in-out
+    color: #c1c3c6
+    opacity: 1
+
+  &:focus
+    border-color: #919496
+    outline: 0
+    box-shadow: none
+
+.text
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s
+  -webkit-appearance: none
+  display: block
+  width: 100%
+  height: 40px
+  padding: 6px 12px
+  font-size: 16px
+  line-height: 1.5
+  color: #222326
+  background-color: #fff
+  background-image: none
+  border-top-style: solid
+  border-top-width: 1px
+  border-right-style: solid
+  border-right-width: 1px
+  border-bottom-style: solid
+  border-bottom-width: 1px
+  border-left-style: solid
+  border-left-width: 1px
+  border-image-outset: 0
+  border-image-repeat: stretch
+  border-image-slice: 100%
+  border-image-source: none
+  border-image-width: 1
+  border-radius: 0
+  margin: 0
+
+  &:focus
+    box-shadow: none
+    border-color: #919496
+    outline: 0
+
+.checkbox
+  padding-left: 1.75em
+  font-weight: 400
+  color: #919496
+  min-height: 24px
+  margin-bottom: 0
+  cursor: pointer
+  display: inline-block
+  max-width: 100%
+
+.checkbox-input
+  opacity: 1
+  z-index: 1
+  position: absolute
+  margin-left: -20px
+  line-height: normal
+  margin-top: 4px
+  margin-right: 0px
+  margin-bottom: 0px
+  box-sizing: border-box
+  padding: 0
+  cursor: pointer
+
+  &:focus
+    outline-offset: -2px
+
+.button-col
+  border-top: 1px solid #efefef
+  margin-top: 40px
+  margin-bottom: -10px
+  padding: 30px 0 0
+
+  &::before
+    content: " "
+    display: table
+
+button
+  float: right !important
+  max-width: 290px
+  font-size: 12px
+  line-height: 1
+  border-radius: 500px
+  padding: 10px 32px
+  color: #fff
+  background-color: #1db954
+  transition-property: background-color, border-color, color, box-shadow, filter, -webkit-box-shadow, -webkit-filter
+  transition-duration: 0.3s
+  border-width: 0
+  letter-spacing: 2px
+  min-width: 160px
+  text-transform: uppercase
+  white-space: normal
+  border-color: #1aa34a
+  display: inline-block
+  margin-bottom: 0
+  font-weight: 700
+  text-align: center
+  vertical-align: middle
+  touch-action: manipulation
+  cursor: pointer
+  background-image: none
+  border-image-outset: 0
+  border-image-repeat: stretch
+  border-image-slice: 100%
+  border-image-source: none
+  border-image-width: 1
+  border-style: solid
+  user-select: none
+  -webkit-appearance: button
+  overflow: visible
+  margin-top: 0px
+  margin-right: 0px
+  margin-left: 0px
+
+.a-cancel
+  margin-right: 20px
+  float: right !important
+  color: #000
+  max-width: 290px
+  font-size: 12px
+  line-height: 1
+  border-radius: 500px
+  padding: 10px 32px
+  transition-property: background-color, border-color, color, box-shadow, filter, -webkit-box-shadow, -webkit-filter
+  transition-duration: 0.3s
+  border-width: 0
+  letter-spacing: 2px
+  min-width: 160px
+  text-transform: uppercase
+  white-space: normal
+  margin-bottom: 0
+  font-weight: 700
+  text-align: center
+  touch-action: manipulation
+  cursor: pointer
+  background-image: none
+  border-image-outset: 0
+  border-image-repeat: stretch
+  border-image-slice: 100%
+  border-image-source: none
+  border-image-width: 1
+  border-color: transparent
+  border-style: solid
+  user-select: none
+  text-decoration: none
+  background-color: transparent
+
+.alert
+  color: rgb(236, 58, 58)
+
+.alert-success
+  border-width: 0
+  font-size: 12px
+  padding: 14px 14px 12px 14px
+  font-weight: 400
+  background-color: #1ed760
+  border-color: #1ed760
+  color: #fff
+  margin-bottom: 24px
+  border-style: solid
+  border-image-outset: 0
+  border-image-repeat: stretch
+  border-image-slice: 100%
+  border-image-source: none
+  border-image-width: 1
+  border-radius: 0
