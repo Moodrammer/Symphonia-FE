@@ -5,6 +5,7 @@ import artistJSON from "./api/mock/data/artist.json";
 import albumsJSON from "./api/mock/data/album.json";
 import categoryJSON from "./api/mock/data/category.json";
 import historyJSON from "./api/mock/data/history.json";
+import deletedPlaylist from "./api/mock/data/DeletedPalylists.json";
 import getuserID from "./mixins/userService/getuserID.js";
 import getusername from "./mixins/userService/getusername.js";
 // import usersJSON from "./api/mock/data/users.json";
@@ -50,7 +51,12 @@ export function makeServer({ environment = "development" } = {}) {
         imageUrl:
           "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
       });
-
+      ///////////////////////////////////////////////////////////////////
+      //                Create a deleted playlists for the user
+      ///////////////////////////////////////////////////////////////////
+      deletedPlaylist.forEach(element => {
+        server.create("deletedPlaylist", element);
+      });
       //This part is just to fake mirage in order to persist the data of only one user
       if (sessionStorage.getItem("SignedUpUser") != null) {
         //The signed up user should remain in the localstorage so that when mirage loads each time it loads his data
@@ -663,7 +669,21 @@ export function makeServer({ environment = "development" } = {}) {
             }
           );
         }),
-        // Get the current user's data to the account overview(User's Settings)
+        this.get("/v1/me/player/currently-playing", () => {
+          return new Response(
+            200,
+            {},
+            {
+              data: {
+                currentTrack: "/track/5e7d2dc03429e24340ff1396",
+                device: "5e88ef4d54142e3db4d01ee5"
+              }
+            }
+          );
+        }),
+        /////////////////////////////////////////////////////////////////////////////////
+        //     Get the current user's data to the account overview(User's Settings)
+        /////////////////////////////////////////////////////////////////////////////////
         this.get("/v1/me", (schema, request) => {
           // get the user's data from seed if exist
           if (request.requestHeaders.Authorization) {
@@ -683,7 +703,9 @@ export function makeServer({ environment = "development" } = {}) {
             return new Response(400, {}, {});
           }
         });
-      // patch the user's password =>(change the current user's password)
+      /////////////////////////////////////////////////////////////////////////////////
+      //       patch the user's password =>(change the current user's password)
+      /////////////////////////////////////////////////////////////////////////////////
       this.patch("/v1/users/updatepassword", (schema, request) => {
         let id;
         if (localStorage.getItem("userToken") != null) {
@@ -705,7 +727,9 @@ export function makeServer({ environment = "development" } = {}) {
           return new Response(401, {}, {});
         }
       });
-      // update the current user profile data
+      /////////////////////////////////////////////////////////////////////////////////
+      //                update the current user profile data
+      /////////////////////////////////////////////////////////////////////////////////
       this.put("/v1/me/", (schema, request) => {
         if (request.requestBody) {
           let attr = JSON.parse(request.requestBody);
@@ -729,8 +753,9 @@ export function makeServer({ environment = "development" } = {}) {
           return new Response(401, {}, {});
         }
       });
-
-      // Get the current user's data to the account overview(User's Settings)
+      /////////////////////////////////////////////////////////////////////////////////
+      //     Get the current user's data to the account overview(User's Settings)
+      /////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me", (schema, request) => {
         // get the user's data from seed if exist
         if (request.requestHeaders.Authorization) {
@@ -745,6 +770,44 @@ export function makeServer({ environment = "development" } = {}) {
             id = sessionStorage.getItem("userID");
           }
           return new Response(200, {}, schema.users.find(id).attrs);
+        } else {
+          // if the data isn't valid so return error status(400)
+          return new Response(400, {}, {});
+        }
+      });
+      /////////////////////////////////////////////////////////////////////////////////
+      //              Get all the deleted playlists for current user
+      /////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/playlists/deleted", (schema, request) => {
+        if (request.requestHeaders.Authorization) {
+          let result = schema.deletedPlaylists.all().models;
+          let limit = request.params.limit;
+          let offset = request.params.offset;
+          let total = result.length;
+          let toSend ={
+            playlists:{
+              total:total,
+              items:result,
+              limit:limit,
+              offset:offset
+            }
+          }
+          return new Response(200, {}, toSend);
+        } else {
+          // if the data isn't valid so return error status(400)
+          return new Response(400, {}, {});
+        }
+      });
+      /////////////////////////////////////////////////////////////////////////////////
+      //              Restore the deleted playlist for current user
+      /////////////////////////////////////////////////////////////////////////////////
+      this.patch("/v1/me/playlists/:id", (schema, request) => {
+        let result = schema.deletedPlaylists.find(request.params.id);
+        if (result) {
+          result.update({
+            deleted: false
+          });
+          return new Response(200, {}, result);
         } else {
           // if the data isn't valid so return error status(400)
           return new Response(400, {}, {});

@@ -16,7 +16,15 @@ const state = {
   //The country of the current user
   userCountry: "",
   //The gender of the current user
-  userGender: ""
+  userGender: "",
+  //The user image of the current user
+  userImage: "",
+  //The user deleted playlist array of the current user
+  deletedPlaylists: [],
+  //check if the user from the facebook or not
+  userFacebook: false,
+  //The type of user for current user
+  userType: ""
 };
 
 const mutations = {
@@ -39,6 +47,18 @@ const mutations = {
   //Set gender of the user
   setGender(state, payload) {
     state.userGender = payload;
+  },
+  //Set image of the user
+  setImage(state, payload) {
+    state.userImage = payload;
+  },
+  //Set the facebook user as true if its facebook user
+  setFacebook(state, payload) {
+    state.userFacebook = payload;
+  },
+  //Set the type of the current user
+  setType(state, payload) {
+    state.userType = payload;
   }
 };
 
@@ -152,11 +172,18 @@ const actions = {
                 email: response.data.email
               }
             };
+            if (response.data.imageFacebookUrl) {
+              commit("setImage", response.data.imageFacebookUrl);
+              commit("setFacebook", true);
+            } else {
+              commit("setImage", response.data.imageUrl);
+            }
             // set the data to the status that came from the response
             commit("setUserData", user);
             commit("setCountry", "EG");
             commit("setGender", response.data.gender);
             commit("setuserDOB", response.data.dateOfBirth);
+            commit("setType", response.data.type);
             resolve(true);
           }
         })
@@ -256,6 +283,73 @@ const actions = {
             commit("setuserDOB", payload.dateOfBirth);
             commit("setUserData", user);
             commit("setGender", payload.gender);
+            resolve(true);
+          }
+        })
+        .catch(error => {
+          // check if there is error to send danger alert
+          reject(error);
+        });
+    });
+  },
+  //Get the user deleted playlists to restore
+  deletedPlaylist({ state }, payload) {
+    let token;
+    //If the user checks rememberMe his token will be found in the localStorage
+    if (localStorage.getItem("userToken") != null) {
+      token = localStorage.getItem("userToken");
+    }
+    //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+    else if (sessionStorage.getItem("userToken") != null) {
+      token = sessionStorage.getItem("userToken");
+    }
+    return new Promise((resolve, reject) => {
+      axios
+        .get(
+          "/v1/me/playlists/deleted?limit=" +
+            payload.limit +
+            "&offset=" +
+            payload.offset,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+        .then(response => {
+          // check that the changes are done to make success alert
+          if (response.status == 201 || response.status == 200) {
+            state.deletedPlaylists = response.data.playlists.items;
+            resolve(true);
+          }
+        })
+        .catch(error => {
+          // check if there is error to send danger alert
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-empty-pattern
+  restorePlaylist({}, payload) {
+    let token;
+    //If the user checks rememberMe his token will be found in the localStorage
+    if (localStorage.getItem("userToken") != null) {
+      token = localStorage.getItem("userToken");
+    }
+    //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+    else if (sessionStorage.getItem("userToken") != null) {
+      token = sessionStorage.getItem("userToken");
+    }
+    return new Promise((resolve, reject) => {
+      axios
+        .patch("/v1/me/playlists/" + payload, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(response => {
+          // check that the changes are done to make success alert
+          if (response.status == 201 || response.status == 200) {
             resolve(true);
           }
         })

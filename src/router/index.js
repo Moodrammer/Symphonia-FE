@@ -6,7 +6,7 @@ import Library from "../components/WebplayerContent/Library.vue";
 import Playlists from "../components/collection/Playlists.vue";
 import ALbums from "../components/collection/Albums.vue";
 import Artists from "../components/collection/Artists.vue";
-import User_Settings from "../views/User_Settings.vue";
+import UserSettings from "../views/UserSettings.vue";
 import Search from "../components/WebplayerContent/Search.vue";
 import HomeContent from "../components/WebplayerContent/HomeContentRouter.vue";
 import Tracks from "../views/LikedSongs.vue";
@@ -220,41 +220,46 @@ const routes = [
   },
   {
     path: "/account/",
-    name: "Acccount Setting",
-    component: User_Settings,
+    component: UserSettings,
     children: [
       {
+        name: "overview",
         path: "",
-        component: () => import("../components/User Settings/overview.vue"),
+        component: () => import("../components/User Settings/Overview.vue"),
         meta: {
           allowAnonymous: false
         }
       },
       {
+        name: "EditProfile",
         path: "edit",
-        component: () => import("../components/User Settings/editProfile.vue"),
+        component: () => import("../components/User Settings/EditProfile.vue"),
         meta: {
           allowAnonymous: false
         }
       },
       {
+        name: "RecoverPlaylists",
         path: "recover-playlists",
         component: () =>
-          import("../components/User Settings/recoverPlaylist.vue"),
+          import("../components/User Settings/RecoverPlaylist.vue"),
         meta: {
           allowAnonymous: false
         }
       },
       {
+        name: "Notifications",
         path: "notifications",
-        component: () => import("../components/User Settings/notification.vue"),
+        component: () => import("../components/User Settings/Notification.vue"),
         meta: {
           allowAnonymous: false
         }
       },
       {
+        name: "ChangePassword",
         path: "changePassword",
-        component: () => import("../components/User Settings/changePass.vue"),
+        component: () =>
+          import("../components/User Settings/ChangePassword.vue"),
         meta: {
           allowAnonymous: false
         }
@@ -310,6 +315,14 @@ const routes = [
     path: "/artist-activation/:activationToken",
     name: "artistActivation",
     component: ArtistActivation,
+    meta: {
+      allowAnonymous: true
+    }
+  },
+  {
+    path: "/about",
+    name: "aboutUs",
+    component: () => import("../views/About.vue"),
     meta: {
       allowAnonymous: true
     }
