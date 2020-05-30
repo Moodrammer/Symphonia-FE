@@ -349,7 +349,7 @@
                           size="164"
                           style="margin-left:6rem;margin-top:2rem;"
                         >
-                          <v-img src="../assets/stuff/boy.jpg"></v-img>
+                          <v-img src="../assets/stuff/mahmoudAmr.png"></v-img>
                         </v-avatar>
                       </v-col>
                       <v-col class="py-0">
@@ -618,7 +618,7 @@
                           size="164"
                           style="margin-left:6rem;margin-top:2rem;"
                         >
-                          <v-img src="../assets/stuff/boy.jpg"></v-img>
+                          <v-img src="../assets/stuff/omar.png"></v-img>
                         </v-avatar>
                       </v-col>
                       <v-col class="py-0">
