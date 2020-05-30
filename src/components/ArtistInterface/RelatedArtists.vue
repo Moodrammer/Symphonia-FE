@@ -11,7 +11,6 @@ export default {
   components: {
     CardGrid
   },
-
   methods: {
     ...mapActions("artist", ["getArtistRelatedArtists"]),
     menuOrder(menuItem, cardIndex, name) {
@@ -32,8 +31,9 @@ export default {
   },
 
   mixins: [getuserToken],
-  props: ["artistID"],
+  props: ["artistID", "contextMenu"],
   created() {
+    console.log("ID", this.$props.artistID, "TOKEN", this.getuserToken());
     this.getArtistRelatedArtists({
       id: this.$props.artistID,
       token: this.getuserToken()

@@ -1,25 +1,26 @@
 {
-    "artists": {
-      "items": [
-        {
-          "queue": {
-            "currentlyPlaying": {
-                "currentTrack": null
-            },
-            "queueTracks": [],
-            "previousTrack": null,
-            "repeat": false,
-            "shuffle": false,
-            "play": false,
-            "repeatOnce": false,
-            "devices": [
-                {
-                    "_id": "5e8a5b0db2859207bf1fc2e9",
-                    "devicesName": "chrome"
-                }
-            ]
+  "artists": {
+    "items": [
+      {
+        "queue": {
+          "currentlyPlaying": {
+            "currentTrack": null
+          },
+          "queueTracks": [],
+          "previousTrack": null,
+          "repeat": false,
+          "shuffle": false,
+          "play": false,
+          "repeatOnce": false,
+          "devices": [
+            {
+              "_id": "5e8a5b0db2859207bf1fc2e9",
+              "devicesName": "chrome"
+            }
+          ]
         },
-        "followedUsers": [],
+        "followed": true,
+        "followedUsers": [12, 23, 432, 5, 6, 3],
         "tracks": [],
         "ownedPlaylists": [],
         "followedAlbums": [],
@@ -30,231 +31,237 @@
         "dateOfBirth": "1978-06-25T00:00:00.000Z",
         "gender": "male",
         "type": "artist",
-        "imageUrl": "https://zasymphonia.ddns.net/api/v1/images/users/Tame-Impala.jpg"
-    },
-        {
-            "queue": {
-                "currentlyPlaying": {
-                    "currentTrack": null
-                },
-                "queueTracks": [],
-                "previousTrack": null,
-                "repeat": false,
-                "shuffle": false,
-                "play": false,
-                "repeatOnce": false,
-                "devices": [
-                    {
-                        "_id": "5e8a5b0db2859207bf1fc2e9",
-                        "devicesName": "chrome"
-                    }
-                ]
-            },
-            "followedUsers": [],
-            "tracks": [],
-            "ownedPlaylists": [],
-            "followedAlbums": [],
-            "followedTracks": [],
-            "_id": "5e82a48054660672fd699883",
-            "email": "test4@test.com",
-            "name": "Interpol",
-            "dateOfBirth": "1979-12-25T00:00:00.000Z",
-            "gender": "male",
-            "type": "artist",
-            "imageUrl": "https://zasymphonia.ddns.net/api/v1/images/users/Interpol.jpg"
-        },
-        {
-            "queue": {
-                "currentlyPlaying": {
-                    "currentTrack": null
-                },
-                "queueTracks": [],
-                "previousTrack": null,
-                "repeat": false,
-                "shuffle": false,
-                "play": false,
-                "repeatOnce": false,
-                "devices": [
-                    {
-                        "_id": "5e8a5b0db2859207bf1fc2e9",
-                        "devicesName": "chrome"
-                    }
-                ]
-            },
-            "followedUsers": [],
-            "tracks": [],
-            "ownedPlaylists": [],
-            "followedAlbums": [],
-            "followedTracks": [],
-            "_id": "5e84b966681ae439edfc1d6f",
-            "email": "test5@test.com",
-            "name": "Minuit Machine",
-            "dateOfBirth": "1995-06-25T00:00:00.000Z",
-            "gender": "female",
-            "popularity": 90,
-            "type": "artist",
-            "imageUrl": "https://zasymphonia.ddns.net/api/v1/images/users/Minuit-Machine.jpg"
-        },
-        {
-            "queue": {
-                "currentlyPlaying": {
-                    "currentTrack": "http://zasymphonia.ddns.net/api/v1/me/player/tracks/5e7d2e023429e24340ff1398",
-                    "device": "5e8cc697d35f1d07963e2fe9"
-                },
-                "queueTracks": [
-                    "http://zasymphonia.ddns.net/api/v1/me/player/tracks/5e7d2dc03429e24340ff1396",
-                    "http://zasymphonia.ddns.net/api/v1/me/player/tracks/5e7d2ddd3429e24340ff1397",
-                    "http://zasymphonia.ddns.net/api/v1/me/player/tracks/5e7d2e023429e24340ff1398"
-                ],
-                "previousTrack": "http://zasymphonia.ddns.net/api/v1/me/player/tracks/5e7d2ddd3429e24340ff1397",
-                "repeat": false,
-                "shuffle": false,
-                "play": false,
-                "repeatOnce": false,
-                "nextTrack": null,
-                "devices": [
-                    {
-                        "_id": "5e8cbeed14d69c47ddfe466a",
-                        "devicesName": "Chrome"
-                    },
-                    {
-                        "_id": "5e8cbef414d69c47ddfe466b",
-                        "devicesName": "Chrome"
-                    },
-                    {
-                        "_id": "5e8cbeff14d69c47ddfe466d",
-                        "devicesName": "Chrome"
-                    },
-                    {
-                        "_id": "5e8cc01d14d69c47ddfe4673",
-                        "devicesName": "Chrome"
-                    },
-                    {
-                        "_id": "5e8cc01d14d69c47ddfe4674",
-                        "devicesName": "Chrome"
-                    },
-                    {
-                        "_id": "5e8cc02814d69c47ddfe4676",
-                        "devicesName": "Chrome"
-                    },
-                    {
-                        "_id": "5e8cc02d14d69c47ddfe4678",
-                        "devicesName": "Chrome"
-                    },
-                    {
-                        "_id": "5e8cc697d35f1d07963e2fe8",
-                        "devicesName": "Chrome"
-                    },
-                    {
-                        "_id": "5e8cc697d35f1d07963e2fe9",
-                        "devicesName": "Chrome"
-                    }
-                ]
-            },
-            "followedUsers": [],
-            "tracks": [
-                "5e8a1ea07937ec4d40c6debf",
-                "5e8a37d0d56ea252c3860a1a",
-                "5e8a39f24e11cd46c8bde654"
-            ],
-            "ownedPlaylists": [],
-            "followedAlbums": [],
-            "followedTracks": [],
-            "_id": "5e80fd1684c71f6ffb534a08",
-            "email": "test6@test.com",
-            "name": "TR/ST",
-            "dateOfBirth": "1985-12-05T00:00:00.000Z",
-            "gender": "male",
-            "popularity": 90,
-            "type": "artist",
-            "imageUrl": "https://zasymphonia.ddns.net/api/v1/images/users/tr-st.jpg",
-            "__v": 22,
-            "last_login": "2020-04-07T18:29:42.291Z"
-        },
-      
-        {
-            "queue": {
-                "currentlyPlaying": {
-                    "currentTrack": null
-                },
-                "queueTracks": [],
-                "previousTrack": null,
-                "repeat": false,
-                "shuffle": false,
-                "play": false,
-                "repeatOnce": false,
-                "devices": [
-                    {
-                        "_id": "5e8ba7b243427f32bcb6e75d",
-                        "devicesName": "chrome"
-                    }
-                ]
-            },
-            "followedUsers": [],
-            "tracks": [],
-            "ownedPlaylists": [],
-            "followedAlbums": [],
-            "followedTracks": [],
-            "_id": "5e8c770de37ac11ac4f0135c",
-            "email": "test15@test.com",
-            "name": "Drab Majesty",
-            "dateOfBirth": "1987-07-16T00:00:00.000Z",
-            "gender": "male",
-            "type": "artist",
-            "imageUrl": "https://zasymphonia.ddns.net/api/v1/images/users/Drab-Majesty.jpg"
-        },
-              
-        {
-          "queue": {
-              "currentlyPlaying": {
-                  "currentTrack": null
-              },
-              "queueTracks": [],
-              "previousTrack": null,
-              "repeat": false,
-              "shuffle": false,
-              "play": false,
-              "repeatOnce": false,
-              "devices": [
-                  {
-                      "_id": "5e8ba7b243427f32bcb6e75d",
-                      "devicesName": "chrome"
-                  }
-              ]
-          },
-          "followedUsers": [],
-          "tracks": [],
-          "ownedPlaylists": [],
-          "followedAlbums": [],
-          "followedTracks": [],
-          "_id": "1",
-          "email": "test15@test.com",
-          "name": "Yasser Al-Dosari",
-          "dateOfBirth": "1987-07-16T00:00:00.000Z",
-          "gender": "male",
-          "type": "artist",
-          "popularity": 90,
-          "imageUrl": "data:image/jpeg;base64,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"
+        "imageUrl": "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg"
       },
       {
         "queue": {
-            "currentlyPlaying": {
-                "currentTrack": null
-            },
-            "queueTracks": [],
-            "previousTrack": null,
-            "repeat": false,
-            "shuffle": false,
-            "play": false,
-            "repeatOnce": false,
-            "devices": [
-                {
-                    "_id": "5e8ba7b243427f32bcb6e75d",
-                    "devicesName": "chrome"
-                }
-            ]
+          "currentlyPlaying": {
+            "currentTrack": null
+          },
+          "queueTracks": [],
+          "previousTrack": null,
+          "repeat": false,
+          "shuffle": false,
+          "play": false,
+          "repeatOnce": false,
+          "devices": [
+            {
+              "_id": "5e8a5b0db2859207bf1fc2e9",
+              "devicesName": "chrome"
+            }
+          ]
         },
-        "followedUsers": [],
+        "followed": true,
+        "followedUsers": [12, 23, 432, 5, 6, 3],
+        "tracks": [],
+        "ownedPlaylists": [],
+        "followedAlbums": [],
+        "followedTracks": [],
+        "_id": "5e82a48054660672fd699883",
+        "email": "test4@test.com",
+        "name": "Interpol",
+        "dateOfBirth": "1979-12-25T00:00:00.000Z",
+        "gender": "male",
+        "type": "artist",
+        "imageUrl": "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg"
+      },
+      {
+        "queue": {
+          "currentlyPlaying": {
+            "currentTrack": null
+          },
+          "queueTracks": [],
+          "previousTrack": null,
+          "repeat": false,
+          "shuffle": false,
+          "play": false,
+          "repeatOnce": false,
+          "devices": [
+            {
+              "_id": "5e8a5b0db2859207bf1fc2e9",
+              "devicesName": "chrome"
+            }
+          ]
+        },
+        "followed": true,
+        "followedUsers": [12, 23, 432, 5, 6, 3],
+        "tracks": [],
+        "ownedPlaylists": [],
+        "followedAlbums": [],
+        "followedTracks": [],
+        "_id": "5e84b966681ae439edfc1d6f",
+        "email": "test5@test.com",
+        "name": "Minuit Machine",
+        "dateOfBirth": "1995-06-25T00:00:00.000Z",
+        "gender": "female",
+        "popularity": 90,
+        "type": "artist",
+        "imageUrl": "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg"
+      },
+      {
+        "queue": {
+          "currentlyPlaying": {
+            "currentTrack": "http://zasymphonia.ddns.net/api/v1/me/player/tracks/5e7d2e023429e24340ff1398",
+            "device": "5e8cc697d35f1d07963e2fe9"
+          },
+          "queueTracks": [
+            "http://zasymphonia.ddns.net/api/v1/me/player/tracks/5e7d2dc03429e24340ff1396",
+            "http://zasymphonia.ddns.net/api/v1/me/player/tracks/5e7d2ddd3429e24340ff1397",
+            "http://zasymphonia.ddns.net/api/v1/me/player/tracks/5e7d2e023429e24340ff1398"
+          ],
+          "previousTrack": "http://zasymphonia.ddns.net/api/v1/me/player/tracks/5e7d2ddd3429e24340ff1397",
+          "repeat": false,
+          "shuffle": false,
+          "play": false,
+          "repeatOnce": false,
+          "nextTrack": null,
+          "devices": [
+            {
+              "_id": "5e8cbeed14d69c47ddfe466a",
+              "devicesName": "Chrome"
+            },
+            {
+              "_id": "5e8cbef414d69c47ddfe466b",
+              "devicesName": "Chrome"
+            },
+            {
+              "_id": "5e8cbeff14d69c47ddfe466d",
+              "devicesName": "Chrome"
+            },
+            {
+              "_id": "5e8cc01d14d69c47ddfe4673",
+              "devicesName": "Chrome"
+            },
+            {
+              "_id": "5e8cc01d14d69c47ddfe4674",
+              "devicesName": "Chrome"
+            },
+            {
+              "_id": "5e8cc02814d69c47ddfe4676",
+              "devicesName": "Chrome"
+            },
+            {
+              "_id": "5e8cc02d14d69c47ddfe4678",
+              "devicesName": "Chrome"
+            },
+            {
+              "_id": "5e8cc697d35f1d07963e2fe8",
+              "devicesName": "Chrome"
+            },
+            {
+              "_id": "5e8cc697d35f1d07963e2fe9",
+              "devicesName": "Chrome"
+            }
+          ]
+        },
+        "followed": true,
+        "followedUsers": [12, 23, 432, 5, 6, 3],
+        "tracks": [
+          "5e8a1ea07937ec4d40c6debf",
+          "5e8a37d0d56ea252c3860a1a",
+          "5e8a39f24e11cd46c8bde654"
+        ],
+        "ownedPlaylists": [],
+        "followedAlbums": [],
+        "followedTracks": [],
+        "_id": "5e80fd1684c71f6ffb534a08",
+        "email": "test6@test.com",
+        "name": "TR/ST",
+        "dateOfBirth": "1985-12-05T00:00:00.000Z",
+        "gender": "male",
+        "popularity": 90,
+        "type": "artist",
+        "imageUrl": "https://source.unsplash.com/collection/190727/1600x900",
+        "__v": 22,
+        "last_login": "2020-04-07T18:29:42.291Z"
+      },
+
+      {
+        "queue": {
+          "currentlyPlaying": {
+            "currentTrack": null
+          },
+          "queueTracks": [],
+          "previousTrack": null,
+          "repeat": false,
+          "shuffle": false,
+          "play": false,
+          "repeatOnce": false,
+          "devices": [
+            {
+              "_id": "5e8ba7b243427f32bcb6e75d",
+              "devicesName": "chrome"
+            }
+          ]
+        },
+        "followed": true,
+        "followedUsers": [12, 23, 432, 3],
+        "tracks": [],
+        "ownedPlaylists": [],
+        "followedAlbums": [],
+        "followedTracks": [],
+        "_id": "5e8c770de37ac11ac4f0135c",
+        "email": "test15@test.com",
+        "name": "Drab Majesty",
+        "dateOfBirth": "1987-07-16T00:00:00.000Z",
+        "gender": "male",
+        "type": "artist",
+        "imageUrl": "https://source.unsplash.com/collection/190727/1600x900"
+      },
+
+      {
+        "queue": {
+          "currentlyPlaying": {
+            "currentTrack": null
+          },
+          "queueTracks": [],
+          "previousTrack": null,
+          "repeat": false,
+          "shuffle": false,
+          "play": false,
+          "repeatOnce": false,
+          "devices": [
+            {
+              "_id": "5e8ba7b243427f32bcb6e75d",
+              "devicesName": "chrome"
+            }
+          ]
+        },
+        "followed": false,
+        "followedUsers": [23, 432, 5, 6, 3],
+        "tracks": [],
+        "ownedPlaylists": [],
+        "followedAlbums": [],
+        "followedTracks": [],
+        "_id": "1",
+        "email": "test15@test.com",
+        "name": "Yasser Al-Dosari",
+        "dateOfBirth": "1987-07-16T00:00:00.000Z",
+        "gender": "male",
+        "type": "artist",
+        "popularity": 90,
+        "imageUrl": "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg"
+      },
+      {
+        "queue": {
+          "currentlyPlaying": {
+            "currentTrack": null
+          },
+          "queueTracks": [],
+          "previousTrack": null,
+          "repeat": false,
+          "shuffle": false,
+          "play": false,
+          "repeatOnce": false,
+          "devices": [
+            {
+              "_id": "5e8ba7b243427f32bcb6e75d",
+              "devicesName": "chrome"
+            }
+          ]
+        },
+        "followed": false,
+        "followedUsers": [12, 3],
         "tracks": [],
         "ownedPlaylists": [],
         "followedAlbums": [],
@@ -267,15 +274,14 @@
         "type": "artist",
         "popularity": 90,
         "imageUrl": "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg"
-    }
-
+      }
     ],
-  "next": null,
-        "total": 5,
-        "cursors": {
-          "after": null
-        },
-        "limit": 20,
-        "href": "https://api.spotify.com/v1/me/following?type=artist&limit=20"
-      }    
+    "next": null,
+    "total": 5,
+    "cursors": {
+      "after": null
+    },
+    "limit": 20,
+    "href": "https://api.spotify.com/v1/me/following?type=artist&limit=20"
+  }
 }

@@ -38,7 +38,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getFollowedArtists", "unfollowArtist"])
+    ...mapActions("artist", ["getFollowedArtists", "unfollowArtist"])
     /**
      * called when the user clicks on an aption from the context menu
      * @param {string} menuItem the option chosen by user
@@ -60,7 +60,7 @@ export default {
     }
   },
 
-  computed: mapGetters(["allFollowedArtists"]),
+  computed: mapGetters("artist", ["allFollowedArtists"]),
 
   watch: {
     // contextMenuChoice: async function() {

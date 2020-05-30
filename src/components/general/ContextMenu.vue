@@ -25,7 +25,7 @@ export default {
       type: null,
       menuList: null,
       //initial data to be manipulated after the user make a right click
-      artistMenu: ["Follow", "Copy Artist Link"],
+      artistMenu: [],
       playlistMenu: [],
       albumMenu: [],
       trackMenu: []
@@ -81,6 +81,12 @@ export default {
           this.copyToClipboard(
             `https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`
           );
+          break;
+        case "Follow":
+          this.followArtist();
+          break;
+        case "Unfollow":
+          this.unfollowArtist();
           break;
       }
     },
@@ -164,9 +170,18 @@ export default {
       }
     },
 
-    artist() {
+    async artist() {
+      this.$store.dispatch("artist/isFollowingArtists", {
+        artists: [this.id],
+        token: this.getuserToken()
+      });
+
+      this.artistMenu = [];
+      if (this.isFollowedArtist) {
+        this.artistMenu.push("Unfollow");
+      } else this.artistMenu.push("Follow");
+      this.artistMenu.push("Copy Artist Link");
       this.menuList = this.artistMenu;
-      //add checks like follow/unfollow and modify menuList
     },
     async playlist() {
       await this.$store.dispatch("playlist/getPlaylist", {
@@ -383,8 +398,49 @@ export default {
         id: this.id,
         token: this.getuserToken()
       });
+    },
+
+    //----------------------------------------------------------------
+    //                       Artist Functions
+    //----------------------------------------------------------------
+
+    /**
+     * Function to follow artist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
+    followArtist() {
+      this.$store.dispatch("artist/followArtist", {
+        artists: [this.id],
+        token: this.getuserToken()
+      });
+    },
+
+    /**
+     * Function to unfollow artist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
+    unfollowArtist() {
+      this.$store.dispatch("artist/unfollowArtist", {
+        artists: [this.id],
+        token: this.getuserToken()
+      });
+    },
+
+    /**
+     * Function to check if the user follow the artist selected by the menu list
+     * @public This is a public method
+     * @param {none}
+     */
+    checkFollowingArtist() {
+      this.$store.dispatch("artist/isFollowingArtists", {
+        artists: [this.id],
+        token: this.getuserToken()
+      });
     }
   },
+
   computed: {
     /**
      * Function to check if the user saves this song or not , gets called at the menu click
@@ -415,6 +471,12 @@ export default {
       return (
         this.$store.state.playlist.menuPlaylist.owner._id == this.getuserID()
       );
+    },
+    isFollowedArtist() {
+      let followed =
+        this.$store.state.artist.FollowingArtistsBool &&
+        this.$store.state.artist.FollowingArtistsBool[0];
+      return followed;
     }
   }
 };

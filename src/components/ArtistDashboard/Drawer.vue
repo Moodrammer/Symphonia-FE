@@ -1,12 +1,17 @@
 <template>
-  <v-navigation-drawer permanent dark app>
+  <v-navigation-drawer
+    permanent
+    dark
+    app
+    :mini-variant="$vuetify.breakpoint.mdAndDown"
+  >
     <v-list dense nav class="py-0">
-      <v-list-item>
+      <v-list-item v-show="$vuetify.breakpoint.lgAndUp">
         <v-list-item-avatar size="200" class="mx-auto mt-4">
           <img :src="image" />
         </v-list-item-avatar>
       </v-list-item>
-      <v-list-item>
+      <v-list-item v-show="$vuetify.breakpoint.lgAndUp">
         <v-list-item-content>
           <p align="center">{{ name }}</p>
         </v-list-item-content>
@@ -24,7 +29,7 @@
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-icon>
 
-        <v-list-item-content>
+        <v-list-item-content v-show="$vuetify.breakpoint.lgAndUp">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
