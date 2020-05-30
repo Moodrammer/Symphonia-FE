@@ -79,7 +79,7 @@ export default {
       switch (action) {
         case "Copy Artist Link":
           this.copyToClipboard(
-            `https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`
+            `https://thesymphonia.ddns.net/webhome/${this.type}/${this.id}`
           );
           break;
         case "Follow":

@@ -23,6 +23,8 @@
                 :isDisabled="track.premium"
                 :image="track.album.image"
                 :contextMenu="contextMenu"
+                :contextType="'artist'"
+                :contextID="artistID"
               />
             </div>
           </v-list>

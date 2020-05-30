@@ -48,7 +48,7 @@ const actions = {
 
   getUserInfo({ commit }, payload) {
     axios
-      .get(`/v1/me/${payload.id}`, {
+      .get(`/v1/me/user/${payload.id}`, {
         headers: {
           Authorization: `Bearer ${payload.token}`
         }

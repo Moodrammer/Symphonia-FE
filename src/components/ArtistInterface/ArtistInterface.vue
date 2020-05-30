@@ -13,9 +13,23 @@
       <h1 class="display-3 font-weight-bold white--text my-5">
         {{ currentArtistGetter.name }}
       </h1>
-      <v-btn rounded color="success" min-width="110" min-height="40" dark
-        >Play</v-btn
-      >
+
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            rounded
+            v-on="on"
+            @click="copyUrlClipboard()"
+            color="success"
+            min-width="110"
+            min-height="40"
+            dark
+            >Share</v-btn
+          >
+        </template>
+        <span>Copy Artist Url</span>
+      </v-tooltip>
+
       <template v-if="isVisitor">
         <v-btn
           rounded
@@ -79,6 +93,22 @@ export default {
       "followArtist",
       "unfollowArtist"
     ]),
+    copyUrlClipboard() {
+      var el = document.createElement("textarea");
+      // Set value (string to be copied)
+      el.value = `https://thesymphonia.ddns.net/webhome/artist/${this.artistID}`;
+      // Set non-editable to avoid focus and move outside of view
+      el.setAttribute("readonly", "");
+      el.style = { position: "absolute", left: "-9999px" };
+      document.body.appendChild(el);
+      // Select text inside element
+      el.select();
+      // Copy text to clipboard
+      document.execCommand("copy");
+      // Remove temporary element
+      document.body.removeChild(el);
+    },
+
     updateArtist() {
       this.getCurrentArtist({
         token: this.getuserToken(),
@@ -94,21 +124,18 @@ export default {
       console.log("FOLLOW", this.artistID);
       this.followArtist({
         token: this.getuserToken(),
-        artists: [this.artistID],
-        type: "artist"
+        artists: [this.artistID]
       });
     },
     unfollow() {
       this.unfollowArtist({
         token: this.getuserToken(),
-        artists: [this.artistID],
-        type: "artist"
+        artists: [this.artistID]
       });
     }
   },
   created() {
     this.updateArtist();
-    console.log(this.getuserID());
   },
   computed: {
     ...mapGetters("artist", ["currentArtistGetter", "isFollowed"]),

@@ -49,7 +49,7 @@ export function makeServer({ environment = "development" } = {}) {
         type: "artist",
         country: "EG",
         imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+          "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg",
         followed: false
       });
 
@@ -457,7 +457,7 @@ export function makeServer({ environment = "development" } = {}) {
         console.log(z);
         return { playlists: { items: z } };
       });
-      this.get("/v1/me/:id", (schema, request) => {
+      this.get("/v1/me/user/:id", (schema, request) => {
         let x = schema.users.findBy(user => user.id === request.params.id);
         return { name: x.name, imageUrl: x.imageUrl };
       });
@@ -819,6 +819,10 @@ export function makeServer({ environment = "development" } = {}) {
         } else if (contextType == "playlist") {
           contextTracks = schema.playlists.where({ id: contextID }).models[0]
             .tracks;
+        } else if (contextType == "artist") {
+          contextTracks = schema.albums
+            .all()
+            .models.filter(album => album.artist._id == contextID)[0].tracks;
         }
         mockTracks = [];
         for (let i = 0; i < contextTracks.length; i++) {
