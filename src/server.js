@@ -105,7 +105,6 @@ export function makeServer({ environment = "development" } = {}) {
           owner: { _id: user_id, name: "Bob" },
           active: true
         });
-        console.log(schema.playlists.all().length);
         let ID = schema.playlists.all().length;
         return schema.playlists.find(ID).attrs;
       });
@@ -679,18 +678,6 @@ export function makeServer({ environment = "development" } = {}) {
             }
           );
         }),
-        this.get("/v1/me/player/currently-playing", () => {
-          return new Response(
-            200,
-            {},
-            {
-              data: {
-                currentTrack: "/track/5e7d2dc03429e24340ff1396",
-                device: "5e88ef4d54142e3db4d01ee5"
-              }
-            }
-          );
-        }),
         // Get the current user's data to the account overview(User's Settings)
         this.get("/v1/me", (schema, request) => {
           // get the user's data from seed if exist
@@ -797,26 +784,37 @@ export function makeServer({ environment = "development" } = {}) {
       var previousTrack = mockTracks[0];
       var nextTrack = mockTracks[2];
 
-      this.get("/v1/me/player/queue", () => {
-        console.log(mockTracks);
+      this.get("/v1/me/player/currently-playing", () => {
         return new Response(
           200,
           {},
           {
             data: {
-              currentlyPlaying: {
-                currentTrack: currentlyPlaying
-              },
-              queueTracks: mockTracks,
-              previousTrack: previousTrack,
-              nextTrack: nextTrack,
-              repeat: repeat,
-              repeatOnce: repeatOnce,
-              shuffle: shuffle
+              currentTrack: currentlyPlaying,
+              device: "5e88ef4d54142e3db4d01ee5"
             }
           }
         );
-      });
+      }),
+        this.get("/v1/me/player/queue", () => {
+          return new Response(
+            200,
+            {},
+            {
+              data: {
+                currentlyPlaying: {
+                  currentTrack: currentlyPlaying
+                },
+                queueTracks: mockTracks,
+                previousTrack: previousTrack,
+                nextTrack: nextTrack,
+                repeat: repeat,
+                repeatOnce: repeatOnce,
+                shuffle: shuffle
+              }
+            }
+          );
+        });
       //////////////////////////////////////////////////////////////////////////////////////
       //
       //////////////////////////////////////////////////////////////////////////////////////
@@ -844,7 +842,6 @@ export function makeServer({ environment = "development" } = {}) {
         currentlyPlayingIndex = mockTracks.indexOf(link);
 
         currentlyPlaying = mockTracks[currentlyPlayingIndex];
-        console.log(mockTracks);
         var nextPlayingIndex = (currentlyPlayingIndex + 1) % mockTracks.length;
         nextTrack = mockTracks[nextPlayingIndex];
 

@@ -169,7 +169,6 @@ const actions = {
           state.trackTotalDurationMs = trackData.durationMs;
           state.trackId = trackData._id;
           state.trackAlbumImageUrl = trackData.album.image;
-
           //configure PicInPicCanvasRdy
           state.isPicInPicCanvasRdy = false;
 
@@ -235,7 +234,6 @@ const actions = {
       })
       .then(() => {
         commit("unlikeTrack", payload.id);
-        console.log("from track");
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -275,7 +273,6 @@ const actions = {
       }
     }).then(response => {
       state.queueTracks = response.data.data.queueTracks;
-      console.log(state.queueTracks);
 
       dispatch("updateQueueTracksInfo", token);
 
@@ -354,7 +351,7 @@ const actions = {
     for (var j = i + 1; j < state.queueTracks.length; j++) {
       tempTrackUrl = state.queueTracks[j];
 
-      songId = tempTrackUrl.slice(
+      let songID = tempTrackUrl.slice(
         tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
         tempTrackUrl.length
       );
@@ -365,7 +362,7 @@ const actions = {
       };
 
       await axios
-        .get("/v1/users/track/" + songId, {
+        .get("/v1/users/track/" + songID, {
           headers: {
             Authorization: token
           }
