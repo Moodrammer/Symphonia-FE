@@ -36,7 +36,8 @@ export function makeServer({ environment = "development" } = {}) {
         type: "user",
         country: "EG",
         imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+        followed: false
       });
       //creating an artist for testing purposes
       server.create("user", {
@@ -48,7 +49,8 @@ export function makeServer({ environment = "development" } = {}) {
         type: "artist",
         country: "EG",
         imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+        followed: false
       });
 
       //This part is just to fake mirage in order to persist the data of only one user
@@ -1091,20 +1093,27 @@ export function makeServer({ environment = "development" } = {}) {
       ///// UNFOLLOW ARTIST
 
       this.delete("/v1/me/following", (schema, request) => {
-        console.log("param1", request.queryParams);
-        if (request.queryParams.type === "artist") {
+        if (request.queryParams.type === "artist")
           return schema.artists
             .findBy(artist => artist._id === request.queryParams.ids)
             .update({ followed: false });
-        }
+        else
+          return schema.users
+            .findBy(user => user.id === request.queryParams.ids)
+            .update({ followed: false });
       });
 
       ///// FOLLOW ARTIST
 
       this.put("/v1/me/following", (schema, request) => {
-        return schema.artists
-          .findBy(artist => artist._id === request.queryParams.ids)
-          .update({ followed: true });
+        if (request.queryParams.type == "artist")
+          return schema.artists
+            .findBy(artist => artist._id === request.queryParams.ids)
+            .update({ followed: true });
+        else
+          return schema.users
+            .findBy(user => user.id === request.queryParams.ids)
+            .update({ followed: true });
       });
 
       //// IF USER FOLLOW SPECIFIC ARTIST
@@ -1113,7 +1122,9 @@ export function makeServer({ environment = "development" } = {}) {
         return [
           schema.artists.findBy(
             artist => artist._id === request.queryParams.ids
-          ).attrs.followed
+          ).attrs.followed ||
+            schema.users.findBy(user => user.id === request.queryParams.ids)
+              .attrs.followed
         ];
       });
     }

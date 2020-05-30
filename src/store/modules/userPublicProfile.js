@@ -60,7 +60,7 @@ const actions = {
         commit("load_userInfo", response.data);
       })
       .catch(error => {
-        console.log("axios caught an error in getAlbums");
+        console.log("axios caught an error in getUserInfo");
         console.log(error);
       });
   },

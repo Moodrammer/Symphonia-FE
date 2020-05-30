@@ -93,7 +93,9 @@ export default {
 
     this.getArtistAlbums({
       id: this.$props.artistID,
-      token: this.getuserToken()
+      token: this.getuserToken(),
+      limit: 50,
+      offset: 0
     });
   },
   methods: {

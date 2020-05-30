@@ -412,7 +412,8 @@ export default {
     followArtist() {
       this.$store.dispatch("artist/followArtist", {
         artists: [this.id],
-        token: this.getuserToken()
+        token: this.getuserToken(),
+        type: "artist"
       });
     },
 
@@ -424,7 +425,8 @@ export default {
     unfollowArtist() {
       this.$store.dispatch("artist/unfollowArtist", {
         artists: [this.id],
-        token: this.getuserToken()
+        token: this.getuserToken(),
+        type: "artist"
       });
     },
 
