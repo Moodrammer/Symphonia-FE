@@ -11,6 +11,8 @@ const state = {
         timeout: 0
     },
     isTokenSentToServer: false,
+    historyList: [],
+    noNotificationHistory: false
 }
 
 const mutations = {
@@ -24,6 +26,14 @@ const mutations = {
 
     setIsTokenSentToServer(state, payload){
         state.isTokenSentToServer = payload
+    },
+
+    setnoNotificationHistory(state, payload){
+        state.noNotificationHistory = payload
+    },
+
+    setNotificationHistoryList(state, payload){
+        state.historyList = payload
     }
 }
 
@@ -120,8 +130,31 @@ const actions = {
                 console.log("couldn't retrieve token", err)
             })
          })
-     }
+     },
 //--------------------------------------------------------------------------------------------------------------//
+     getNotificationHistoryList({commit}){
+        axios.get("/v1/me/notifications",{
+            headers: {
+                Authorization: `Bearer ${getuserToken.methods.getuserToken()}`
+            }
+        })
+        .then((response) => {
+            let list = response.data.notifications.items
+            let newList = [];
+            list.forEach(element => {
+                var notification = {
+                    title: element.notification.title,
+                    body: element.notification.body,
+                    icon: element.notification.icon
+                }
+                newList.push(notification)
+            });
+            commit("setNotificationHistoryList", newList)
+        })
+        .catch(() => {
+            commit("setnoNotificationHistory", true)
+        })
+     }
 }
 
 export default{
