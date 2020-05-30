@@ -24,10 +24,10 @@ import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
-import SymphoniaArtist from "../components/ArtistDashboard/Dashboard.vue"
-import SymphoniaArtistMain from "../components/ArtistDashboard/Main.vue"
-import SymphoniaArtistAlbums from "../components/ArtistDashboard/Albums.vue"
-import SymphoniaArtistSingles from "../components/ArtistDashboard/Singles.vue"
+import SymphoniaArtist from "../components/ArtistDashboard/Dashboard.vue";
+import SymphoniaArtistMain from "../components/ArtistDashboard/Main.vue";
+import SymphoniaArtistAlbums from "../components/ArtistDashboard/Albums.vue";
+import SymphoniaArtistSingles from "../components/ArtistDashboard/Singles.vue";
 // import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue";
 import notfound from "../views/TheNotFoundPage.vue";
 
@@ -46,7 +46,7 @@ const routes = [
         name: "main",
         path: "main",
         component: SymphoniaArtistMain
-      },      
+      },
       {
         name: "albums",
         path: "albums",
@@ -56,9 +56,8 @@ const routes = [
         name: "singles",
         path: "singles",
         component: SymphoniaArtistSingles
-      },
-      
-]
+      }
+    ]
   },
   {
     path: "/",

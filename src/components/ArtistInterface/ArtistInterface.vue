@@ -42,7 +42,14 @@
         </v-btn>
       </div>
 
+<<<<<<< HEAD
       <router-view :artistID="artistID" :artistName="currentArtistGetter.name" :contextMenu="contextMenu"/>
+=======
+      <router-view
+        :artistID="artistID"
+        :artistName="currentArtistGetter.name"
+      />
+>>>>>>> master
     </div>
   </v-content>
 </template>
@@ -57,6 +64,7 @@ export default {
   methods: {
     ...mapActions("artist", ["getCurrentArtist", "isFollowingArtists","followArtist","unfollowArtist"]),
     updateArtist() {
+<<<<<<< HEAD
         this.getCurrentArtist({
           token: this.getuserToken(),
           id: this.artistID
@@ -80,13 +88,24 @@ export default {
         token: this.getuserToken(),
         artists: [this.artistID]
       })
+=======
+      this.getCurrentArtist({
+        token: this.getuserToken(),
+        id: this.artistID
+      });
+>>>>>>> master
     }
   },
   created() {
     this.updateArtist();
   },
+<<<<<<< HEAD
   computed:{
     ...mapGetters("artist", ["currentArtistGetter", "isFollowed"]),
+=======
+  computed: {
+    ...mapGetters("artist", ["currentArtistGetter"]),
+>>>>>>> master
     artistID() {
       return this.$route.params.id;
     },
@@ -106,8 +125,7 @@ export default {
     }
   },
   data: function() {
-    return {
-    };
+    return {};
   },
   mixins: [getuserToken, getuserID]
 };

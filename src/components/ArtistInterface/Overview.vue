@@ -81,7 +81,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     SongItem,
-    CardGrid,
+    CardGrid
   },
   mixins: [getuserToken],
   created() {
@@ -89,50 +89,96 @@ export default {
       id: this.$props.artistID,
       token: this.getuserToken(),
       limit: 5,
-      offset: 0,
+      offset: 0
     });
 
     this.getArtistAlbums({
       id: this.$props.artistID,
-      token: this.getuserToken(),
+      token: this.getuserToken()
     });
 
+<<<<<<< HEAD
+=======
+    this.getArtistSingles({
+      id: this.$props.artistID,
+      token: this.getuserToken()
+    });
+>>>>>>> master
   },
   methods: {
     ...mapActions("artist", [
       "getArtistAlbums",
       "getArtistTopTracks",
+<<<<<<< HEAD
+=======
+      "getArtistSingles",
+      "getArtistAppearsOn"
+>>>>>>> master
     ]),
-    menuOrder() {},
+    menuOrder() {}
   },
   computed: {
     ...mapGetters("artist", [
       "allArtistAlbums",
       "allArtistTopTracks",
       "allArtistSingles",
+<<<<<<< HEAD
     ]),
+=======
+      "allArtistAppearsOn"
+    ])
+>>>>>>> master
   },
   props: ["artistID", "artistName", "contextMenu"],
   data() {
     return {
       albumsCardItems: {
-        items: [],
+        items: []
       },
       singlesCardItems: {
-        items: [],
+        items: []
       },
+<<<<<<< HEAD
+=======
+      tracks: [
+        {
+          durationMs: 323213232,
+          name: "saad",
+          album: {
+            name: "sa",
+            _id: "dsa"
+          },
+          artist: {
+            name: "dsadsa",
+            _id: "dsadssadsa"
+          }
+        }
+      ]
+>>>>>>> master
     };
   },
   watch: {
     allArtistAlbums(newValue) {
       console.log("sdasd1", newValue);
       this.albumsCardItems.items = newValue;
+<<<<<<< HEAD
     },
     allArtistSingles(newValue) {
       console.log("sdasd2", newValue);
       this.singlesCardItems.items = newValue;
     },
   },
+=======
+      newValue.forEach(element => {
+        if (element.type == "album") albums.push(element);
+        else singles.push(element);
+      });
+      console.log("saaaaaaaad", newValue);
+      this.albumsCardItems.items = albums;
+      this.singlesCardItems.items = singles;
+    }
+  }
+>>>>>>> master
 };
 </script>
 

@@ -152,7 +152,7 @@ export default {
   data: () => ({
     uploadedFiles: [],
     uploading: false,
-    rules: [(value) => !value || value.size <= 1000000 || "MAX SIZE IS 1 MB"],
+    rules: [value => !value || value.size <= 1000000 || "MAX SIZE IS 1 MB"],
     albumTracksNumber: 0,
     premium: [],
     explicit: [],
@@ -169,8 +169,8 @@ export default {
     alert: {
       msg: "Please Complete required fields",
       type: "error",
-      show: false,
-    },
+      show: false
+    }
   }),
   mixins: [getuserToken],
   watch: {
@@ -195,33 +195,33 @@ export default {
         this.explicit.push(false);
       }
       console.log(this.albumTracksCategories);
-    },
+    }
   },
   computed: {
     tracksNumber: function() {
       return parseInt(this.albumTracksNumber);
-    },
+    }
   },
   created() {
     axios
       .get("/v1/browse/categories", {
         headers: {
-          Authorization: `Bearer ${this.getuserToken()}`,
-        },
+          Authorization: `Bearer ${this.getuserToken()}`
+        }
       })
-      .then((response) => {
+      .then(response => {
         console.log(response.data);
 
-        response.data.categories.items.forEach((element) => {
+        response.data.categories.items.forEach(element => {
           this.categories.push({
             id: element._id,
             name: element.name,
-            checked: false,
+            checked: false
           });
         });
         console.log(this.categories);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   },
@@ -232,7 +232,7 @@ export default {
       // form.append("my_field", "my value");
       form.append("name", payload.name);
       form.append("track", payload.track);
-      payload.categories.forEach((element) => {
+      payload.categories.forEach(element => {
         form.append("category", element.id);
       });
       form.append("album", payload.albumID);
@@ -242,15 +242,15 @@ export default {
       axios
         .post("/v1/users/tracks", form, {
           headers: {
-            Authorization: `Bearer ${token}`,
-          },
+            Authorization: `Bearer ${token}`
+          }
         })
-        .then((response) => {
+        .then(response => {
           console.log(response);
           this.uploadedFiles.push(payload.name);
           // this.albumID = response.
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
       //   dialog = false
     },
     dataURItoBlob(dataURI) {
@@ -300,11 +300,11 @@ export default {
       axios
         .post("/v1/albums", form, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`
             // 'content-type': 'multipart/form-data'
-          },
+          }
         })
-        .then((response) => {
+        .then(response => {
           console.log(response);
           this.albumID = response.data._id;
           console.log(this.albumID);
@@ -315,17 +315,15 @@ export default {
               track: this.albumTrackFile[i],
               explicit: this.explicit[i],
               premium: this.premium[i],
-              categories: this.albumTracksCategories[i].filter(
-                (e) => e.checked
-              ),
-              albumID: this.albumID,
+              categories: this.albumTracksCategories[i].filter(e => e.checked),
+              albumID: this.albumID
             });
           this.startUpload = false;
         })
-        .catch((error) => console.log(error));
+        .catch(error => console.log(error));
       //   dialog = false
-    },
-  },
+    }
+  }
 };
 </script>
 

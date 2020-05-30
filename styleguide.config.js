@@ -33,13 +33,12 @@ module.exports = {
       h5: 18,
       h6: 18
     },
-    space: [4,8,16,18,24,24,24]
+    space: [4, 8, 16, 18, 24, 24, 24]
   },
   usageMode: "expand",
   tocMode: "collapse",
   sortProps: props => props,
   template: {
     favicon: "public/favicon.png"
-  },
-
+  }
 };

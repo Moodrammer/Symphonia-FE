@@ -25,7 +25,7 @@ export default {
 
       canvasWidth: 600,
       canvasHeight: 20,
-      ctx: undefined,
+      ctx: undefined
     };
   },
   methods: {

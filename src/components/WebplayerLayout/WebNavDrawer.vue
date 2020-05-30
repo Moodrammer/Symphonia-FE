@@ -149,12 +149,12 @@ export default {
     }
   },
   created() {
-    if(this.getuserType() == 'artist')
+    if (this.getuserType() == "artist")
       this.items.push({
         icon: "mdi-account-music",
         text: "Go to Symphonia Artist",
         route: `/SymphoniaArtist/${this.getuserID()}`
-      })
+      });
   },
   data: function() {
     return {

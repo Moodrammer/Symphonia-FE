@@ -1,18 +1,24 @@
 [
   {
-    "category": [],
     "trackId": "116",
-    "name": "nigga",
-    "durationMs": 21354,
-    "artist": "5e7d2ad6491be620ac9ea056",
-    "trackPath": "assets/Amr/sample2.mp3",
+    "liked": true,
+    "id":"116",
+    "_id":"116",
+    "name": "Surah Nooh",
+    "durationMs": 62000,
+    "link":"http://thesymphonia.ddns.net/api/v1/me/player/tracks/116",
     "__v": 0,
     "album": {
       "album_type": "single",
-      "id": "115",
-      "_id": "115",
-      "image":"http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "ALbum115"
+      "id": "7",
+      "_id": "7",
+      "image": "http://source.unsplash.com/xMMh-VFGL9M",
+      "name": "Album 5"
+    },
+    "artist": 
+    {
+      "id": "1",
+      "name": "Yasser Al-Dosari"
     }
   },
   {
@@ -22,19 +28,21 @@
       "album_type": "album",
       "id": "1",
       "_id": "1",
-      "image":"http://source.unsplash.com/eSYCRwJEzO8",
-      "name": "Album 3"
+      "image":"http://source.unsplash.com/7xP5BJ34ybg",
+      "name": "َQuran Album1"
     },
     "artist": 
       {
         "id": "1",
         "name": "Yasser Al-Dosari"
       },
-    "durationMs": 2131000,
+    "link":"http://thesymphonia.ddns.net/api/v1/me/player/tracks/2",
+    "durationMs": 54000,
     "explicit": false,
-    "name": "Surah Yossef",
+    "name": "Ayat Al-Kursi",
     "premium": true,
-    "_id": "2"
+    "_id": "2",
+    "id":"2"
   },
   {
     "liked": true,
@@ -46,17 +54,18 @@
       "album_type": "album",
       "id": "5",
       "_id": "5",
-      "image":"http://source.unsplash.com/eSYCRwJEzO8",
-      "name": "Quran ALbum1"
+      "name": "Quran ALbum1",
+      "image":"http://source.unsplash.com/7xP5BJ34ybg"
     },
     "artist": 
       {
         "id": "2",
         "name": "Nasser Al-Qatami"
       },
-    "durationMs": 374000,
+    "link":"http://thesymphonia.ddns.net/api/v1/me/player/tracks/3",
+    "durationMs": 48000,
     "explicit": false,
-    "name": "Surah Al-Najm"
+    "name": "Surah Al-Duha"
   },
   {
     "liked": true,
@@ -73,12 +82,13 @@
     },
     "artist": 
       {
-        "id": "3",
-        "name": "Wadeea Al-Yamani"
+        "id": "2",
+        "name": "Nasser Al-Qatami"
       },
-    "durationMs": 1659000,
+    "link":"http://thesymphonia.ddns.net/api/v1/me/player/tracks/4",
+    "durationMs": 18000,
     "explicit": false,
-    "name": "Surah Taha"
+    "name": "Surah Al-Nasr"
   },
   {
     "liked": true,
@@ -88,19 +98,20 @@
     "_id":"5",
     "album": {
       "album_type": "album",
-      "id": "2",
-      "_id": "2",
-      "image":"http://source.unsplash.com/2Qg4y32pdCc",
-      "name": "TRST"
+      "id": "4",
+      "_id": "4",
+      "image": "http://source.unsplash.com/H7sHkM9eilw",
+      "name": "Album2"
     },
     "artist": 
       {
-        "id": "2",
-        "name": "Nasser Al-Qatami"
+        "id": "1",
+        "name": "Yasser Al-Dosari"
       },
-    "durationMs": 409000,
+    "link":"http://thesymphonia.ddns.net/api/v1/me/player/tracks/5",
+    "durationMs": 39000,
     "explicit": false,
-    "name": "Surah Al-Mulk"
+    "name": "Surah Al-An'am"
   },
   {
     "liked": false,
@@ -108,21 +119,22 @@
     "trackId": "6",
     "id": "6",
     "_id":"6",
+    "link":"http://thesymphonia.ddns.net/api/v1/me/player/tracks/6",
     "album": {
       "album_type": "single",
       "id": "3",
       "_id": "3",
-      "image": "http://source.unsplash.com/hiFpJqA4FcE",
-      "name": "Surah Ibrahim"
+      "image": "http://source.unsplash.com/wnd7te34T-0",
+      "name": "Surah Al-Asr"
     },
     "artist":
       {
-        "id": "5",
-        "name": "Abd Al-Rahman Al-Aoosi"
+        "id": "2",
+        "name": "Nasser Al-Qatami"
       },
-    "durationMs": 1129000,
+    "durationMs": 14000,
     "explicit": false,
-    "name": "Surah Ibrahim"
+    "name": "Surah Al-Asr"
   },
   {
     "liked": false,
@@ -141,8 +153,9 @@
         "_id": "6",
         "name": "Artist"
       },
-    "durationMs": 1129000,
+    "durationMs": 106000,
     "explicit": false,
+    "link":"http://thesymphonia.ddns.net/api/v1/me/player/tracks/123",
     "href": "https://server6.mp3quran.net/aloosi/014.mp3",
     "name": "Game of Thrones I",
     "popularity": 45,
@@ -159,7 +172,7 @@
       "href": "https://api.symphonia.com/v1/albums/1",
       "id": "6",
       "_id": "6",
-      "image": "http://source.unsplash.com/EOHXjmXIBjI",
+      "image": "http://source.unsplash.com/FPz-Dd-xx4c",
       "name": "Game Of Thrones",
       "type": "album"
     },
@@ -169,10 +182,10 @@
         "_id": "6",
         "name": "Artist",
         "type": "artist"
-      }
-    ,
-    "durationMs": 1129000,
+      },
+    "durationMs": 202000,
     "explicit": false,
+    "link":"http://thesymphonia.ddns.net/api/v1/me/player/tracks/456",
     "href": "https://server6.mp3quran.net/aloosi/014.mp3",
     "name": "Game Of Thrones II",
     "popularity": 45,
@@ -201,8 +214,9 @@
         "type": "artist"
       }
     ,
-    "durationMs": 1129000,
+    "durationMs": 305000,
     "explicit": false,
+    "link":"http://thesymphonia.ddns.net/api/v1/me/player/tracks/789",
     "href": "https://server6.mp3quran.net/aloosi/014.mp3",
     "name": "Game Of Thrones III",
     "popularity": 45,
