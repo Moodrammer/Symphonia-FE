@@ -5,8 +5,8 @@ import Vuex from "vuex";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
-import overview from "@/components/User Settings/overview.vue";
-import bottomContent from "@/components/User Settings/bottomContent.vue";
+import overview from "@/components/User Settings/Overview.vue";
+import bottomContent from "@/components/User Settings/BottomContent.vue";
 
 describe("overview", () => {
   let wrapper;

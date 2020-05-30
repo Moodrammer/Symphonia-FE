@@ -11,7 +11,7 @@
           <!-- the main container to the side bad & view router -->
           <div class="row" style="width: 1185px; margin:0px;">
             <!-- Side bar content -->
-            <side-bar />
+            <side-bar></side-bar>
             <!-- Views go here from side bar -->
             <router-view></router-view>
           </div>
@@ -24,14 +24,10 @@
 
 <script>
 import PreAds from "../components/User Settings/PremiumAds.vue";
-import sideBar from "../components/User Settings/sideBar.vue";
-import overview from "../components/User Settings/overview.vue";
-import editProfile from "../components/User Settings/editProfile.vue";
-import recoverPlaylists from "../components/User Settings/recoverPlaylist.vue";
+import SideBar from "../components/User Settings/SideBar.vue";
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
-import changePassword from "../components/User Settings/changePass.vue";
-import isLoggedIn from "@/mixins/userService/isLoggedIn";
+
 
 export default {
   data() {
@@ -39,30 +35,9 @@ export default {
   },
   components: {
     premiumAds: PreAds,
-    sideBar: sideBar,
-    // eslint-disable-next-line vue/no-unused-components
-    overview: overview,
-    // eslint-disable-next-line vue/no-unused-components
-    editProfile: editProfile,
-    // eslint-disable-next-line vue/no-unused-components
-    recoverPlaylists: recoverPlaylists,
-    // eslint-disable-next-line vue/no-unused-components
-    changePassword: changePassword,
+    "side-bar": SideBar,
     navBar: navBar,
     appFooter: appFooter
-  },
-  mixins: [isLoggedIn],
-  created() {
-    //check if the user is logged in ?
-    if (!this.isLoggedIn()) {
-      this.$router.push("/login");
-    }
-  },
-  beforeUpdate() {
-    //check if the user is logged in ?
-    if (!this.isLoggedIn()) {
-      this.$router.push("/login");
-    }
   }
 };
 </script>

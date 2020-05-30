@@ -21,13 +21,22 @@ describe("Song Component", () => {
         track: {
           namespaced: true,
           state: {
-            generalLiked: true
+            generalLiked: true,
+            trackId: "1",
+            isTrackPaused: true
           },
-
+          mutations: {
+            setContextData: jest.fn(),
+            setIsTrackPaused: jest.fn()
+          },
           actions: {
             removeSavedTrack: jest.fn(),
             checkSaved: jest.fn(),
-            saveTrack: jest.fn()
+            saveTrack: jest.fn(),
+            togglePauseAndPlay: jest.fn(),
+            getTrackInformation: jest.fn(),
+            playTrackInQueue: jest.fn(),
+            updateQueue: jest.fn()
           }
         }
       }
@@ -44,7 +53,8 @@ describe("Song Component", () => {
           event: "event",
           type: "type",
           id: "1234"
-        }
+        },
+        ID: "2"
       }
     });
   });
@@ -75,5 +85,34 @@ describe("Song Component", () => {
   it("Set menu data", () => {
     wrapper.vm.$emit("contextmenu.prevent");
     expect(wrapper.vm.menuClick()).toHaveBeenCalled;
+  });
+
+  //---------------------------------------------------
+  //    Test soundplayer interaction with song item
+  //---------------------------------------------------
+  it("Play a new track", () => {
+    wrapper.vm.playTrack();
+    expect("playTrackInQueue").toHaveBeenCalled;
+    expect("setContextData").toHaveBeenCalled;
+    expect("getTrackInformation").toHaveBeenCalled;
+    expect("setIsTrackPaused").toHaveBeenCalled;
+  });
+
+  it("Check if the track is the currently playing track", () => {
+    wrapper.setProps({ ID: "1" });
+    expect(wrapper.vm.isPlaying).toBe(true);
+    expect(wrapper.vm.isPaused).toBe(true);
+  });
+
+  it("Check if the track is paused", () => {
+    wrapper.setProps({ ID: "2" });
+    expect(wrapper.vm.isPlaying).toBe(false);
+    expect(wrapper.vm.isPaused).toBe(true);
+  });
+
+  it("Pause the currently playing track", () => {
+    wrapper.vm.pauseTrack();
+    expect("togglePauseAndPlay").toHaveBeenCalled;
+    expect("setIsTrackPaused").toHaveBeenCalled;
   });
 });

@@ -18,8 +18,10 @@
         "firebase": "^7.14.5",
         "vue": "^2.6.11",
         "vue-context": "^5.1.0",
+        "vue-image-crop-upload": "^2.5.0",
         "vue-router": "^3.1.5",
         "vue-spinner": "^1.0.3",
+        "vuelidate": "^0.7.5",
         "vuetify": "^2.2.11",
         "vuex": "^3.1.2"
     },

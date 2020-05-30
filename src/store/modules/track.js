@@ -87,6 +87,7 @@ const mutations = {
   },
   setAudioElement(state, audioElement) {
     state.audioElement = audioElement;
+    state.audioElement.crossOrigin = "anonymous";
   },
   setIsTrackPaused(state, isTrackPaused) {
     state.isTrackPaused = isTrackPaused;
@@ -114,11 +115,21 @@ const mutations = {
   },
   setContextUrl(state, contextUrl) {
     state.contextUrl = contextUrl;
+
+    var url =
+      window.location.host +
+      "/" +
+      "webhome/" +
+      state.contextType +
+      "/" +
+      state.contextId;
+
     state.facebookUrl =
       "https://www.facebook.com/sharer/sharer.php?u=" +
-      contextUrl +
+      url +
       "&amp;src=sdkpreparse";
-    state.twitterUrl = "https://twitter.com/intent/tweet?url=" + contextUrl;
+
+    state.twitterUrl = "https://twitter.com/intent/tweet?url=" + url;
   },
   setPicInPicCanvas(state, picInPicCanvas) {
     state.picInPicCanvas = picInPicCanvas;
@@ -142,6 +153,13 @@ const mutations = {
         alert("Web Audio API is not supported in this browser");
       }
     }
+  },
+  setContextData(state, payload) {
+    state.contextId = payload.contextID;
+    state.contextType = payload.contextType;
+    state.contextUrl = payload.contextUrl;
+    state.audioElement.autoplay = true;
+    state.isBuffering = true;
   }
 };
 
@@ -161,7 +179,6 @@ const actions = {
           state.trackTotalDurationMs = trackData.durationMs;
           state.trackId = trackData._id;
           state.trackAlbumImageUrl = trackData.album.image;
-
           //configure PicInPicCanvasRdy
           state.isPicInPicCanvasRdy = false;
 
@@ -227,7 +244,6 @@ const actions = {
       })
       .then(() => {
         commit("unlikeTrack", payload.id);
-        console.log("from track");
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -345,7 +361,7 @@ const actions = {
     for (var j = i + 1; j < state.queueTracks.length; j++) {
       tempTrackUrl = state.queueTracks[j];
 
-      songId = tempTrackUrl.slice(
+      let songID = tempTrackUrl.slice(
         tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
         tempTrackUrl.length
       );
@@ -356,7 +372,7 @@ const actions = {
       };
 
       await axios
-        .get("/v1/users/track/" + songId, {
+        .get("/v1/users/track/" + songID, {
           headers: {
             Authorization: token
           }
@@ -666,8 +682,16 @@ const actions = {
    * @public
    */
   copyLink({ state }) {
+    var url =
+      window.location.host +
+      "/" +
+      "webhome/" +
+      state.contextType +
+      "/" +
+      state.contextId;
+
     const dummyTextAreaElement = document.createElement("textarea");
-    dummyTextAreaElement.value = state.contextUrl;
+    dummyTextAreaElement.value = url;
     document.body.appendChild(dummyTextAreaElement);
     dummyTextAreaElement.select();
     document.execCommand("copy");

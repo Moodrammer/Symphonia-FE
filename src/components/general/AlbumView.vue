@@ -57,17 +57,27 @@
                       absolute
                       opacity="0.8"
                     >
-                      <v-btn
-                        fab
-                        outlined
-                        color="white"
-                        id="playIcon"
-                        @click="iconClick = !iconClick"
-                      >
-                        <v-icon large color="white" v-if="iconClick">
+                      <v-btn fab outlined color="white">
+                        <v-icon
+                          large
+                          color="white"
+                          v-if="!isPaused"
+                          @click="pause"
+                          id="pauseIcon"
+                          class="mb-2"
+                        >
                           mdi-pause
                         </v-icon>
-                        <v-icon large color="white" v-else>mdi-play</v-icon>
+                        <v-icon
+                          large
+                          color="white"
+                          v-else
+                          @click="play"
+                          id="playIcon"
+                          class="mb-2"
+                        >
+                          mdi-play
+                        </v-icon>
                       </v-btn>
                     </v-overlay>
                   </v-img>
@@ -92,8 +102,18 @@
                     class="white--text px-8 my-4"
                     id="playBtn"
                     @click="play"
+                    v-if="isPaused"
                   >
                     Play
+                  </v-btn>
+                  <v-btn
+                    rounded
+                    class="white--text px-8 my-4"
+                    id="playBtn"
+                    @click="pause"
+                    v-else
+                  >
+                    Pause
                   </v-btn>
                 </v-row>
 
@@ -121,7 +141,7 @@
                     color="white"
                     class="mx-2"
                     id="menuDots"
-                    @mousedown.prevent="menuClick($event)"
+                    @click.stop="menuClick($event)"
                   >
                     mdi-dots-horizontal
                   </v-icon>
@@ -155,6 +175,8 @@
                 :ID="track._id"
                 :isDisabled="track.premium"
                 :contextMenu="contextMenu"
+                :contextType="'album'"
+                :contextID="id"
               />
             </div>
           </v-list>
@@ -184,18 +206,48 @@ export default {
   data: function() {
     return {
       hover: false,
-      iconClick: false,
       id: this.$route.params.id
     };
   },
   methods: {
     /**
-     * Gets called when the user clicks on the play button to play the album
+     * Gets called when the user clicks on the play button/icon to play the album
      * @public This is a public method
      * @param {none}
      */
-    play: function() {
-      //To be added
+    play: async function() {
+      if (this.id != this.contextID) {
+        this.$store.commit("track/setContextData", {
+          contextID: this.id,
+          contextType: "album",
+          contextUrl: "https://thesymphonia.ddns.net/api"
+        });
+        await this.$store.dispatch(
+          "track/playTrackInQueue",
+          this.tracks[0]._id
+        );
+        await this.$store.dispatch("track/getTrackInformation", {
+          token: "Bearer " + this.getuserToken(),
+          trackId: this.tracks[0]._id
+        });
+
+        await this.$store.dispatch(
+          "track/updateQueue",
+          "Bearer " + this.getuserToken()
+        );
+      } else {
+        this.$store.dispatch("track/togglePauseAndPlay");
+      }
+      this.$store.commit("track/setIsTrackPaused", this.isPaused);
+    },
+    /**
+     * Gets called when the user clicks on the pause button/icon
+     * @public This is a public method
+     * @param {none}
+     */
+    pause: function() {
+      this.$store.dispatch("track/togglePauseAndPlay");
+      this.$store.commit("track/setIsTrackPaused", this.isPaused);
     },
     /**
      * Gets called when the user clicks on heart icon to follow the album
@@ -265,6 +317,14 @@ export default {
     },
     isLoading() {
       return this.$store.state.album.isLoading;
+    },
+    isPaused() {
+      if (this.id == this.contextID)
+        return this.$store.state.track.isTrackPaused;
+      else return true;
+    },
+    contextID() {
+      return this.$store.state.track.contextId;
     }
   },
   props: ["contextMenu"],

@@ -45,7 +45,7 @@
           md="4"
           sm="6"
           class="my-4"
-          v-for="(item, index) in AUIitems"
+          v-for="(item, index) in AUIitems.slice(0, maxItems)"
           :key="item.id"
         >
           <v-card
@@ -57,6 +57,7 @@
             style="border-radius:0px"
             @mouseover="hoveredCardIndex = index"
             @mouseleave="hoveredCardIndex = null"
+            @click="cardClicked(item.id, 'album')"
           >
             <v-btn
               class="ma-auto"
@@ -166,7 +167,7 @@
             @mouseover="hoveredCardIndex = index"
             @mouseleave="hoveredCardIndex = null"
             dark
-            @click="cardClicked(item.id, item.type, false)"
+            @click="cardClicked(item.id, item.type)"
             @contextmenu.prevent="menuClick($event, item.id, item.type)"
           >
             <!-- card image -->
@@ -211,7 +212,7 @@
                 color="success"
                 small
                 id="play"
-                @click="cardClicked(item.id, name, true)"
+                @click="cardClicked(item.id, item.type)"
               >
                 <v-icon color="white">mdi-play</v-icon>
               </v-btn>
@@ -245,6 +246,7 @@ export default {
   ],
   data() {
     return {
+      maxItems: 12,
       playBTNFlag: false,
       hoveredCardIndex: null,
       disableMenu: false,
@@ -268,24 +270,15 @@ export default {
       this.$props.contextMenu.id = i;
       this.$props.contextMenu.type = t;
     },
-    cardClicked(id, name, play) {
-      if (this.playBTNFlag) {
-        this.playBTNFlag = false;
-        return;
-      }
-      if (play) {
-        this.playBTNFlag = true;
-      } else {
-        this.$router.push(`/webhome/${name}/${id}`);
-      }
+    cardClicked(id, type) {
+      this.$router.push(`/webhome/${type}/${id}`);
     },
     /**
      * used in artist ui cards if there is more than 12 cards
      */
     showMore() {
-      this.AUIitems = this.$props.cardItems.items;
+      this.maxItems = this.showMoreBtn ? this.AUIitems.length : 12;
       this.showMoreBtn = !this.showMoreBtn;
-      if (this.showMoreBtn) this.AUIitems = this.AUIitems.slice(0, 12);
     }
     /**
      * called when card is hover to save its index, and close other context menus
