@@ -319,7 +319,7 @@ const actions = {
         .then(response => {
           // check that the changes are done to make success alert
           if (response.status == 201 || response.status == 200) {
-            state.deletedPlaylists = response.data;
+            state.deletedPlaylists = response.data.playlists.items;
             resolve(true);
           }
         })

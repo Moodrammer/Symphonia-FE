@@ -798,7 +798,18 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/me/playlists/deleted", (schema, request) => {
         if (request.requestHeaders.Authorization) {
           let result = schema.deletedPlaylists.all().models;
-          return new Response(200, {}, result);
+          let limit = request.params.limit;
+          let offset = request.params.offset;
+          let total = result.length;
+          let toSend ={
+            playlists:{
+              total:total,
+              items:result,
+              limit:limit,
+              offset:offset
+            }
+          }
+          return new Response(200, {}, toSend);
         } else {
           // if the data isn't valid so return error status(400)
           return new Response(400, {}, {});
