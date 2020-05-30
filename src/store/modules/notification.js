@@ -29,6 +29,9 @@ const mutations = {
   },
 
   setnoNotificationHistory(state, payload) {
+    if(payload == true) {
+        state.historyList = []
+    }
     state.noNotificationHistory = payload;
   },
 
