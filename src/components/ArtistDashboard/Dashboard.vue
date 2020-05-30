@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <Drawer></Drawer>
-    
+
     <v-content class="content-container">
-    <router-view></router-view>   
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>

@@ -45,7 +45,7 @@
           md="4"
           sm="6"
           class="my-4"
-          v-for="(item, index) in AUIitems.slice(0,maxItems)"
+          v-for="(item, index) in AUIitems.slice(0, maxItems)"
           :key="item.id"
         >
           <v-card
@@ -58,7 +58,6 @@
             @mouseover="hoveredCardIndex = index"
             @mouseleave="hoveredCardIndex = null"
             @click="cardClicked(item.id, 'album')"
-
           >
             <v-btn
               class="ma-auto"
@@ -272,7 +271,7 @@ export default {
       this.$props.contextMenu.type = t;
     },
     cardClicked(id, type) {
-      this.$router.push(`/webhome/${type}/${id}`)
+      this.$router.push(`/webhome/${type}/${id}`);
     },
     /**
      * used in artist ui cards if there is more than 12 cards

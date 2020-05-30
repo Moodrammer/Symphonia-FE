@@ -1052,13 +1052,13 @@ export function makeServer({ environment = "development" } = {}) {
       ////////////////////////////////////////////////////////////////////////
       //////////////////////// ARTIST INTERFACE //////////////////////////////
       ////////////////////////////////////////////////////////////////////////
-      
+
       ///// GET ARTIST INFO
 
       this.get("/v1/artists/:artistID", (schema, request) => {
-
-        let x = schema.artists.where({_id : request.params.artistID}).models[0].attrs;
-        console.log("ssssssss",x);
+        let x = schema.artists.where({ _id: request.params.artistID }).models[0]
+          .attrs;
+        console.log("ssssssss", x);
         return x;
       });
 
@@ -1066,55 +1066,56 @@ export function makeServer({ environment = "development" } = {}) {
 
       this.get("/v1/artists/:artistID/top-tracks", (schema, request) => {
         let x = schema.tracks.all().models;
-        console.log("ssdawdwcssda",x);
-        x = x.filter(e => e.artist.id == request.params.artistID).slice(request.queryParams.offset, request.queryParams.limit);
-        return {tracks:{items:x}};
+        console.log("ssdawdwcssda", x);
+        x = x
+          .filter(e => e.artist.id == request.params.artistID)
+          .slice(request.queryParams.offset, request.queryParams.limit);
+        return { tracks: { items: x } };
       });
 
       ///// GET ARTIST RELATED ARTISTS
 
-      this.get("/v1/artists/:id/related-artists", (schema) => {
-        
-        return {artists: schema.artists.all().models};
+      this.get("/v1/artists/:id/related-artists", schema => {
+        return { artists: schema.artists.all().models };
       });
 
-      ///// GET FOLLOWED ARTISTS 
+      ///// GET FOLLOWED ARTISTS
 
       this.get("/v1/me/following", (schema, request) => {
         if (request.queryParams.type === "artist")
-          return { artists: { items: schema.artists.where({followed: true}).models } };
+          return {
+            artists: { items: schema.artists.where({ followed: true }).models }
+          };
       });
 
-      ///// UNFOLLOW ARTIST 
+      ///// UNFOLLOW ARTIST
 
       this.delete("/v1/me/following", (schema, request) => {
-        console.log("param1",request.queryParams);
+        console.log("param1", request.queryParams);
         if (request.queryParams.type === "artist") {
           return schema.artists
             .findBy(artist => artist._id === request.queryParams.ids)
-            .update({followed: false})
+            .update({ followed: false });
         }
       });
-      
+
       ///// FOLLOW ARTIST
 
       this.put("/v1/me/following", (schema, request) => {
-          return schema.artists
-            .findBy(artist => artist._id === request.queryParams.ids)
-            .update({followed: true})
+        return schema.artists
+          .findBy(artist => artist._id === request.queryParams.ids)
+          .update({ followed: true });
       });
-      
+
       //// IF USER FOLLOW SPECIFIC ARTIST
 
       this.get("/v1/me/following/contains", (schema, request) => {
-          return [
-          schema.artists
-            .findBy(artist => artist._id === request.queryParams.ids).attrs.followed
-          ]
+        return [
+          schema.artists.findBy(
+            artist => artist._id === request.queryParams.ids
+          ).attrs.followed
+        ];
       });
-      
-      
-      
     }
   });
 

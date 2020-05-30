@@ -84,10 +84,10 @@ export default {
           break;
         case "Follow":
           this.followArtist();
-          break;  
+          break;
         case "Unfollow":
           this.unfollowArtist();
-          break;  
+          break;
       }
     },
 
@@ -171,17 +171,15 @@ export default {
     },
 
     async artist() {
-      
       this.$store.dispatch("artist/isFollowingArtists", {
         artists: [this.id],
         token: this.getuserToken()
       });
 
       this.artistMenu = [];
-      if(this.isFollowedArtist){
+      if (this.isFollowedArtist) {
         this.artistMenu.push("Unfollow");
-      }else
-        this.artistMenu.push("Follow");
+      } else this.artistMenu.push("Follow");
       this.artistMenu.push("Copy Artist Link");
       this.menuList = this.artistMenu;
     },
@@ -405,7 +403,7 @@ export default {
     //----------------------------------------------------------------
     //                       Artist Functions
     //----------------------------------------------------------------
-    
+
     /**
      * Function to follow artist from the menu list
      * @public This is a public method
@@ -440,9 +438,8 @@ export default {
         artists: [this.id],
         token: this.getuserToken()
       });
-    },
+    }
   },
-
 
   computed: {
     /**
@@ -476,10 +473,12 @@ export default {
       );
     },
     isFollowedArtist() {
-      let followed = (this.$store.state.artist.FollowingArtistsBool && this.$store.state.artist.FollowingArtistsBool[0])
+      let followed =
+        this.$store.state.artist.FollowingArtistsBool &&
+        this.$store.state.artist.FollowingArtistsBool[0];
       return followed;
     }
-  },
+  }
 };
 </script>
 

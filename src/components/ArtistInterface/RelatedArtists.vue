@@ -33,7 +33,7 @@ export default {
   mixins: [getuserToken],
   props: ["artistID", "contextMenu"],
   created() {
-    console.log("ID", this.$props.artistID, "TOKEN", this.getuserToken())
+    console.log("ID", this.$props.artistID, "TOKEN", this.getuserToken());
     this.getArtistRelatedArtists({
       id: this.$props.artistID,
       token: this.getuserToken()

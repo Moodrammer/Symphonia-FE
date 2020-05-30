@@ -54,9 +54,9 @@ export default {
         {
           title: "Back to Symphonia",
           icon: "mdi-arrow-left-circle",
-          route: "/webhome",
-        },
-      ],
+          route: "/webhome"
+        }
+      ]
     };
   },
 
@@ -66,7 +66,7 @@ export default {
     },
     image: function() {
       return this.getimageUrl();
-    },
-  },
+    }
+  }
 };
 </script>

@@ -10,18 +10,18 @@ const state = {
   latestAlbumID: null,
   simplifiedCategories: null,
   percentCompleted: null,
-  FollowingArtistsBool: null,
+  FollowingArtistsBool: null
 };
 
 const mutations = {
   load_followedArtists: (state, list) => (state.followedArtists = list),
-  unfollow_artists: (state, list) =>
-    {state.followedArtists = state.followedArtists.filter(
-      (artist) => !list.includes(artist._id)
+  unfollow_artists: (state, list) => {
+    state.followedArtists = state.followedArtists.filter(
+      artist => !list.includes(artist._id)
     );
     state.FollowingArtistsBool = [false];
   },
-  follow_artists: (state) => {
+  follow_artists: state => {
     state.FollowingArtistsBool = [true];
   },
   load_artistAlbums: (state, list) => (state.artistAlbums = list),
@@ -87,7 +87,7 @@ const mutations = {
     }
   },
   load_isFollowingArtists: (state, booleans) =>
-    (state.FollowingArtistsBool = booleans),
+    (state.FollowingArtistsBool = booleans)
 };
 
 const getters = {
@@ -115,7 +115,7 @@ const getters = {
         explicit: element.explicit,
         premium: element.premium,
         _id: element._id,
-        name: element.name,
+        name: element.name
       };
       tracks.push(k);
     });
@@ -197,7 +197,7 @@ const getters = {
     return albums;
   },
 
-  isFollowed: (state) => state.FollowingArtistsBool,
+  isFollowed: state => state.FollowingArtistsBool
 };
 
 const actions = {
@@ -488,23 +488,23 @@ const actions = {
         "v1/me/following",
         {
           type: "artist",
-          ids: payload.artists.join(),
+          ids: payload.artists.join()
         },
         {
           headers: {
-            Authorization: `Bearer ${payload.token}`,
+            Authorization: `Bearer ${payload.token}`
           },
 
           params: {
-            ids: payload.artists.join(),
-          },
+            ids: payload.artists.join()
+          }
         }
       )
-      .then( ()=> {
+      .then(() => {
         commit("follow_artists");
-        dispatch("getFollowedArtists", {token: payload.token});
+        dispatch("getFollowedArtists", { token: payload.token });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("axios caught an error in followArtist");
         console.log(error);
       });
@@ -537,20 +537,20 @@ const actions = {
     axios
       .get("/v1/me/following/contains", {
         headers: {
-          Authorization: `Bearer ${payload.token}`,
+          Authorization: `Bearer ${payload.token}`
         },
         params: {
-          ids: payload.artists.join(),
-        },
+          ids: payload.artists.join()
+        }
       })
-      .then((response) => {
+      .then(response => {
         console.log("isfollowed", response.data);
         commit("load_isFollowingArtists", response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
-  },
+  }
 };
 
 export default {

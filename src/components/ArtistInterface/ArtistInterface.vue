@@ -17,19 +17,33 @@
         >Play</v-btn
       >
       <template v-if="isVisitor">
-      <v-btn rounded outlined color="success" min-width="160" min-height="40" dark class="mx-3"
-        v-if=" !isFollowed || !isFollowed[0]"
-        @click="follow()"
-        success
-        >Follow</v-btn
-      >
-      <v-btn rounded outlined color="error" min-width="160" min-height="40" dark class="mx-3"
-        v-else
-        @click="unfollow()"
-        alert
-        >Unfollow</v-btn
-      >
-    </template>
+        <v-btn
+          rounded
+          outlined
+          color="success"
+          min-width="160"
+          min-height="40"
+          dark
+          class="mx-3"
+          v-if="!isFollowed || !isFollowed[0]"
+          @click="follow()"
+          success
+          >Follow</v-btn
+        >
+        <v-btn
+          rounded
+          outlined
+          color="error"
+          min-width="160"
+          min-height="40"
+          dark
+          class="mx-3"
+          v-else
+          @click="unfollow()"
+          alert
+          >Unfollow</v-btn
+        >
+      </template>
     </div>
     <div class="pl-3 content-container">
       <div class="pl-9 mb-10">
@@ -42,14 +56,11 @@
         </v-btn>
       </div>
 
-<<<<<<< HEAD
-      <router-view :artistID="artistID" :artistName="currentArtistGetter.name" :contextMenu="contextMenu"/>
-=======
       <router-view
         :artistID="artistID"
         :artistName="currentArtistGetter.name"
+        :contextMenu="contextMenu"
       />
->>>>>>> master
     </div>
   </v-content>
 </template>
@@ -62,60 +73,52 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   props: ["contextMenu"],
   methods: {
-    ...mapActions("artist", ["getCurrentArtist", "isFollowingArtists","followArtist","unfollowArtist"]),
+    ...mapActions("artist", [
+      "getCurrentArtist",
+      "isFollowingArtists",
+      "followArtist",
+      "unfollowArtist"
+    ]),
     updateArtist() {
-<<<<<<< HEAD
-        this.getCurrentArtist({
-          token: this.getuserToken(),
-          id: this.artistID
-        });
+      this.getCurrentArtist({
+        token: this.getuserToken(),
+        id: this.artistID
+      });
 
-        this.isFollowingArtists({
-          token: this.getuserToken(),
-          artists: [this.artistID]
-        });
-
+      this.isFollowingArtists({
+        token: this.getuserToken(),
+        artists: [this.artistID]
+      });
     },
     follow() {
-      console.log("FOLLOW", this.artistID)
+      console.log("FOLLOW", this.artistID);
       this.followArtist({
         token: this.getuserToken(),
         artists: [this.artistID]
-      })
+      });
     },
     unfollow() {
       this.unfollowArtist({
         token: this.getuserToken(),
         artists: [this.artistID]
-      })
-=======
-      this.getCurrentArtist({
-        token: this.getuserToken(),
-        id: this.artistID
       });
->>>>>>> master
     }
   },
   created() {
     this.updateArtist();
   },
-<<<<<<< HEAD
-  computed:{
-    ...mapGetters("artist", ["currentArtistGetter", "isFollowed"]),
-=======
   computed: {
-    ...mapGetters("artist", ["currentArtistGetter"]),
->>>>>>> master
+    ...mapGetters("artist", ["currentArtistGetter", "isFollowed"]),
     artistID() {
       return this.$route.params.id;
     },
     isVisitor() {
-      return this.artistID != this.getuserID(); 
+      return this.artistID != this.getuserID();
     }
   },
   watch: {
     isFollowed: function(newValue) {
-      console.log("ISFOLO", newValue)
+      console.log("ISFOLO", newValue);
     },
     currentArtistGetter: function(newValue) {
       console.log(newValue);
