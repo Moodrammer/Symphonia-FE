@@ -182,7 +182,7 @@
 import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import getusername from "../../mixins/userService/getusername";
 import logOut from "../../mixins/userService/logOut";
-import NotificationHistorylist from "../Notifications/NotificationHistorylist"
+import NotificationHistorylist from "../Notifications/NotificationHistorylist";
 /**
  * @displayName Webplayer Navigation Bar
  * @example [none]

@@ -7,7 +7,7 @@ import UserSettings from "@/views/About.vue";
 
 describe("User_Settings", () => {
   let wrapper;
-  let vuetify; 
+  let vuetify;
 
   beforeEach(() => {
     vuetify = new Vuetify();

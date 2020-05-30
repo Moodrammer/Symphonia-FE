@@ -8,7 +8,7 @@ import album from "./modules/album";
 import artist from "./modules/artist";
 import userPublicProfile from "./modules/userPublicProfile";
 import homepage from "./modules/homepage";
-import notification from "./modules/notification"
+import notification from "./modules/notification";
 
 Vue.use(Vuex);
 

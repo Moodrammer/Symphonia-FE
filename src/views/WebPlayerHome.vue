@@ -75,9 +75,12 @@ export default {
     }
   },
   created() {
-    if(this.isLoggedIn()){
+    if (this.isLoggedIn()) {
       //get registration token from the user if the user is logged in
-      this.$store.dispatch("notification/getRegistrationToken", this.getuserToken());
+      this.$store.dispatch(
+        "notification/getRegistrationToken",
+        this.getuserToken()
+      );
       //set up a listener to catch notification messages in webhome
       this.$store.dispatch("notification/setRecieveNotificationHandler");
       //set up a listener for any change in token in the fcm server to refersh the token
