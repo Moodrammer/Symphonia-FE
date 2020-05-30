@@ -1,6 +1,7 @@
 <template>
   <v-content class="pa-0">
     <!--Display popular songs -->
+    <template v-if="allArtistTopTracks && allArtistTopTracks.length > 0">
     <v-card-title class="display-3 white--text">Popular</v-card-title>
     <v-row>
       <v-col class="mx-auto" lg="11" sm="12" md="12">
@@ -8,7 +9,7 @@
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
         <v-list class="mx-auto mt-3" dark>
           <!--Nesting the song component-->
-          <div v-if="tracks">
+          <div>
             <SongItem
               v-for="track in allArtistTopTracks"
               :key="track.name"
@@ -21,12 +22,14 @@
               :ID="track._id"
               :isDisabled="track.premium"
               :image="track.album.image"
+              :contextMenu="contextMenu"
+
             />
           </div>
         </v-list>
       </v-col>
     </v-row>
-
+  </template>
     <!--Display albums -->
     <v-card-title
       class="mt-4 display-3 white--text"
@@ -40,6 +43,7 @@
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
         <CardGrid
           :cardItems="albumsCardItems"
+          :contextMenu="contextMenu"
           cardStyle="artistUICard"
           name="albums"
         />
@@ -59,6 +63,7 @@
         <v-divider class="hidden-lg-and-up" sm-12 color="#424242"></v-divider>
         <CardGrid
           :cardItems="singlesCardItems"
+          :contextMenu="contextMenu"
           cardStyle="artistUICard"
           name="singles"
         />
@@ -107,7 +112,7 @@ export default {
       "allArtistSingles",
     ]),
   },
-  props: ["artistID", "artistName"],
+  props: ["artistID", "artistName", "contextMenu"],
   data() {
     return {
       albumsCardItems: {
@@ -116,20 +121,6 @@ export default {
       singlesCardItems: {
         items: [],
       },
-      tracks: [
-        {
-          durationMs: 323213232,
-          name: "saad",
-          album: {
-            name: "sa",
-            _id: "dsa",
-          },
-          artist: {
-            name: "dsadsa",
-            _id: "dsadssadsa",
-          },
-        },
-      ],
     };
   },
   watch: {

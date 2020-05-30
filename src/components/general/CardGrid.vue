@@ -45,7 +45,7 @@
           md="4"
           sm="6"
           class="my-4"
-          v-for="(item, index) in AUIitems"
+          v-for="(item, index) in AUIitems.slice(0,maxItems)"
           :key="item.id"
         >
           <v-card
@@ -245,6 +245,7 @@ export default {
   ],
   data() {
     return {
+      maxItems: 12,
       playBTNFlag: false,
       hoveredCardIndex: null,
       disableMenu: false,
@@ -283,9 +284,8 @@ export default {
      * used in artist ui cards if there is more than 12 cards
      */
     showMore() {
-      this.AUIitems = this.$props.cardItems.items;
+      this.maxItems = this.showMoreBtn ? this.AUIitems.length : 12;
       this.showMoreBtn = !this.showMoreBtn;
-      if (this.showMoreBtn) this.AUIitems = this.AUIitems.slice(0, 12);
     }
     /**
      * called when card is hover to save its index, and close other context menus

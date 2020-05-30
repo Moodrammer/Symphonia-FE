@@ -1,5 +1,6 @@
 <template>
   <v-content
+    v-if="currentArtistGetter"
     :style="{
       backgroundImage: 'url(' + currentArtistGetter.imageUrl + ')',
       backgroundSize: '100% Auto'
@@ -28,7 +29,6 @@
         >Unfollow</v-btn
       >
 
-      <span class="display-2 white--text">...</span>
     </div>
     <div class="pl-3 content-container">
       <div class="pl-9 mb-10">
@@ -41,7 +41,7 @@
         </v-btn>
       </div>
 
-      <router-view :artistID="artistID" :artistName="currentArtistGetter.name" />
+      <router-view :artistID="artistID" :artistName="currentArtistGetter.name" :contextMenu="contextMenu"/>
     </div>
   </v-content>
 </template>
@@ -51,6 +51,7 @@ import getuserToken from "../../mixins/userService/getUserToken";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  props: ["contextMenu"],
   methods: {
     ...mapActions("artist", ["getCurrentArtist", "isFollowingArtists","followArtist","unfollowArtist"]),
     updateArtist() {
