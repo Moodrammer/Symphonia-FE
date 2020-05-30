@@ -155,7 +155,7 @@
                     color="white"
                     class="mx-2"
                     id="menuDots"
-                    @mousedown.prevent="menuClick($event)"
+                    @click.stop="menuClick($event)"
                   >
                     mdi-dots-horizontal
                   </v-icon>
@@ -255,14 +255,16 @@ export default {
           "track/playTrackInQueue",
           this.tracks[0]._id
         );
-        await this.$store.dispatch(
-          "track/updateQueue",
-          "Bearer " + this.getuserToken()
-        );
+
         await this.$store.dispatch("track/getTrackInformation", {
           token: "Bearer " + this.getuserToken(),
           trackId: this.tracks[0]._id
         });
+
+        await this.$store.dispatch(
+          "track/updateQueue",
+          "Bearer " + this.getuserToken()
+        );
       } else {
         this.$store.dispatch("track/togglePauseAndPlay");
       }

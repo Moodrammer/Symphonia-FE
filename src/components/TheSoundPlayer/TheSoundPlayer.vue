@@ -779,22 +779,23 @@ export default {
         this.setToken("Bearer " + this.getuserToken());
 
         var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
-        this.getTrackInformation({
-          token: this.token,
-          trackId: CurrentlyPlayingTrackId
-        });
 
-        await this.initQueueStatus(this.token);
-        await this.updateQueue(this.token);
+        //await this.initQueueStatus(this.token);
 
         await this.recentlyPlayed(this.getuserToken());
         if (this.historyResponse.length != 0) {
           this.setContextId(this.historyResponse[0].contextId);
           this.setContextType(this.historyResponse[0].contextType);
           this.setContextUrl(this.historyResponse[0].contextUrl);
-        }
+          this.playTrackInQueue(this.historyResponse[0].track);
+        } else this.playTrackInQueue(CurrentlyPlayingTrackId);
+        CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
 
-        this.playTrackInQueue(CurrentlyPlayingTrackId);
+        this.getTrackInformation({
+          token: this.token,
+          trackId: CurrentlyPlayingTrackId
+        });
+        await this.updateQueue(this.token);
       } catch (error) {
         console.error(error);
       }

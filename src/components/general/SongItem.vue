@@ -85,7 +85,7 @@
       v-if="hover"
       id="menu"
       v-bind:class="{ 'disabled-2': isDisabled }"
-      @mousedown.prevent="menuClick($event, ID)"
+      @click.stop="menuClick($event, ID)"
     >
       mdi-dots-horizontal
     </v-icon>
@@ -180,24 +180,21 @@ export default {
      * @param {none}
      */
     playTrack: async function() {
-      if (!this.isPlaying) {
-        this.$store.commit("track/setContextData", {
-          contextID: this.contextID,
-          contextType: this.contextType,
-          contextUrl: "https://thesymphonia.ddns.net/api"
-        });
-        await this.$store.dispatch("track/playTrackInQueue", this.ID);
-        await this.$store.dispatch(
-          "track/updateQueue",
-          "Bearer " + this.getuserToken()
-        );
-        await this.$store.dispatch("track/getTrackInformation", {
-          token: "Bearer " + this.getuserToken(),
-          trackId: this.ID
-        });
-      } else {
-        this.$store.dispatch("track/togglePauseAndPlay");
-      }
+      this.$store.commit("track/setContextData", {
+        contextID: this.contextID,
+        contextType: this.contextType,
+        contextUrl: "https://thesymphonia.ddns.net/api"
+      });
+      await this.$store.dispatch("track/playTrackInQueue", this.ID);
+
+      await this.$store.dispatch("track/getTrackInformation", {
+        token: "Bearer " + this.getuserToken(),
+        trackId: this.ID
+      });
+      await this.$store.dispatch(
+        "track/updateQueue",
+        "Bearer " + this.getuserToken()
+      );
       this.$store.commit("track/setIsTrackPaused", this.isPaused);
     },
     /**

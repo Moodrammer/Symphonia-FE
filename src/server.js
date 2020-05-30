@@ -105,7 +105,6 @@ export function makeServer({ environment = "development" } = {}) {
           owner: { _id: user_id, name: "Bob" },
           active: true
         });
-        console.log(schema.playlists.all().length);
         let ID = schema.playlists.all().length;
         return schema.playlists.find(ID).attrs;
       });
@@ -178,7 +177,6 @@ export function makeServer({ environment = "development" } = {}) {
       ///////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/users/track/:track_id", (schema, request) => {
         let trackId = request.params.track_id;
-        console.log(trackId);
         return schema.tracks.find(trackId).attrs;
       });
       ///////////////////////////////////////////////////////////////////////////////////
@@ -680,18 +678,6 @@ export function makeServer({ environment = "development" } = {}) {
             }
           );
         }),
-        this.get("/v1/me/player/currently-playing", () => {
-          return new Response(
-            200,
-            {},
-            {
-              data: {
-                currentTrack: "/track/5e7d2dc03429e24340ff1396",
-                device: "5e88ef4d54142e3db4d01ee5"
-              }
-            }
-          );
-        }),
         // Get the current user's data to the account overview(User's Settings)
         this.get("/v1/me", (schema, request) => {
           // get the user's data from seed if exist
@@ -787,7 +773,7 @@ export function makeServer({ environment = "development" } = {}) {
       var repeatOnce = false;
       var shuffle = false;
 
-      const mockTracks = [
+      let mockTracks = [
         "http://thesymphonia.ddns.net/api/v1/me/player/tracks/123",
         "http://thesymphonia.ddns.net/api/v1/me/player/tracks/456",
         "http://thesymphonia.ddns.net/api/v1/me/player/tracks/789"
@@ -798,25 +784,37 @@ export function makeServer({ environment = "development" } = {}) {
       var previousTrack = mockTracks[0];
       var nextTrack = mockTracks[2];
 
-      this.get("/v1/me/player/queue", () => {
+      this.get("/v1/me/player/currently-playing", () => {
         return new Response(
           200,
           {},
           {
             data: {
-              currentlyPlaying: {
-                currentTrack: currentlyPlaying
-              },
-              queueTracks: mockTracks,
-              previousTrack: previousTrack,
-              nextTrack: nextTrack,
-              repeat: repeat,
-              repeatOnce: repeatOnce,
-              shuffle: shuffle
+              currentTrack: currentlyPlaying,
+              device: "5e88ef4d54142e3db4d01ee5"
             }
           }
         );
-      });
+      }),
+        this.get("/v1/me/player/queue", () => {
+          return new Response(
+            200,
+            {},
+            {
+              data: {
+                currentlyPlaying: {
+                  currentTrack: currentlyPlaying
+                },
+                queueTracks: mockTracks,
+                previousTrack: previousTrack,
+                nextTrack: nextTrack,
+                repeat: repeat,
+                repeatOnce: repeatOnce,
+                shuffle: shuffle
+              }
+            }
+          );
+        });
       //////////////////////////////////////////////////////////////////////////////////////
       //
       //////////////////////////////////////////////////////////////////////////////////////
@@ -825,11 +823,26 @@ export function makeServer({ environment = "development" } = {}) {
           "http://thesymphonia.ddns.net/api/v1/me/player/tracks/" +
           request.params.track_id;
 
+        let contextID = JSON.parse(request.requestBody).contextId;
+        let contextType = JSON.parse(request.requestBody).context_type;
+        let contextTracks = [];
+        if (contextType == "album") {
+          contextTracks = schema.albums.where({ id: contextID }).models[0]
+            .tracks;
+        } else if (contextType == "playlist") {
+          contextTracks = schema.playlists.where({ id: contextID }).models[0]
+            .tracks;
+        }
+        mockTracks = [];
+        for (let i = 0; i < contextTracks.length; i++) {
+          mockTracks.push(
+            schema.tracks.where({ id: contextTracks[i] }).models[0].link
+          );
+        }
         currentlyPlayingIndex = mockTracks.indexOf(link);
 
         currentlyPlaying = mockTracks[currentlyPlayingIndex];
-
-        var nextPlayingIndex = (currentlyPlayingIndex + 1) % 3;
+        var nextPlayingIndex = (currentlyPlayingIndex + 1) % mockTracks.length;
         nextTrack = mockTracks[nextPlayingIndex];
 
         var previousPlayingIndex;
@@ -864,9 +877,9 @@ export function makeServer({ environment = "development" } = {}) {
       //
       //////////////////////////////////////////////////////////////////////////////////////
       this.post("/v1/me/player/next", () => {
-        currentlyPlayingIndex = (currentlyPlayingIndex + 1) % 3;
+        currentlyPlayingIndex = (currentlyPlayingIndex + 1) % mockTracks.length;
 
-        var nextPlayingIndex = (currentlyPlayingIndex + 1) % 3;
+        var nextPlayingIndex = (currentlyPlayingIndex + 1) % mockTracks.length;
 
         previousTrack = currentlyPlaying;
 
