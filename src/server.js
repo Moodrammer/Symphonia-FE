@@ -5,7 +5,6 @@ import artistJSON from "./api/mock/data/artist.json";
 import albumsJSON from "./api/mock/data/album.json";
 import categoryJSON from "./api/mock/data/category.json";
 import historyJSON from "./api/mock/data/history.json";
-import deletedPlaylist from "./api/mock/data/DeletedPalylists.json";
 import getuserID from "./mixins/userService/getuserID.js";
 import getusername from "./mixins/userService/getusername.js";
 // import usersJSON from "./api/mock/data/users.json";
@@ -51,12 +50,7 @@ export function makeServer({ environment = "development" } = {}) {
         imageUrl:
           "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
       });
-      ///////////////////////////////////////////////////////////////////
-      //                Create a deleted playlists for the user
-      ///////////////////////////////////////////////////////////////////
-      deletedPlaylist.forEach(element => {
-        server.create("deletedPlaylist", element);
-      });
+
       //This part is just to fake mirage in order to persist the data of only one user
       if (sessionStorage.getItem("SignedUpUser") != null) {
         //The signed up user should remain in the localstorage so that when mirage loads each time it loads his data
@@ -298,7 +292,8 @@ export function makeServer({ environment = "development" } = {}) {
           id: playlistID,
           tracksCount: schema.playlists.where({ id: playlistID }).models[0]
             .tracksCount,
-          deletedAt: "2020-04-18T04:19:11.758Z"
+          deletedAt: "2020-04-18T04:19:11.758Z",
+          deleted: true
         });
         return new Response(200, {}, {});
       });
@@ -781,17 +776,18 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/me/playlists/deleted", (schema, request) => {
         if (request.requestHeaders.Authorization) {
           let result = schema.deletedPlaylists.all().models;
+          console.log(result);
           let limit = request.params.limit;
           let offset = request.params.offset;
           let total = result.length;
-          let toSend ={
-            playlists:{
-              total:total,
-              items:result,
-              limit:limit,
-              offset:offset
+          let toSend = {
+            playlists: {
+              total: total,
+              items: result,
+              limit: limit,
+              offset: offset
             }
-          }
+          };
           return new Response(200, {}, toSend);
         } else {
           // if the data isn't valid so return error status(400)
@@ -802,10 +798,10 @@ export function makeServer({ environment = "development" } = {}) {
       //              Restore the deleted playlist for current user
       /////////////////////////////////////////////////////////////////////////////////
       this.patch("/v1/me/playlists/:id", (schema, request) => {
-        let result = schema.deletedPlaylists.find(request.params.id);
+        let result = schema.playlists.find(request.params.id);
         if (result) {
           result.update({
-            deleted: false
+            active: true
           });
           return new Response(200, {}, result);
         } else {

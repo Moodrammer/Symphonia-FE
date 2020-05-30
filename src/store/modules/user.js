@@ -342,11 +342,15 @@ const actions = {
     }
     return new Promise((resolve, reject) => {
       axios
-        .patch("/v1/me/playlists/" + payload, {
-          headers: {
-            Authorization: `Bearer ${token}`
+        .patch(
+          "/v1/me/playlists/" + payload,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           }
-        })
+        )
         .then(response => {
           // check that the changes are done to make success alert
           if (response.status == 201 || response.status == 200) {

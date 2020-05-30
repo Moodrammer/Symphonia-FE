@@ -24,7 +24,7 @@ describe("RecoverPlaylist", () => {
       deletedPlaylist: jest.fn(() => {
         if (mockState == "fail") {
           wrapper.vm.playlistNoRecover = true;
-          wrapper.vm.playlistsRecover  =false;
+          wrapper.vm.playlistsRecover = false;
           return Promise.reject();
         } else return Promise.resolve();
       }),
@@ -61,14 +61,16 @@ describe("RecoverPlaylist", () => {
       store,
       data() {
         return {
-          playlists: [{
-            deleted: true,
-            date: "2020-12-12",
-            title: "Your Playlist",
-            songs: 3,
-            id: "123456",
-            restored : false
-          }],
+          playlists: [
+            {
+              deleted: true,
+              date: "2020-12-12",
+              title: "Your Playlist",
+              songs: 3,
+              id: "123456",
+              restored: false
+            }
+          ],
           NoPlaylists: true,
           PlaylistNoRecover: false,
           PlaylistsRecover: false
@@ -84,16 +86,16 @@ describe("RecoverPlaylist", () => {
   it("renders a vue instance", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
-it("check if the deleted list is empty display error",()=>{
-    store.state.user.deletedPlaylists=[];
-    mockState="fail";
+  it("check if the deleted list is empty display error", () => {
+    store.state.user.deletedPlaylists = [];
+    mockState = "fail";
     store.dispatch("deletedPlaylist");
     wrapper.vm.$nextTick();
     expect(wrapper.vm.playlistNoRecover).toBe(true);
   });
-  it("find if restore is working or not ",()=>{
-    let btn =wrapper.find("button");
-    btn.trigger('click');
+  it("find if restore is working or not ", () => {
+    let btn = wrapper.find("button");
+    btn.trigger("click");
     expect(wrapper.vm.restore).toBeCalled;
   });
 });
@@ -149,7 +151,7 @@ describe("RecoverPlaylist", () => {
       }
     });
   });
-  it("check if the deleted list is empty display error from store",()=>{
+  it("check if the deleted list is empty display error from store", () => {
     store.dispatch("deletedPlaylist");
     wrapper.vm.$nextTick();
     expect(wrapper.vm.playlistNoRecover).toBe(true);

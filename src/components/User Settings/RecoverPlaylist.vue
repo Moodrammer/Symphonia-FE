@@ -81,7 +81,7 @@ export default {
             if (element.deleted == true) {
               let date = element.deletedAt.slice(0, 10);
               let title = element.name;
-              let songs = element.tracks.length;
+              let songs = element.tracksCount;
               let restored = false;
               let id = element.id;
               this.playlists.push({

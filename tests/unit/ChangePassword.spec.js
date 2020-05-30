@@ -154,9 +154,8 @@ describe("changePass", () => {
     store.dispatch("updatePass");
     expect(wrapper.vm.errorWrongPass).toBe(true);
   });
-  it("check that both variables are false", () =>{
+  it("check that both variables are false", () => {
     expect(wrapper.vm.errorWrongPass).toBe(false);
     expect(wrapper.vm.Done).toBe(false);
-  })
+  });
 });
-

@@ -47,7 +47,8 @@
             <v-list-item>
               <v-list-item-title>
                 <router-link to="/account/recover-playlists" exact id="recover"
-                  ><i class="fas fa-redo svg"></i> Recover playlists</router-link
+                  ><i class="fas fa-redo svg"></i> Recover
+                  playlists</router-link
                 >
               </v-list-item-title>
             </v-list-item>

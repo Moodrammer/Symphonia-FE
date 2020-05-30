@@ -34,7 +34,7 @@ describe("EditProfile", () => {
         if (mockState === "error") {
           return Promise.reject();
         } else {
-          wrapper.vm.Done =true;
+          wrapper.vm.Done = true;
           return Promise.resolve();
         }
       })
