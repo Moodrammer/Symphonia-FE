@@ -22,15 +22,13 @@ describe("changePass", () => {
     Vue.use(Vuex);
     actions = {
       updatePass: jest.fn(() => {
-        if (mockState == "fail")
-          return Promise.reject({
-            status: "fail"
-          });
-        else if (mockState == "error")
-          return Promise.reject({
-            status: "error"
-          });
-        else return Promise.resolve();
+        if (mockState === "error") {
+          wrapper.vm.errorWrongPass = true;
+          return Promise.reject();
+        } else {
+          wrapper.vm.Done = true;
+          return Promise.resolve();
+        }
       })
     };
 
@@ -138,4 +136,27 @@ describe("changePass", () => {
     wrapper.vm.check();
     expect(wrapper.vm.errorWrongMatch).toBe(true);
   });
+  it("check the update function is called", () => {
+    wrapper.vm.currentPassword = "password";
+    wrapper.vm.newPassword = "newPassword";
+    wrapper.vm.confirmPassword = "newPassword";
+    mockState = "";
+    wrapper.vm.check();
+    expect(wrapper.vm.updatePassword).toHaveBeenCalled;
+    store.dispatch("updatePass");
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.Done).toBe(true);
+    expect(wrapper.vm.errorWrongPass).toBe(false);
+  });
+  it("check the update function is called and has error", () => {
+    mockState = "error";
+    wrapper.vm.updatePassword();
+    store.dispatch("updatePass");
+    expect(wrapper.vm.errorWrongPass).toBe(true);
+  });
+  it("check that both variables are false", () =>{
+    expect(wrapper.vm.errorWrongPass).toBe(false);
+    expect(wrapper.vm.Done).toBe(false);
+  })
 });
+

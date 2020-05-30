@@ -122,18 +122,10 @@ export default {
         !this.errorEmptyNew &&
         !this.errorEmptyConfirm
       ) {
-        this.updatePass();
+        this.updatePassword();
       }
     },
-    //Todo::edit the errors come from the post request (incorrect password)
-    //--------------- 4/3/2020---------------------------------------------------------------------------
-    // - No need to return data in this method only dispatch the action and execute .then to set the userToken
-    //   or catch the error state (See the method in login or SignUp)(Done)
-    // - Send the user token current token in the authorization header
-    // - replace the stored token either in the local or sessin Storage with the one returned in the response(i
-    // will provide you a setuserToken mixin from the userSevice for the sake of that replacement)
-    // ------------------------------------------------------------------------------------------------
-    updatePass: function() {
+    updatePassword: function() {
       this.$store
         .dispatch("updatePass", {
           passwordCurrent: this.currentPassword,

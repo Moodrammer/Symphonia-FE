@@ -102,7 +102,7 @@
           </div>
           <div class="button-col">
             <!-- get the changes or cancel it -->
-            <button @click="submit">save profile</button>
+            <button @click="submit" id="submit">save profile</button>
             <a href="/account/" class="a-cancel">cancel</a>
           </div>
         </form>
