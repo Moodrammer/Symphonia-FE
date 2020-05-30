@@ -12,7 +12,8 @@ const state = {
   },
   isTokenSentToServer: false,
   historyList: [],
-  noNotificationHistory: false
+  noNotificationHistory: false,
+  isPushNotificationsAllowed: true
 };
 
 const mutations = {
@@ -37,6 +38,10 @@ const mutations = {
 
   setNotificationHistoryList(state, payload) {
     state.historyList = payload;
+  },
+
+  setPushNotificationsPermission(state, payload) {
+      state.isPushNotificationsAllowed = payload
   }
 };
 
@@ -92,7 +97,7 @@ const actions = {
       });
   },
   //--------------------------------------------------------------------------------------------------------------//
-  getRegistrationToken({ dispatch, commit }, userToken) {
+  getRegistrationToken({ dispatch, commit}, userToken) {
     messaging
       .getToken()
       .then(currentToken => {
