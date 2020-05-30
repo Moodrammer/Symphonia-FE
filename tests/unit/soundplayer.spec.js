@@ -93,15 +93,14 @@ describe("TheSoundplayer", () => {
             toggleRepeat({ state }) {
               state.isRepeatEnabled = !state.isRepeatEnabled;
             },
-            saveTrack({ state }, payload) {
+            saveTrack({ state }) {
               state.isTrackLiked = true;
             },
-            removeSavedTrack({ state }, payload) {
+            removeSavedTrack({ state }) {
               state.isTrackLiked = false;
             },
-            playTrackInQueue({ state }, trackId) {},
-            copyLink({ state }) {},
-            initQueueStatus({ state }) {}
+            copyLink() {},
+            initQueueStatus() {}
           },
           mutations: {
             setTrackUrl({ state }, trackUrl) {
@@ -159,7 +158,7 @@ describe("TheSoundplayer", () => {
                 requestPictureInPicture: () => {}
               };
             },
-            changeUpdateTracks(state) {}
+            changeUpdateTracks() {}
           }
         },
         category: {
