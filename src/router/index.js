@@ -24,9 +24,6 @@ import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
-<<<<<<< HEAD
-import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue";
-=======
 import SymphoniaArtist from "../components/ArtistDashboard/Dashboard.vue";
 import SymphoniaArtistMain from "../components/ArtistDashboard/Main.vue";
 import SymphoniaArtistAlbums from "../components/ArtistDashboard/Albums.vue";
@@ -35,7 +32,6 @@ import SymphoniaArtistSingles from "../components/ArtistDashboard/Singles.vue";
 import notfound from "../views/TheNotFoundPage.vue";
 
 import isLoggedIn from "@/mixins/userService/isLoggedIn";
->>>>>>> master
 
 Vue.use(VueRouter);
 
@@ -229,64 +225,44 @@ const routes = [
       {
         name: "overview",
         path: "",
-<<<<<<< HEAD
-        component: () => import("../components/User Settings/Overview.vue")
-=======
-        component: () => import("../components/User Settings/overview.vue"),
+        component: () => import("../components/User Settings/Overview.vue"),
         meta: {
           allowAnonymous: false
         }
->>>>>>> master
       },
       {
         name: "EditProfile",
         path: "edit",
-<<<<<<< HEAD
-        component: () => import("../components/User Settings/EditProfile.vue")
-=======
-        component: () => import("../components/User Settings/editProfile.vue"),
+        component: () => import("../components/User Settings/EditProfile.vue"),
         meta: {
           allowAnonymous: false
         }
->>>>>>> master
       },
       {
         name: "RecoverPlaylists",
         path: "recover-playlists",
         component: () =>
-<<<<<<< HEAD
-          import("../components/User Settings/RecoverPlaylist.vue")
-=======
-          import("../components/User Settings/recoverPlaylist.vue"),
+          import("../components/User Settings/RecoverPlaylist.vue"),
         meta: {
           allowAnonymous: false
         }
->>>>>>> master
       },
       {
         name: "Notifications",
         path: "notifications",
-<<<<<<< HEAD
-        component: () => import("../components/User Settings/Notification.vue")
-=======
-        component: () => import("../components/User Settings/notification.vue"),
+        component: () => import("../components/User Settings/Notification.vue"),
         meta: {
           allowAnonymous: false
         }
->>>>>>> master
       },
       {
         name: "ChangePassword",
         path: "changePassword",
-<<<<<<< HEAD
         component: () =>
-          import("../components/User Settings/ChangePassword.vue")
-=======
-        component: () => import("../components/User Settings/changePass.vue"),
+          import("../components/User Settings/ChangePassword.vue"),
         meta: {
           allowAnonymous: false
         }
->>>>>>> master
       }
     ]
   },
@@ -344,23 +320,20 @@ const routes = [
     }
   },
   {
-<<<<<<< HEAD
-    path: "/soundgrapher",
-    name: "soundGrapher",
-    component: soundGrapher
-  },
-  {
     path: "/about",
     name: "aboutUs",
-    component: () => import("../views/About.vue")
-=======
+    component: () => import("../views/About.vue"),
+    meta: {
+      allowAnonymous: true
+    }
+  },
+  {
     path: "*",
     name: "notfound",
     component: notfound,
     meta: {
       allowAnonymous: true
     }
->>>>>>> master
   }
 ];
 

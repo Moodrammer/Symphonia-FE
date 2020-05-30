@@ -27,7 +27,7 @@ import PreAds from "../components/User Settings/PremiumAds.vue";
 import SideBar from "../components/User Settings/SideBar.vue";
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
-import isLoggedIn from "@/mixins/userService";
+
 
 export default {
   data() {
@@ -38,13 +38,6 @@ export default {
     "side-bar": SideBar,
     navBar: navBar,
     appFooter: appFooter
-  },
-  mixins: [isLoggedIn],
-  created() {
-    //check if the user is logged in ?
-    if (!this.isLoggedIn()) {
-      this.$router.push("/login");
-    }
   }
 };
 </script>

@@ -218,17 +218,7 @@
 import BottomContent from "./BottomContent.vue";
 export default {
   data() {
-    return {
-      playlists: [
-        {
-          date: "3/18/20",
-          title: "list",
-          songs: 1,
-          restored: false
-        }
-      ],
-      count: -1
-    };
+    return {};
   },
   components: {
     "bottom-content": BottomContent

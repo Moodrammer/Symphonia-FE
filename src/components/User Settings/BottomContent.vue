@@ -15,6 +15,7 @@
                 class="radio"
                 @click="secondStage()"
                 v-model="A1"
+                id="yes"
               />
               Yes
             </label>
@@ -36,12 +37,12 @@
         <section v-if="second">
           <h3>Thanks! Let us know more.</h3>
           <p>What were you trying to do in your account?</p>
-          <textarea required v-model="text"></textarea>
+          <textarea required v-model="text" id="text"></textarea>
           <p class="note">
             We continuously use this feedback to improve your experience, but
             are unable to respond individually.
           </p>
-          <button class="btn" @click="thirdStage">Submit</button>
+          <button class="btn" @click="thirdStage" id="submit">Submit</button>
         </section>
         <!-- here we send that to the service team to check the message -->
         <section v-show="third" class="third-stage">

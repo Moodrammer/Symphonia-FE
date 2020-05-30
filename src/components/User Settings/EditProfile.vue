@@ -150,6 +150,7 @@ export default {
       .then(() => {
         // If we got it set it into the data to display the user's info
         this.user = this.$store.state.user;
+        this.facebook = this.$store.state.user.userFacebook;
         this.user.mobile = "";
         this.prevEmail = this.$store.state.user.userEmail;
         this.selectedDay = parseInt(

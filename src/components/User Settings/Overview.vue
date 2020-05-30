@@ -141,12 +141,6 @@ export default {
     // The review section
     "bottom-content": BottomContent
   },
-  //---------------------------------------------------------------------------------------------
-  //todo: 4/3/2020
-  // - add the username above email in the overview vue(Done)
-  // - Remove the request from computed as there is no need to return the data here without using it (Done)
-  // - Put it in created or mounted only to set the user object in local state without returning (Done)
-  //---------------------------------------------------------------------------------------------
   created() {
     // Request to get the current user's data
     this.$store

@@ -20,7 +20,11 @@ const state = {
   //The user image of the current user
   userImage: "",
   //The user deleted playlist array of the current user
-  deletedPlaylists: []
+  deletedPlaylists: [],
+  //check if the user from the facebook or not
+  userFacebook: false,
+  //The type of user for current user
+  userType: ""
 };
 
 const mutations = {
@@ -47,6 +51,14 @@ const mutations = {
   //Set image of the user
   setImage(state, payload) {
     state.userImage = payload;
+  },
+  //Set the facebook user as true if its facebook user
+  setFacebook(state, payload) {
+    state.userFacebook = payload;
+  },
+  //Set the type of the current user
+  setType(state, payload) {
+    state.userType = payload;
   }
 };
 
@@ -160,12 +172,18 @@ const actions = {
                 email: response.data.email
               }
             };
+            if (response.data.imageFacebookUrl) {
+              commit("setImage", response.data.imageFacebookUrl);
+              commit("setFacebook", true);
+            } else {
+              commit("setImage", response.data.imageUrl);
+            }
             // set the data to the status that came from the response
             commit("setUserData", user);
             commit("setCountry", "EG");
             commit("setGender", response.data.gender);
             commit("setuserDOB", response.data.dateOfBirth);
-            commit("setImage", response.data.imageUrl);
+            commit("setType", response.data.type);
             resolve(true);
           }
         })
