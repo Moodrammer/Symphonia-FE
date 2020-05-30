@@ -50,7 +50,7 @@
                         </v-list-item-avatar>
                         <v-list-item-content>
                           <v-list-item-title>Leader + DevOps</v-list-item-title>
-                          <v-list-subtitle>2 members</v-list-subtitle>
+                          <v-list-item-subtitle>2 members</v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item href="#testing">
@@ -61,7 +61,7 @@
                         </v-list-item-avatar>
                         <v-list-item-content>
                           <v-list-item-title>Testing</v-list-item-title>
-                          <v-list-subtitle>3 members</v-list-subtitle>
+                          <v-list-item-subtitle>3 members</v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item href="#frontEnd">
@@ -72,7 +72,7 @@
                         </v-list-item-avatar>
                         <v-list-item-content>
                           <v-list-item-title>Front-End</v-list-item-title>
-                          <v-list-subtitle>5 members</v-list-subtitle>
+                          <v-list-item-subtitle>5 members</v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item href="#backEnd">
@@ -83,7 +83,7 @@
                         </v-list-item-avatar>
                         <v-list-item-content>
                           <v-list-item-title>Back-End</v-list-item-title>
-                          <v-list-subtitle>4 members</v-list-subtitle>
+                          <v-list-item-subtitle>4 members</v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item href="#android">
@@ -94,7 +94,7 @@
                         </v-list-item-avatar>
                         <v-list-item-content>
                           <v-list-item-title>Android</v-list-item-title>
-                          <v-list-subtitle>3 members</v-list-subtitle>
+                          <v-list-item-subtitle>3 members</v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                     </v-list-item-group>
@@ -806,9 +806,6 @@
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
 export default {
-  data() {
-    return;
-  },
   components: {
     navBar: navBar,
     appFooter: appFooter
