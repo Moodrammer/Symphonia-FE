@@ -780,8 +780,6 @@ export default {
 
         var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
 
-        //await this.initQueueStatus(this.token);
-
         await this.recentlyPlayed(this.getuserToken());
         if (this.historyResponse.length != 0) {
           this.setContextId(this.historyResponse[0].contextId);
