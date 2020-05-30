@@ -124,13 +124,15 @@ export default {
       console.log("FOLLOW", this.artistID);
       this.followArtist({
         token: this.getuserToken(),
-        artists: [this.artistID]
+        artists: [this.artistID],
+        type: "artist"
       });
     },
     unfollow() {
       this.unfollowArtist({
         token: this.getuserToken(),
-        artists: [this.artistID]
+        artists: [this.artistID],
+        type: "artist"
       });
     }
   },
