@@ -16,12 +16,13 @@ const state = {
 const mutations = {
   load_followedArtists: (state, list) => (state.followedArtists = list),
   unfollow_artists: (state, list) =>
-    (state.followedArtists = state.followedArtists.filter(
+    {state.followedArtists = state.followedArtists.filter(
       (artist) => !list.includes(artist._id)
-    )),
-  follow_artists: (state, list) => {
-    console.log("my data", list);
-    console.log("our data", state.followArtist);
+    );
+    state.FollowingArtistsBool = [false];
+  },
+  follow_artists: (state) => {
+    state.FollowingArtistsBool = [true];
   },
   load_artistAlbums: (state, list) => (state.artistAlbums = list),
   load_newAlbum: (state, album) => state.artistAlbums.albums.items.push(album),
@@ -480,7 +481,7 @@ const actions = {
       });
   },
 
-  followArtist({ commit }, payload) {
+  followArtist({ commit, dispatch }, payload) {
     console.log(payload);
     axios
       .put(
@@ -499,7 +500,10 @@ const actions = {
           },
         }
       )
-      .then(commit("follow_artists", payload.artists))
+      .then( ()=> {
+        commit("follow_artists");
+        dispatch("getFollowedArtists", {token: payload.token});
+      })
       .catch((error) => {
         console.log("axios caught an error in followArtist");
         console.log(error);

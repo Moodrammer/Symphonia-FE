@@ -74,10 +74,10 @@ export default {
       })
     },
     unfollow() {
-      // this.unfollowArtist({
-      //   token: this.getuserToken(),
-      //   artists: [this.artistID]
-      // })
+      this.unfollowArtist({
+        token: this.getuserToken(),
+        artists: [this.artistID]
+      })
     }
   },
   created() {

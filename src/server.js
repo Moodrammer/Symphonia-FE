@@ -1066,19 +1066,36 @@ export function makeServer({ environment = "development" } = {}) {
 
       this.get("/v1/me/following", (schema, request) => {
         if (request.queryParams.type === "artist")
-          return { artists: { items: schema.artists.all().models } };
+          return { artists: { items: schema.artists.where({followed: true}).models } };
       });
 
-      ///// UNFOLLOW FOLLOWED ARTISTS 
+      ///// UNFOLLOW ARTIST 
 
       this.delete("/v1/me/following", (schema, request) => {
+        console.log("param1",request.queryParams);
         if (request.queryParams.type === "artist") {
           return schema.artists
             .findBy(artist => artist._id === request.queryParams.ids)
-            .destroy();
+            .update({followed: false})
         }
       });
       
+      ///// FOLLOW ARTIST
+
+      this.put("/v1/me/following", (schema, request) => {
+          return schema.artists
+            .findBy(artist => artist._id === request.queryParams.ids)
+            .update({followed: true})
+      });
+      
+      //// IF USER FOLLOW SPECIFIC ARTIST
+
+      this.get("/v1/me/following/contains", (schema, request) => {
+          return [
+          schema.artists
+            .findBy(artist => artist._id === request.queryParams.ids).attrs.followed
+          ]
+      });
       
       
       
