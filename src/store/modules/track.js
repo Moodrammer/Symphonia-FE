@@ -115,7 +115,8 @@ const mutations = {
   },
   setContextUrl(state, contextUrl) {
     state.contextUrl = contextUrl;
-
+  },
+  setFacebookTwiterUrl(state){
     var url =
       window.location.host +
       "/" +
@@ -584,6 +585,7 @@ const actions = {
    * @param {string} trackId the track Id to be played
    */
   async playTrackInQueue({ state, dispatch, commit }, trackId) {
+    commit("setFacebookTwiterUrl")
     if (trackId != null) {
       await axios({
         method: "post",
