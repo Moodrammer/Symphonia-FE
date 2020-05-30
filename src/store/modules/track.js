@@ -275,6 +275,7 @@ const actions = {
       }
     }).then(response => {
       state.queueTracks = response.data.data.queueTracks;
+      console.log(state.queueTracks);
 
       dispatch("updateQueueTracksInfo", token);
 

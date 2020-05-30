@@ -29,7 +29,7 @@
       "id": "1",
       "_id": "1",
       "image":"http://source.unsplash.com/7xP5BJ34ybg",
-      "name": "Album 3"
+      "name": "َQuran Album1"
     },
     "artist": 
       {
@@ -77,7 +77,7 @@
       "album_type": "album",
       "id": "1",
       "_id": "1",
-      "image":"http://source.unsplash.com/7xP5BJ34ybg",
+      "image": "http://source.unsplash.com/eSYCRwJEzO8",
       "name": "Album 3"
     },
     "artist": 
@@ -98,8 +98,8 @@
     "_id":"5",
     "album": {
       "album_type": "album",
-      "id": "2",
-      "_id": "2",
+      "id": "4",
+      "_id": "4",
       "image": "http://source.unsplash.com/H7sHkM9eilw",
       "name": "Album2"
     },

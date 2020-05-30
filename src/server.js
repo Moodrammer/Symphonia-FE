@@ -798,6 +798,7 @@ export function makeServer({ environment = "development" } = {}) {
       var nextTrack = mockTracks[2];
 
       this.get("/v1/me/player/queue", () => {
+        console.log(mockTracks);
         return new Response(
           200,
           {},
@@ -830,25 +831,21 @@ export function makeServer({ environment = "development" } = {}) {
         if (contextType == "album") {
           contextTracks = schema.albums.where({ id: contextID }).models[0]
             .tracks;
-
-          mockTracks = [];
-          for (let i = 0; i < contextTracks.length; i++) {
-            mockTracks.push(
-              schema.tracks.where({ id: contextTracks[i] }).models[0].link
-            );
-            console.log(
-              schema.tracks.where({ id: contextTracks[i] }).models[0].link
-            );
-            console.log(mockTracks);
-          }
+        } else if (contextType == "playlist") {
+          contextTracks = schema.playlists.where({ id: contextID }).models[0]
+            .tracks;
         }
-
-        console.log(contextTracks);
+        mockTracks = [];
+        for (let i = 0; i < contextTracks.length; i++) {
+          mockTracks.push(
+            schema.tracks.where({ id: contextTracks[i] }).models[0].link
+          );
+        }
         currentlyPlayingIndex = mockTracks.indexOf(link);
 
         currentlyPlaying = mockTracks[currentlyPlayingIndex];
-
-        var nextPlayingIndex = (currentlyPlayingIndex + 1) % 3;
+        console.log(mockTracks);
+        var nextPlayingIndex = (currentlyPlayingIndex + 1) % mockTracks.length;
         nextTrack = mockTracks[nextPlayingIndex];
 
         var previousPlayingIndex;
@@ -883,9 +880,9 @@ export function makeServer({ environment = "development" } = {}) {
       //
       //////////////////////////////////////////////////////////////////////////////////////
       this.post("/v1/me/player/next", () => {
-        currentlyPlayingIndex = (currentlyPlayingIndex + 1) % 3;
+        currentlyPlayingIndex = (currentlyPlayingIndex + 1) % mockTracks.length;
 
-        var nextPlayingIndex = (currentlyPlayingIndex + 1) % 3;
+        var nextPlayingIndex = (currentlyPlayingIndex + 1) % mockTracks.length;
 
         previousTrack = currentlyPlaying;
 
