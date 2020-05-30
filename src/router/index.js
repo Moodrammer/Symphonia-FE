@@ -45,17 +45,26 @@ const routes = [
       {
         name: "main",
         path: "main",
-        component: SymphoniaArtistMain
+        component: SymphoniaArtistMain,
+        meta: {
+          allowAnonymous: false
+        }
       },
       {
         name: "albums",
         path: "albums",
-        component: SymphoniaArtistAlbums
+        component: SymphoniaArtistAlbums,
+        meta: {
+          allowAnonymous: false
+        }
       },
       {
         name: "singles",
         path: "singles",
-        component: SymphoniaArtistSingles
+        component: SymphoniaArtistSingles,
+        meta: {
+          allowAnonymous: false
+        }
       }
     ]
   },
@@ -270,9 +279,6 @@ const routes = [
   {
     path: "/password-reset",
     name: "forgetpassword",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import("../views/ForgetPass.vue"),
     redirect: "/password-reset/reset",
     children: [

@@ -6,6 +6,7 @@ import albumsJSON from "./api/mock/data/album.json";
 import categoryJSON from "./api/mock/data/category.json";
 import historyJSON from "./api/mock/data/history.json";
 import deletedPlaylist from "./api/mock/data/DeletedPalylists.json";
+import notificationsJSON from "./api/mock/data/notifications.json"
 import getuserID from "./mixins/userService/getuserID.js";
 import getusername from "./mixins/userService/getusername.js";
 // import usersJSON from "./api/mock/data/users.json";
@@ -23,7 +24,8 @@ export function makeServer({ environment = "development" } = {}) {
       artist: Model,
       soundplayer: Model,
       category: Model,
-      deletedPlaylist: Model
+      deletedPlaylist: Model,
+      notification: Model
     },
 
     seeds(server) {
@@ -85,6 +87,8 @@ export function makeServer({ environment = "development" } = {}) {
       categoryJSON.data.categorys.forEach(element => {
         server.create("category", element);
       });
+
+      notificationsJSON.items.forEach(element => server.create("notification", element));
     },
 
     //Define serializers to format the responses
@@ -1180,6 +1184,36 @@ export function makeServer({ environment = "development" } = {}) {
           ).attrs.followed
         ];
       });
+
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      //////////////////////////////////////   Notifications   ///////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      
+      // Get Notification History
+
+      this.get("/v1/me/notifications", (schema) => {
+        let notifyList = []
+        for(let i = 1; i <= schema.notifications.all().length; i++){
+          var x = schema.notifications.find(i)
+          var element = {
+            notification: {
+              title: x.title,
+              body: x.body,
+              icon: x.icon
+            }
+          }
+          notifyList.push(element)
+        }
+        return new Response(200, {}, {
+          notifications: {
+            items: notifyList
+          }
+        })
+      })
+
+      this.patch("/v1/me/registration-token", () => {
+        return new Response(200, {}, {})
+      })
     }
   });
 
