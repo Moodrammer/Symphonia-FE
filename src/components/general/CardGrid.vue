@@ -58,6 +58,7 @@
             @mouseover="hoveredCardIndex = index"
             @mouseleave="hoveredCardIndex = null"
             @click="cardClicked(item.id, 'album')"
+            @contextmenu.prevent="menuClick($event, item.id, 'album')"
           >
             <v-btn
               class="ma-auto"
