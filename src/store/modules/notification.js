@@ -1,7 +1,7 @@
 import axios from "axios";
 import getuserToken from "../../mixins/userService/getUserToken";
-import isLoggedIn from "../../mixins/userService/isLoggedIn"
-import getuserID from "../../mixins/userService/getuserID"
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
+import getuserID from "../../mixins/userService/getuserID";
 import { messaging } from "../../firebaseConfig";
 
 const state = {
@@ -142,26 +142,26 @@ const actions = {
   //--------------------------------------------------------------------------------------------------------------//
   setRecieveNotificationHandler({ dispatch }) {
     messaging.onMessage(payload => {
-      console.log(payload)
-        const notificationData = {
-          notificationState: true,
-          notificationTitle: payload.notification.title,
-          notificationBody: payload.notification.body,
-          notificationIcon: payload.notification.icon,
-          color: "rgba(18, 17, 17, 0.9)",
-          timeout: 0
-        };
-        let data = JSON.parse(payload.data.data)
-        //make sure a user is logged in
-          if(isLoggedIn.methods.isLoggedIn()){
-          // make sure that the sent notification id matches the current user ID
-          console.log(data.to)
-            if(getuserID.methods.getuserID() == data.to){
-                dispatch("setNotification", notificationData);
-                //reload the history
-                dispatch("getNotificationHistoryList")
-            }
+      console.log(payload);
+      const notificationData = {
+        notificationState: true,
+        notificationTitle: payload.notification.title,
+        notificationBody: payload.notification.body,
+        notificationIcon: payload.notification.icon,
+        color: "rgba(18, 17, 17, 0.9)",
+        timeout: 0
+      };
+      let data = JSON.parse(payload.data.data);
+      //make sure a user is logged in
+      if (isLoggedIn.methods.isLoggedIn()) {
+        // make sure that the sent notification id matches the current user ID
+        console.log(data.to);
+        if (getuserID.methods.getuserID() == data.to) {
+          dispatch("setNotification", notificationData);
+          //reload the history
+          dispatch("getNotificationHistoryList");
         }
+      }
     });
   },
   //--------------------------------------------------------------------------------------------------------------//
