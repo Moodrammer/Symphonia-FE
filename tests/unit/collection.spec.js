@@ -56,6 +56,7 @@ collection.forEach(collectionElement => {
             }
           },
           artist: {
+            namespaced: true,
             state: {
               followed: []
             },
@@ -92,16 +93,6 @@ collection.forEach(collectionElement => {
     /////////////////////////////////////////////////////////
     /////////////     FUNCTIONS TESTS     ///////////////////
     /////////////////////////////////////////////////////////
-
-    // it("menuOrder function", () => {
-    //   let menuItem,
-    //     cardIndex = 4;
-    //   if (collectionElement === artists) menuItem = "Unfollow";
-    //   else menuItem = "Remove from your Library";
-    //   wrapper.vm.menuOrder(menuItem, cardIndex);
-    //   expect(wrapper.vm.contextMenuChoice).toBe(menuItem);
-    //   expect(wrapper.vm.contextMenuCardIndex).toBe(cardIndex);
-    // });
 
     if (collectionElement === playlists) {
       it("likedPlaylists watcher", async () => {
@@ -164,7 +155,6 @@ collection.forEach(collectionElement => {
           4329,
           1230
         ];
-        console.log(store.state.artist);
         await wrapper.vm.$nextTick();
         expect(wrapper.vm.cardItems.items).toEqual([
           3241,

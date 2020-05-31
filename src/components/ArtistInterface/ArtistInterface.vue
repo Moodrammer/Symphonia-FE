@@ -169,12 +169,6 @@ export default {
     }
   },
   watch: {
-    isFollowed: function(newValue) {
-      console.log("ISFOLO", newValue);
-    },
-    currentArtistGetter: function(newValue) {
-      console.log(newValue);
-    },
     artistID: function() {
       this.updateArtist();
     }

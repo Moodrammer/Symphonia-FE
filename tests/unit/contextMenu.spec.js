@@ -109,6 +109,17 @@ describe("Context Menu", () => {
             saveTrack: jest.fn(),
             removeSavedTrack: jest.fn()
           }
+        },
+        artist: {
+          namespaced: true,
+          state: {
+            FollowingArtistsBool: [false]
+          },
+          actions: {
+            isFollowingArtists: jest.fn(),
+            followArtist: jest.fn(),
+            unfollowArtist: jest.fn()
+          }
         }
       }
     });
@@ -348,13 +359,29 @@ describe("Context Menu", () => {
     wrapper.vm.artistAction("Copy Artist Link");
     expect(wrapper.vm.copyToClipboard()).toHaveBeenCalled;
   });
+
+  it("Check if user follows the artist", async () => {
+    store.state.artist.FollowingArtistsBool = [true];
+    wrapper.vm.artist();
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.vm.isFollowedArtist).toBe(true);
+    });
+  });
+
   //--------------------------------------------------------
   //        Test on click function
   //--------------------------------------------------------
   it("Call Artist Action", () => {
     wrapper.vm.type = "artist";
+
     wrapper.vm.onClick("Copy Artist Link");
     expect(wrapper.vm.artistAction("Copy Artist Link")).toHaveBeenCalled;
+
+    wrapper.vm.onClick("Follow");
+    expect(wrapper.vm.artistAction("Follow")).toHaveBeenCalled;
+
+    wrapper.vm.onClick("Unfollow");
+    expect(wrapper.vm.artistAction("Unfollow")).toHaveBeenCalled;
   });
 
   it("Call Playlist Action", () => {

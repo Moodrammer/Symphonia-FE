@@ -45,7 +45,7 @@
           md="4"
           sm="6"
           class="my-4"
-          v-for="(item, index) in AUIitems.slice(0, maxItems)"
+          v-for="(item, index) in cardItems.items.slice(0, maxItems)"
           :key="item.id"
         >
           <v-card
@@ -251,19 +251,8 @@ export default {
       playBTNFlag: false,
       hoveredCardIndex: null,
       disableMenu: false,
-      AUIitems: null,
-      showMoreBtn: false
+      showMoreBtn: true
     };
-  },
-  created() {
-    this.AUIitems = this.$props.cardItems.items;
-    if (
-      this.cardStyle === "artist" &&
-      this.AUIitems &&
-      this.AUIitems.length > 12
-    )
-      this.AUIitems = this.AUIitems.slice(0, 12);
-    this.showMoreBtn = true;
   },
   methods: {
     menuClick(e, i, t) {
@@ -278,7 +267,9 @@ export default {
      * used in artist ui cards if there is more than 12 cards
      */
     showMore() {
-      this.maxItems = this.showMoreBtn ? this.AUIitems.length : 12;
+      this.maxItems = this.showMoreBtn
+        ? this.$props.cardItems.items.length
+        : 12;
       this.showMoreBtn = !this.showMoreBtn;
     }
     /**
@@ -337,9 +328,6 @@ export default {
     //       this.$props.cardItems.menuList = this.$props.cardItems.playlistsMenu;
     //   }
     // },
-    "cardItems.items": function() {
-      this.AUIitems = this.$props.cardItems.items;
-    }
   }
 };
 </script>

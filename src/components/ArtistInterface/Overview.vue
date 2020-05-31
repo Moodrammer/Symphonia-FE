@@ -101,8 +101,7 @@ export default {
     });
   },
   methods: {
-    ...mapActions("artist", ["getArtistAlbums", "getArtistTopTracks"]),
-    menuOrder() {}
+    ...mapActions("artist", ["getArtistAlbums", "getArtistTopTracks"])
   },
   computed: {
     ...mapGetters("artist", [
@@ -124,11 +123,9 @@ export default {
   },
   watch: {
     allArtistAlbums(newValue) {
-      console.log("sdasd1", newValue);
       this.albumsCardItems.items = newValue;
     },
     allArtistSingles(newValue) {
-      console.log("sdasd2", newValue);
       this.singlesCardItems.items = newValue;
     }
   }

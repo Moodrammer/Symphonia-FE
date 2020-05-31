@@ -428,18 +428,6 @@ export default {
         token: this.getuserToken(),
         type: "artist"
       });
-    },
-
-    /**
-     * Function to check if the user follow the artist selected by the menu list
-     * @public This is a public method
-     * @param {none}
-     */
-    checkFollowingArtist() {
-      this.$store.dispatch("artist/isFollowingArtists", {
-        artists: [this.id],
-        token: this.getuserToken()
-      });
     }
   },
 

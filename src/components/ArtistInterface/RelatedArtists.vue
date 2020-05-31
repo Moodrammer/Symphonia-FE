@@ -12,12 +12,7 @@ export default {
     CardGrid
   },
   methods: {
-    ...mapActions("artist", ["getArtistRelatedArtists"]),
-    menuOrder(menuItem, cardIndex, name) {
-      console.log(menuItem, cardIndex, name);
-      this.albumsContextMenuChoice = menuItem;
-      this.albumsContextMenuCardIndex = cardIndex;
-    }
+    ...mapActions("artist", ["getArtistRelatedArtists"])
   },
 
   computed: mapGetters("artist", ["allArtistRelatedArtists"]),
@@ -43,7 +38,7 @@ export default {
   watch: {
     allArtistRelatedArtists(newValue) {
       this.cardItems.items = newValue;
-      console.log(newValue);
+      console.log("allArtistRelatedArtists", newValue);
     }
   }
 };
