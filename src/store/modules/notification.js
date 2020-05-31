@@ -27,7 +27,7 @@ const mutations = {
     state.notificationData.color = payload.color;
   },
 
-  setIsNotificationShown(state, payload){
+  setIsNotificationShown(state, payload) {
     state.notificationData.isNotificationShown = payload;
   },
 
@@ -36,8 +36,8 @@ const mutations = {
   },
 
   setnoNotificationHistory(state, payload) {
-    if(payload == true) {
-        state.historyList = []
+    if (payload == true) {
+      state.historyList = [];
     }
     state.noNotificationHistory = payload;
   },
@@ -47,7 +47,7 @@ const mutations = {
   },
 
   setPushNotificationsPermission(state, payload) {
-      state.isPushNotificationsAllowed = payload
+    state.isPushNotificationsAllowed = payload;
   }
 };
 
@@ -103,7 +103,7 @@ const actions = {
       });
   },
   //--------------------------------------------------------------------------------------------------------------//
-  getRegistrationToken({ dispatch, commit}, userToken) {
+  getRegistrationToken({ dispatch, commit }, userToken) {
     messaging
       .getToken()
       .then(currentToken => {
@@ -128,12 +128,13 @@ const actions = {
         const notificationData = {
           notificationState: true,
           notificationTitle: "",
-          notificationBody: "Push notifications are blocked from the browser. You can unblock them later from the browser then enable them from the settings page",
+          notificationBody:
+            "Push notifications are blocked from the browser. You can unblock them later from the browser then enable them from the settings page",
           notificationIcon: "",
           color: "rgba(197, 57, 57, 0.93)",
           timeout: 0
         };
-        dispatch("setNotification", notificationData)
+        dispatch("setNotification", notificationData);
       });
   },
   //--------------------------------------------------------------------------------------------------------------//

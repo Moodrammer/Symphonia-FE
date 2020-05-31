@@ -89,7 +89,7 @@ const actions = {
             localStorage.setItem("type", response.data.user.type);
             localStorage.setItem("imageUrl", response.data.user.imageUrl);
             //By default the new user allows notifications till he choses to disable it
-            localStorage.setItem("allowNotifications", true)
+            localStorage.setItem("allowNotifications", true);
             //Resolve to direct the user to the application
           }
           resolve(payload.type);
@@ -114,11 +114,10 @@ const actions = {
             //store the user data in the store
             commit("setUserData", response.data);
             //store if the user allows push notifications or not
-            if(response.data.user.registraionToken == undefined){
-              localStorage.setItem("allowNotifications", false)
-            }
-            else{
-              localStorage.setItem("allowNotifications", true)
+            if (response.data.user.registraionToken == undefined) {
+              localStorage.setItem("allowNotifications", false);
+            } else {
+              localStorage.setItem("allowNotifications", true);
             }
             //REMEMBER ME LOGIC
             //If the user choses to remember him store his data in the local storage
