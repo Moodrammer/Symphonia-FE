@@ -233,7 +233,6 @@ export default {
   data: function() {
     return {
       hover: false,
-      iconClick: false,
       id: this.$route.params.id,
       disable: false
     };
