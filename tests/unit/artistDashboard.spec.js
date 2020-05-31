@@ -55,7 +55,6 @@ describe("Dashboard.vue", () => {
   it("renders vue instance", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
-
 });
 
 describe("Main.vue", () => {
@@ -116,9 +115,9 @@ describe("Drawer.vue", () => {
 
 describe("Albums.vue", () => {
   let wrapper, vuetify, store;
-  const app = document.createElement ("div");
-  app.setAttribute ("data-app", true);
-  document.body.append (app);
+  const app = document.createElement("div");
+  app.setAttribute("data-app", true);
+  document.body.append(app);
 
   beforeEach(() => {
     vuetify = new Vuetify();
@@ -130,13 +129,13 @@ describe("Albums.vue", () => {
       vuetify,
       store,
       stubs: {
-        'v-form': {
+        "v-form": {
           render: () => {},
           methods: {
-            validate: () => true,
-          },
-        },
-      },
+            validate: () => true
+          }
+        }
+      }
     });
   });
 
@@ -166,73 +165,67 @@ describe("Albums.vue", () => {
     });
   });
 
-  it("addAlbum function", async() => {
+  it("addAlbum function", async () => {
     wrapper.vm.addAlbum();
     await wrapper.vm.$nextTick();
     expect("reset").toBeCalled;
-  })
+  });
 
-  it("addSong function", async() => {
+  it("addSong function", async () => {
     wrapper.vm.addSong();
     await wrapper.vm.$nextTick();
     expect("reset").toBeCalled;
-  })
+  });
 
-  it("startLoading", async() => {
+  it("startLoading", async () => {
     wrapper.vm.startLoading = false;
     await wrapper.vm.$nextTick();
     expect("startLoading").toBeCalled;
-  })
+  });
 
-
- it("deleteAlbum", async() => {
-  wrapper.vm.setOperationData(null, null, null, null)
-  wrapper.vm.remove();
+  it("deleteAlbum", async () => {
+    wrapper.vm.setOperationData(null, null, null, null);
+    wrapper.vm.remove();
     await wrapper.vm.$nextTick();
     expect("deleteAlbum").toBeCalled;
-  })
+  });
 
-  it("deleteTrack", async() => {
-    wrapper.vm.setOperationData(null, null, null, 1)
+  it("deleteTrack", async () => {
+    wrapper.vm.setOperationData(null, null, null, 1);
     wrapper.vm.remove();
     await wrapper.vm.$nextTick();
     expect("deleteTrack").toBeCalled;
-  })
+  });
 
-  it("renameAlbum", async() => {
-    wrapper.vm.setOperationData(null, null, null, null)
+  it("renameAlbum", async () => {
+    wrapper.vm.setOperationData(null, null, null, null);
     wrapper.vm.rename();
-      await wrapper.vm.$nextTick();
-      expect("renameAlbum").toBeCalled;
-    })
-  
-  it("renameTrack", async() => {
-    wrapper.vm.setOperationData(null, null, null, 1)
+    await wrapper.vm.$nextTick();
+    expect("renameAlbum").toBeCalled;
+  });
+
+  it("renameTrack", async () => {
+    wrapper.vm.setOperationData(null, null, null, 1);
     wrapper.vm.rename();
     await wrapper.vm.$nextTick();
     expect("renameTrack").toBeCalled;
-  })
-  
-
+  });
 
   it("setOperationData Function", () => {
-    wrapper.vm.setOperationData("remove", null, null, 1)
+    wrapper.vm.setOperationData("remove", null, null, 1);
     expect(wrapper.vm.dialog.remove).toBe(true);
-    wrapper.vm.setOperationData("rename", null, null, 1)
+    wrapper.vm.setOperationData("rename", null, null, 1);
     expect(wrapper.vm.dialog.rename).toBe(true);
-    wrapper.vm.setOperationData("addSong", null, null, 1)
+    wrapper.vm.setOperationData("addSong", null, null, 1);
     expect(wrapper.vm.dialog.addSong).toBe(true);
-
-  })
-
+  });
 });
-
 
 describe("Singles.vue", () => {
   let wrapper, vuetify, store;
-  const app = document.createElement ("div");
-  app.setAttribute ("data-app", true);
-  document.body.append (app);
+  const app = document.createElement("div");
+  app.setAttribute("data-app", true);
+  document.body.append(app);
 
   beforeEach(() => {
     vuetify = new Vuetify();
@@ -244,13 +237,13 @@ describe("Singles.vue", () => {
       vuetify,
       store,
       stubs: {
-        'v-form': {
+        "v-form": {
           render: () => {},
           methods: {
-            validate: () => true,
-          },
-        },
-      },
+            validate: () => true
+          }
+        }
+      }
     });
   });
 
@@ -280,71 +273,67 @@ describe("Singles.vue", () => {
     });
   });
 
-  it("addAlbum function", async() => {
+  it("addAlbum function", async () => {
     wrapper.vm.addAlbum();
     await wrapper.vm.$nextTick();
     expect("reset").toBeCalled;
-  })
+  });
 
-  it("addSong function", async() => {
+  it("addSong function", async () => {
     wrapper.vm.addSong();
     await wrapper.vm.$nextTick();
     expect("reset").toBeCalled;
-  })
+  });
 
-  it("startLoading", async() => {
+  it("startLoading", async () => {
     wrapper.vm.startLoading = false;
     await wrapper.vm.$nextTick();
     expect("startLoading").toBeCalled;
-  })
+  });
 
-
- it("deleteAlbum", async() => {
-  wrapper.vm.setOperationData(null, null, null, null)
-  wrapper.vm.remove();
+  it("deleteAlbum", async () => {
+    wrapper.vm.setOperationData(null, null, null, null);
+    wrapper.vm.remove();
     await wrapper.vm.$nextTick();
     expect("deleteAlbum").toBeCalled;
-  })
+  });
 
-  it("deleteTrack", async() => {
-    wrapper.vm.setOperationData(null, null, null, 1)
+  it("deleteTrack", async () => {
+    wrapper.vm.setOperationData(null, null, null, 1);
     wrapper.vm.remove();
     await wrapper.vm.$nextTick();
     expect("deleteTrack").toBeCalled;
-  })
+  });
 
-  it("renameAlbum", async() => {
-    wrapper.vm.setOperationData(null, null, null, null)
+  it("renameAlbum", async () => {
+    wrapper.vm.setOperationData(null, null, null, null);
     wrapper.vm.rename();
-      await wrapper.vm.$nextTick();
-      expect("renameAlbum").toBeCalled;
-    })
-  
-  it("renameTrack", async() => {
-    wrapper.vm.setOperationData(null, null, null, 1)
+    await wrapper.vm.$nextTick();
+    expect("renameAlbum").toBeCalled;
+  });
+
+  it("renameTrack", async () => {
+    wrapper.vm.setOperationData(null, null, null, 1);
     wrapper.vm.rename();
     await wrapper.vm.$nextTick();
     expect("renameTrack").toBeCalled;
-  })
-  
-
+  });
 
   it("setOperationData Function", () => {
-    wrapper.vm.setOperationData("remove", null, null, 1)
+    wrapper.vm.setOperationData("remove", null, null, 1);
     expect(wrapper.vm.dialog.remove).toBe(true);
-    wrapper.vm.setOperationData("rename", null, null, 1)
+    wrapper.vm.setOperationData("rename", null, null, 1);
     expect(wrapper.vm.dialog.rename).toBe(true);
-    wrapper.vm.setOperationData("addSong", null, null, 1)
+    wrapper.vm.setOperationData("addSong", null, null, 1);
     expect(wrapper.vm.dialog.addSong).toBe(true);
-
-  })
+  });
 
   it("latest album null", async () => {
     store.state.artist.latestAlbum = null;
     wrapper.vm.$nextTick().then(() => {
       expect(wrapper.vm.dialog.addSong).toBe(false);
     });
-  })
+  });
 
   it("changing latest album", async () => {
     store.state.artist.latestAlbum = 1;
@@ -353,10 +342,8 @@ describe("Singles.vue", () => {
       expect(wrapper.vm.dialog.addAlbum).toBe(false);
       expect(wrapper.vm.dialog.addSong).toBe(true);
     });
-  })
+  });
 });
-
-
 
 const storeMock = {
   modules: {
@@ -374,7 +361,7 @@ const storeMock = {
         renameAlbum: jest.fn(),
         renameTrack: jest.fn(),
         deleteAlbum: jest.fn(),
-        deleteTrack: jest.fn(),
+        deleteTrack: jest.fn()
       },
       getters: {
         allArtistSingles: jest.fn(),

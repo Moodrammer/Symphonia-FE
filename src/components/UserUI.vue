@@ -72,14 +72,14 @@ export default {
     };
   },
   created() {
-      this.getUserInfo({
-        token: this.getuserToken(),
-        id: this.$route.params.id
-      });
-      this.getPublicPlaylists({
-        token: this.getuserToken(),
-        id: this.$route.params.id
-      });
+    this.getUserInfo({
+      token: this.getuserToken(),
+      id: this.$route.params.id
+    });
+    this.getPublicPlaylists({
+      token: this.getuserToken(),
+      id: this.$route.params.id
+    });
   },
 
   methods: {

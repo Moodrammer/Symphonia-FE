@@ -40,14 +40,13 @@ describe("Dashboard.vue", () => {
   /////////////     FUNCTIONS TESTS     ///////////////////
   /////////////////////////////////////////////////////////
 
-
-  it("follow function", async() => {
+  it("follow function", async () => {
     wrapper.vm.follow();
     await wrapper.vm.$nextTick();
     expect("followArtist").toBeCalled;
   });
 
-  it("unfollow function", async() => {
+  it("unfollow function", async () => {
     wrapper.vm.unfollow();
     await wrapper.vm.$nextTick();
     expect("unfollowArtist").toBeCalled;
@@ -57,24 +56,18 @@ describe("Dashboard.vue", () => {
   //////////////     WATCHERS TESTS     ///////////////////
   /////////////////////////////////////////////////////////
 
-
-  it("updating user info", async() => {
+  it("updating user info", async () => {
     store.state.userPublicProfile.info = 3;
     await wrapper.vm.$nextTick();
     expect(wrapper.vm.user).toBe(3);
   });
 
-  it("updating playlists info", async() => {
+  it("updating playlists info", async () => {
     store.state.userPublicProfile.playlists = 100;
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.cardItems.items).toBe(100);      
+    expect(wrapper.vm.cardItems.items).toBe(100);
   });
-
 });
-
-
-
-
 
 const storeMock = {
   modules: {
@@ -83,10 +76,10 @@ const storeMock = {
       actions: {
         isFollowingArtists: jest.fn(),
         followArtist: jest.fn(),
-        unfollowArtist: jest.fn(),
+        unfollowArtist: jest.fn()
       },
       getters: {
-        isFollowed: jest.fn(),
+        isFollowed: jest.fn()
       }
     },
     userPublicProfile: {
@@ -103,7 +96,6 @@ const storeMock = {
         allInfo: jest.fn(state => state.info),
         allPublicPlaylists: jest.fn(state => state.playlists)
       }
-
-    },
+    }
   }
 };
