@@ -72,8 +72,6 @@ export default {
     };
   },
   created() {
-    console.log("token", this.getuserToken());
-    try {
       this.getUserInfo({
         token: this.getuserToken(),
         id: this.$route.params.id
@@ -82,9 +80,6 @@ export default {
         token: this.getuserToken(),
         id: this.$route.params.id
       });
-    } catch (error) {
-      console.log(error);
-    }
   },
 
   methods: {

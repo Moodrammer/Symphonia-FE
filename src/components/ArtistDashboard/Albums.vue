@@ -362,11 +362,6 @@ export default {
       offset: 0
     });
   },
-  watch: {
-    allArtistAlbums: function(newValue) {
-      console.log(newValue);
-    }
-  },
   methods: {
     ...mapActions("artist", [
       "addNewAlbum",

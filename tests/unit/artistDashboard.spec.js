@@ -114,120 +114,273 @@ describe("Drawer.vue", () => {
   });
 });
 
+describe("Albums.vue", () => {
+  let wrapper, vuetify, store;
+  const app = document.createElement ("div");
+  app.setAttribute ("data-app", true);
+  document.body.append (app);
+
+  beforeEach(() => {
+    vuetify = new Vuetify();
+    Vue.use(Vuetify);
+    Vue.use(Vuex);
+    store = new Vuex.Store(storeMock);
+
+    wrapper = shallowMount(albums, {
+      vuetify,
+      store,
+      stubs: {
+        'v-form': {
+          render: () => {},
+          methods: {
+            validate: () => true,
+          },
+        },
+      },
+    });
+  });
+
+  /////////////////////////////////////////////////////////
+  /////////////     RENDERING TESTS     ///////////////////
+  /////////////////////////////////////////////////////////
+
+  it("renders", () => {
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it("renders vue instance", () => {
+    expect(wrapper.isVueInstance()).toBe(true);
+  });
+
+  /////////////////////////////////////////////////////////
+  /////////////     FUNCTIONS TESTS     ///////////////////
+  /////////////////////////////////////////////////////////
+
+  it("reset function", () => {
+    wrapper.vm.reset();
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.vm.dialog.addSong).toBe(false);
+      expect(wrapper.vm.dialog.addAlbum).toBe(false);
+      expect(wrapper.vm.dialog.rename).toBe(false);
+      expect(wrapper.vm.dialog.remove).toBe(false);
+    });
+  });
+
+  it("addAlbum function", async() => {
+    wrapper.vm.addAlbum();
+    await wrapper.vm.$nextTick();
+    expect("reset").toBeCalled;
+  })
+
+  it("addSong function", async() => {
+    wrapper.vm.addSong();
+    await wrapper.vm.$nextTick();
+    expect("reset").toBeCalled;
+  })
+
+  it("startLoading", async() => {
+    wrapper.vm.startLoading = false;
+    await wrapper.vm.$nextTick();
+    expect("startLoading").toBeCalled;
+  })
+
+
+ it("deleteAlbum", async() => {
+  wrapper.vm.setOperationData(null, null, null, null)
+  wrapper.vm.remove();
+    await wrapper.vm.$nextTick();
+    expect("deleteAlbum").toBeCalled;
+  })
+
+  it("deleteTrack", async() => {
+    wrapper.vm.setOperationData(null, null, null, 1)
+    wrapper.vm.remove();
+    await wrapper.vm.$nextTick();
+    expect("deleteTrack").toBeCalled;
+  })
+
+  it("renameAlbum", async() => {
+    wrapper.vm.setOperationData(null, null, null, null)
+    wrapper.vm.rename();
+      await wrapper.vm.$nextTick();
+      expect("renameAlbum").toBeCalled;
+    })
+  
+  it("renameTrack", async() => {
+    wrapper.vm.setOperationData(null, null, null, 1)
+    wrapper.vm.rename();
+    await wrapper.vm.$nextTick();
+    expect("renameTrack").toBeCalled;
+  })
+  
+
+
+  it("setOperationData Function", () => {
+    wrapper.vm.setOperationData("remove", null, null, 1)
+    expect(wrapper.vm.dialog.remove).toBe(true);
+    wrapper.vm.setOperationData("rename", null, null, 1)
+    expect(wrapper.vm.dialog.rename).toBe(true);
+    wrapper.vm.setOperationData("addSong", null, null, 1)
+    expect(wrapper.vm.dialog.addSong).toBe(true);
+
+  })
+
+});
+
+
+describe("Singles.vue", () => {
+  let wrapper, vuetify, store;
+  const app = document.createElement ("div");
+  app.setAttribute ("data-app", true);
+  document.body.append (app);
+
+  beforeEach(() => {
+    vuetify = new Vuetify();
+    Vue.use(Vuetify);
+    Vue.use(Vuex);
+    store = new Vuex.Store(storeMock);
+
+    wrapper = shallowMount(singles, {
+      vuetify,
+      store,
+      stubs: {
+        'v-form': {
+          render: () => {},
+          methods: {
+            validate: () => true,
+          },
+        },
+      },
+    });
+  });
+
+  /////////////////////////////////////////////////////////
+  /////////////     RENDERING TESTS     ///////////////////
+  /////////////////////////////////////////////////////////
+
+  it("renders", () => {
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it("renders vue instance", () => {
+    expect(wrapper.isVueInstance()).toBe(true);
+  });
+
+  /////////////////////////////////////////////////////////
+  /////////////     FUNCTIONS TESTS     ///////////////////
+  /////////////////////////////////////////////////////////
+
+  it("reset function", () => {
+    wrapper.vm.reset();
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.vm.dialog.addSong).toBe(false);
+      expect(wrapper.vm.dialog.addAlbum).toBe(false);
+      expect(wrapper.vm.dialog.rename).toBe(false);
+      expect(wrapper.vm.dialog.remove).toBe(false);
+    });
+  });
+
+  it("addAlbum function", async() => {
+    wrapper.vm.addAlbum();
+    await wrapper.vm.$nextTick();
+    expect("reset").toBeCalled;
+  })
+
+  it("addSong function", async() => {
+    wrapper.vm.addSong();
+    await wrapper.vm.$nextTick();
+    expect("reset").toBeCalled;
+  })
+
+  it("startLoading", async() => {
+    wrapper.vm.startLoading = false;
+    await wrapper.vm.$nextTick();
+    expect("startLoading").toBeCalled;
+  })
+
+
+ it("deleteAlbum", async() => {
+  wrapper.vm.setOperationData(null, null, null, null)
+  wrapper.vm.remove();
+    await wrapper.vm.$nextTick();
+    expect("deleteAlbum").toBeCalled;
+  })
+
+  it("deleteTrack", async() => {
+    wrapper.vm.setOperationData(null, null, null, 1)
+    wrapper.vm.remove();
+    await wrapper.vm.$nextTick();
+    expect("deleteTrack").toBeCalled;
+  })
+
+  it("renameAlbum", async() => {
+    wrapper.vm.setOperationData(null, null, null, null)
+    wrapper.vm.rename();
+      await wrapper.vm.$nextTick();
+      expect("renameAlbum").toBeCalled;
+    })
+  
+  it("renameTrack", async() => {
+    wrapper.vm.setOperationData(null, null, null, 1)
+    wrapper.vm.rename();
+    await wrapper.vm.$nextTick();
+    expect("renameTrack").toBeCalled;
+  })
+  
+
+
+  it("setOperationData Function", () => {
+    wrapper.vm.setOperationData("remove", null, null, 1)
+    expect(wrapper.vm.dialog.remove).toBe(true);
+    wrapper.vm.setOperationData("rename", null, null, 1)
+    expect(wrapper.vm.dialog.rename).toBe(true);
+    wrapper.vm.setOperationData("addSong", null, null, 1)
+    expect(wrapper.vm.dialog.addSong).toBe(true);
+
+  })
+
+  it("latest album null", async () => {
+    store.state.artist.latestAlbum = null;
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.vm.dialog.addSong).toBe(false);
+    });
+  })
+
+  it("changing latest album", async () => {
+    store.state.artist.latestAlbum = 1;
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.vm.operation.albumID).toBe(1);
+      expect(wrapper.vm.dialog.addAlbum).toBe(false);
+      expect(wrapper.vm.dialog.addSong).toBe(true);
+    });
+  })
+});
+
+
+
 const storeMock = {
   modules: {
     artist: {
       namespaced: true,
       state: {
-        followed: [false],
-        albums: [
-          {
-            id: "0",
-            image: "http://source.unsplash.com/eSYCRwJEzO8",
-            name: "Album0"
-          },
-          {
-            id: "1",
-            image: "http://source.unsplash.com/eSYCRwJEzO8",
-            name: "Album1"
-          },
-          {
-            id: "2",
-            image: "http://source.unsplash.com/eSYCRwJEzO8",
-            name: "Album2"
-          }
-        ],
-
-        singles: [
-          {
-            id: "0",
-            image: "http://source.unsplash.com/eSYCRwJEzO8",
-            name: "Single0"
-          },
-          {
-            id: "1",
-            image: "http://source.unsplash.com/eSYCRwJEzO8",
-            name: "Single1"
-          },
-          {
-            id: "2",
-            image: "http://source.unsplash.com/eSYCRwJEzO8",
-            name: "Single2"
-          }
-        ],
-
-        topTracks: [
-          {
-            album: {
-              _id: "2",
-              image: "http://source.unsplash.com/eSYCRwJEzO8",
-              name: "Album2"
-            },
-            duaration: 48000,
-            explicit: false,
-            name: "Song1",
-            premium: false,
-            _id: "0"
-          },
-          {
-            album: {
-              _id: "1",
-              image: "http://source.unsplash.com/eSYCRwJEzO8",
-              name: "Album1"
-            },
-            duaration: 43000,
-            explicit: true,
-            name: "Song2",
-            premium: false,
-            _id: "1"
-          }
-        ],
-
-        artistInfo: {
-          followedUsers: [1, 2],
-          id: "0",
-          _id: "0",
-          imageUrl:
-            "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg",
-          name: "a0"
-        },
-
-        relatedArtists: [
-          {
-            id: "1",
-            description: "artist",
-            name: "a1",
-            type: "artist",
-            image:
-              "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg"
-          },
-          {
-            id: "2",
-            description: "artist",
-            name: "a2",
-            type: "artist",
-            image:
-              "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg"
-          }
-        ]
+        latestAlbum: 3
       },
 
       actions: {
-        followArtist: jest.fn(state => (state.followed = [true])),
-        unfollowArtist: jest.fn(state => (state.followed = [false])),
-        getCurrentArtist: jest.fn(),
-        isFollowingArtists: jest.fn(),
+        addNewAlbum: jest.fn(),
+        addTrackToAlbum: jest.fn(),
         getArtistAlbums: jest.fn(),
-        getArtistTopTracks: jest.fn(),
-        getArtistRelatedArtists: jest.fn()
+        getSimplifiedCategories: jest.fn(),
+        renameAlbum: jest.fn(),
+        renameTrack: jest.fn(),
+        deleteAlbum: jest.fn(),
+        deleteTrack: jest.fn(),
       },
       getters: {
-        currentArtistGetter: jest.fn(state => state.artistInfo),
-        isFollowed: jest.fn(state => state.followed),
-        allArtistAlbums: jest.fn(state => state.albums), //
-        allArtistTopTracks: jest.fn(state => state.topTracks), //
-        allArtistSingles: jest.fn(state => state.singles), //
-        allArtistRelatedArtists: jest.fn(state => state.relatedArtists)
+        allArtistSingles: jest.fn(),
+        latestAlbumIDGetter: jest.fn(state => state.latestAlbum),
+        allArtistAlbums: jest.fn(),
+        uploadingDone: jest.fn()
       }
     }
   }
