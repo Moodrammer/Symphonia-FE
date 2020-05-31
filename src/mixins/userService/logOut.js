@@ -5,6 +5,7 @@ export default {
      * @public
      */
     logOut() {
+      localStorage.removeItem("allowNotifications");
       if (localStorage.getItem("userToken") != null) {
         localStorage.removeItem("userToken");
         localStorage.removeItem("username");

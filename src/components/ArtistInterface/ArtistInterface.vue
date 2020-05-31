@@ -13,9 +13,33 @@
       <h1 class="display-3 font-weight-bold white--text my-5">
         {{ currentArtistGetter.name }}
       </h1>
-      <v-btn rounded color="success" min-width="110" min-height="40" dark
-        >Play</v-btn
-      >
+
+      <v-menu bottom dark offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            color="success"
+            min-width="110"
+            min-height="40"
+            dark
+            v-on="on"
+            rounded
+          >
+            Share
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="(item, i) in shareList"
+            :key="i"
+            @click="share(item.name)"
+          >
+            <v-btn :title="item.name" icon
+              ><v-icon>{{ item.icon }}</v-icon></v-btn
+            >
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <template v-if="isVisitor">
         <v-btn
           rounded
@@ -79,6 +103,32 @@ export default {
       "followArtist",
       "unfollowArtist"
     ]),
+    share(name) {
+      var url = `${window.location.host}/webhome/artist/${this.artistID}`;
+      if (name == "Facebook")
+        window.open(
+          "https://www.facebook.com/sharer/sharer.php?u=" +
+            url +
+            "&amp;src=sdkpreparse"
+        );
+      else if (name == "Twitter")
+        window.open("https://twitter.com/intent/tweet?url=" + url);
+      else {
+        var el = document.createElement("textarea");
+        // Set value (string to be copied)
+        el.value = url;
+        // Set non-editable to avoid focus and move outside of view
+        el.setAttribute("readonly", "");
+        el.style = { position: "absolute", left: "-9999px" };
+        document.body.appendChild(el);
+        // Select text inside element
+        el.select();
+        // Copy text to clipboard
+        document.execCommand("copy");
+        // Remove temporary element
+        document.body.removeChild(el);
+      }
+    },
     updateArtist() {
       this.getCurrentArtist({
         token: this.getuserToken(),
@@ -94,13 +144,15 @@ export default {
       console.log("FOLLOW", this.artistID);
       this.followArtist({
         token: this.getuserToken(),
-        artists: [this.artistID]
+        artists: [this.artistID],
+        type: "artist"
       });
     },
     unfollow() {
       this.unfollowArtist({
         token: this.getuserToken(),
-        artists: [this.artistID]
+        artists: [this.artistID],
+        type: "artist"
       });
     }
   },
@@ -128,7 +180,22 @@ export default {
     }
   },
   data: function() {
-    return {};
+    return {
+      shareList: [
+        {
+          name: "Facebook",
+          icon: "mdi-facebook"
+        },
+        {
+          name: "Twitter",
+          icon: "mdi-twitter"
+        },
+        {
+          name: "Copy Url",
+          icon: "mdi-content-copy"
+        }
+      ]
+    };
   },
   mixins: [getuserToken, getuserID]
 };

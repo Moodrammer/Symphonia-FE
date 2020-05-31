@@ -79,7 +79,7 @@ export default {
       switch (action) {
         case "Copy Artist Link":
           this.copyToClipboard(
-            `https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`
+            `${window.location.host}/webhome/${this.type}/${this.id}`
           );
           break;
         case "Follow":
@@ -116,7 +116,7 @@ export default {
 
         case "Copy Playlist Link":
           this.copyToClipboard(
-            `https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`
+            `${window.location.host}/webhome/${this.type}/${this.id}`
           );
           break;
       }
@@ -139,7 +139,7 @@ export default {
 
         case "Copy Album Link":
           this.copyToClipboard(
-            `https://zasymphonia.ddns.net/webhome/album/${this.id}`
+            `${window.location.host}/webhome/album/${this.id}`
           );
           break;
       }
@@ -164,7 +164,7 @@ export default {
 
         case "Copy Song Link":
           this.copyToClipboard(
-            `https://zasymphonia.ddns.net/webhome/album/${this.id}`
+            `${window.location.host}/webhome/album/${this.id}`
           );
           break;
       }
@@ -412,7 +412,8 @@ export default {
     followArtist() {
       this.$store.dispatch("artist/followArtist", {
         artists: [this.id],
-        token: this.getuserToken()
+        token: this.getuserToken(),
+        type: "artist"
       });
     },
 
@@ -424,7 +425,8 @@ export default {
     unfollowArtist() {
       this.$store.dispatch("artist/unfollowArtist", {
         artists: [this.id],
-        token: this.getuserToken()
+        token: this.getuserToken(),
+        type: "artist"
       });
     },
 

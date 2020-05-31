@@ -48,7 +48,7 @@ const actions = {
 
   getUserInfo({ commit }, payload) {
     axios
-      .get(`/v1/me/${payload.id}`, {
+      .get(`/v1/me/user/${payload.id}`, {
         headers: {
           Authorization: `Bearer ${payload.token}`
         }
@@ -60,7 +60,7 @@ const actions = {
         commit("load_userInfo", response.data);
       })
       .catch(error => {
-        console.log("axios caught an error in getAlbums");
+        console.log("axios caught an error in getUserInfo");
         console.log(error);
       });
   },

@@ -5,6 +5,7 @@ import artistJSON from "./api/mock/data/artist.json";
 import albumsJSON from "./api/mock/data/album.json";
 import categoryJSON from "./api/mock/data/category.json";
 import historyJSON from "./api/mock/data/history.json";
+import notificationsJSON from "./api/mock/data/notifications.json";
 import getuserID from "./mixins/userService/getuserID.js";
 import getusername from "./mixins/userService/getusername.js";
 // import usersJSON from "./api/mock/data/users.json";
@@ -22,7 +23,8 @@ export function makeServer({ environment = "development" } = {}) {
       artist: Model,
       soundplayer: Model,
       category: Model,
-      deletedPlaylist: Model
+      deletedPlaylist: Model,
+      notification: Model
     },
 
     seeds(server) {
@@ -36,7 +38,8 @@ export function makeServer({ environment = "development" } = {}) {
         type: "user",
         country: "EG",
         imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+        followed: false
       });
       //creating an artist for testing purposes
       server.create("user", {
@@ -48,7 +51,8 @@ export function makeServer({ environment = "development" } = {}) {
         type: "artist",
         country: "EG",
         imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+          "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg",
+        followed: false
       });
 
       //This part is just to fake mirage in order to persist the data of only one user
@@ -79,6 +83,10 @@ export function makeServer({ environment = "development" } = {}) {
       categoryJSON.data.categorys.forEach(element => {
         server.create("category", element);
       });
+
+      notificationsJSON.items.forEach(element =>
+        server.create("notification", element)
+      );
     },
 
     //Define serializers to format the responses
@@ -88,6 +96,7 @@ export function makeServer({ environment = "development" } = {}) {
     routes() {
       //namespace will be prepended to any route (it acts like the server base address)
       this.namespace = "/api";
+
       /////////////////////////////////////////////////////////////////////////////////
       // Create Playlist Request
       /////////////////////////////////////////////////////////////////////////////////
@@ -292,7 +301,8 @@ export function makeServer({ environment = "development" } = {}) {
           id: playlistID,
           tracksCount: schema.playlists.where({ id: playlistID }).models[0]
             .tracksCount,
-          deletedAt: "2020-04-18T04:19:11.758Z"
+          deletedAt: "2020-04-18T04:19:11.758Z",
+          deleted: true
         });
         return new Response(200, {}, {});
       });
@@ -455,7 +465,7 @@ export function makeServer({ environment = "development" } = {}) {
         console.log(z);
         return { playlists: { items: z } };
       });
-      this.get("/v1/me/:id", (schema, request) => {
+      this.get("/v1/me/user/:id", (schema, request) => {
         let x = schema.users.findBy(user => user.id === request.params.id);
         return { name: x.name, imageUrl: x.imageUrl };
       });
@@ -663,7 +673,21 @@ export function makeServer({ environment = "development" } = {}) {
             }
           );
         }),
-        // Get the current user's data to the account overview(User's Settings)
+        this.get("/v1/me/player/currently-playing", () => {
+          return new Response(
+            200,
+            {},
+            {
+              data: {
+                currentTrack: "/track/5e7d2dc03429e24340ff1396",
+                device: "5e88ef4d54142e3db4d01ee5"
+              }
+            }
+          );
+        }),
+        /////////////////////////////////////////////////////////////////////////////////
+        //     Get the current user's data to the account overview(User's Settings)
+        /////////////////////////////////////////////////////////////////////////////////
         this.get("/v1/me", (schema, request) => {
           // get the user's data from seed if exist
           if (request.requestHeaders.Authorization) {
@@ -683,7 +707,9 @@ export function makeServer({ environment = "development" } = {}) {
             return new Response(400, {}, {});
           }
         });
-      // patch the user's password =>(change the current user's password)
+      /////////////////////////////////////////////////////////////////////////////////
+      //       patch the user's password =>(change the current user's password)
+      /////////////////////////////////////////////////////////////////////////////////
       this.patch("/v1/users/updatepassword", (schema, request) => {
         let id;
         if (localStorage.getItem("userToken") != null) {
@@ -705,7 +731,9 @@ export function makeServer({ environment = "development" } = {}) {
           return new Response(401, {}, {});
         }
       });
-      // update the current user profile data
+      /////////////////////////////////////////////////////////////////////////////////
+      //                update the current user profile data
+      /////////////////////////////////////////////////////////////////////////////////
       this.put("/v1/me/", (schema, request) => {
         if (request.requestBody) {
           let attr = JSON.parse(request.requestBody);
@@ -729,8 +757,9 @@ export function makeServer({ environment = "development" } = {}) {
           return new Response(401, {}, {});
         }
       });
-
-      // Get the current user's data to the account overview(User's Settings)
+      /////////////////////////////////////////////////////////////////////////////////
+      //     Get the current user's data to the account overview(User's Settings)
+      /////////////////////////////////////////////////////////////////////////////////
       this.get("/v1/me", (schema, request) => {
         // get the user's data from seed if exist
         if (request.requestHeaders.Authorization) {
@@ -745,6 +774,45 @@ export function makeServer({ environment = "development" } = {}) {
             id = sessionStorage.getItem("userID");
           }
           return new Response(200, {}, schema.users.find(id).attrs);
+        } else {
+          // if the data isn't valid so return error status(400)
+          return new Response(400, {}, {});
+        }
+      });
+      /////////////////////////////////////////////////////////////////////////////////
+      //              Get all the deleted playlists for current user
+      /////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/me/playlists/deleted", (schema, request) => {
+        if (request.requestHeaders.Authorization) {
+          let result = schema.deletedPlaylists.all().models;
+          console.log(result);
+          let limit = request.params.limit;
+          let offset = request.params.offset;
+          let total = result.length;
+          let toSend = {
+            playlists: {
+              total: total,
+              items: result,
+              limit: limit,
+              offset: offset
+            }
+          };
+          return new Response(200, {}, toSend);
+        } else {
+          // if the data isn't valid so return error status(400)
+          return new Response(400, {}, {});
+        }
+      });
+      /////////////////////////////////////////////////////////////////////////////////
+      //              Restore the deleted playlist for current user
+      /////////////////////////////////////////////////////////////////////////////////
+      this.patch("/v1/me/playlists/:id", (schema, request) => {
+        let result = schema.playlists.find(request.params.id);
+        if (result) {
+          result.update({
+            active: true
+          });
+          return new Response(200, {}, result);
         } else {
           // if the data isn't valid so return error status(400)
           return new Response(400, {}, {});
@@ -817,6 +885,10 @@ export function makeServer({ environment = "development" } = {}) {
         } else if (contextType == "playlist") {
           contextTracks = schema.playlists.where({ id: contextID }).models[0]
             .tracks;
+        } else if (contextType == "artist") {
+          contextTracks = schema.albums
+            .all()
+            .models.filter(album => album.artist._id == contextID)[0].tracks;
         }
         mockTracks = [];
         for (let i = 0; i < contextTracks.length; i++) {
@@ -1091,20 +1163,27 @@ export function makeServer({ environment = "development" } = {}) {
       ///// UNFOLLOW ARTIST
 
       this.delete("/v1/me/following", (schema, request) => {
-        console.log("param1", request.queryParams);
-        if (request.queryParams.type === "artist") {
+        if (request.queryParams.type === "artist")
           return schema.artists
             .findBy(artist => artist._id === request.queryParams.ids)
             .update({ followed: false });
-        }
+        else
+          return schema.users
+            .findBy(user => user.id === request.queryParams.ids)
+            .update({ followed: false });
       });
 
       ///// FOLLOW ARTIST
 
       this.put("/v1/me/following", (schema, request) => {
-        return schema.artists
-          .findBy(artist => artist._id === request.queryParams.ids)
-          .update({ followed: true });
+        if (request.queryParams.type == "artist")
+          return schema.artists
+            .findBy(artist => artist._id === request.queryParams.ids)
+            .update({ followed: true });
+        else
+          return schema.users
+            .findBy(user => user.id === request.queryParams.ids)
+            .update({ followed: true });
       });
 
       //// IF USER FOLLOW SPECIFIC ARTIST
@@ -1113,8 +1192,44 @@ export function makeServer({ environment = "development" } = {}) {
         return [
           schema.artists.findBy(
             artist => artist._id === request.queryParams.ids
-          ).attrs.followed
+          ).attrs.followed ||
+            schema.users.findBy(user => user.id === request.queryParams.ids)
+              .attrs.followed
         ];
+      });
+
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      //////////////////////////////////////   Notifications   ///////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      // Get Notification History
+
+      this.get("/v1/me/notifications", schema => {
+        let notifyList = [];
+        for (let i = 1; i <= schema.notifications.all().length; i++) {
+          var x = schema.notifications.find(i);
+          var element = {
+            notification: {
+              title: x.title,
+              body: x.body,
+              icon: x.icon
+            }
+          };
+          notifyList.push(element);
+        }
+        return new Response(
+          200,
+          {},
+          {
+            notifications: {
+              items: notifyList
+            }
+          }
+        );
+      });
+
+      this.patch("/v1/me/registration-token", () => {
+        return new Response(200, {}, {});
       });
     }
   });

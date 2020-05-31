@@ -105,6 +105,7 @@
             dark
             @mouseover="hoveredCardIndex = -1"
             @mouseleave="cardItems.hoveredCardIndex = null"
+            @click="cardClicked('tracks', 'collection')"
           >
             <!-- card text :liked songs artist and titles -->
             <div class="card-text likedsongs-card-text">

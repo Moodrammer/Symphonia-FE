@@ -25,25 +25,21 @@ describe("TheSoundGrapher", () => {
           state: {
             audioElement: undefined,
             audioContext: {
-              createMediaElementSource: audioElement => {
+              createMediaElementSource: () => {
                 return {
-                  connect: connection => {}
+                  connect: () => {}
                 };
               },
               createAnalyser: () => {
                 return {
                   frequencyBinCount: 12,
-                  connect: connection => {},
+                  connect: () => {},
                   getByteTimeDomainData: () => {}
                 };
               },
-              createScriptProcessor: (
-                bufferSize,
-                numberOfInputChannels,
-                numberOfOutputChannels
-              ) => {
+              createScriptProcessor: () => {
                 return {
-                  connect: connection => {}
+                  connect: () => {}
                 };
               }
             }

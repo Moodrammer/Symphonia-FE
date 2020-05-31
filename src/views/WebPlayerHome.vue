@@ -7,7 +7,8 @@
       :loggedIn="isLoggedIn()"
       :contextMenu="contextMenu"
     ></router-view>
-
+    <!-- Nesting the notification popup -->
+    <notification-popup></notification-popup>
     <!--Nesting the playlist's popups-->
     <DeletePlaylist v-if="deletePlaylist" />
     <AddTrackToPlaylist v-if="addTrack" />
@@ -26,13 +27,15 @@ import ContextMenu from "../components/general/ContextMenu";
 import NavDrawer from "../components/WebplayerLayout/WebNavDrawer";
 import NavBar from "../components/WebplayerLayout/WebNavBar";
 import isLoggedIn from "../mixins/userService/isLoggedIn";
+import isNotificationsAllowed from "../mixins/userService/isNotificationsAllowed";
+import getuserToken from "../mixins/userService/getUserToken";
 import SoundPlayer from "../components/TheSoundPlayer/TheSoundPlayer.vue";
 import SoundPlayerLogout from "../components/TheSoundPlayer/TheSoundPlayerLogout.vue";
 import DeletePlaylist from "../components/DeletePlaylist.vue";
 import CreatePlaylist from "../components/CreatePlaylist.vue";
 import AddTrackToPlaylist from "../components/AddTrackToPlaylist.vue";
 import AdsPopup from "../components/Popups/AdsPopup.vue";
-
+import NotificationPopup from "../components/Notifications/TheNotificationPopUp.vue";
 /**
  * The webplayer view it contains (the side bar - the navigation bar - the sound player)
  * @displayName Webplayer Home
@@ -51,7 +54,8 @@ export default {
     DeletePlaylist,
     CreatePlaylist,
     AddTrackToPlaylist,
-    AdsPopup
+    AdsPopup,
+    NotificationPopup
   },
   watch: {
     contextID: function() {
@@ -68,6 +72,21 @@ export default {
       if (this.isLogoutUpdate) {
         this.$store.commit("category/changeLogoutUpdate");
         this.$forceUpdate();
+      }
+    }
+  },
+  created() {
+    if (this.isLoggedIn()) {
+      if (this.isNotificationsAllowed()) {
+        //get registration token from the user if the user is logged in
+        this.$store.dispatch(
+          "notification/getRegistrationToken",
+          this.getuserToken()
+        );
+        //set up a listener to catch notification messages in webhome
+        this.$store.dispatch("notification/setRecieveNotificationHandler");
+        //set up a listener for any change in token in the fcm server to refersh the token
+        this.$store.dispatch("notification/setRefreshTokenHandler");
       }
     }
   },
@@ -91,7 +110,7 @@ export default {
       return this.contextMenu.id;
     }
   },
-  mixins: [isLoggedIn]
+  mixins: [isLoggedIn, getuserToken, isNotificationsAllowed]
 };
 </script>
 

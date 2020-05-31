@@ -40,9 +40,11 @@
             <li class="links-column-title">
               company
             </li>
-            <li class="links-column-item">
-              About
-            </li>
+            <router-link to="/about">
+              <li class="links-column-item">
+                About
+              </li>
+            </router-link>
           </ul>
         </v-container>
 

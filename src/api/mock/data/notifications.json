@@ -1,0 +1,59 @@
+{
+    "items" : [
+        {
+            "title": "Like a playlist",
+            "body" : "User1 has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+        },
+        {
+            "title": "Like a playlist",
+            "body" : "User2 has liked your playlist",
+            "icon" : "http://source.unsplash.com/Az_mSeq7vQQ"
+        },
+        {
+            "title": "Following user",
+            "body" : "User2 started follwing you",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+        },
+        {
+            "title": "New track",
+            "body" : "artist1 has uploaded a new track",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+        },
+        {
+            "title": "Like a playlist",
+            "body" : "artist has uploaded a new track",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+        },
+        {
+            "title": "Like a playlist",
+            "body" : "User1 has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+        },
+        {
+            "title": "Like a playlist",
+            "body" : "User1 has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+        },
+        {
+            "title": "Like a playlist",
+            "body" : "User1 has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+        },
+        {
+            "title": "Like a playlist",
+            "body" : "User1 has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+        },
+        {
+            "title": "Like a playlist",
+            "body" : "User1 has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+        },
+        {
+            "title": "Like a playlist",
+            "body" : "User1 has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+        }
+    ]
+}

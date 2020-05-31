@@ -54,7 +54,7 @@ export default {
   mixins: [getuserToken],
   created() {
     try {
-      this.getFollowedArtists({ token: this.getuserToken() });
+      this.getFollowedArtists({ token: this.getuserToken(), limit: 50 });
     } catch (error) {
       console.log("error" + error);
     }

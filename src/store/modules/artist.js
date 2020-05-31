@@ -105,19 +105,21 @@ const getters = {
     var tracks = [];
 
     newValue.forEach(element => {
-      var k = {
-        album: {
-          name: element.album.name,
-          _id: element.album._id,
-          image: element.album.image
-        },
-        durationMs: element.durationMs,
-        explicit: element.explicit,
-        premium: element.premium,
-        _id: element._id,
-        name: element.name
-      };
-      tracks.push(k);
+      if (element && element.album) {
+        var k = {
+          album: {
+            name: element.album.name,
+            _id: element.album._id,
+            image: element.album.image
+          },
+          durationMs: element.durationMs,
+          explicit: element.explicit,
+          premium: element.premium,
+          _id: element._id,
+          name: element.name
+        };
+        tracks.push(k);
+      }
     });
     console.log(tracks);
     return tracks;
@@ -389,7 +391,7 @@ const actions = {
         headers: {
           Authorization: `Bearer ${payload.token}`
         },
-        params: { type: "artist", limit: 50 }
+        params: { type: "artist", limit: payload.limit }
       })
       .then(response => {
         commit("load_followedArtists", response.data.artists.items);
@@ -413,11 +415,8 @@ const actions = {
           Authorization: `Bearer ${payload.token}`
         },
         params: {
-          //include_groups=appears_on&country=ES&limit=2&offset'
-          // country: "from_token",
-          limit: 50,
-          offset: 0
-          // include_groups: "album"
+          limit: payload.limit,
+          offset: payload.offset
         }
       })
       .then(response => {
@@ -487,7 +486,7 @@ const actions = {
       .put(
         "v1/me/following",
         {
-          type: "artist",
+          type: payload.type,
           ids: payload.artists.join()
         },
         {
@@ -522,7 +521,7 @@ const actions = {
           Authorization: `Bearer ${payload.token}`
         },
         params: {
-          type: "artist",
+          type: payload.type,
           ids: payload.artists.join()
         }
       })
