@@ -4,6 +4,7 @@
     <!-- Sizes your content based upon application components -->
     <navBar />
     <v-content>
+      <notification-popup></notification-popup>
       <!-- Provides the application the proper gutter -->
       <premiumAds></premiumAds>
       <v-container fluid>
@@ -27,6 +28,7 @@ import PreAds from "../components/User Settings/PremiumAds.vue";
 import SideBar from "../components/User Settings/SideBar.vue";
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
+import NotificationPopup from "../components/Notifications/TheNotificationPopUp";
 
 export default {
   data() {
@@ -36,7 +38,8 @@ export default {
     premiumAds: PreAds,
     "side-bar": SideBar,
     navBar: navBar,
-    appFooter: appFooter
+    appFooter: appFooter,
+    NotificationPopup
   }
 };
 </script>

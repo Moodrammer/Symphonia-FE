@@ -27,6 +27,7 @@ import ContextMenu from "../components/general/ContextMenu";
 import NavDrawer from "../components/WebplayerLayout/WebNavDrawer";
 import NavBar from "../components/WebplayerLayout/WebNavBar";
 import isLoggedIn from "../mixins/userService/isLoggedIn";
+import isNotificationsAllowed from "../mixins/userService/isNotificationsAllowed";
 import getuserToken from "../mixins/userService/getUserToken";
 import SoundPlayer from "../components/TheSoundPlayer/TheSoundPlayer.vue";
 import SoundPlayerLogout from "../components/TheSoundPlayer/TheSoundPlayerLogout.vue";
@@ -76,15 +77,17 @@ export default {
   },
   created() {
     if (this.isLoggedIn()) {
-      //get registration token from the user if the user is logged in
-      this.$store.dispatch(
-        "notification/getRegistrationToken",
-        this.getuserToken()
-      );
-      //set up a listener to catch notification messages in webhome
-      this.$store.dispatch("notification/setRecieveNotificationHandler");
-      //set up a listener for any change in token in the fcm server to refersh the token
-      this.$store.dispatch("notification/setRefreshTokenHandler");
+      if (this.isNotificationsAllowed()) {
+        //get registration token from the user if the user is logged in
+        this.$store.dispatch(
+          "notification/getRegistrationToken",
+          this.getuserToken()
+        );
+        //set up a listener to catch notification messages in webhome
+        this.$store.dispatch("notification/setRecieveNotificationHandler");
+        //set up a listener for any change in token in the fcm server to refersh the token
+        this.$store.dispatch("notification/setRefreshTokenHandler");
+      }
     }
   },
   computed: {
@@ -107,7 +110,7 @@ export default {
       return this.contextMenu.id;
     }
   },
-  mixins: [isLoggedIn, getuserToken]
+  mixins: [isLoggedIn, getuserToken, isNotificationsAllowed]
 };
 </script>
 

@@ -5,8 +5,7 @@ export default {
      * @public
      */
     logOut() {
-      // inform the server to unregister the user from notifications service
-      this.$store.dispatch("notification/unsubscribeUser");
+      localStorage.removeItem("allowNotifications");
       if (localStorage.getItem("userToken") != null) {
         localStorage.removeItem("userToken");
         localStorage.removeItem("username");

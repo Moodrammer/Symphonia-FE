@@ -106,7 +106,7 @@
       UPGRADE
     </v-btn>
     <!-- notification menu for history list-->
-    <notification-historylist></notification-historylist>
+    <notification-historylist v-if="isLoggedIn()"></notification-historylist>
     <!--A menu of account, upgarde to premium ,logout -->
     <v-menu offset-y v-if="isLoggedIn()">
       <template v-slot:activator="{ on }">
