@@ -1170,13 +1170,14 @@ export function makeServer({ environment = "development" } = {}) {
       ///// FOLLOW ARTIST
 
       this.put("/v1/me/following", (schema, request) => {
-        if (request.queryParams.type == "artist")
+        let r = JSON.parse(request.requestBody);
+        if (r.type == "artist")
           return schema.artists
-            .findBy(artist => artist._id === request.queryParams.ids)
+            .findBy(artist => artist._id === r.ids)
             .update({ followed: true });
         else
           return schema.users
-            .findBy(user => user.id === request.queryParams.ids)
+            .findBy(user => user.id === r.ids)
             .update({ followed: true });
       });
 

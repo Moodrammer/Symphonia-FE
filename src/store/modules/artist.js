@@ -512,7 +512,6 @@ const actions = {
         }
       })
       .then(response => {
-        console.log("isfollowed", response.data);
         commit("load_isFollowingArtists", response.data);
       })
       .catch(error => {
