@@ -52,7 +52,10 @@ import CardGrid from "./general/CardGrid";
 import getuserToken from "../mixins/userService/getUserToken";
 import getuserID from "../mixins/userService/getuserID";
 import { mapGetters, mapActions } from "vuex";
-
+/**
+ * @displayName User Interface
+ * @example [none]
+ */
 export default {
   name: "UserUI",
   props: ["contextMenu"],

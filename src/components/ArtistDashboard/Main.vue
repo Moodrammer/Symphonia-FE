@@ -23,7 +23,10 @@
 
 <script>
 import getusername from "../../mixins/userService/getusername";
-
+/**
+ * @displayName Artist Dashboard Main page
+ * @example [none]
+ */
 export default {
   mixins: [getusername],
   data: function() {

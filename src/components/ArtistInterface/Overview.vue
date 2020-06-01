@@ -78,7 +78,10 @@ import getuserToken from "../../mixins/userService/getUserToken";
 import SongItem from "../general/SongItem";
 import CardGrid from "../general/CardGrid";
 import { mapGetters, mapActions } from "vuex";
-
+/**
+ * @displayName Artist Interface overview
+ * @example [none]
+ */
 export default {
   components: {
     SongItem,

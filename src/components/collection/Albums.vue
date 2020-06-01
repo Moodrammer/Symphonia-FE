@@ -9,7 +9,10 @@
 import { mapGetters, mapActions } from "vuex";
 import CardGrid from "../general/CardGrid";
 import getuserToken from "../../mixins/userService/getUserToken";
-
+/**
+ * @displayName Library saved albums
+ * @example [none]
+ */
 export default {
   name: "Albums",
   props: ["contextMenu"],

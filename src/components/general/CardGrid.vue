@@ -227,6 +227,10 @@
 </template>
 
 <script>
+/**
+ * @displayName Card Grid
+ * @example [none]
+ */
 export default {
   name: "CardGrid",
   props: [

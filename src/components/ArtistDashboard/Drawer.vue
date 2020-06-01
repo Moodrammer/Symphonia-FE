@@ -40,7 +40,10 @@
 <script>
 import getusername from "../../mixins/userService/getusername";
 import getimageUrl from "../../mixins/userService/getimageUrl";
-
+/**
+ * @displayName Artist Dashboard Drawer
+ * @example [none]
+ */
 export default {
   mixins: [getusername, getimageUrl],
   name: "Drawer",

@@ -6,7 +6,10 @@
 import CardGrid from "../general/CardGrid";
 import { mapGetters, mapActions } from "vuex";
 import getuserToken from "../../mixins/userService/getUserToken";
-
+/**
+ * @displayName Artist Interface related artists
+ * @example [none]
+ */
 export default {
   components: {
     CardGrid

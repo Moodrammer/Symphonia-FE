@@ -90,6 +90,10 @@
 </template>
 
 <script>
+/**
+ * @displayName Artist Interface
+ * @example [none]
+ */
 import getuserToken from "../../mixins/userService/getUserToken";
 import getuserID from "../../mixins/userService/getuserID";
 import { mapGetters, mapActions } from "vuex";

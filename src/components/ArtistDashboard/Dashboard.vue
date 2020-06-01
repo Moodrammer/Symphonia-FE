@@ -12,7 +12,10 @@
 import Drawer from "./Drawer.vue";
 import getuserID from "../../mixins/userService/getuserID";
 import getuserType from "../../mixins/userService/getuserType";
-
+/**
+ * @displayName Artist Dashboard
+ * @example [none]
+ */
 export default {
   mixins: [getuserType, getuserID],
   components: {

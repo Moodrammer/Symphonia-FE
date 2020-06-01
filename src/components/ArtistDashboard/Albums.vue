@@ -299,7 +299,10 @@
 import { mapGetters, mapActions } from "vuex";
 import getuserToken from "../../mixins/userService/getUserToken";
 import getuserID from "../../mixins/userService/getuserID";
-
+/**
+ * @displayName Artist Dashboard Albums Page
+ * @example [none]
+ */
 export default {
   mixins: [getuserToken, getuserID],
   data() {
