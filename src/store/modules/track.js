@@ -115,21 +115,6 @@ const mutations = {
   },
   setContextUrl(state, contextUrl) {
     state.contextUrl = contextUrl;
-
-    var url =
-      window.location.host +
-      "/" +
-      "webhome/" +
-      state.contextType +
-      "/" +
-      state.contextId;
-
-    state.facebookUrl =
-      "https://www.facebook.com/sharer/sharer.php?u=" +
-      url +
-      "&amp;src=sdkpreparse";
-
-    state.twitterUrl = "https://twitter.com/intent/tweet?url=" + url;
   },
   setPicInPicCanvas(state, picInPicCanvas) {
     state.picInPicCanvas = picInPicCanvas;
@@ -696,6 +681,26 @@ const actions = {
     dummyTextAreaElement.select();
     document.execCommand("copy");
     document.body.removeChild(dummyTextAreaElement);
+  },
+  /**
+   * prepare the sharing links.
+   * @public
+   */
+  setupSharingLinks({ state }) {
+    var url =
+      window.location.host +
+      "/" +
+      "webhome/" +
+      state.contextType +
+      "/" +
+      state.contextId;
+
+    state.facebookUrl =
+      "https://www.facebook.com/sharer/sharer.php?u=" +
+      url +
+      "&amp;src=sdkpreparse";
+
+    state.twitterUrl = "https://twitter.com/intent/tweet?url=" + url;
   },
   getTracks({ commit }, payload) {
     axios

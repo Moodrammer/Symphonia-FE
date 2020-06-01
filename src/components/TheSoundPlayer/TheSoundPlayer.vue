@@ -442,7 +442,8 @@ export default {
       "toggleShuffle",
       "saveTrack",
       "removeSavedTrack",
-      "copyLink"
+      "copyLink",
+      "setupSharingLinks"
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -785,6 +786,7 @@ export default {
           this.setContextId(this.historyResponse[0].contextId);
           this.setContextType(this.historyResponse[0].contextType);
           this.setContextUrl(this.historyResponse[0].contextUrl);
+          this.setupSharingLinks();
           this.playTrackInQueue(this.historyResponse[0].track);
         } else this.playTrackInQueue(CurrentlyPlayingTrackId);
         CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
