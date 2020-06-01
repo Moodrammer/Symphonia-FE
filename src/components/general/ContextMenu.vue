@@ -64,7 +64,7 @@ export default {
       this.$refs.menu.open($event);
     },
     /**
-     * Function get called when the user click on an option from the menu to take the suitable action
+     * Function get called when the user click on option from the menu to take the suitable action
      * @public This is a public method
      * @param {String} option the option the user chose from the menu
      */
