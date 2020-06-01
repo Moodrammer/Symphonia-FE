@@ -325,10 +325,14 @@ export default {
     };
   },
   computed: {
+    /**
+     * Function to know if the loading bar should appear or not
+     * @public This is a public method
+     * @param {none}
+     */
+
     startLoading: {
       get() {
-        console.log(this.uploadingDone != 0);
-        console.log(this.uploadingDone);
         return this.uploadingDone != 0 && this.uploadingDone;
       },
       set(value) {
@@ -340,10 +344,15 @@ export default {
       "uploadingDone",
       "latestAlbumIDGetter"
     ]),
+
+    /**
+     * Function to get the songs categories
+     * @public This is a public method
+     * @param {none}
+     */
+
     categories: function() {
-      let x = this.$store.state.artist.simplifiedCategories;
-      console.log(x);
-      return x;
+      return this.$store.state.artist.simplifiedCategories;
     }
   },
   created: function() {
@@ -378,6 +387,13 @@ export default {
       "deleteAlbum",
       "deleteTrack"
     ]),
+
+    /**
+     * Function to reset the forms data in singles dashboard
+     * @public This is a public method
+     * @param {none}
+     */
+
     reset() {
       this.dialog.addSong = false;
       this.dialog.addAlbum = false;
@@ -391,8 +407,14 @@ export default {
       this.file = null;
       this.selectedCategories = [];
     },
+
+    /**
+     * Function to add new single in singles dashboard
+     * @public This is a public method
+     * @param {none}
+     */
+
     addAlbum() {
-      console.log(this.title, this.cover);
       if (!this.$refs.albumForm.validate()) return;
       let payload = {
         token: this.getuserToken(),
@@ -407,10 +429,14 @@ export default {
       this.operation.title = this.title;
       this.dialog.addAlbum = false;
     },
+    /**
+     * Function to add new song to a single in singles dashboard
+     * @public This is a public method
+     * @param {none}
+     */
+
     addSong() {
-      console.log(this.title, this.cover);
       if (!this.$refs.songForm.validate()) return;
-      console.log("sdsadsada", this.selectedCategories);
       let payload = {
         token: this.getuserToken(),
         title: this.operation.title,
@@ -423,6 +449,12 @@ export default {
       this.addTrackToAlbum(payload);
       this.reset();
     },
+    /**
+     * Function to remove a song or a single in singles dashboard
+     * @public This is a public method
+     * @param {none}
+     */
+
     remove() {
       if (this.operation.songID == null) {
         //rename album by this.title
@@ -439,10 +471,14 @@ export default {
       this.title = null;
       this.dialog.remove = false;
     },
+    /**
+     * Function to rename a song or a single in singles dashboard
+     * @public This is a public method
+     * @param {none}
+     */
+
     rename() {
       if (!this.$refs.renameForm.validate()) return;
-      console.log(this.operation);
-      //rename album by this.title
       if (this.operation.songID)
         this.renameTrack({
           token: this.getuserToken(),
@@ -457,6 +493,16 @@ export default {
       this.title = null;
       this.dialog.rename = false;
     },
+
+    /**
+     * Function to set the next operation data in singles dashboard
+     * @public This is a public method
+     * @param {String} type the type of the operation, rename or delete or add
+     * @param {String} title the title of the single of the operation
+     * @param {Number} albumID  the id of the single of the operation
+     * @param {Number} songID  the title of the song of the operation
+     */
+
     setOperationData(type, title, albumID, songID) {
       this.operation.title = title;
       this.operation.albumID = albumID;

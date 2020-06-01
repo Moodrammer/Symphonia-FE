@@ -60,10 +60,22 @@ export default {
     };
   },
 
+  /**
+   * Function to get username
+   * @public This is a public method
+   * @param {none}
+   */
+
   computed: {
     name: function() {
       return this.getusername();
     },
+    /**
+     * Function to get user profile photo
+     * @public This is a public method
+     * @param {none}
+     */
+
     image: function() {
       return this.getimageUrl();
     }

@@ -28,7 +28,6 @@ export default {
   mixins: [getuserToken],
   props: ["artistID", "contextMenu"],
   created() {
-    console.log("ID", this.$props.artistID, "TOKEN", this.getuserToken());
     this.getArtistRelatedArtists({
       id: this.$props.artistID,
       token: this.getuserToken()
@@ -38,7 +37,6 @@ export default {
   watch: {
     allArtistRelatedArtists(newValue) {
       this.cardItems.items = newValue;
-      console.log("allArtistRelatedArtists", newValue);
     }
   }
 };

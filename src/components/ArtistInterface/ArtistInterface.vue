@@ -103,15 +103,21 @@ export default {
       "followArtist",
       "unfollowArtist"
     ]),
-    share(name) {
+    /**
+     * Function to share artist interface on user' facebook, twitter or copy interface url
+     * @public This is a public method
+     * @param {String} type the type of share, twitter or facebook or copy to clipboard
+     */
+
+    share(type) {
       var url = `${window.location.host}/webhome/artist/${this.artistID}`;
-      if (name == "Facebook")
+      if (type == "Facebook")
         window.open(
           "https://www.facebook.com/sharer/sharer.php?u=" +
             url +
             "&amp;src=sdkpreparse"
         );
-      else if (name == "Twitter")
+      else if (type == "Twitter")
         window.open("https://twitter.com/intent/tweet?url=" + url);
       else {
         var el = document.createElement("textarea");
@@ -129,25 +135,41 @@ export default {
         document.body.removeChild(el);
       }
     },
+    /**
+     * Function updates the user interface info
+     * @public This is a public method
+     * @param {none}
+     */
+
     updateArtist() {
       this.getCurrentArtist({
         token: this.getuserToken(),
         id: this.artistID
       });
-
       this.isFollowingArtists({
         token: this.getuserToken(),
         artists: [this.artistID]
       });
     },
+    /**
+     * Function to follow the artist
+     * @public This is a public method
+     * @param {none}
+     */
     follow() {
-      console.log("FOLLOW", this.artistID);
       this.followArtist({
         token: this.getuserToken(),
         artists: [this.artistID],
         type: "artist"
       });
     },
+
+    /**
+     * Function to unfollow the artist
+     * @public This is a public method
+     * @param {none}
+     */
+
     unfollow() {
       this.unfollowArtist({
         token: this.getuserToken(),
@@ -161,9 +183,23 @@ export default {
   },
   computed: {
     ...mapGetters("artist", ["currentArtistGetter", "isFollowed"]),
+
+    /**
+     * Function to get the artist id
+     * @public This is a public method
+     * @param {none}
+     */
+
     artistID() {
       return this.$route.params.id;
     },
+
+    /**
+     * Function to know if the current user isn't the artist of this interface
+     * @public This is a public method
+     * @param {none}
+     */
+
     isVisitor() {
       return this.artistID != this.getuserID();
     }
@@ -197,8 +233,6 @@ export default {
 
 <style>
 .gradient-body {
-  /* background: rgb(0,0,0);
-    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); */
   background: rgb(26, 26, 26);
   background: linear-gradient(
     0deg,

@@ -462,7 +462,6 @@ export function makeServer({ environment = "development" } = {}) {
           };
           z.push(y);
         });
-        console.log(z);
         return { playlists: { items: z } };
       });
       this.get("/v1/me/user/:id", (schema, request) => {
@@ -785,7 +784,6 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/me/playlists/deleted", (schema, request) => {
         if (request.requestHeaders.Authorization) {
           let result = schema.deletedPlaylists.all().models;
-          console.log(result);
           let limit = request.params.limit;
           let offset = request.params.offset;
           let total = result.length;
@@ -1004,7 +1002,6 @@ export function makeServer({ environment = "development" } = {}) {
           let b = schema.tracks
             .all()
             .models.filter(x => x.attrs.album.id == album.id);
-          console.log("sadsa", b);
           let tracks = [];
           b.forEach(track => {
             tracks.push({
@@ -1022,7 +1019,6 @@ export function makeServer({ environment = "development" } = {}) {
             tracks: tracks
           });
         });
-        console.log(resp);
         return { albums: { items: resp } };
       });
 
@@ -1130,7 +1126,6 @@ export function makeServer({ environment = "development" } = {}) {
       this.get("/v1/artists/:artistID", (schema, request) => {
         let x = schema.artists.where({ _id: request.params.artistID }).models[0]
           .attrs;
-        console.log("ssssssss", x);
         return x;
       });
 
@@ -1138,7 +1133,6 @@ export function makeServer({ environment = "development" } = {}) {
 
       this.get("/v1/artists/:artistID/top-tracks", (schema, request) => {
         let x = schema.tracks.all().models;
-        console.log("ssdawdwcssda", x);
         x = x
           .filter(e => e.artist.id == request.params.artistID)
           .slice(request.queryParams.offset, request.queryParams.limit);

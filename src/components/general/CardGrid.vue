@@ -256,79 +256,43 @@ export default {
     };
   },
   methods: {
+    /**
+     * Function to set the data of the context click menu
+     * @public This is a public method
+     * @param {Event} e the event
+     * @param {Number} i the id of the card
+     * @param {String} t the type of the card
+     */
+
     menuClick(e, i, t) {
       this.$props.contextMenu.event = e;
       this.$props.contextMenu.id = i;
       this.$props.contextMenu.type = t;
     },
+
+    /**
+     * Function to route to the view of the card
+     * @public This is a public method
+     * @param {Number} id the id of the card
+     * @param {String} type the type of the card
+     */
+
     cardClicked(id, type) {
       this.$router.push(`/webhome/${type}/${id}`);
     },
+
     /**
-     * used in artist ui cards if there is more than 12 cards
+     * Function to display more cards in case of artist ui cards
+     * @public This is a public method
+     * @param {none}
      */
+
     showMore() {
       this.maxItems = this.showMoreBtn
         ? this.$props.cardItems.items.length
         : 12;
       this.showMoreBtn = !this.showMoreBtn;
     }
-    /**
-     * called when card is hover to save its index, and close other context menus
-     */
-
-    // cardHover(index, id) {
-    //   this.$props.cardItems.hoveredCardIndex = index;
-    //   this.lastHoveredCard = id;
-    //   this.disableMenu = false;
-    //   this.$props.cardItems.showMenu = false;
-    // },
-    /**
-     * called when user choose option from the context menu, it copy the url to user's clipboard if he chose the last option
-     */
-    // contextMenuClick(item, copyToClipboard) {
-    //   this.$emit("order", item.title, this.lastHoveredCard, this.$props.name);
-    //   console.log(copyToClipboard);
-    //   if (copyToClipboard) {
-    //     var url = this.$props.cardItems.items.find(
-    //       item => item.id === this.lastHoveredCard
-    //     );
-    //     url = `https://zasymphonia.ddns.net/webhome/${url.type}/${url.id}`;
-    //     var el = document.createElement("textarea");
-    //     // Set value (string to be copied)
-    //     el.value = url;
-    //     // Set non-editable to avoid focus and move outside of view
-    //     el.setAttribute("readonly", "");
-    //     el.style = { position: "absolute", left: "-9999px" };
-    //     document.body.appendChild(el);
-    //     // Select text inside element
-    //     el.select();
-    //     // Copy text to clipboard
-    //     document.execCommand("copy");
-    //     // Remove temporary element
-    //     document.body.removeChild(el);
-    //   }
-    // }
-  },
-  watch: {
-    // watching showMenu "context menu v-model" to disable the menu if the click wasn't on card
-    // "cardItems.showMenu": function() {
-    //   if (
-    //     this.$props.cardItems.showMenu &&
-    //     this.$props.cardItems.hoveredCardIndex === null
-    //   )
-    //     this.disableMenu = true;
-    //   //set the suitable context menu data in case of playlist card
-    //   else if (
-    //     this.$props.cardStyle === "playlist" &&
-    //     this.$props.cardItems.hoveredCardIndex !== null
-    //   ) {
-    //     if (this.$props.cardItems.hoveredCardIndex === -1)
-    //       this.$props.cardItems.menuList = this.$props.cardItems.likedSongsMenu;
-    //     else
-    //       this.$props.cardItems.menuList = this.$props.cardItems.playlistsMenu;
-    //   }
-    // },
   }
 };
 </script>

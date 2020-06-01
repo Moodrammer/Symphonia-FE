@@ -76,6 +76,13 @@ export default {
       ]
     };
   },
+
+  /**
+   * Function to get random quote from the quotes in the data
+   * @public This is a public method
+   * @param {none}
+   */
+
   computed: {
     mainQuote: function() {
       return this.quotes[Math.floor(Math.random() * this.quotes.length)];

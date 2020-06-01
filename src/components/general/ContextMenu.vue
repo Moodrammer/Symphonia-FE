@@ -37,6 +37,13 @@ export default {
   },
 
   methods: {
+    /**
+     * Function to set right click menu data
+     * @public This is a public method
+     * @param {Event} $event the event type
+     * @param {Numver} id the id of the card user make a right click on it
+     * @param {String} type the type of the card user make a right click on it
+     */
     openMenu($event, id, type) {
       this.id = id;
       this.type = type;
@@ -56,7 +63,11 @@ export default {
       }
       this.$refs.menu.open($event);
     },
-
+    /**
+     * Function get called when the user click on an option from the menu to take the suitable action
+     * @public This is a public method
+     * @param {String} option the option the user chose from the menu
+     */
     onClick(option) {
       switch (this.type) {
         case "artist":
@@ -462,6 +473,11 @@ export default {
         this.$store.state.playlist.menuPlaylist.owner._id == this.getuserID()
       );
     },
+    /**
+     * Function to check if the user follows the artist or not , gets called at the menu click
+     * @public This is a public method
+     * @param {none}
+     */
     isFollowedArtist() {
       let followed =
         this.$store.state.artist.FollowingArtistsBool &&

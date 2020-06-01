@@ -89,6 +89,12 @@ export default {
       "followArtist",
       "unfollowArtist"
     ]),
+    /**
+     * Function to follow the user of this interface
+     * @public This is a public method
+     * @param {none}
+     */
+
     follow() {
       this.followArtist({
         token: this.getuserToken(),
@@ -96,6 +102,12 @@ export default {
         type: "user"
       });
     },
+    /**
+     * Function to unfollow the user of this interface
+     * @public This is a public method
+     * @param {none}
+     */
+
     unfollow() {
       this.unfollowArtist({
         token: this.getuserToken(),
@@ -107,6 +119,12 @@ export default {
   computed: {
     ...mapGetters("userPublicProfile", ["allInfo", "allPublicPlaylists"]),
     ...mapGetters("artist", ["isFollowed"]),
+
+    /**
+     * Function to know if the current user isn't the user of this interface
+     * @public This is a public method
+     * @param {none}
+     */
 
     isVisitor() {
       return this.$route.params.id != this.getuserID();
