@@ -164,22 +164,25 @@ const actions = {
           state.trackTotalDurationMs = trackData.durationMs;
           state.trackId = trackData._id;
           state.trackAlbumImageUrl = trackData.album.image;
-          //configure PicInPicCanvasRdy
-          state.isPicInPicCanvasRdy = false;
 
-          const image = new Image();
-          image.crossOrigin = true;
-          image.src = trackData.album.image;
-          await image.decode();
-          var ctx = state.picInPicCanvas.getContext("2d");
-          ctx.drawImage(image, 0, 0, 512, 512);
+          if (document.pictureInPictureEnabled) {
+            //configure PicInPicCanvasRdy
+            state.isPicInPicCanvasRdy = false;
 
-          ctx.font = "30px Comic Sans MS";
-          ctx.fillStyle = "white";
-          ctx.textAlign = "center";
-          ctx.fillText(trackData.name, 512 / 2, 512 / 2);
+            const image = new Image();
+            image.crossOrigin = true;
+            image.src = trackData.album.image;
+            await image.decode();
+            var ctx = state.picInPicCanvas.getContext("2d");
+            ctx.drawImage(image, 0, 0, 512, 512);
 
-          state.isPicInPicCanvasRdy = true;
+            ctx.font = "30px Comic Sans MS";
+            ctx.fillStyle = "white";
+            ctx.textAlign = "center";
+            ctx.fillText(trackData.name, 512 / 2, 512 / 2);
+
+            state.isPicInPicCanvasRdy = true;
+          }
 
           state.trackAlbumName = trackData.album.name;
           state.trackArtistName = trackData.artist.name;

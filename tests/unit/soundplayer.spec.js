@@ -14,13 +14,6 @@ describe("TheSoundplayer", () => {
     setActionHandler: () => {}
   };
 
-  global.document.execCommand = function execCommandMock() {};
-  const document = {
-    createElement(name) {
-      return name;
-    }
-  };
-
   beforeEach(() => {
     vuetify = new Vuetify();
     const router = new VueRouter();
@@ -474,15 +467,25 @@ describe("TheSoundplayer", () => {
   it("picture in picture feature", () => {
     wrapper.vm.picInPicVideo = {
       play: () => {},
+      pause: () => {},
       requestPictureInPicture: () => {}
     };
     store.state.track.isPicInPicCanvasRdy = true;
+    wrapper.vm.setIsTrackPaused(false);
     wrapper.vm.picInPic();
     expect(wrapper.vm.picInPicVideo.play()).toBeCalled;
+
+    wrapper.vm.setIsTrackPaused(true);
+    wrapper.vm.picInPic();
+    expect(wrapper.vm.picInPicVideo.pause()).toBeCalled;
 
     store.state.track.isPicInPicCanvasRdy = false;
     wrapper.vm.picInPic();
     expect(wrapper.vm.picInPicVideo.play()).not.toBeCalled;
+  });
+
+  it("enable the picture in picture feature", () => {
+    wrapper.vm.enablePicInPic();
   });
 });
 

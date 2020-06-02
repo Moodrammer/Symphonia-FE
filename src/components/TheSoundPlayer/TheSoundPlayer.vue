@@ -105,7 +105,7 @@
           </v-menu>
 
           <!-- picture-in-picture -->
-          <a @click="picInPic">
+          <a @click="picInPic" v-if="pictureInPictureEnabled">
             <v-icon class="icons">mdi-picture-in-picture-bottom-right</v-icon>
           </a>
         </v-toolbar>
@@ -402,6 +402,7 @@ export default {
       isProgressBarPressed: false,
       isVolumePressed: false,
       isSoundgrapherEnabled: false,
+      pictureInPictureEnabled: false,
 
       devices: undefined,
       currentDeviceId: undefined,
@@ -442,7 +443,7 @@ export default {
       "toggleShuffle",
       "saveTrack",
       "removeSavedTrack",
-      "copyLink",
+      "copyLink"
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -600,6 +601,36 @@ export default {
       }
     },
     /**
+     * Picture-in-Picture Feature
+     * @public
+     */
+    enablePicInPic: function() {
+      this.pictureInPictureEnabled = true;
+
+      var picInPicCanvasTemp = document.createElement("canvas");
+      picInPicCanvasTemp.width = picInPicCanvasTemp.height = 512;
+
+      this.setPicInPicCanvas(picInPicCanvasTemp);
+
+      this.picInPicVideo = document.createElement("video");
+      this.picInPicVideo.srcObject = this.picInPicCanvas.captureStream();
+      this.picInPicVideo.muted = true;
+
+      /* Play & Pause */
+      navigator.mediaSession.setActionHandler("play", this.togglePauseAndPlay);
+      navigator.mediaSession.setActionHandler("pause", this.togglePauseAndPlay);
+
+      /* Previous Track & Next Track */
+      navigator.mediaSession.setActionHandler(
+        "previoustrack",
+        this.previousConditionally
+      );
+      navigator.mediaSession.setActionHandler(
+        "nexttrack",
+        this.nextConditionally
+      );
+    },
+    /**
      * This handler is invoked after track is loaded
      *
      * @public
@@ -731,35 +762,9 @@ export default {
         this.audioElement.volume = this.volumeValue / 100;
         this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
-        /* Picture-in-Picture Feature */
-        var picInPicCanvasTemp = document.createElement("canvas");
-        picInPicCanvasTemp.width = picInPicCanvasTemp.height = 512;
-
-        this.setPicInPicCanvas(picInPicCanvasTemp);
-
-        this.picInPicVideo = document.createElement("video");
-        this.picInPicVideo.srcObject = this.picInPicCanvas.captureStream();
-        this.picInPicVideo.muted = true;
-
-        /* Play & Pause */
-        navigator.mediaSession.setActionHandler(
-          "play",
-          this.togglePauseAndPlay
-        );
-        navigator.mediaSession.setActionHandler(
-          "pause",
-          this.togglePauseAndPlay
-        );
-
-        /* Previous Track & Next Track */
-        navigator.mediaSession.setActionHandler(
-          "previoustrack",
-          this.previousConditionally
-        );
-        navigator.mediaSession.setActionHandler(
-          "nexttrack",
-          this.nextConditionally
-        );
+        if (document.pictureInPictureEnabled) {
+          this.enablePicInPic();
+        }
 
         this.setToken("Bearer " + this.getuserToken());
 
