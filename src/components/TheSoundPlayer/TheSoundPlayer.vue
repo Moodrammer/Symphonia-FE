@@ -443,7 +443,6 @@ export default {
       "saveTrack",
       "removeSavedTrack",
       "copyLink",
-      "setupSharingLinks"
     ]),
     ...mapActions("category", ["recentlyPlayed"]),
     /**
@@ -590,6 +589,11 @@ export default {
         if (this.isPicInPicCanvasRdy == true) {
           await this.picInPicVideo.play();
           await this.picInPicVideo.requestPictureInPicture();
+          if (this.isTrackPaused) {
+            await this.picInPicVideo.pause();
+          } else {
+            await this.picInPicVideo.play();
+          }
         }
       } catch (error) {
         console.error(error);
@@ -694,26 +698,6 @@ export default {
       }
     },
     /**
-     * when user press play in PicInPic canvas
-     *
-     * @public
-     */
-    _handlePicInPicPlay: function() {
-      this.togglePauseAndPlay();
-      if (document.pictureInPictureElement)
-        document.pictureInPictureElement.play();
-    },
-    /**
-     * when user press pause in PicInPic canvas
-     *
-     * @public
-     */
-    _handlePicInPicPause: function() {
-      this.togglePauseAndPlay();
-      if (document.pictureInPictureElement)
-        document.pictureInPictureElement.pause();
-    },
-    /**
      * This is the initialization function
      * which is executed only after the
      * soundplayer is loaded/mounted
@@ -760,11 +744,11 @@ export default {
         /* Play & Pause */
         navigator.mediaSession.setActionHandler(
           "play",
-          this._handlePicInPicPlay
+          this.togglePauseAndPlay
         );
         navigator.mediaSession.setActionHandler(
           "pause",
-          this._handlePicInPicPause
+          this.togglePauseAndPlay
         );
 
         /* Previous Track & Next Track */
@@ -786,7 +770,6 @@ export default {
           this.setContextId(this.historyResponse[0].contextId);
           this.setContextType(this.historyResponse[0].contextType);
           this.setContextUrl(this.historyResponse[0].contextUrl);
-          this.setupSharingLinks();
           this.playTrackInQueue(this.historyResponse[0].track);
         } else this.playTrackInQueue(CurrentlyPlayingTrackId);
         CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();

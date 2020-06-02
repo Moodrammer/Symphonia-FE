@@ -100,7 +100,8 @@ describe("TheSoundplayer", () => {
               state.isTrackLiked = false;
             },
             copyLink() {},
-            initQueueStatus() {}
+            initQueueStatus() {},
+            setupSharingLinks() {}
           },
           mutations: {
             setTrackUrl({ state }, trackUrl) {
@@ -482,26 +483,6 @@ describe("TheSoundplayer", () => {
     store.state.track.isPicInPicCanvasRdy = false;
     wrapper.vm.picInPic();
     expect(wrapper.vm.picInPicVideo.play()).not.toBeCalled;
-
-    //play
-    document.pictureInPictureElement = {
-      play: () => {}
-    };
-    wrapper.vm._handlePicInPicPlay();
-    expect(document.pictureInPictureElement.play()).toBeCalled;
-
-    document.pictureInPictureElement = false;
-    wrapper.vm._handlePicInPicPlay();
-
-    //pause
-    document.pictureInPictureElement = {
-      pause: () => {}
-    };
-    wrapper.vm._handlePicInPicPause();
-    expect(document.pictureInPictureElement.pause()).toBeCalled;
-
-    document.pictureInPictureElement = false;
-    wrapper.vm._handlePicInPicPause();
   });
 });
 

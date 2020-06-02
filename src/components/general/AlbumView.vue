@@ -222,7 +222,6 @@ export default {
           contextType: "album",
           contextUrl: "https://thesymphonia.ddns.net/api"
         });
-        this.$store.dispatch("track/setupSharingLinks");
         await this.$store.dispatch(
           "track/playTrackInQueue",
           this.tracks[0]._id

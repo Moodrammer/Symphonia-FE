@@ -386,8 +386,12 @@ const actions = {
     if (!state.isBuffering) {
       if (!state.isTrackPaused) {
         state.audioElement.pause();
+        if (document.pictureInPictureElement)
+          document.pictureInPictureElement.pause();
       } else {
         state.audioElement.play();
+        if (document.pictureInPictureElement)
+          document.pictureInPictureElement.play();
       }
     }
   },
@@ -681,26 +685,6 @@ const actions = {
     dummyTextAreaElement.select();
     document.execCommand("copy");
     document.body.removeChild(dummyTextAreaElement);
-  },
-  /**
-   * prepare the sharing links.
-   * @public
-   */
-  setupSharingLinks({ state }) {
-    var url =
-      window.location.host +
-      "/" +
-      "webhome/" +
-      state.contextType +
-      "/" +
-      state.contextId;
-
-    state.facebookUrl =
-      "https://www.facebook.com/sharer/sharer.php?u=" +
-      url +
-      "&amp;src=sdkpreparse";
-
-    state.twitterUrl = "https://twitter.com/intent/tweet?url=" + url;
   },
   getTracks({ commit }, payload) {
     axios
