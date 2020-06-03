@@ -27,7 +27,6 @@
         <!-- Facebook button  -->
         <v-row>
           <v-col cols="12" class="py-0 pb-1">
-            <a href="https://thesymphonia.ddns.net/api/v1/users/auth/facebook">
               <v-btn
                 block
                 large
@@ -35,9 +34,9 @@
                 color="#3B5998"
                 class="white--text"
                 id="fb-login"
+                @click="loginWithFacebook"
                 >CONTINUE WITH FACEBOOK</v-btn
               >
-            </a>
           </v-col>
         </v-row>
         <!-- Google button -->
@@ -198,6 +197,7 @@
 
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
+import axios from 'axios'
 
 export default {
   name: "login",
@@ -220,8 +220,14 @@ export default {
         v => !!v || "Please enter your Symphonia email address.",
         v => /.+@.+\..+/.test(v) || "E-mail must be valid"
       ],
-      passwordRules: [v => !!v || "Please enter your password."]
+      passwordRules: [v => !!v || "Please enter your password."],
+      //Facebook login handling data
+      FBObject: {}
     };
+  },
+  created(){
+    //Initialize the facebook SDK
+    this.initializeFacebookSDk();
   },
   methods: {
     /**
@@ -261,6 +267,56 @@ export default {
             }
           });
       }
+    },
+    async initializeFacebookSDk(){
+      let response = await this.initSdk({
+      appId      : '820827945085597',
+      xfbml      : true,                     // Parse social plugins on this webpage.
+      version    : 'v7.0'           // Use this Graph API version for this call.
+      })
+      console.log(response)
+      this.FBObject = response
+    },
+    //funtion taken from https://github.com/adi518/vue-facebook-login-component/blob/master/packages/vue-facebook-login-component/src/Sdk.js
+    initSdk(options){
+      return new Promise((resolve) => {
+        // prettier-ignore
+        window.fbAsyncInit = function() {
+          window.FB.init(options)
+          resolve(window.FB)
+        }; // eslint-disable-line
+        /* eslint-disable */
+        // prettier-ignore
+        (function (d, s, id) {
+          const fjs = d.getElementsByTagName(s)[0]
+          if (d.getElementById(id)) { return; }
+          const js = d.createElement(s); js.id = id
+          js.src = '//connect.facebook.net/en_US/sdk.js'
+          fjs.parentNode.insertBefore(js, fjs)
+        }(document, 'script', 'facebook-jssdk'))
+        /* eslint-enable */
+      })
+    },
+    loginWithFacebook(){
+      this.FBObject.login((response) => {
+        console.log(response)
+        if(response.status == 'connected')
+          axios.post("https://thesymphonia.ddns.net/users/auth/facebook/Symphonia",{
+            access_token: response.authResponse.accessToken
+          }).then(response => {
+            sessionStorage.setItem("userToken", response.data.token);
+            //store the frequently used user data
+            sessionStorage.setItem("username", response.data.user.name);
+            sessionStorage.setItem("email", response.data.user.email);
+            sessionStorage.setItem("userID", response.data.user._id);
+            sessionStorage.setItem("type", response.data.user.type);
+            sessionStorage.setItem("imageUrl", response.data.user.imageUrl);
+            sessionStorage.setItem("authType", "facebook");
+            this.$router.push(this.$route.query.redirect || "/webhome/home");
+          }).catch(err => {
+            console.log(err)
+          })
+      })
     }
   }
 };
