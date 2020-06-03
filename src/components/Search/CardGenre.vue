@@ -3,7 +3,6 @@
     class="mx-auto"
     cols="4"
     height="12.5rem"
-    width="12.5rem"
     :href="/genre/ + ID"
     color="#b3b3b3"
     elevation="4"

@@ -4,13 +4,10 @@
       <div>
         <h1>Browse all</h1>
       </div>
-      <v-row>
-        <cardGerne
-          v-for="genre in genres"
-          :key="genre"
-          :name="genre.name"
-          :ID="genre.id"
-        />
+      <v-row justify="start">
+        <v-col v-for="(genre, idx) in genres" :key="idx" cols="3">
+          <cardGerne :name="genre.name" :ID="genre.id" />
+        </v-col>
       </v-row>
     </v-container>
   </v-content>

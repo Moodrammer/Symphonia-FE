@@ -98,6 +98,7 @@ const mutations = {
     state.categories.push(state.newReleases);
   },
   savedGenres(state, payload) {
+    state.savedGenres = [];
     payload.forEach(element => {
       state.savedGenres.push(element);
     });
