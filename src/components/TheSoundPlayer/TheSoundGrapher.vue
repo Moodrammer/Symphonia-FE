@@ -1,7 +1,7 @@
 <template>
   <canvas
     ref="soundGrapher"
-    style="width: 100%; height: fit-content;"
+    style="width: 100%; height: 20px;"
     :height="canvasHeight"
   ></canvas>
 </template>
@@ -24,7 +24,7 @@ export default {
       sampleSize: 1024, // number of samples to collect before analyzing data
 
       canvasWidth: 600,
-      canvasHeight: 50,
+      canvasHeight: 20,
       ctx: undefined
     };
   },
@@ -33,7 +33,7 @@ export default {
 
     /**
      * setup the web audio API nodes
-     * 
+     *
      * @public
      */
     setupAudioNodes: function() {
@@ -56,7 +56,7 @@ export default {
     },
     /**
      * this function is responsible of graph drawing
-     * 
+     *
      * @public
      */
     drawTimeDomain: function() {
@@ -77,8 +77,10 @@ export default {
      * @public
      */
     _handleOnAudioProcess: function() {
-      this.analyserNode.getByteTimeDomainData(this.amplitudeArray);
-      window.requestAnimFrame(this.drawTimeDomain);
+      if (!document.hidden) {
+        this.analyserNode.getByteTimeDomainData(this.amplitudeArray);
+        window.requestAnimFrame(this.drawTimeDomain);
+      }
     },
     /**
      * initialize the component

@@ -1,9 +1,9 @@
 <template>
   <v-footer app class="sound-player">
     <v-row>
-      <v-col cols="4"> </v-col>
+      <v-col lg="4" md="4" sm="12" xs="12"> </v-col>
 
-      <v-col cols="5">
+      <v-col lg="5" md="5" sm="5" xs="5">
         <div class="audio-controls">
           <!-- shuffle -->
           <a @click="signIn()" title="shuffle" style="margin-right: 20px;">
@@ -45,7 +45,23 @@
             >00:00</span
           >
 
-          <input type="range" min="0" max="0" value="0" @click="signIn()" />
+          <input
+            type="range"
+            min="0"
+            max="0"
+            value="0"
+            @click="signIn()"
+            class="hidden-sm-and-down"
+          />
+
+          <input
+            type="range"
+            min="0"
+            max="0"
+            value="0"
+            @click="signIn()"
+            class="progress-slider-sm hidden-md-and-up"
+          />
 
           <!-- time -->
           <span class="time" style="padding-left: 10px; margin-top:0px;"
@@ -54,8 +70,8 @@
         </v-toolbar>
       </v-col>
 
-      <v-spacer></v-spacer>
-      <v-col cols="2" style="background: rgba(0, 0, 0, 0);"></v-col>
+      <v-col lg="2" md="2" sm="7" xs="7" style="background: rgba(0, 0, 0, 0);">
+      </v-col>
     </v-row>
 
     <v-snackbar v-model="snackbar" style="bottom: 100px;">

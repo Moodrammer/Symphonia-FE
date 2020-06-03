@@ -87,6 +87,7 @@ const mutations = {
   },
   setAudioElement(state, audioElement) {
     state.audioElement = audioElement;
+    state.audioElement.crossOrigin = "anonymous";
   },
   setIsTrackPaused(state, isTrackPaused) {
     state.isTrackPaused = isTrackPaused;
@@ -114,11 +115,6 @@ const mutations = {
   },
   setContextUrl(state, contextUrl) {
     state.contextUrl = contextUrl;
-    state.facebookUrl =
-      "https://www.facebook.com/sharer/sharer.php?u=" +
-      contextUrl +
-      "&amp;src=sdkpreparse";
-    state.twitterUrl = "https://twitter.com/intent/tweet?url=" + contextUrl;
   },
   setPicInPicCanvas(state, picInPicCanvas) {
     state.picInPicCanvas = picInPicCanvas;
@@ -142,6 +138,13 @@ const mutations = {
         alert("Web Audio API is not supported in this browser");
       }
     }
+  },
+  setContextData(state, payload) {
+    state.contextId = payload.contextID;
+    state.contextType = payload.contextType;
+    state.contextUrl = payload.contextUrl;
+    state.audioElement.autoplay = true;
+    state.isBuffering = true;
   }
 };
 
@@ -162,22 +165,24 @@ const actions = {
           state.trackId = trackData._id;
           state.trackAlbumImageUrl = trackData.album.image;
 
-          //configure PicInPicCanvasRdy
-          state.isPicInPicCanvasRdy = false;
+          if (document.pictureInPictureEnabled) {
+            //configure PicInPicCanvasRdy
+            state.isPicInPicCanvasRdy = false;
 
-          const image = new Image();
-          image.crossOrigin = true;
-          image.src = trackData.album.image;
-          await image.decode();
-          var ctx = state.picInPicCanvas.getContext("2d");
-          ctx.drawImage(image, 0, 0, 512, 512);
+            const image = new Image();
+            image.crossOrigin = true;
+            image.src = trackData.album.image;
+            await image.decode();
+            var ctx = state.picInPicCanvas.getContext("2d");
+            ctx.drawImage(image, 0, 0, 512, 512);
 
-          ctx.font = "30px Comic Sans MS";
-          ctx.fillStyle = "white";
-          ctx.textAlign = "center";
-          ctx.fillText(trackData.name, 512 / 2, 512 / 2);
+            ctx.font = "30px Comic Sans MS";
+            ctx.fillStyle = "white";
+            ctx.textAlign = "center";
+            ctx.fillText(trackData.name, 512 / 2, 512 / 2);
 
-          state.isPicInPicCanvasRdy = true;
+            state.isPicInPicCanvasRdy = true;
+          }
 
           state.trackAlbumName = trackData.album.name;
           state.trackArtistName = trackData.artist.name;
@@ -227,7 +232,6 @@ const actions = {
       })
       .then(() => {
         commit("unlikeTrack", payload.id);
-        console.log("from track");
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -345,7 +349,7 @@ const actions = {
     for (var j = i + 1; j < state.queueTracks.length; j++) {
       tempTrackUrl = state.queueTracks[j];
 
-      songId = tempTrackUrl.slice(
+      let songID = tempTrackUrl.slice(
         tempTrackUrl.indexOf("/tracks/") + "/tracks/".length,
         tempTrackUrl.length
       );
@@ -356,7 +360,7 @@ const actions = {
       };
 
       await axios
-        .get("/v1/users/track/" + songId, {
+        .get("/v1/users/track/" + songID, {
           headers: {
             Authorization: token
           }
@@ -385,8 +389,12 @@ const actions = {
     if (!state.isBuffering) {
       if (!state.isTrackPaused) {
         state.audioElement.pause();
+        if (document.pictureInPictureElement)
+          document.pictureInPictureElement.pause();
       } else {
         state.audioElement.play();
+        if (document.pictureInPictureElement)
+          document.pictureInPictureElement.play();
       }
     }
   },
@@ -666,8 +674,16 @@ const actions = {
    * @public
    */
   copyLink({ state }) {
+    var url =
+      window.location.host +
+      "/" +
+      "webhome/" +
+      state.contextType +
+      "/" +
+      state.contextId;
+
     const dummyTextAreaElement = document.createElement("textarea");
-    dummyTextAreaElement.value = state.contextUrl;
+    dummyTextAreaElement.value = url;
     document.body.appendChild(dummyTextAreaElement);
     dummyTextAreaElement.select();
     document.execCommand("copy");

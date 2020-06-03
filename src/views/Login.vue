@@ -201,6 +201,7 @@
 
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
+import isNotificationsAllowed from "../mixins/userService/isNotificationsAllowed.js";
 
 export default {
   name: "login",
@@ -252,6 +253,17 @@ export default {
             rm: this.formData.rememberMe
           })
           .then(() => {
+            if (this.isNotificationsAllowed()) {
+              this.$store.commit(
+                "notification/setPushNotificationsPermission",
+                true
+              );
+            } else {
+              this.$store.commit(
+                "notification/setPushNotificationsPermission",
+                false
+              );
+            }
             this.$router.push(this.$route.query.redirect || "/webhome/home");
           })
           .catch(err => {
@@ -265,7 +277,8 @@ export default {
           });
       }
     }
-  }
+  },
+  mixins: [isNotificationsAllowed]
 };
 </script>
 

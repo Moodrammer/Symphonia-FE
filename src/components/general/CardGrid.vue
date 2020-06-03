@@ -45,7 +45,7 @@
           md="4"
           sm="6"
           class="my-4"
-          v-for="(item, index) in AUIitems"
+          v-for="(item, index) in cardItems.items.slice(0, maxItems)"
           :key="item.id"
         >
           <v-card
@@ -57,6 +57,8 @@
             style="border-radius:0px"
             @mouseover="hoveredCardIndex = index"
             @mouseleave="hoveredCardIndex = null"
+            @click="cardClicked(item.id, 'album')"
+            @contextmenu.prevent="menuClick($event, item.id, 'album')"
           >
             <v-btn
               class="ma-auto"
@@ -104,6 +106,7 @@
             dark
             @mouseover="hoveredCardIndex = -1"
             @mouseleave="cardItems.hoveredCardIndex = null"
+            @click="cardClicked('tracks', 'collection')"
           >
             <!-- card text :liked songs artist and titles -->
             <div class="card-text likedsongs-card-text">
@@ -166,7 +169,7 @@
             @mouseover="hoveredCardIndex = index"
             @mouseleave="hoveredCardIndex = null"
             dark
-            @click="cardClicked(item.id, item.type, false)"
+            @click="cardClicked(item.id, item.type)"
             @contextmenu.prevent="menuClick($event, item.id, item.type)"
           >
             <!-- card image -->
@@ -211,7 +214,7 @@
                 color="success"
                 small
                 id="play"
-                @click="cardClicked(item.id, name, true)"
+                @click="cardClicked(item.id, item.type)"
               >
                 <v-icon color="white">mdi-play</v-icon>
               </v-btn>
@@ -224,6 +227,10 @@
 </template>
 
 <script>
+/**
+ * @displayName Card Grid
+ * @example [none]
+ */
 export default {
   name: "CardGrid",
   props: [
@@ -245,106 +252,50 @@ export default {
   ],
   data() {
     return {
+      maxItems: 12,
       playBTNFlag: false,
       hoveredCardIndex: null,
       disableMenu: false,
-      AUIitems: null,
-      showMoreBtn: false
+      showMoreBtn: true
     };
   },
-  created() {
-    this.AUIitems = this.$props.cardItems.items;
-    if (
-      this.cardStyle === "artist" &&
-      this.AUIitems &&
-      this.AUIitems.length > 12
-    )
-      this.AUIitems = this.AUIitems.slice(0, 12);
-    this.showMoreBtn = true;
-  },
   methods: {
+    /**
+     * Function to set the data of the context click menu
+     * @public This is a public method
+     * @param {Event} e the event
+     * @param {Number} i the id of the card
+     * @param {String} t the type of the card
+     */
+
     menuClick(e, i, t) {
       this.$props.contextMenu.event = e;
       this.$props.contextMenu.id = i;
       this.$props.contextMenu.type = t;
     },
-    cardClicked(id, name, play) {
-      if (this.playBTNFlag) {
-        this.playBTNFlag = false;
-        return;
-      }
-      if (play) {
-        this.playBTNFlag = true;
-      } else {
-        this.$router.push(`/webhome/${name}/${id}`);
-      }
-    },
+
     /**
-     * used in artist ui cards if there is more than 12 cards
-     */
-    showMore() {
-      this.AUIitems = this.$props.cardItems.items;
-      this.showMoreBtn = !this.showMoreBtn;
-      if (this.showMoreBtn) this.AUIitems = this.AUIitems.slice(0, 12);
-    }
-    /**
-     * called when card is hover to save its index, and close other context menus
+     * Function to route to the view of the card
+     * @public This is a public method
+     * @param {Number} id the id of the card
+     * @param {String} type the type of the card
      */
 
-    // cardHover(index, id) {
-    //   this.$props.cardItems.hoveredCardIndex = index;
-    //   this.lastHoveredCard = id;
-    //   this.disableMenu = false;
-    //   this.$props.cardItems.showMenu = false;
-    // },
+    cardClicked(id, type) {
+      this.$router.push(`/webhome/${type}/${id}`);
+    },
+
     /**
-     * called when user choose option from the context menu, it copy the url to user's clipboard if he chose the last option
+     * Function to display more cards in case of artist ui cards
+     * @public This is a public method
+     * @param {none}
      */
-    // contextMenuClick(item, copyToClipboard) {
-    //   this.$emit("order", item.title, this.lastHoveredCard, this.$props.name);
-    //   console.log(copyToClipboard);
-    //   if (copyToClipboard) {
-    //     var url = this.$props.cardItems.items.find(
-    //       item => item.id === this.lastHoveredCard
-    //     );
-    //     url = `https://zasymphonia.ddns.net/webhome/${url.type}/${url.id}`;
-    //     var el = document.createElement("textarea");
-    //     // Set value (string to be copied)
-    //     el.value = url;
-    //     // Set non-editable to avoid focus and move outside of view
-    //     el.setAttribute("readonly", "");
-    //     el.style = { position: "absolute", left: "-9999px" };
-    //     document.body.appendChild(el);
-    //     // Select text inside element
-    //     el.select();
-    //     // Copy text to clipboard
-    //     document.execCommand("copy");
-    //     // Remove temporary element
-    //     document.body.removeChild(el);
-    //   }
-    // }
-  },
-  watch: {
-    // watching showMenu "context menu v-model" to disable the menu if the click wasn't on card
-    // "cardItems.showMenu": function() {
-    //   if (
-    //     this.$props.cardItems.showMenu &&
-    //     this.$props.cardItems.hoveredCardIndex === null
-    //   )
-    //     this.disableMenu = true;
-    //   //set the suitable context menu data in case of playlist card
-    //   else if (
-    //     this.$props.cardStyle === "playlist" &&
-    //     this.$props.cardItems.hoveredCardIndex !== null
-    //   ) {
-    //     if (this.$props.cardItems.hoveredCardIndex === -1)
-    //       this.$props.cardItems.menuList = this.$props.cardItems.likedSongsMenu;
-    //     else
-    //       this.$props.cardItems.menuList = this.$props.cardItems.playlistsMenu;
-    //   }
-    // },
-    "cardItems.items": function() {
-      this.AUIitems = this.$props.cardItems.items;
+
+    showMore() {
+      this.maxItems = this.showMoreBtn
+        ? this.$props.cardItems.items.length
+        : 12;
+      this.showMoreBtn = !this.showMoreBtn;
     }
   }
 };

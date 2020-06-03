@@ -107,7 +107,8 @@
     >
       UPGRADE
     </v-btn>
-
+    <!-- notification menu for history list-->
+    <notification-historylist v-if="isLoggedIn()"></notification-historylist>
     <!--A menu of account, upgarde to premium ,logout -->
     <v-menu offset-y v-if="isLoggedIn()">
       <template v-slot:activator="{ on }">
@@ -183,6 +184,7 @@
 import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import getusername from "../../mixins/userService/getusername";
 import logOut from "../../mixins/userService/logOut";
+import NotificationHistorylist from "../Notifications/NotificationHistorylist";
 /**
  * @displayName Webplayer Navigation Bar
  * @example [none]
@@ -201,6 +203,9 @@ export default {
       scrolled: null,
       search: ""
     };
+  },
+  components: {
+    NotificationHistorylist
   },
   created() {
     this.itemChosen(this.$route.name);

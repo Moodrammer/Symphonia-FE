@@ -25,31 +25,27 @@ describe("TheSoundGrapher", () => {
           state: {
             audioElement: undefined,
             audioContext: {
-              createMediaElementSource: audioElement => {
+              createMediaElementSource: () => {
                 return {
-                  connect: connection => {}
+                  connect: () => {}
                 };
               },
               createAnalyser: () => {
                 return {
                   frequencyBinCount: 12,
-                  connect: connection => {},
+                  connect: () => {},
                   getByteTimeDomainData: () => {}
                 };
               },
-              createScriptProcessor: (
-                bufferSize,
-                numberOfInputChannels,
-                numberOfOutputChannels
-              ) => {
+              createScriptProcessor: () => {
                 return {
-                  connect: connection => {}
+                  connect: () => {}
                 };
               }
             }
           },
-          mutations:{
-            initAudioContext:jest.fn()
+          mutations: {
+            initAudioContext: jest.fn()
           }
         }
       }
@@ -59,9 +55,9 @@ describe("TheSoundGrapher", () => {
       vuetify,
       store,
       router,
-      getContextStub : jest
-      .spyOn(window.HTMLCanvasElement.prototype, 'getContext')
-      .mockImplementation(() => {})
+      getContextStub: jest
+        .spyOn(window.HTMLCanvasElement.prototype, "getContext")
+        .mockImplementation(() => {})
     });
   });
 
@@ -78,6 +74,11 @@ describe("TheSoundGrapher", () => {
     wrapper.vm.ctx = {
       fillStyle: undefined,
       fillRect: () => {}
+    };
+    wrapper.vm.drawTimeDomain();
+
+    wrapper.vm.isXs = () => {
+      return true;
     };
     wrapper.vm.drawTimeDomain();
   });

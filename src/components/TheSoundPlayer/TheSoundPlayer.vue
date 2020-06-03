@@ -8,16 +8,26 @@
     ></audio>
 
     <v-row style="min-width: 100%;" flat color="rgba(0,0,0,0)">
-      <v-col cols="12">
+      <v-col cols="12" class="no-padding-xs">
         <sound-grapher v-if="isSoundgrapherEnabled" />
       </v-col>
     </v-row>
 
     <!-- song info -->
     <v-row>
-      <v-col lg="4" md="4" sm="12" xs="12">
+      <v-col
+        lg="4"
+        md="4"
+        sm="12"
+        xs="12"
+        style="padding-top: 0px;"
+        v-bind:class="{ 'no-padding-xs': isXs() }"
+      >
         <v-toolbar flat color="rgba(0,0,0,0)">
-          <v-avatar tile size="56">
+          <v-avatar tile size="56" class="hidden-sm-and-down">
+            <img :src="trackAlbumImageUrl" />
+          </v-avatar>
+          <v-avatar tile size="40" class="hidden-md-and-up">
             <img :src="trackAlbumImageUrl" />
           </v-avatar>
           <div
@@ -95,13 +105,19 @@
           </v-menu>
 
           <!-- picture-in-picture -->
-          <a @click="picInPic">
+          <a @click="picInPic" v-if="pictureInPictureEnabled">
             <v-icon class="icons">mdi-picture-in-picture-bottom-right</v-icon>
           </a>
         </v-toolbar>
       </v-col>
 
-      <v-col lg="5" md="5" sm="5" xs="5">
+      <v-col
+        lg="5"
+        md="5"
+        sm="5"
+        xs="5"
+        v-bind:class="{ 'no-padding-xs': isXs() }"
+      >
         <div class="audio-controls">
           <!-- shuffle -->
           <a
@@ -262,7 +278,14 @@
         </v-toolbar>
       </v-col>
 
-      <v-col lg="2" md="2" sm="7" xs="7" style="background: rgba(0, 0, 0, 0);">
+      <v-col
+        lg="2"
+        md="2"
+        sm="7"
+        xs="7"
+        style="background: rgba(0, 0, 0, 0);"
+        v-bind:class="{ 'no-padding-xs': isXs() }"
+      >
         <div style="padding-top: 20px;">
           <router-link
             to="/webhome/collection/queue"
@@ -322,6 +345,7 @@
 import { mapMutations, mapActions, mapState } from "vuex";
 import getuserToken from "../../mixins/userService/getUserToken";
 import SoundGrapher from "./TheSoundGrapher.vue";
+import getDeviceSize from "../../mixins/getDeviceSize";
 
 export default {
   name: "soundplayer",
@@ -330,7 +354,7 @@ export default {
     SoundGrapher
   },
 
-  mixins: [getuserToken],
+  mixins: [getuserToken, getDeviceSize],
 
   computed: {
     duration: function() {
@@ -378,6 +402,7 @@ export default {
       isProgressBarPressed: false,
       isVolumePressed: false,
       isSoundgrapherEnabled: false,
+      pictureInPictureEnabled: false,
 
       devices: undefined,
       currentDeviceId: undefined,
@@ -489,20 +514,24 @@ export default {
      * @public
      */
     saveToLikedSongs: async function() {
-      if (this.trackId != null) {
-        if (!this.isTrackLiked) {
-          await this.saveTrack({
-            token: this.getuserToken(),
-            id: this.trackId
-          });
-          this.$store.commit("track/changeUpdateTracks");
-        } else {
-          await this.removeSavedTrack({
-            token: this.getuserToken(),
-            id: this.trackId
-          });
-          this.$store.commit("track/changeUpdateTracks");
+      try {
+        if (this.trackId != null) {
+          if (!this.isTrackLiked) {
+            await this.saveTrack({
+              token: this.getuserToken(),
+              id: this.trackId
+            });
+            this.$store.commit("track/changeUpdateTracks");
+          } else {
+            await this.removeSavedTrack({
+              token: this.getuserToken(),
+              id: this.trackId
+            });
+            this.$store.commit("track/changeUpdateTracks");
+          }
         }
+      } catch (error) {
+        console.error(error);
       }
     },
     /**
@@ -557,10 +586,49 @@ export default {
      * @public
      */
     picInPic: async function() {
-      if (this.isPicInPicCanvasRdy == true) {
-        await this.picInPicVideo.play();
-        await this.picInPicVideo.requestPictureInPicture();
+      try {
+        if (this.isPicInPicCanvasRdy == true) {
+          await this.picInPicVideo.play();
+          await this.picInPicVideo.requestPictureInPicture();
+          if (this.isTrackPaused) {
+            await this.picInPicVideo.pause();
+          } else {
+            await this.picInPicVideo.play();
+          }
+        }
+      } catch (error) {
+        console.error(error);
       }
+    },
+    /**
+     * Picture-in-Picture Feature
+     * @public
+     */
+    enablePicInPic: function() {
+      this.pictureInPictureEnabled = true;
+
+      var picInPicCanvasTemp = document.createElement("canvas");
+      picInPicCanvasTemp.width = picInPicCanvasTemp.height = 512;
+
+      this.setPicInPicCanvas(picInPicCanvasTemp);
+
+      this.picInPicVideo = document.createElement("video");
+      this.picInPicVideo.srcObject = this.picInPicCanvas.captureStream();
+      this.picInPicVideo.muted = true;
+
+      /* Play & Pause */
+      navigator.mediaSession.setActionHandler("play", this.togglePauseAndPlay);
+      navigator.mediaSession.setActionHandler("pause", this.togglePauseAndPlay);
+
+      /* Previous Track & Next Track */
+      navigator.mediaSession.setActionHandler(
+        "previoustrack",
+        this.previousConditionally
+      );
+      navigator.mediaSession.setActionHandler(
+        "nexttrack",
+        this.nextConditionally
+      );
     },
     /**
      * This handler is invoked after track is loaded
@@ -661,26 +729,6 @@ export default {
       }
     },
     /**
-     * when user press play in PicInPic canvas
-     *
-     * @public
-     */
-    _handlePicInPicPlay: function() {
-      this.togglePauseAndPlay();
-      if (document.pictureInPictureElement)
-        document.pictureInPictureElement.play();
-    },
-    /**
-     * when user press pause in PicInPic canvas
-     *
-     * @public
-     */
-    _handlePicInPicPause: function() {
-      this.togglePauseAndPlay();
-      if (document.pictureInPictureElement)
-        document.pictureInPictureElement.pause();
-    },
-    /**
      * This is the initialization function
      * which is executed only after the
      * soundplayer is loaded/mounted
@@ -688,77 +736,57 @@ export default {
      * @public
      */
     init: async function() {
-      this.audioElement.addEventListener("timeupdate", this._handlePlayingUI);
-      this.audioElement.addEventListener("loadeddata", this._handleLoaded);
-      this.audioElement.addEventListener("pause", this._handlePause);
-      this.audioElement.addEventListener("play", this._handlePlay);
-      this.audioElement.addEventListener("ended", this._handleEndedTrack);
-      this.audioElement.addEventListener("waiting", this._handlerWaiting);
-      this.audioElement.addEventListener(
-        "playing",
-        this._handlePlayingAfterBuffering
-      );
-      this.audioElement.addEventListener(
-        "error",
-        this._handleAudioError,
-        false
-      );
+      try {
+        this.audioElement.addEventListener("timeupdate", this._handlePlayingUI);
+        this.audioElement.addEventListener("loadeddata", this._handleLoaded);
+        this.audioElement.addEventListener("pause", this._handlePause);
+        this.audioElement.addEventListener("play", this._handlePlay);
+        this.audioElement.addEventListener("ended", this._handleEndedTrack);
+        this.audioElement.addEventListener("waiting", this._handlerWaiting);
+        this.audioElement.addEventListener(
+          "playing",
+          this._handlePlayingAfterBuffering
+        );
+        this.audioElement.addEventListener(
+          "error",
+          this._handleAudioError,
+          false
+        );
 
-      //keysocket feature
-      //add keysocket extension to google chrome to enable this feature
-      document.addEventListener("MediaPlayPause", this.togglePauseAndPlay);
-      document.addEventListener("MediaPrev", this.previousConditionally);
-      document.addEventListener("MediaNext", this.nextConditionally);
+        //keysocket feature
+        //add keysocket extension to google chrome to enable this feature
+        document.addEventListener("MediaPlayPause", this.togglePauseAndPlay);
+        document.addEventListener("MediaPrev", this.previousConditionally);
+        document.addEventListener("MediaNext", this.nextConditionally);
 
-      this.audioElement.volume = this.volumeValue / 100;
-      this.volumeLevelStyle = `width:${this.volumeValue}%;`;
+        this.audioElement.volume = this.volumeValue / 100;
+        this.volumeLevelStyle = `width:${this.volumeValue}%;`;
 
-      /* Picture-in-Picture Feature */
-      var picInPicCanvasTemp = document.createElement("canvas");
-      picInPicCanvasTemp.width = picInPicCanvasTemp.height = 512;
+        if (document.pictureInPictureEnabled) {
+          this.enablePicInPic();
+        }
 
-      this.setPicInPicCanvas(picInPicCanvasTemp);
+        this.setToken("Bearer " + this.getuserToken());
 
-      this.picInPicVideo = document.createElement("video");
-      this.picInPicVideo.srcObject = this.picInPicCanvas.captureStream();
-      this.picInPicVideo.muted = true;
+        var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
 
-      /* Play & Pause */
-      navigator.mediaSession.setActionHandler("play", this._handlePicInPicPlay);
-      navigator.mediaSession.setActionHandler(
-        "pause",
-        this._handlePicInPicPause
-      );
+        await this.recentlyPlayed(this.getuserToken());
+        if (this.historyResponse.length != 0) {
+          this.setContextId(this.historyResponse[0].contextId);
+          this.setContextType(this.historyResponse[0].contextType);
+          this.setContextUrl(this.historyResponse[0].contextUrl);
+          this.playTrackInQueue(this.historyResponse[0].track);
+        } else this.playTrackInQueue(CurrentlyPlayingTrackId);
+        CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
 
-      /* Previous Track & Next Track */
-      navigator.mediaSession.setActionHandler(
-        "previoustrack",
-        this.previousConditionally
-      );
-      navigator.mediaSession.setActionHandler(
-        "nexttrack",
-        this.nextConditionally
-      );
-
-      this.setToken("Bearer " + this.getuserToken());
-
-      var CurrentlyPlayingTrackId = await this.getCurrentlyPlayingTrackId();
-      this.getTrackInformation({
-        token: this.token,
-        trackId: CurrentlyPlayingTrackId
-      });
-
-      await this.initQueueStatus(this.token);
-      await this.updateQueue(this.token);
-
-      await this.recentlyPlayed(this.getuserToken());
-      if (this.historyResponse.length != 0) {
-        this.setContextId(this.historyResponse[0].contextId);
-        this.setContextType(this.historyResponse[0].contextType);
-        this.setContextUrl(this.historyResponse[0].contextUrl);
+        this.getTrackInformation({
+          token: this.token,
+          trackId: CurrentlyPlayingTrackId
+        });
+        await this.updateQueue(this.token);
+      } catch (error) {
+        console.error(error);
       }
-
-      this.playTrackInQueue(CurrentlyPlayingTrackId);
     }
   },
   mounted: function() {

@@ -5,9 +5,42 @@
         ><v-img :src="user.image"></v-img
       ></v-avatar>
     </v-row>
+
     <v-row align="center" justify="center">
       <h1>{{ user.name }}</h1>
     </v-row>
+
+    <v-row align="center" justify="center" class="my-3">
+      <template v-if="isVisitor">
+        <v-btn
+          rounded
+          outlined
+          color="success"
+          min-width="160"
+          min-height="40"
+          dark
+          class="mx-3"
+          v-if="!isFollowed || !isFollowed[0]"
+          @click="follow()"
+          success
+          >Follow</v-btn
+        >
+        <v-btn
+          rounded
+          outlined
+          color="error"
+          min-width="160"
+          min-height="40"
+          dark
+          class="mx-3"
+          v-else
+          @click="unfollow()"
+          alert
+          >Unfollow</v-btn
+        >
+      </template>
+    </v-row>
+
     <v-container align="center" justify="center">
       <CardGrid :cardItems="cardItems" :contextMenu="contextMenu" />
     </v-container>
@@ -17,15 +50,19 @@
 <script>
 import CardGrid from "./general/CardGrid";
 import getuserToken from "../mixins/userService/getUserToken";
+import getuserID from "../mixins/userService/getuserID";
 import { mapGetters, mapActions } from "vuex";
-
+/**
+ * @displayName User Interface
+ * @example [none]
+ */
 export default {
   name: "UserUI",
   props: ["contextMenu"],
   components: {
     CardGrid
   },
-  mixins: [getuserToken],
+  mixins: [getuserToken, getuserID],
   data() {
     return {
       user: {
@@ -38,28 +75,63 @@ export default {
     };
   },
   created() {
-    console.log("token", this.getuserToken());
-    try {
-      this.getUserInfo({
-        token: this.getuserToken(),
-        id: this.$route.params.id
-      });
-      this.getPublicPlaylists({
-        token: this.getuserToken(),
-        id: this.$route.params.id
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    this.getUserInfo({
+      token: this.getuserToken(),
+      id: this.$route.params.id
+    });
+    this.getPublicPlaylists({
+      token: this.getuserToken(),
+      id: this.$route.params.id
+    });
   },
 
   methods: {
-    ...mapActions("userPublicProfile", ["getUserInfo"]),
-    ...mapActions("userPublicProfile", ["getPublicPlaylists"])
+    ...mapActions("userPublicProfile", ["getUserInfo", "getPublicPlaylists"]),
+    ...mapActions("artist", [
+      "isFollowingArtists",
+      "followArtist",
+      "unfollowArtist"
+    ]),
+    /**
+     * Function to follow the user of this interface
+     * @public This is a public method
+     * @param {none}
+     */
+
+    follow() {
+      this.followArtist({
+        token: this.getuserToken(),
+        artists: [this.$route.params.id],
+        type: "user"
+      });
+    },
+    /**
+     * Function to unfollow the user of this interface
+     * @public This is a public method
+     * @param {none}
+     */
+
+    unfollow() {
+      this.unfollowArtist({
+        token: this.getuserToken(),
+        artists: [this.$route.params.id],
+        type: "user"
+      });
+    }
   },
   computed: {
-    ...mapGetters("userPublicProfile", ["allInfo"]),
-    ...mapGetters("userPublicProfile", ["allPublicPlaylists"])
+    ...mapGetters("userPublicProfile", ["allInfo", "allPublicPlaylists"]),
+    ...mapGetters("artist", ["isFollowed"]),
+
+    /**
+     * Function to know if the current user isn't the user of this interface
+     * @public This is a public method
+     * @param {none}
+     */
+
+    isVisitor() {
+      return this.$route.params.id != this.getuserID();
+    }
   },
   watch: {
     allInfo(newValue) {

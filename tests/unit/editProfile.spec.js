@@ -5,10 +5,10 @@ import Vuex from "vuex";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
-import editProfile from "@/components/User Settings/editProfile.vue";
-import bottomContent from "@/components/User Settings/bottomContent.vue";
+import EditProfile from "@/components/User Settings/EditProfile.vue";
+import BottomContent from "@/components/User Settings/BottomContent.vue";
 
-describe("editProfile", () => {
+describe("EditProfile", () => {
   let wrapper;
   let vuetify;
   let store;
@@ -23,15 +23,20 @@ describe("editProfile", () => {
     Vue.use(Vuex);
     actions = {
       userData: jest.fn(() => {
-        if (mockState == "fail")
+        if (mockState == "fail") {
+          wrapper.vm.error = true;
           return Promise.reject({
             status: "fail"
           });
-        else if (mockState == "error")
-          return Promise.reject({
-            status: "error"
-          });
-        else return Promise.resolve();
+        } else return Promise.resolve();
+      }),
+      updateProfile: jest.fn(() => {
+        if (mockState === "error") {
+          return Promise.reject();
+        } else {
+          wrapper.vm.Done = true;
+          return Promise.resolve();
+        }
       })
     };
     state = {
@@ -55,7 +60,7 @@ describe("editProfile", () => {
     });
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
     //in order to find the elements by their ids
-    wrapper = mount(editProfile, {
+    wrapper = mount(EditProfile, {
       router,
       vuetify,
       store,
@@ -83,7 +88,7 @@ describe("editProfile", () => {
       },
       components: {
         // The review section
-        bottomContent: bottomContent
+        BottomContent: BottomContent
       }
     });
   });
@@ -95,9 +100,41 @@ describe("editProfile", () => {
   it("renders a vue instance", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
-  //sample of the requested data test
-  it("check the store data username recieved", () => {
-    let username = wrapper.find("#username");
-    expect(username.text()).toBe("David");
+  //check if the computed function return the current email
+  it("check the email computed function", () => {
+    wrapper.vm.user.userEmail = "example@test.com";
+    expect(wrapper.vm.email).toBe("example@test.com");
+  });
+  //check if the date is correct from the state
+  it("check selected date function", () => {
+    wrapper.vm.selectedDate();
+    expect(wrapper.vm.user.userDOB).toBe("1998-12-19");
+  });
+  it("check if the userdata didn't recieved", () => {
+    mockState = "fail";
+    store.dispatch("userData");
+    expect(wrapper.vm.error).toBe(true);
+  });
+  it("check if submit is called by pressing the button", () => {
+    let btn = wrapper.find("#submit");
+    btn.trigger("click");
+    expect(wrapper.vm.submit).toHaveBeenCalled;
+  });
+  it("check the then and catch of submit error", async () => {
+    mockState = "error";
+    await wrapper.vm.submit();
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.error).toBe(true);
+    expect(wrapper.vm.Done).toBe(false);
+  });
+  it("check the then and catch of submit", async () => {
+    mockState = "";
+    await store.dispatch("updateProfile");
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.Done).toBe(true);
+  });
+  it("check that both are false at first", () => {
+    expect(wrapper.vm.Done).toBe(false);
+    expect(wrapper.vm.error).toBe(false);
   });
 });

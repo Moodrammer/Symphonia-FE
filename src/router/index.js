@@ -6,7 +6,7 @@ import Library from "../components/WebplayerContent/Library.vue";
 import Playlists from "../components/collection/Playlists.vue";
 import ALbums from "../components/collection/Albums.vue";
 import Artists from "../components/collection/Artists.vue";
-import User_Settings from "../views/User_Settings.vue";
+import UserSettings from "../views/UserSettings.vue";
 import Search from "../components/WebplayerContent/Search.vue";
 import HomeContent from "../components/WebplayerContent/HomeContentRouter.vue";
 import Tracks from "../views/LikedSongs.vue";
@@ -14,9 +14,9 @@ import HomepagePremium from "../views/PremiumOffer.vue";
 import PlaylistView from "../components/general/PlaylistView.vue";
 import PassReset from "../components/PasswordMangement/PassReset.vue";
 import PassChange from "../components/PasswordMangement/PassChange.vue";
-import ArtistUI from "../components/artistUI/ArtistUI";
-import Overview from "../components/artistUI/Overview";
-import RelatedArtists from "../components/artistUI/RelatedArtists";
+import ArtistUI from "../components/ArtistInterface/ArtistInterface.vue";
+import Overview from "../components/ArtistInterface/Overview";
+import RelatedArtists from "../components/ArtistInterface/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
 import GenreView from "../components/general/GenreView.vue";
 import Google from "../components/oauth/google.vue";
@@ -24,6 +24,11 @@ import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
 import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
+import SymphoniaArtist from "../components/ArtistDashboard/Dashboard.vue";
+import SymphoniaArtistMain from "../components/ArtistDashboard/Main.vue";
+import SymphoniaArtistAlbums from "../components/ArtistDashboard/Albums.vue";
+import SymphoniaArtistSingles from "../components/ArtistDashboard/Singles.vue";
+// import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue";
 import notfound from "../views/TheNotFoundPage.vue";
 
 import isLoggedIn from "@/mixins/userService/isLoggedIn";
@@ -31,6 +36,38 @@ import isLoggedIn from "@/mixins/userService/isLoggedIn";
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/SymphoniaArtist/:id",
+    name: "SymphoniaArtist",
+    component: SymphoniaArtist,
+    redirect: "/SymphoniaArtist/:id/main",
+    children: [
+      {
+        name: "main",
+        path: "main",
+        component: SymphoniaArtistMain,
+        meta: {
+          allowAnonymous: false
+        }
+      },
+      {
+        name: "albums",
+        path: "albums",
+        component: SymphoniaArtistAlbums,
+        meta: {
+          allowAnonymous: false
+        }
+      },
+      {
+        name: "singles",
+        path: "singles",
+        component: SymphoniaArtistSingles,
+        meta: {
+          allowAnonymous: false
+        }
+      }
+    ]
+  },
   {
     path: "/",
     name: "Home",
@@ -210,41 +247,46 @@ const routes = [
   },
   {
     path: "/account/",
-    name: "Acccount Setting",
-    component: User_Settings,
+    component: UserSettings,
     children: [
       {
+        name: "overview",
         path: "",
-        component: () => import("../components/User Settings/overview.vue"),
+        component: () => import("../components/User Settings/Overview.vue"),
         meta: {
           allowAnonymous: false
         }
       },
       {
+        name: "EditProfile",
         path: "edit",
-        component: () => import("../components/User Settings/editProfile.vue"),
+        component: () => import("../components/User Settings/EditProfile.vue"),
         meta: {
           allowAnonymous: false
         }
       },
       {
+        name: "RecoverPlaylists",
         path: "recover-playlists",
         component: () =>
-          import("../components/User Settings/recoverPlaylist.vue"),
+          import("../components/User Settings/RecoverPlaylist.vue"),
         meta: {
           allowAnonymous: false
         }
       },
       {
+        name: "Notifications",
         path: "notifications",
-        component: () => import("../components/User Settings/notification.vue"),
+        component: () => import("../components/User Settings/Notification.vue"),
         meta: {
           allowAnonymous: false
         }
       },
       {
+        name: "ChangePassword",
         path: "changePassword",
-        component: () => import("../components/User Settings/changePass.vue"),
+        component: () =>
+          import("../components/User Settings/ChangePassword.vue"),
         meta: {
           allowAnonymous: false
         }
@@ -255,9 +297,6 @@ const routes = [
   {
     path: "/password-reset",
     name: "forgetpassword",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import("../views/ForgetPass.vue"),
     redirect: "/password-reset/reset",
     children: [
@@ -300,6 +339,14 @@ const routes = [
     path: "/artist-activation/:activationToken",
     name: "artistActivation",
     component: ArtistActivation,
+    meta: {
+      allowAnonymous: true
+    }
+  },
+  {
+    path: "/about",
+    name: "aboutUs",
+    component: () => import("../views/About.vue"),
     meta: {
       allowAnonymous: true
     }

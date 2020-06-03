@@ -25,7 +25,7 @@ export default {
       type: null,
       menuList: null,
       //initial data to be manipulated after the user make a right click
-      artistMenu: ["Follow", "Copy Artist Link"],
+      artistMenu: [],
       playlistMenu: [],
       albumMenu: [],
       trackMenu: []
@@ -37,6 +37,13 @@ export default {
   },
 
   methods: {
+    /**
+     * Function to set right click menu data
+     * @public This is a public method
+     * @param {Event} $event the event type
+     * @param {Numver} id the id of the card user make a right click on it
+     * @param {String} type the type of the card user make a right click on it
+     */
     openMenu($event, id, type) {
       this.id = id;
       this.type = type;
@@ -56,7 +63,11 @@ export default {
       }
       this.$refs.menu.open($event);
     },
-
+    /**
+     * Function get called when the user click on option from the menu to take the suitable action
+     * @public This is a public method
+     * @param {String} option the option the user chose from the menu
+     */
     onClick(option) {
       switch (this.type) {
         case "artist":
@@ -79,8 +90,14 @@ export default {
       switch (action) {
         case "Copy Artist Link":
           this.copyToClipboard(
-            `https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`
+            `${window.location.host}/webhome/${this.type}/${this.id}`
           );
+          break;
+        case "Follow":
+          this.followArtist();
+          break;
+        case "Unfollow":
+          this.unfollowArtist();
           break;
       }
     },
@@ -110,7 +127,7 @@ export default {
 
         case "Copy Playlist Link":
           this.copyToClipboard(
-            `https://zasymphonia.ddns.net/webhome/${this.type}/${this.id}`
+            `${window.location.host}/webhome/${this.type}/${this.id}`
           );
           break;
       }
@@ -133,7 +150,7 @@ export default {
 
         case "Copy Album Link":
           this.copyToClipboard(
-            `https://zasymphonia.ddns.net/webhome/album/${this.id}`
+            `${window.location.host}/webhome/album/${this.id}`
           );
           break;
       }
@@ -158,15 +175,24 @@ export default {
 
         case "Copy Song Link":
           this.copyToClipboard(
-            `https://zasymphonia.ddns.net/webhome/album/${this.id}`
+            `${window.location.host}/webhome/album/${this.id}`
           );
           break;
       }
     },
 
-    artist() {
+    async artist() {
+      this.$store.dispatch("artist/isFollowingArtists", {
+        artists: [this.id],
+        token: this.getuserToken()
+      });
+
+      this.artistMenu = [];
+      if (this.isFollowedArtist) {
+        this.artistMenu.push("Unfollow");
+      } else this.artistMenu.push("Follow");
+      this.artistMenu.push("Copy Artist Link");
       this.menuList = this.artistMenu;
-      //add checks like follow/unfollow and modify menuList
     },
     async playlist() {
       await this.$store.dispatch("playlist/getPlaylist", {
@@ -383,8 +409,39 @@ export default {
         id: this.id,
         token: this.getuserToken()
       });
+    },
+
+    //----------------------------------------------------------------
+    //                       Artist Functions
+    //----------------------------------------------------------------
+
+    /**
+     * Function to follow artist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
+    followArtist() {
+      this.$store.dispatch("artist/followArtist", {
+        artists: [this.id],
+        token: this.getuserToken(),
+        type: "artist"
+      });
+    },
+
+    /**
+     * Function to unfollow artist from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
+    unfollowArtist() {
+      this.$store.dispatch("artist/unfollowArtist", {
+        artists: [this.id],
+        token: this.getuserToken(),
+        type: "artist"
+      });
     }
   },
+
   computed: {
     /**
      * Function to check if the user saves this song or not , gets called at the menu click
@@ -415,6 +472,17 @@ export default {
       return (
         this.$store.state.playlist.menuPlaylist.owner._id == this.getuserID()
       );
+    },
+    /**
+     * Function to check if the user follows the artist or not , gets called at the menu click
+     * @public This is a public method
+     * @param {none}
+     */
+    isFollowedArtist() {
+      let followed =
+        this.$store.state.artist.FollowingArtistsBool &&
+        this.$store.state.artist.FollowingArtistsBool[0];
+      return followed;
     }
   }
 };
