@@ -13,19 +13,19 @@
             <v-row justify="center" class="mb-5">
               <v-col cols="6">
                 <!-- Facebook button -->
-                  <v-row justify="center" class="mb-2">
-                    <v-btn
-                      id="fb-sign-btn"
-                      rounded
-                      color="#3B5998"
-                      class="white--text"
-                      style="font-size: 14px"
-                      large
-                      block
-                      @click="signUpWithFacebook"
-                      >Sign up with Facebook</v-btn
-                    >
-                  </v-row>
+                <v-row justify="center" class="mb-2">
+                  <v-btn
+                    id="fb-sign-btn"
+                    rounded
+                    color="#3B5998"
+                    class="white--text"
+                    style="font-size: 14px"
+                    large
+                    block
+                    @click="signUpWithFacebook"
+                    >Sign up with Facebook</v-btn
+                  >
+                </v-row>
               </v-col>
             </v-row>
 
@@ -238,7 +238,7 @@
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
 import getuserType from "@/mixins/userService/getuserType";
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   components: {
@@ -396,16 +396,13 @@ export default {
           });
       }
     },
-    signUpWithFacebook(){
+    signUpWithFacebook() {
       window.FB.login(response => {
         if (response.status == "connected")
           axios
-            .post(
-              "/v1/users/auth/facebook/Symphonia",
-              {
-                access_token: response.authResponse.accessToken
-              }
-            )
+            .post("/v1/users/auth/facebook/Symphonia", {
+              access_token: response.authResponse.accessToken
+            })
             .then(response => {
               sessionStorage.setItem("userToken", response.data.token);
               //store the frequently used user data
@@ -413,7 +410,10 @@ export default {
               sessionStorage.setItem("email", response.data.user.email);
               sessionStorage.setItem("userID", response.data.user._id);
               sessionStorage.setItem("type", response.data.user.type);
-              sessionStorage.setItem("imageUrl", response.data.user.imageFacebookUrl);
+              sessionStorage.setItem(
+                "imageUrl",
+                response.data.user.imageFacebookUrl
+              );
               sessionStorage.setItem("authType", "facebook");
               if (response.data.user.registraionToken == undefined) {
                 localStorage.setItem("allowNotifications", false);

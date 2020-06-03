@@ -19,10 +19,8 @@ import Overview from "../components/ArtistInterface/Overview";
 import RelatedArtists from "../components/ArtistInterface/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
 import GenreView from "../components/general/GenreView.vue";
-import Google from "../components/oauth/google.vue";
 import AlbumView from "../components/general/AlbumView.vue";
 import UserUI from "../components/UserUI.vue";
-import Facebook from "../components/oauth/facebook.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
 import SymphoniaArtist from "../components/ArtistDashboard/Dashboard.vue";
 import SymphoniaArtistMain from "../components/ArtistDashboard/Main.vue";
@@ -301,22 +299,6 @@ const routes = [
     ]
   },
 
-  {
-    path: "/google/:userToken",
-    name: "googleroute",
-    component: Google,
-    meta: {
-      allowAnonymous: true
-    }
-  },
-  {
-    path: "/facebook/:userToken",
-    name: "facebookroute",
-    component: Facebook,
-    meta: {
-      allowAnonymous: true
-    }
-  },
   {
     path: "/artist-activation/:activationToken",
     name: "artistActivation",
