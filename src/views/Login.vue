@@ -313,12 +313,11 @@ export default {
       });
     },
     loginWithFacebook() {
-      this.FBObject.login(response => {
-        console.log(response);
+      window.FB.login(response => {
         if (response.status == "connected")
           axios
             .post(
-              "https://thesymphonia.ddns.net/users/auth/facebook/Symphonia",
+              "/v1/users/auth/facebook/Symphonia",
               {
                 access_token: response.authResponse.accessToken
               }
@@ -330,7 +329,7 @@ export default {
               sessionStorage.setItem("email", response.data.user.email);
               sessionStorage.setItem("userID", response.data.user._id);
               sessionStorage.setItem("type", response.data.user.type);
-              sessionStorage.setItem("imageUrl", response.data.user.imageUrl);
+              sessionStorage.setItem("imageUrl", response.data.user.imageFacebookUrl);
               sessionStorage.setItem("authType", "facebook");
               this.$router.push(this.$route.query.redirect || "/webhome/home");
             })
