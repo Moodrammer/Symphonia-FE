@@ -39,23 +39,6 @@
             >
           </v-col>
         </v-row>
-        <!-- Google button -->
-        <v-row>
-          <v-col cols="12" class="pt-1">
-            <a href="https://thesymphonia.ddns.net/api/v1/users/auth/google">
-              <v-btn
-                block
-                large
-                rounded
-                color="#dd4b39"
-                class="white--text"
-                id="ggl-login"
-              >
-                CONTINUE WITH GOOGLE
-              </v-btn>
-            </a>
-          </v-col>
-        </v-row>
         <!-- Divider row -->
         <v-row justify="center">
           <v-col cols="12">
@@ -229,10 +212,6 @@ export default {
       FBObject: {}
     };
   },
-  created() {
-    //Initialize the facebook SDK
-    this.initializeFacebookSDk();
-  },
   methods: {
     /**
      * This method checks on any keyup event if the user has pressed the Enter key to submit the Login form
@@ -283,35 +262,11 @@ export default {
           });
       }
     },
-    async initializeFacebookSDk() {
-      let response = await this.initSdk({
-        appId: "820827945085597",
-        xfbml: true, // Parse social plugins on this webpage.
-        version: "v7.0" // Use this Graph API version for this call.
-      });
-      console.log(response);
-      this.FBObject = response;
-    },
-    //funtion taken from https://github.com/adi518/vue-facebook-login-component/blob/master/packages/vue-facebook-login-component/src/Sdk.js
-    initSdk(options) {
-      return new Promise(resolve => {
-        // prettier-ignore
-        window.fbAsyncInit = function() {
-          window.FB.init(options)
-          resolve(window.FB)
-        }; // eslint-disable-line
-        /* eslint-disable */
-        // prettier-ignore
-        (function (d, s, id) {
-          const fjs = d.getElementsByTagName(s)[0]
-          if (d.getElementById(id)) { return; }
-          const js = d.createElement(s); js.id = id
-          js.src = '//connect.facebook.net/en_US/sdk.js'
-          fjs.parentNode.insertBefore(js, fjs)
-        }(document, 'script', 'facebook-jssdk'))
-        /* eslint-enable */
-      });
-    },
+    /**
+     * @public
+     * A function used to request the access token , send it to the server,
+     * then retrieve the user data from the server to login the user
+     */
     loginWithFacebook() {
       window.FB.login(response => {
         if (response.status == "connected")
@@ -331,6 +286,19 @@ export default {
               sessionStorage.setItem("type", response.data.user.type);
               sessionStorage.setItem("imageUrl", response.data.user.imageFacebookUrl);
               sessionStorage.setItem("authType", "facebook");
+              if (response.data.user.registraionToken == undefined) {
+                localStorage.setItem("allowNotifications", false);
+                this.$store.commit(
+                  "notification/setPushNotificationsPermission",
+                  false
+                );
+              } else {
+                localStorage.setItem("allowNotifications", true);
+                this.$store.commit(
+                  "notification/setPushNotificationsPermission",
+                  true
+                );
+              }
               this.$router.push(this.$route.query.redirect || "/webhome/home");
             })
             .catch(err => {
