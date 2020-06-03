@@ -233,12 +233,23 @@
               fab
               small
               text
+              class="mr-6"
+              title="visit single"
+              @click="goToSingle(item.id)"
+              ><v-icon>mdi-play</v-icon></v-btn
+            >
+
+            <v-btn
+              fab
+              small
+              text
+              class="mr-6"
               title="add song file to the single"
               v-if="item.tracks.length < 1"
               @click="setOperationData('addSong', item.name, item.id, null)"
               ><v-icon>mdi-plus</v-icon></v-btn
             >
-            <v-btn fab small text class="mx-6" title="edit single name"
+            <v-btn fab small text class="mr-6" title="edit single name"
               ><v-icon
                 @click="
                   setOperationData(
@@ -409,6 +420,15 @@ export default {
       this.cover = null;
       this.file = null;
       this.selectedCategories = [];
+    },
+
+    /**
+     * Function to go to album view
+     * @public This is a public method
+     * @param {Number} album id
+     */
+    goToSingle(id) {
+      this.$router.push(`/webhome/album/${id}`);
     },
 
     /**

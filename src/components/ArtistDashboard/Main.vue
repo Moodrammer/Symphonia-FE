@@ -1,5 +1,11 @@
 <template>
   <v-container class="mx-0 mt-5 pl-0 pr-5 pt-12" fluid fill>
+    <v-row>
+      <v-spacer></v-spacer>
+      <v-btn class="mr-7" outlined color="indigo" @click="goToArtist()"
+        >check your artist page</v-btn
+      >
+    </v-row>
     <v-row fill-height align="center" class="mx-0 px-0"
       >>
       <v-col cols="5">
@@ -22,13 +28,13 @@
 </template>
 
 <script>
-import getusername from "../../mixins/userService/getusername";
+import getuserID from "../../mixins/userService/getuserID";
 /**
  * @displayName Artist Dashboard Main page
  * @example [none]
  */
 export default {
-  mixins: [getusername],
+  mixins: [getuserID],
   data: function() {
     return {
       quotes: [
@@ -80,13 +86,24 @@ export default {
     };
   },
 
-  /**
-   * Function to get random quote from the quotes in the data
-   * @public This is a public method
-   * @param {none}
-   */
+  methods: {
+    /**
+     * Function to go to album view
+     * @public This is a public method
+     * @param {Number} album id
+     */
+    goToArtist() {
+      this.$router.push(`/webhome/artist/${this.getuserID()}`);
+    }
+  },
 
   computed: {
+    /**
+     * Function to get random quote from the quotes in the data
+     * @public This is a public method
+     * @param {none}
+     */
+
     mainQuote: function() {
       return this.quotes[Math.floor(Math.random() * this.quotes.length)];
     }
