@@ -27,16 +27,16 @@
         <!-- Facebook button  -->
         <v-row>
           <v-col cols="12" class="py-0 pb-1">
-              <v-btn
-                block
-                large
-                rounded
-                color="#3B5998"
-                class="white--text"
-                id="fb-login"
-                @click="loginWithFacebook"
-                >CONTINUE WITH FACEBOOK</v-btn
-              >
+            <v-btn
+              block
+              large
+              rounded
+              color="#3B5998"
+              class="white--text"
+              id="fb-login"
+              @click="loginWithFacebook"
+              >CONTINUE WITH FACEBOOK</v-btn
+            >
           </v-col>
         </v-row>
         <!-- Google button -->
@@ -201,7 +201,7 @@
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
 import isNotificationsAllowed from "../mixins/userService/isNotificationsAllowed.js";
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   name: "login",
@@ -229,7 +229,7 @@ export default {
       FBObject: {}
     };
   },
-  created(){
+  created() {
     //Initialize the facebook SDK
     this.initializeFacebookSDk();
   },
@@ -283,18 +283,18 @@ export default {
           });
       }
     },
-    async initializeFacebookSDk(){
+    async initializeFacebookSDk() {
       let response = await this.initSdk({
-      appId      : '820827945085597',
-      xfbml      : true,                     // Parse social plugins on this webpage.
-      version    : 'v7.0'           // Use this Graph API version for this call.
-      })
-      console.log(response)
-      this.FBObject = response
+        appId: "820827945085597",
+        xfbml: true, // Parse social plugins on this webpage.
+        version: "v7.0" // Use this Graph API version for this call.
+      });
+      console.log(response);
+      this.FBObject = response;
     },
     //funtion taken from https://github.com/adi518/vue-facebook-login-component/blob/master/packages/vue-facebook-login-component/src/Sdk.js
-    initSdk(options){
-      return new Promise((resolve) => {
+    initSdk(options) {
+      return new Promise(resolve => {
         // prettier-ignore
         window.fbAsyncInit = function() {
           window.FB.init(options)
@@ -310,28 +310,34 @@ export default {
           fjs.parentNode.insertBefore(js, fjs)
         }(document, 'script', 'facebook-jssdk'))
         /* eslint-enable */
-      })
+      });
     },
-    loginWithFacebook(){
-      this.FBObject.login((response) => {
-        console.log(response)
-        if(response.status == 'connected')
-          axios.post("https://thesymphonia.ddns.net/users/auth/facebook/Symphonia",{
-            access_token: response.authResponse.accessToken
-          }).then(response => {
-            sessionStorage.setItem("userToken", response.data.token);
-            //store the frequently used user data
-            sessionStorage.setItem("username", response.data.user.name);
-            sessionStorage.setItem("email", response.data.user.email);
-            sessionStorage.setItem("userID", response.data.user._id);
-            sessionStorage.setItem("type", response.data.user.type);
-            sessionStorage.setItem("imageUrl", response.data.user.imageUrl);
-            sessionStorage.setItem("authType", "facebook");
-            this.$router.push(this.$route.query.redirect || "/webhome/home");
-          }).catch(err => {
-            console.log(err)
-          })
-      })
+    loginWithFacebook() {
+      this.FBObject.login(response => {
+        console.log(response);
+        if (response.status == "connected")
+          axios
+            .post(
+              "https://thesymphonia.ddns.net/users/auth/facebook/Symphonia",
+              {
+                access_token: response.authResponse.accessToken
+              }
+            )
+            .then(response => {
+              sessionStorage.setItem("userToken", response.data.token);
+              //store the frequently used user data
+              sessionStorage.setItem("username", response.data.user.name);
+              sessionStorage.setItem("email", response.data.user.email);
+              sessionStorage.setItem("userID", response.data.user._id);
+              sessionStorage.setItem("type", response.data.user.type);
+              sessionStorage.setItem("imageUrl", response.data.user.imageUrl);
+              sessionStorage.setItem("authType", "facebook");
+              this.$router.push(this.$route.query.redirect || "/webhome/home");
+            })
+            .catch(err => {
+              console.log(err);
+            });
+      });
     }
   },
   mixins: [isNotificationsAllowed]
