@@ -242,6 +242,16 @@
               fab
               small
               text
+              class="mr-6"
+              title="visit album"
+              @click="goToAlbum(item.id)"
+              ><v-icon>mdi-play</v-icon></v-btn
+            >
+
+            <v-btn
+              fab
+              small
+              text
               title="add songs to the album"
               @click="setOperationData('addSong', item.name, item.id, null)"
               ><v-icon>mdi-plus</v-icon></v-btn
@@ -403,7 +413,14 @@ export default {
       this.file = null;
       this.selectedCategories = [];
     },
-
+    /**
+     * Function to go to album view
+     * @public This is a public method
+     * @param {Number} album id
+     */
+    goToAlbum(id) {
+      this.$router.push(`/webhome/album/${id}`);
+    },
     /**
      * Function to add new album in albums dashboard
      * @public This is a public method

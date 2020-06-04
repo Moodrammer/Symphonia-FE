@@ -62,14 +62,30 @@ describe("Main.vue", () => {
 
   beforeEach(() => {
     vuetify = new Vuetify();
+    const router = new VueRouter();
     Vue.use(Vuetify);
+    Vue.use(VueRouter);
     Vue.use(Vuex);
     store = new Vuex.Store(storeMock);
 
     wrapper = shallowMount(main, {
       vuetify,
-      store
+      store,
+      router
     });
+  });
+
+  /////////////////////////////////////////////////////////
+  /////////////     Functions TESTS     ///////////////////
+  /////////////////////////////////////////////////////////
+
+  it("goToArtist", () => {
+    let beforePush = wrapper.vm.$router.currentRoute.fullPath;
+    wrapper.vm.goToArtist();
+    expect(wrapper.vm.$router.currentRoute.fullPath).toBe(
+      "/webhome/artist/undefined"
+    );
+    wrapper.vm.$router.push(beforePush);
   });
 
   /////////////////////////////////////////////////////////
@@ -121,13 +137,16 @@ describe("Albums.vue", () => {
 
   beforeEach(() => {
     vuetify = new Vuetify();
+    const router = new VueRouter();
     Vue.use(Vuetify);
+    Vue.use(VueRouter);
     Vue.use(Vuex);
     store = new Vuex.Store(storeMock);
 
     wrapper = shallowMount(albums, {
       vuetify,
       store,
+      router,
       stubs: {
         "v-form": {
           render: () => {},
@@ -154,6 +173,16 @@ describe("Albums.vue", () => {
   /////////////////////////////////////////////////////////
   /////////////     FUNCTIONS TESTS     ///////////////////
   /////////////////////////////////////////////////////////
+
+  it("goToAlbum", () => {
+    const albumID = "e2wqrfds9fiw9fds9if3";
+    let beforePush = wrapper.vm.$router.currentRoute.fullPath;
+    wrapper.vm.goToAlbum(albumID);
+    expect(wrapper.vm.$router.currentRoute.fullPath).toBe(
+      `/webhome/album/${albumID}`
+    );
+    wrapper.vm.$router.push(beforePush);
+  });
 
   it("reset function", () => {
     wrapper.vm.reset();
@@ -229,13 +258,16 @@ describe("Singles.vue", () => {
 
   beforeEach(() => {
     vuetify = new Vuetify();
+    const router = new VueRouter();
     Vue.use(Vuetify);
+    Vue.use(VueRouter);
     Vue.use(Vuex);
     store = new Vuex.Store(storeMock);
 
     wrapper = shallowMount(singles, {
       vuetify,
       store,
+      router,
       stubs: {
         "v-form": {
           render: () => {},
@@ -262,6 +294,16 @@ describe("Singles.vue", () => {
   /////////////////////////////////////////////////////////
   /////////////     FUNCTIONS TESTS     ///////////////////
   /////////////////////////////////////////////////////////
+
+  it("goToSingle", () => {
+    const singleID = "dsae3e9ii9s90e32f903";
+    let beforePush = wrapper.vm.$router.currentRoute.fullPath;
+    wrapper.vm.goToSingle(singleID);
+    expect(wrapper.vm.$router.currentRoute.fullPath).toBe(
+      `/webhome/album/${singleID}`
+    );
+    wrapper.vm.$router.push(beforePush);
+  });
 
   it("reset function", () => {
     wrapper.vm.reset();

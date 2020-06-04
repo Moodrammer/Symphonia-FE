@@ -27,34 +27,16 @@
         <!-- Facebook button  -->
         <v-row>
           <v-col cols="12" class="py-0 pb-1">
-            <a href="https://thesymphonia.ddns.net/api/v1/users/auth/facebook">
-              <v-btn
-                block
-                large
-                rounded
-                color="#3B5998"
-                class="white--text"
-                id="fb-login"
-                >CONTINUE WITH FACEBOOK</v-btn
-              >
-            </a>
-          </v-col>
-        </v-row>
-        <!-- Google button -->
-        <v-row>
-          <v-col cols="12" class="pt-1">
-            <a href="https://thesymphonia.ddns.net/api/v1/users/auth/google">
-              <v-btn
-                block
-                large
-                rounded
-                color="#dd4b39"
-                class="white--text"
-                id="ggl-login"
-              >
-                CONTINUE WITH GOOGLE
-              </v-btn>
-            </a>
+            <v-btn
+              block
+              large
+              rounded
+              color="#3B5998"
+              class="white--text"
+              id="fb-login"
+              @click="loginWithFacebook"
+              >CONTINUE WITH FACEBOOK</v-btn
+            >
           </v-col>
         </v-row>
         <!-- Divider row -->
@@ -202,6 +184,7 @@
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
 import isNotificationsAllowed from "../mixins/userService/isNotificationsAllowed.js";
+import axios from "axios";
 
 export default {
   name: "login",
@@ -224,7 +207,9 @@ export default {
         v => !!v || "Please enter your Symphonia email address.",
         v => /.+@.+\..+/.test(v) || "E-mail must be valid"
       ],
-      passwordRules: [v => !!v || "Please enter your password."]
+      passwordRules: [v => !!v || "Please enter your password."],
+      //Facebook login handling data
+      FBObject: {}
     };
   },
   methods: {
@@ -276,6 +261,50 @@ export default {
             }
           });
       }
+    },
+    /**
+     * @public
+     * A function used to request the access token , send it to the server,
+     * then retrieve the user data from the server to login the user
+     */
+    loginWithFacebook() {
+      window.FB.login(response => {
+        if (response.status == "connected")
+          axios
+            .post("/v1/users/auth/facebook/Symphonia", {
+              access_token: response.authResponse.accessToken
+            })
+            .then(response => {
+              sessionStorage.setItem("userToken", response.data.token);
+              //store the frequently used user data
+              sessionStorage.setItem("username", response.data.user.name);
+              sessionStorage.setItem("email", response.data.user.email);
+              sessionStorage.setItem("userID", response.data.user._id);
+              sessionStorage.setItem("type", response.data.user.type);
+              sessionStorage.setItem(
+                "imageUrl",
+                response.data.user.imageFacebookUrl
+              );
+              sessionStorage.setItem("authType", "facebook");
+              if (response.data.user.registraionToken == undefined) {
+                localStorage.setItem("allowNotifications", false);
+                this.$store.commit(
+                  "notification/setPushNotificationsPermission",
+                  false
+                );
+              } else {
+                localStorage.setItem("allowNotifications", true);
+                this.$store.commit(
+                  "notification/setPushNotificationsPermission",
+                  true
+                );
+              }
+              this.$router.push(this.$route.query.redirect || "/webhome/home");
+            })
+            .catch(err => {
+              console.log(err);
+            });
+      });
     }
   },
   mixins: [isNotificationsAllowed]
