@@ -1,4 +1,5 @@
 import axios from "axios";
+//import webplayerHomeModule from "./webplayerHome.js";
 
 const state = {
   userSavedPlaylists: [],
@@ -236,8 +237,9 @@ const actions = {
         commit("followedPlaylist");
       })
       .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
+        if (error.response.statusText === "Unauthorized") {
+          commit("webplayerHome/toggleLogoutPopUpState", null, { root: true });
+        }
       });
   },
   //--------------------------------------------------------

@@ -14,7 +14,7 @@
     <AddTrackToPlaylist v-if="addTrack" />
     <CreatePlaylist v-if="createPlaylist" />
     <AdsPopup v-if="isAdsActive" />
-
+    <LogoutPopUp v-if="logoutPopUp" />
     <!--Nesting the sound player component-->
     <SoundPlayer v-if="isLoggedIn()" />
     <SoundPlayerLogout v-if="!isLoggedIn()" />
@@ -36,6 +36,7 @@ import CreatePlaylist from "../components/CreatePlaylist.vue";
 import AddTrackToPlaylist from "../components/AddTrackToPlaylist.vue";
 import AdsPopup from "../components/Popups/AdsPopup.vue";
 import NotificationPopup from "../components/Notifications/TheNotificationPopUp.vue";
+import LogoutPopUp from "../components/Popups/LogoutPopUp.vue";
 /**
  * The webplayer view it contains (the side bar - the navigation bar - the sound player)
  * @displayName Webplayer Home
@@ -55,7 +56,8 @@ export default {
     CreatePlaylist,
     AddTrackToPlaylist,
     AdsPopup,
-    NotificationPopup
+    NotificationPopup,
+    LogoutPopUp
   },
   watch: {
     contextID: function() {
@@ -108,6 +110,9 @@ export default {
     },
     contextID() {
       return this.contextMenu.id;
+    },
+    logoutPopUp() {
+      return this.$store.state.webplayerHome.logoutPopUpState;
     }
   },
   mixins: [isLoggedIn, getuserToken, isNotificationsAllowed]
