@@ -1,7 +1,7 @@
 <template>
   <canvas
     ref="soundGrapher"
-    style="width: 100%; height: fit-content;"
+    style="width: 100%; height: 20px;"
     :height="canvasHeight"
   ></canvas>
 </template>

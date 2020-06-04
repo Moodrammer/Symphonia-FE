@@ -78,7 +78,10 @@ import getuserToken from "../../mixins/userService/getUserToken";
 import SongItem from "../general/SongItem";
 import CardGrid from "../general/CardGrid";
 import { mapGetters, mapActions } from "vuex";
-
+/**
+ * @displayName Artist Interface overview
+ * @example [none]
+ */
 export default {
   components: {
     SongItem,
@@ -101,8 +104,7 @@ export default {
     });
   },
   methods: {
-    ...mapActions("artist", ["getArtistAlbums", "getArtistTopTracks"]),
-    menuOrder() {}
+    ...mapActions("artist", ["getArtistAlbums", "getArtistTopTracks"])
   },
   computed: {
     ...mapGetters("artist", [
@@ -124,11 +126,9 @@ export default {
   },
   watch: {
     allArtistAlbums(newValue) {
-      console.log("sdasd1", newValue);
       this.albumsCardItems.items = newValue;
     },
     allArtistSingles(newValue) {
-      console.log("sdasd2", newValue);
       this.singlesCardItems.items = newValue;
     }
   }

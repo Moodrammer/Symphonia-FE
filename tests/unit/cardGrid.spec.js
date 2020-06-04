@@ -15,6 +15,7 @@ describe("CardGrid.vue", () => {
       vuetify,
       router,
       propsData: {
+        contextMenu: { event: -1, id: -1, type: -1 },
         cardItems: {
           items: [
             {
@@ -25,25 +26,16 @@ describe("CardGrid.vue", () => {
               id: 1,
               type: "album"
             }
-          ],
-          menuList: [
-            { title: "Start Radio" },
-            { title: "Remove from your Library" },
-            { title: "Add to Playlist" },
-            { title: "Copy Album link" }
-          ],
-          showMenu: false,
-          hoveredCardIndex: null
+          ]
         },
-        cardStyle: null,
+        cardStyle: "artist",
         name: "albums"
       }
     });
-    // console.log(wrapper.html())
   });
 
   /////////////////////////////////////////////////////////
-  /////////////       RENDERING     ///////////////////////
+  /////////////     RENDERING TESTS     ///////////////////
   /////////////////////////////////////////////////////////
 
   it("renders", () => {
@@ -59,14 +51,17 @@ describe("CardGrid.vue", () => {
   });
 
   /////////////////////////////////////////////////////////
-  /////////////         Card  Functions      //////////////
+  /////////////     FUNCTIONS TESTS     ///////////////////
   /////////////////////////////////////////////////////////
 
-  // it("card hover", async () => {
-  //   wrapper.vm.cardHover(0, 1);
-  //   await wrapper.vm.$nextTick();
-  //   expect(wrapper.vm.lastHoveredCard).toBe(1);
-  // });
+  it("menuClick function", async () => {
+    wrapper.vm.menuClick(1, 2, 3);
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.props().contextMenu.event).toBe(1);
+      expect(wrapper.props().contextMenu.id).toBe(2);
+      expect(wrapper.props().contextMenu.type).toBe(3);
+    });
+  });
 
   it("card clicked", async () => {
     let beforePush = wrapper.vm.$router.currentRoute.fullPath;
@@ -79,42 +74,8 @@ describe("CardGrid.vue", () => {
   it("card button clicked", async () => {
     wrapper.vm.cardClicked(1, 1, true);
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.$router.currentRoute.fullPath).toBe("/");
-    expect(wrapper.vm.playBTNFlag).toBe(true);
+    expect(wrapper.vm.$router.currentRoute.fullPath).toBe("/webhome/1/1");
   });
-
-  it("return from card button clicked", async () => {
-    wrapper.setData({ playBTNFlag: "true" });
-    wrapper.vm.cardClicked(1, 1, false);
-    await wrapper.vm.$nextTick();
-    expect(wrapper.vm.playBTNFlag).toBe(false);
-  });
-
-  /////////////////////////////////////////////////////////
-  ///////////// Context menu  Functions ///////////////////
-  /////////////////////////////////////////////////////////
-
-  // it("context menu clicked not copy option", async () => {
-  //   let option = "not copy";
-  //   wrapper.vm.contextMenuClick({ title: option }, false);
-  //   await wrapper.vm.$nextTick();
-  //   expect(wrapper.emitted().order[0][0]).toBe("not copy");
-  // });
-
-  /*it("context menu clicked copy option", async() =>{
-    let option = "copy";
-    wrapper.setData({ lastHoveredCard: 1 })
-    wrapper.vm.contextMenuClick({title: option, id: 1}, true);
-    await wrapper.vm.$nextTick()
-    console.log(wrapper.emitted().order)
-    expect(
-        wrapper.emitted().order[0][0]
-    ).toBe('copy')
- });*/
-
-  /////////////////////////////////////////////////////////
-  /////////////  Buttons Functions      ///////////////////
-  /////////////////////////////////////////////////////////
 
   it("showMore clicked", async () => {
     wrapper.setData({ showMoreBtn: false });

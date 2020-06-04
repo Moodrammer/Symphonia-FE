@@ -13,39 +13,19 @@
             <v-row justify="center" class="mb-5">
               <v-col cols="6">
                 <!-- Facebook button -->
-                <a
-                  href="https://thesymphonia.ddns.net/api/v1/users/auth/facebook"
-                >
-                  <v-row justify="center" class="mb-2">
-                    <v-btn
-                      id="fb-sign-btn"
-                      rounded
-                      color="#3B5998"
-                      class="white--text"
-                      style="font-size: 14px"
-                      large
-                      block
-                      >Sign up with Facebook</v-btn
-                    >
-                  </v-row>
-                </a>
-                <!-- Google button -->
-                <a
-                  href="https://thesymphonia.ddns.net/api/v1/users/auth/google"
-                >
-                  <v-row justify="center" class="my-0">
-                    <v-btn
-                      id="ggl-sign-btn"
-                      rounded
-                      color="#dd4b39"
-                      class="white--text"
-                      style="font-size: 14px"
-                      large
-                      block
-                      ><div class="px-2">Sign up with Google</div></v-btn
-                    >
-                  </v-row>
-                </a>
+                <v-row justify="center" class="mb-2">
+                  <v-btn
+                    id="fb-sign-btn"
+                    rounded
+                    color="#3B5998"
+                    class="white--text"
+                    style="font-size: 14px"
+                    large
+                    block
+                    @click="signUpWithFacebook"
+                    >Sign up with Facebook</v-btn
+                  >
+                </v-row>
               </v-col>
             </v-row>
 
@@ -258,6 +238,7 @@
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
 import getuserType from "@/mixins/userService/getuserType";
+import axios from "axios";
 
 export default {
   components: {
@@ -414,6 +395,45 @@ export default {
             // console.log(error);
           });
       }
+    },
+    signUpWithFacebook() {
+      window.FB.login(response => {
+        if (response.status == "connected")
+          axios
+            .post("/v1/users/auth/facebook/Symphonia", {
+              access_token: response.authResponse.accessToken
+            })
+            .then(response => {
+              sessionStorage.setItem("userToken", response.data.token);
+              //store the frequently used user data
+              sessionStorage.setItem("username", response.data.user.name);
+              sessionStorage.setItem("email", response.data.user.email);
+              sessionStorage.setItem("userID", response.data.user._id);
+              sessionStorage.setItem("type", response.data.user.type);
+              sessionStorage.setItem(
+                "imageUrl",
+                response.data.user.imageFacebookUrl
+              );
+              sessionStorage.setItem("authType", "facebook");
+              if (response.data.user.registraionToken == undefined) {
+                localStorage.setItem("allowNotifications", false);
+                this.$store.commit(
+                  "notification/setPushNotificationsPermission",
+                  false
+                );
+              } else {
+                localStorage.setItem("allowNotifications", true);
+                this.$store.commit(
+                  "notification/setPushNotificationsPermission",
+                  true
+                );
+              }
+              this.$router.push(this.$route.query.redirect || "/webhome/home");
+            })
+            .catch(err => {
+              console.log(err);
+            });
+      });
     }
   }
 };

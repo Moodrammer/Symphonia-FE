@@ -6,18 +6,16 @@
 import CardGrid from "../general/CardGrid";
 import { mapGetters, mapActions } from "vuex";
 import getuserToken from "../../mixins/userService/getUserToken";
-
+/**
+ * @displayName Artist Interface related artists
+ * @example [none]
+ */
 export default {
   components: {
     CardGrid
   },
   methods: {
-    ...mapActions("artist", ["getArtistRelatedArtists"]),
-    menuOrder(menuItem, cardIndex, name) {
-      console.log(menuItem, cardIndex, name);
-      this.albumsContextMenuChoice = menuItem;
-      this.albumsContextMenuCardIndex = cardIndex;
-    }
+    ...mapActions("artist", ["getArtistRelatedArtists"])
   },
 
   computed: mapGetters("artist", ["allArtistRelatedArtists"]),
@@ -33,7 +31,6 @@ export default {
   mixins: [getuserToken],
   props: ["artistID", "contextMenu"],
   created() {
-    console.log("ID", this.$props.artistID, "TOKEN", this.getuserToken());
     this.getArtistRelatedArtists({
       id: this.$props.artistID,
       token: this.getuserToken()
@@ -43,7 +40,6 @@ export default {
   watch: {
     allArtistRelatedArtists(newValue) {
       this.cardItems.items = newValue;
-      console.log(newValue);
     }
   }
 };

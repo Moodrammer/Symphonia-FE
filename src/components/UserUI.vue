@@ -52,7 +52,10 @@ import CardGrid from "./general/CardGrid";
 import getuserToken from "../mixins/userService/getUserToken";
 import getuserID from "../mixins/userService/getuserID";
 import { mapGetters, mapActions } from "vuex";
-
+/**
+ * @displayName User Interface
+ * @example [none]
+ */
 export default {
   name: "UserUI",
   props: ["contextMenu"],
@@ -72,19 +75,14 @@ export default {
     };
   },
   created() {
-    console.log("token", this.getuserToken());
-    try {
-      this.getUserInfo({
-        token: this.getuserToken(),
-        id: this.$route.params.id
-      });
-      this.getPublicPlaylists({
-        token: this.getuserToken(),
-        id: this.$route.params.id
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    this.getUserInfo({
+      token: this.getuserToken(),
+      id: this.$route.params.id
+    });
+    this.getPublicPlaylists({
+      token: this.getuserToken(),
+      id: this.$route.params.id
+    });
   },
 
   methods: {
@@ -94,6 +92,12 @@ export default {
       "followArtist",
       "unfollowArtist"
     ]),
+    /**
+     * Function to follow the user of this interface
+     * @public This is a public method
+     * @param {none}
+     */
+
     follow() {
       this.followArtist({
         token: this.getuserToken(),
@@ -101,6 +105,12 @@ export default {
         type: "user"
       });
     },
+    /**
+     * Function to unfollow the user of this interface
+     * @public This is a public method
+     * @param {none}
+     */
+
     unfollow() {
       this.unfollowArtist({
         token: this.getuserToken(),
@@ -112,6 +122,12 @@ export default {
   computed: {
     ...mapGetters("userPublicProfile", ["allInfo", "allPublicPlaylists"]),
     ...mapGetters("artist", ["isFollowed"]),
+
+    /**
+     * Function to know if the current user isn't the user of this interface
+     * @public This is a public method
+     * @param {none}
+     */
 
     isVisitor() {
       return this.$route.params.id != this.getuserID();

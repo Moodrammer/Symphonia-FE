@@ -14,13 +14,6 @@ describe("TheSoundplayer", () => {
     setActionHandler: () => {}
   };
 
-  global.document.execCommand = function execCommandMock() {};
-  const document = {
-    createElement(name) {
-      return name;
-    }
-  };
-
   beforeEach(() => {
     vuetify = new Vuetify();
     const router = new VueRouter();
@@ -100,7 +93,8 @@ describe("TheSoundplayer", () => {
               state.isTrackLiked = false;
             },
             copyLink() {},
-            initQueueStatus() {}
+            initQueueStatus() {},
+            setupSharingLinks() {}
           },
           mutations: {
             setTrackUrl({ state }, trackUrl) {
@@ -473,35 +467,25 @@ describe("TheSoundplayer", () => {
   it("picture in picture feature", () => {
     wrapper.vm.picInPicVideo = {
       play: () => {},
+      pause: () => {},
       requestPictureInPicture: () => {}
     };
     store.state.track.isPicInPicCanvasRdy = true;
+    wrapper.vm.setIsTrackPaused(false);
     wrapper.vm.picInPic();
     expect(wrapper.vm.picInPicVideo.play()).toBeCalled;
+
+    wrapper.vm.setIsTrackPaused(true);
+    wrapper.vm.picInPic();
+    expect(wrapper.vm.picInPicVideo.pause()).toBeCalled;
 
     store.state.track.isPicInPicCanvasRdy = false;
     wrapper.vm.picInPic();
     expect(wrapper.vm.picInPicVideo.play()).not.toBeCalled;
+  });
 
-    //play
-    document.pictureInPictureElement = {
-      play: () => {}
-    };
-    wrapper.vm._handlePicInPicPlay();
-    expect(document.pictureInPictureElement.play()).toBeCalled;
-
-    document.pictureInPictureElement = false;
-    wrapper.vm._handlePicInPicPlay();
-
-    //pause
-    document.pictureInPictureElement = {
-      pause: () => {}
-    };
-    wrapper.vm._handlePicInPicPause();
-    expect(document.pictureInPictureElement.pause()).toBeCalled;
-
-    document.pictureInPictureElement = false;
-    wrapper.vm._handlePicInPicPause();
+  it("enable the picture in picture feature", () => {
+    wrapper.vm.enablePicInPic();
   });
 });
 

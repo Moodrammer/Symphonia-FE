@@ -242,6 +242,16 @@
               fab
               small
               text
+              class="mr-6"
+              title="visit album"
+              @click="goToAlbum(item.id)"
+              ><v-icon>mdi-play</v-icon></v-btn
+            >
+
+            <v-btn
+              fab
+              small
+              text
               title="add songs to the album"
               @click="setOperationData('addSong', item.name, item.id, null)"
               ><v-icon>mdi-plus</v-icon></v-btn
@@ -299,7 +309,10 @@
 import { mapGetters, mapActions } from "vuex";
 import getuserToken from "../../mixins/userService/getUserToken";
 import getuserID from "../../mixins/userService/getuserID";
-
+/**
+ * @displayName Artist Dashboard Albums Page
+ * @example [none]
+ */
 export default {
   mixins: [getuserToken, getuserID],
   data() {
@@ -334,10 +347,14 @@ export default {
     };
   },
   computed: {
+    /**
+     * Function to know if the loading bar should appear or not
+     * @public This is a public method
+     * @param {none}
+     */
+
     startLoading: {
       get() {
-        console.log(this.uploadingDone != 0);
-        console.log(this.uploadingDone);
         return this.uploadingDone != 0 && this.uploadingDone;
       },
       set(value) {
@@ -345,10 +362,15 @@ export default {
       }
     },
     ...mapGetters("artist", ["allArtistAlbums", "uploadingDone"]),
+
+    /**
+     * Function to get the songs categories
+     * @public This is a public method
+     * @param {none}
+     */
+
     categories: function() {
-      let x = this.$store.state.artist.simplifiedCategories;
-      console.log(x);
-      return x;
+      return this.$store.state.artist.simplifiedCategories;
     }
   },
   created: function() {
@@ -362,11 +384,6 @@ export default {
       offset: 0
     });
   },
-  watch: {
-    allArtistAlbums: function(newValue) {
-      console.log(newValue);
-    }
-  },
   methods: {
     ...mapActions("artist", [
       "addNewAlbum",
@@ -378,6 +395,11 @@ export default {
       "deleteAlbum",
       "deleteTrack"
     ]),
+    /**
+     * Function to reset the forms data in albums dashboard
+     * @public This is a public method
+     * @param {none}
+     */
     reset() {
       this.dialog.addSong = false;
       this.dialog.addAlbum = false;
@@ -391,8 +413,21 @@ export default {
       this.file = null;
       this.selectedCategories = [];
     },
+    /**
+     * Function to go to album view
+     * @public This is a public method
+     * @param {Number} album id
+     */
+    goToAlbum(id) {
+      this.$router.push(`/webhome/album/${id}`);
+    },
+    /**
+     * Function to add new album in albums dashboard
+     * @public This is a public method
+     * @param {none}
+     */
+
     addAlbum() {
-      console.log(this.title, this.cover);
       if (!this.$refs.albumForm.validate()) return;
       let payload = {
         token: this.getuserToken(),
@@ -406,10 +441,14 @@ export default {
       this.addNewAlbum(payload);
       this.reset();
     },
+
+    /**
+     * Function to add new song to an album in albums dashboard
+     * @public This is a public method
+     * @param {none}
+     */
     addSong() {
-      console.log(this.title, this.cover);
       if (!this.$refs.songForm.validate()) return;
-      console.log("sdsadsada", this.selectedCategories);
       let payload = {
         token: this.getuserToken(),
         title: this.title,
@@ -422,9 +461,14 @@ export default {
       this.addTrackToAlbum(payload);
       this.reset();
     },
+    /**
+     * Function to remove a song or an album in albums dashboard
+     * @public This is a public method
+     * @param {none}
+     */
+
     remove() {
       if (this.operation.songID == null) {
-        //rename album by this.title
         this.deleteAlbum({
           token: this.getuserToken(),
           id: this.operation.albumID
@@ -438,17 +482,20 @@ export default {
       this.title = null;
       this.dialog.remove = false;
     },
+    /**
+     * Function to rename a song or an album in albums dashboard
+     * @public This is a public method
+     * @param {none}
+     */
     rename() {
       if (!this.$refs.renameForm.validate()) return;
       if (this.operation.songID == null) {
-        //rename album by this.title
         this.renameAlbum({
           token: this.getuserToken(),
           name: this.title,
           id: this.operation.albumID
         });
       } else {
-        console.log("yaba a7la 4o8l");
         this.renameTrack({
           token: this.getuserToken(),
           name: this.title,
@@ -458,11 +505,19 @@ export default {
       this.title = null;
       this.dialog.rename = false;
     },
+
+    /**
+     * Function to set the next operation data in albums dashboard
+     * @public This is a public method
+     * @param {String} type the type of the operation, rename or delete or add
+     * @param {String} title the title of the album of the operation
+     * @param {Number} albumID  the id of the album of the operation
+     * @param {Number} songID  the title of the song of the operation
+     */
     setOperationData(type, title, albumID, songID) {
       this.operation.title = title;
       this.operation.albumID = albumID;
       this.operation.songID = songID;
-      console.log(this.operation, "sdsadsads");
       if (type == "remove") this.dialog.remove = true;
       else if (type == "rename") this.dialog.rename = true;
       else if (type == "addSong") this.dialog.addSong = true;

@@ -94,14 +94,12 @@ const getters = {
   latestAlbumIDGetter: state => state.latestAlbumID,
   uploadingDone: state => state.percentCompleted,
   currentArtistGetter: state => {
-    console.log("artist", state.currentArtist);
     return state.currentArtist;
   },
 
   allArtistTopTracks: state => {
     if (!state.artistTopTracks || state.artistTopTracks.length < 1) return null;
     var newValue = state.artistTopTracks.tracks.items;
-    console.log("top tracks", newValue);
     var tracks = [];
 
     newValue.forEach(element => {
@@ -121,17 +119,14 @@ const getters = {
         tracks.push(k);
       }
     });
-    console.log(tracks);
     return tracks;
   },
 
   allArtistRelatedArtists: state => {
     var newValue = state.artistRelatedArtists;
     if (!newValue || !newValue.artists) return;
-    console.log("NRWWWW", newValue);
     var artists = [];
     newValue.artists.forEach(element => {
-      console.log("x", element);
       var k = {
         name: element.name,
         image: element.imageUrl,
@@ -162,11 +157,9 @@ const getters = {
 
   allArtistAlbums: state => {
     if (state.artistAlbums == null) return null;
-    console.log("sss", state.artistAlbums.albums.items);
     var newValue = state.artistAlbums.albums.items;
     var albums = [];
     newValue.forEach(element => {
-      console.log(element.albumType);
       if (element.albumType == "album") {
         var k = {
           name: element.name,
@@ -182,7 +175,6 @@ const getters = {
 
   allArtistSingles: state => {
     if (state.artistAlbums == null) return null;
-    console.log("sss", state.artistAlbums.albums.items);
     var newValue = state.artistAlbums.albums.items;
     var albums = [];
     newValue.forEach(element => {
@@ -230,9 +222,6 @@ const actions = {
       });
   },
   renameAlbum({ commit }, payload) {
-    console.log(payload);
-    console.log(payload.albumTitle, payload.albumPhoto);
-
     axios
       .patch(
         `/v1/albums/${payload.id}`,
@@ -246,7 +235,6 @@ const actions = {
         }
       )
       .then(response => {
-        console.log(response.data);
         commit("load_renameAlbum", response.data);
       })
       .catch(error => {
@@ -255,9 +243,6 @@ const actions = {
   },
 
   renameTrack({ commit }, payload) {
-    console.log(payload);
-    console.log(payload.albumTitle, payload.albumPhoto);
-
     axios
       .patch(
         `/v1/users/track/${payload.id}`,
@@ -271,7 +256,6 @@ const actions = {
         }
       )
       .then(response => {
-        console.log(response.data);
         commit("load_renameTrack", response.data);
       })
       .catch(error => {
@@ -280,8 +264,6 @@ const actions = {
   },
 
   addNewAlbum({ commit, state }, payload) {
-    console.log(payload);
-    console.log(payload.albumTitle, payload.albumPhoto);
     const FormData = require("form-data");
     const form = new FormData();
     form.append("name", payload.title);
@@ -305,7 +287,6 @@ const actions = {
       .then(response => {
         commit("load_newAlbum", response.data);
         commit("set_latestAlbumID", response.data._id);
-        console.log(response);
       })
       .catch(error => console.log(error));
   },
@@ -319,7 +300,6 @@ const actions = {
         }
       })
       .then(response => {
-        console.log(response.data);
         response.data.categories.items.forEach(element => {
           categories.push({
             id: element._id,
@@ -334,7 +314,6 @@ const actions = {
   },
 
   addTrackToAlbum({ commit, state }, payload) {
-    console.log(payload);
     const FormData = require("form-data");
     const form = new FormData();
     form.append("name", payload.title);
@@ -344,7 +323,6 @@ const actions = {
     form.append("premium", payload.premium);
     payload.categories.forEach(category => {
       form.append("category", category);
-      console.log(category);
     });
     const config = {
       onUploadProgress: function(progressEvent) {
@@ -359,7 +337,6 @@ const actions = {
     axios
       .post("/v1/users/tracks", form, config)
       .then(response => {
-        console.log(response);
         commit("load_newAlbumTrack", response.data);
       })
       .catch(error => console.log(error));
@@ -385,7 +362,6 @@ const actions = {
    * @param {object} payload contains the token
    */
   getFollowedArtists({ commit }, payload) {
-    console.log(payload.token);
     axios
       .get("/v1/me/following", {
         headers: {
@@ -408,7 +384,6 @@ const actions = {
    */
 
   getArtistAlbums({ commit }, payload) {
-    console.log(payload.id, "its", payload.token);
     axios
       .get(`/v1/artists/${payload.id}/albums`, {
         headers: {
@@ -421,7 +396,6 @@ const actions = {
       })
       .then(response => {
         commit("load_artistAlbums", response.data);
-        console.log("ALBUMS", response);
       })
       .catch(error => {
         console.log("axios caught an error in getArtistAlbums");
@@ -442,13 +416,11 @@ const actions = {
           Authorization: `Bearer ${payload.token}`
         },
         params: {
-          // country: "from_token",
           limit: payload.limit,
           offset: payload.offset
         }
       })
       .then(response => {
-        console.log("getArtistTopTracks", response.data);
         commit("load_artistTopTracks", response.data);
       })
       .catch(error => {
@@ -463,7 +435,6 @@ const actions = {
    */
 
   getArtistRelatedArtists({ commit }, payload) {
-    console.log("dsa", payload.id);
     axios
       .get(`/v1/artists/${payload.id}/related-artists`, {
         headers: {
@@ -471,7 +442,6 @@ const actions = {
         }
       })
       .then(response => {
-        console.log("getArtistRelatedArtists", response);
         commit("load_artistRelatedArtists", response.data);
       })
       .catch(error => {
@@ -481,7 +451,6 @@ const actions = {
   },
 
   followArtist({ commit, dispatch }, payload) {
-    console.log(payload);
     axios
       .put(
         "v1/me/following",
@@ -543,7 +512,6 @@ const actions = {
         }
       })
       .then(response => {
-        console.log("isfollowed", response.data);
         commit("load_isFollowingArtists", response.data);
       })
       .catch(error => {

@@ -12,17 +12,16 @@
 import Drawer from "./Drawer.vue";
 import getuserID from "../../mixins/userService/getuserID";
 import getuserType from "../../mixins/userService/getuserType";
-
+/**
+ * @displayName Artist Dashboard
+ * @example [none]
+ */
 export default {
   mixins: [getuserType, getuserID],
   components: {
     Drawer
   },
   created() {
-    console.log("id", this.getuserID());
-    console.log("pid", this.$route.params.id);
-    console.log("type", this.getuserType());
-
     if (
       !this.getuserID() ||
       this.getuserID() != this.$route.params.id ||
