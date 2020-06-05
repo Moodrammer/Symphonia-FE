@@ -39,7 +39,8 @@ export function makeServer({ environment = "development" } = {}) {
         country: "EG",
         imageUrl:
           "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
-        followed: false
+        followed: false,
+        premium: false
       });
       //creating an artist for testing purposes
       server.create("user", {
@@ -52,7 +53,8 @@ export function makeServer({ environment = "development" } = {}) {
         country: "EG",
         imageUrl:
           "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg",
-        followed: false
+        followed: false,
+        premium: false
       });
 
       //This part is just to fake mirage in order to persist the data of only one user
@@ -491,7 +493,8 @@ export function makeServer({ environment = "development" } = {}) {
                   name: schema.users.find(i).name,
                   type: schema.users.find(i).type,
                   imageUrl:
-                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png"
+                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+                  premium: schema.users.find(i).premium
                 }
               }
             );
