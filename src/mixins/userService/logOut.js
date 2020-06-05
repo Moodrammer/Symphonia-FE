@@ -14,6 +14,7 @@ export default {
         localStorage.removeItem("type");
         localStorage.removeItem("imageUrl");
         localStorage.removeItem("authType");
+        localStorage.removeItem("premium");
       } else {
         sessionStorage.removeItem("userToken");
         sessionStorage.removeItem("username");
@@ -24,6 +25,7 @@ export default {
         sessionStorage.removeItem("imageGoogleUrl");
         sessionStorage.removeItem("imageFacebookUrl");
         sessionStorage.removeItem("authType");
+        sessionStorage.removeItem("premium");
       }
     }
   }
