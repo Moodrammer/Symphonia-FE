@@ -1,13 +1,7 @@
 <template>
   <div>
-    <v-progress-linear 
-      v-if="loading"
-     indeterminate
-     stream
-     height="3"
-     fixed
-     >
-     </v-progress-linear>
+    <v-progress-linear v-if="loading" indeterminate stream height="3" fixed>
+    </v-progress-linear>
     <!-- Header of Sign Up page  -->
     <symphonia-Header></symphonia-Header>
 
@@ -396,7 +390,7 @@ export default {
           //if an error object was caught temporarily display it in the console
           .catch(error => {
             this.loading = false;
-            this.$vuetify.goTo(0,{duration: 1000});
+            this.$vuetify.goTo(0, { duration: 1000 });
             if (error.status == "fail") {
               this.errorMessage = error.msg;
               this.errorState = true;
@@ -406,50 +400,48 @@ export default {
             }
             // console.log(error);
           });
-      }
-      else{
-        this.$vuetify.goTo(0,{duration: 1000})
+      } else {
+        this.$vuetify.goTo(0, { duration: 1000 });
       }
     },
     signUpWithFacebook() {
       window.FB.login(response => {
-        if (response.status == "connected")
-          this.loading = true;
-          axios
-            .post("/v1/users/auth/facebook/Symphonia", {
-              access_token: response.authResponse.accessToken
-            })
-            .then(response => {
-              sessionStorage.setItem("userToken", response.data.token);
-              //store the frequently used user data
-              sessionStorage.setItem("username", response.data.user.name);
-              sessionStorage.setItem("email", response.data.user.email);
-              sessionStorage.setItem("userID", response.data.user._id);
-              sessionStorage.setItem("type", response.data.user.type);
-              sessionStorage.setItem(
-                "imageUrl",
-                response.data.user.imageFacebookUrl
+        if (response.status == "connected") this.loading = true;
+        axios
+          .post("/v1/users/auth/facebook/Symphonia", {
+            access_token: response.authResponse.accessToken
+          })
+          .then(response => {
+            sessionStorage.setItem("userToken", response.data.token);
+            //store the frequently used user data
+            sessionStorage.setItem("username", response.data.user.name);
+            sessionStorage.setItem("email", response.data.user.email);
+            sessionStorage.setItem("userID", response.data.user._id);
+            sessionStorage.setItem("type", response.data.user.type);
+            sessionStorage.setItem(
+              "imageUrl",
+              response.data.user.imageFacebookUrl
+            );
+            sessionStorage.setItem("authType", "facebook");
+            if (response.data.user.registraionToken == undefined) {
+              localStorage.setItem("allowNotifications", false);
+              this.$store.commit(
+                "notification/setPushNotificationsPermission",
+                false
               );
-              sessionStorage.setItem("authType", "facebook");
-              if (response.data.user.registraionToken == undefined) {
-                localStorage.setItem("allowNotifications", false);
-                this.$store.commit(
-                  "notification/setPushNotificationsPermission",
-                  false
-                );
-              } else {
-                localStorage.setItem("allowNotifications", true);
-                this.$store.commit(
-                  "notification/setPushNotificationsPermission",
-                  true
-                );
-              }
-              this.$router.push(this.$route.query.redirect || "/webhome/home");
-            })
-            .catch(err => {
-              this.loading = false;
-              console.log(err);
-            });
+            } else {
+              localStorage.setItem("allowNotifications", true);
+              this.$store.commit(
+                "notification/setPushNotificationsPermission",
+                true
+              );
+            }
+            this.$router.push(this.$route.query.redirect || "/webhome/home");
+          })
+          .catch(err => {
+            this.loading = false;
+            console.log(err);
+          });
       });
     }
   }

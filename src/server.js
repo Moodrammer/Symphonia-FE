@@ -472,121 +472,133 @@ export function makeServer({ environment = "development" } = {}) {
       });
       //////////////////////////////////////////////////////////////////////////////
       //Intercepting Login post requests
-      this.post("/v1/users/login", (schema, request) => {
-        //turn attributes to json to be able to access the data of the request
-        let attrs = JSON.parse(request.requestBody);
-        let i;
-        for (i = 1; i <= schema.users.all().length; i++) {
-          if (
-            schema.users.find(i).email == attrs.email &&
-            schema.users.find(i).password == attrs.password
-          ) {
-            return new Response(
-              200,
-              {},
-              {
-                token:
-                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MzQ2MiwiZXhwIjoxNTgzNTc3MDYyfQ.P_nm8thbkOzKBnbpqkBL1_SuRzZxt5eFFFN0aZ6AbBQ",
-                user: {
-                  _id: schema.users.find(i).id,
-                  email: attrs.email,
-                  name: schema.users.find(i).name,
-                  type: schema.users.find(i).type,
-                  imageUrl:
-                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
-                  premium: schema.users.find(i).premium
-                }
-              }
-            );
-          }
-        }
-        return new Response(
-          400,
-          {},
-          {
-            status: "fail",
-            msg: "Incorrect email or password"
-          }
-        );
-      }, {timing: 2000}),
-      //Intercept login with facebook request and return a static user
-      // This request will be intercepted by mock only if the app in facebook developers dashboard
-      // is set to development, otherwise it doesn't allow local host to retrieve the access token 
-      // so the request of sending the access token to our servers will not be accomplished
-      this.post("/v1/users/auth/facebook/Symphonia", () => {
-          return new Response(200, {}, {
-            token:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MzQ2MiwiZXhwIjoxNTgzNTc3MDYyfQ.P_nm8thbkOzKBnbpqkBL1_SuRzZxt5eFFFN0aZ6AbBQ",
-            user: {
-              email: "facebookMockUser@test.com",
-              imageFacebookUrl: "../public/fbuser.png",
-              name: "FB Mock User",
-              premium: "false",
-              type: "user",
-              _id: 3
-            }
-          })
-      }),
-        //Intercepts post requests from Register page
-        this.post("/v1/users/signup", (schema, request) => {
-          //create a new user in the server schema
-          //parse the sent request body to JSON
+      this.post(
+        "/v1/users/login",
+        (schema, request) => {
+          //turn attributes to json to be able to access the data of the request
           let attrs = JSON.parse(request.requestBody);
-          //make sure the sent email doesn't exist before
-          var exists = false;
-          for (let i = 1; i <= schema.users.all().length; i++) {
-            if (attrs.email == schema.users.find(i).email) {
-              exists = true;
-              break;
+          let i;
+          for (i = 1; i <= schema.users.all().length; i++) {
+            if (
+              schema.users.find(i).email == attrs.email &&
+              schema.users.find(i).password == attrs.password
+            ) {
+              return new Response(
+                200,
+                {},
+                {
+                  token:
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MzQ2MiwiZXhwIjoxNTgzNTc3MDYyfQ.P_nm8thbkOzKBnbpqkBL1_SuRzZxt5eFFFN0aZ6AbBQ",
+                  user: {
+                    _id: schema.users.find(i).id,
+                    email: attrs.email,
+                    name: schema.users.find(i).name,
+                    type: schema.users.find(i).type,
+                    imageUrl:
+                      "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+                    premium: schema.users.find(i).premium
+                  }
+                }
+              );
             }
           }
-          //if the email already exists send an error
-          if (!exists) {
-            //create a new user with the given data
-            schema.create("user", {
-              name: attrs.name,
-              email: attrs.email,
-              password: attrs.password,
-              dateOfBirth: attrs.dateOfBirth,
-              gender: attrs.gender,
-              type: attrs.type
-            });
+          return new Response(
+            400,
+            {},
+            {
+              status: "fail",
+              msg: "Incorrect email or password"
+            }
+          );
+        },
+        { timing: 2000 }
+      ),
+        //Intercept login with facebook request and return a static user
+        // This request will be intercepted by mock only if the app in facebook developers dashboard
+        // is set to development, otherwise it doesn't allow local host to retrieve the access token
+        // so the request of sending the access token to our servers will not be accomplished
+        this.post("/v1/users/auth/facebook/Symphonia", () => {
+          return new Response(
+            200,
+            {},
+            {
+              token:
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MzQ2MiwiZXhwIjoxNTgzNTc3MDYyfQ.P_nm8thbkOzKBnbpqkBL1_SuRzZxt5eFFFN0aZ6AbBQ",
+              user: {
+                email: "facebookMockUser@test.com",
+                imageFacebookUrl: "../public/fbuser.png",
+                name: "FB Mock User",
+                premium: "false",
+                type: "user",
+                _id: 3
+              }
+            }
+          );
+        }),
+        //Intercepts post requests from Register page
+        this.post(
+          "/v1/users/signup",
+          (schema, request) => {
+            //create a new user in the server schema
+            //parse the sent request body to JSON
+            let attrs = JSON.parse(request.requestBody);
+            //make sure the sent email doesn't exist before
+            var exists = false;
+            for (let i = 1; i <= schema.users.all().length; i++) {
+              if (attrs.email == schema.users.find(i).email) {
+                exists = true;
+                break;
+              }
+            }
+            //if the email already exists send an error
+            if (!exists) {
+              //create a new user with the given data
+              schema.create("user", {
+                name: attrs.name,
+                email: attrs.email,
+                password: attrs.password,
+                dateOfBirth: attrs.dateOfBirth,
+                gender: attrs.gender,
+                type: attrs.type
+              });
 
-            //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
-            sessionStorage.setItem(
-              "SignedUpUser",
-              JSON.stringify(schema.users.find(3))
-            );
-            //return a request for now that the operation of creating the user was a success
-            return new Response(
-              201,
-              {},
-              {
-                token:
-                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
-                user: {
-                  _id: schema.users.find(schema.users.all().length).id,
-                  email: attrs.email,
-                  name: attrs.name,
-                  type: attrs.type,
-                  imageUrl:
-                    "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
-                  __v: 0
+              //Add the first signed up user to the data base to create some fake pesistance to the data of mirage
+              sessionStorage.setItem(
+                "SignedUpUser",
+                JSON.stringify(schema.users.find(3))
+              );
+              //return a request for now that the operation of creating the user was a success
+              return new Response(
+                201,
+                {},
+                {
+                  token:
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MTc3OSwiZXhwIjoxNTgzNTc1Mzc5fQ.vLNE0dCGYItCOl6dJl3-QOtqV2ZZ8zNDdc9jla76ijg",
+                  user: {
+                    _id: schema.users.find(schema.users.all().length).id,
+                    email: attrs.email,
+                    name: attrs.name,
+                    type: attrs.type,
+                    imageUrl:
+                      "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+                    __v: 0
+                  }
                 }
-              }
-            );
-          } else {
-            //return an error object if the email address already exists
-            return new Response(
-              400,
-              {},
-              {
-                status: "fail",
-                msg: "email address already exists"
-              }
-            );
-          }
-        }, {timing: 2000}),
+              );
+            } else {
+              //return an error object if the email address already exists
+              return new Response(
+                400,
+                {},
+                {
+                  status: "fail",
+                  msg: "email address already exists"
+                }
+              );
+            }
+          },
+          { timing: 2000 }
+        ),
         //Handling the Forget password request(asking for changing password email)
         this.post("/v1/users/forgotpassword", (schema, request) => {
           let attrs = JSON.parse(request.requestBody);
