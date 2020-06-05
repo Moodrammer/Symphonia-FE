@@ -316,12 +316,9 @@ export default {
       window.FB.login(response => {
         if (response.status == "connected")
           axios
-            .post(
-              "/v1/users/auth/facebook/Symphonia",
-              {
-                access_token: response.authResponse.accessToken
-              }
-            )
+            .post("/v1/users/auth/facebook/Symphonia", {
+              access_token: response.authResponse.accessToken
+            })
             .then(response => {
               sessionStorage.setItem("userToken", response.data.token);
               //store the frequently used user data
@@ -329,7 +326,10 @@ export default {
               sessionStorage.setItem("email", response.data.user.email);
               sessionStorage.setItem("userID", response.data.user._id);
               sessionStorage.setItem("type", response.data.user.type);
-              sessionStorage.setItem("imageUrl", response.data.user.imageFacebookUrl);
+              sessionStorage.setItem(
+                "imageUrl",
+                response.data.user.imageFacebookUrl
+              );
               sessionStorage.setItem("authType", "facebook");
               this.$router.push(this.$route.query.redirect || "/webhome/home");
             })

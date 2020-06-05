@@ -19,6 +19,7 @@
             }
           ]
         },
+        "followersCount": 10,
         "followed": true,
         "followedUsers": [12, 23, 432, 5, 6, 3],
         "tracks": [],
@@ -51,6 +52,7 @@
             }
           ]
         },
+        "followersCount": 7,
         "followed": true,
         "followedUsers": [12, 23, 432, 5, 6, 3],
         "tracks": [],
@@ -83,6 +85,7 @@
             }
           ]
         },
+        "followersCount": 154,
         "followed": true,
         "followedUsers": [12, 23, 432, 5, 6, 3],
         "tracks": [],
@@ -154,6 +157,7 @@
             }
           ]
         },
+        "followersCount": 2,
         "followed": true,
         "followedUsers": [12, 23, 432, 5, 6, 3],
         "tracks": [
@@ -194,6 +198,7 @@
             }
           ]
         },
+        "followersCount": 104,
         "followed": true,
         "followedUsers": [12, 23, 432, 3],
         "tracks": [],
@@ -227,6 +232,7 @@
             }
           ]
         },
+        "followersCount": 164,
         "followed": false,
         "followedUsers": [23, 432, 5, 6, 3],
         "tracks": [],
@@ -260,6 +266,7 @@
             }
           ]
         },
+        "followersCount": 19,
         "followed": false,
         "followedUsers": [12, 3],
         "tracks": [],

@@ -8,7 +8,7 @@
   >
     <div class="pl-10 pt-12 mt-12 gradient-body py-7">
       <p class="caption white--text">
-        {{ currentArtistGetter.followedUsers.length }} Followers
+        {{ currentArtistGetter.followersCount }} Followers
       </p>
       <h1 class="display-3 font-weight-bold white--text my-5">
         {{ currentArtistGetter.name }}
