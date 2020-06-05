@@ -1,18 +1,18 @@
 export default {
-    methods: {
-        /**
-         * @public
-         * A function that checks whether the user is a premium user or not
-         */
-        isPremium(){
-            //If the user checks rememberMe his token will be found in the localStorage
-            if (localStorage.getItem("userToken") != null) {
-                return (localStorage.getItem("premium") == "true");
-            }
-            //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
-            else if (sessionStorage.getItem("userToken") != null) {
-                return (sessionStorage.getItem("premium") == "true");
-            }
-        }
+  methods: {
+    /**
+     * @public
+     * A function that checks whether the user is a premium user or not
+     */
+    isPremium() {
+      //If the user checks rememberMe his token will be found in the localStorage
+      if (localStorage.getItem("userToken") != null) {
+        return localStorage.getItem("premium") == "true";
+      }
+      //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+      else if (sessionStorage.getItem("userToken") != null) {
+        return sessionStorage.getItem("premium") == "true";
+      }
     }
-}
+  }
+};

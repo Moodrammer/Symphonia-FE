@@ -29,19 +29,19 @@ describe("TheSoundGrapher", () => {
             queueNextTracks: undefined,
             trackTotalDurationMs: 1200,
             albumName: "2pac",
-            isCurTrkReady: true,
+            isCurTrkReady: true
           },
           mutations: {
-            setIsQueueOpened: () => {},
-          },
-        },
-      },
+            setIsQueueOpened: () => {}
+          }
+        }
+      }
     });
 
     wrapper = shallowMount(queue, {
       vuetify,
       store,
-      router,
+      router
     });
   });
 

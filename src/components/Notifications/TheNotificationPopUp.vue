@@ -21,9 +21,9 @@
           {{ notificationData.notificationBody }}
         </v-row>
       </v-col>
-        <v-btn color="rgba(0,0,0,0)" icon depressed @click="goToPage">
-          <v-icon color="white">mdi-arrow-right</v-icon>
-        </v-btn>
+      <v-btn color="rgba(0,0,0,0)" icon depressed @click="goToPage">
+        <v-icon color="white">mdi-arrow-right</v-icon>
+      </v-btn>
       <v-btn @click="closeSnackbar" color="rgba(0,0,0,0)" icon depressed>
         <v-icon color="white">mdi-close</v-icon>
       </v-btn>
@@ -37,7 +37,7 @@ export default {
   methods: {
     /**
      * @public
-     * A function used to hide the notification pop-up by closing the snackbar 
+     * A function used to hide the notification pop-up by closing the snackbar
      */
     closeSnackbar() {
       const resetNotificationData = {
@@ -46,7 +46,7 @@ export default {
         notificationBody: "",
         notificationIcon: "/s11.png",
         timeout: 0,
-        pushUrl: ''
+        pushUrl: ""
       };
       this.$store.dispatch(
         "notification/setNotification",
@@ -57,11 +57,11 @@ export default {
      * @public
      * A function used to push the user to a certain url according to the recieved notification
      */
-    goToPage(){
-      let pushUrl = this.notificationData.pushUrl
-      this.closeSnackbar()
-      console.log(pushUrl)
-      this.$router.push(pushUrl)
+    goToPage() {
+      let pushUrl = this.notificationData.pushUrl;
+      this.closeSnackbar();
+      console.log(pushUrl);
+      this.$router.push(pushUrl);
     }
   },
   computed: {
