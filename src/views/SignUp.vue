@@ -11,7 +11,13 @@
       <v-content max-width="500px">
         <v-row justify="center">
           <v-col cols="12">
-            <!-- Facebook and Google SignUp division -->
+            <!-- Facebook SignUp division -->
+              <!-- alert to show any errors returning from back server -->
+              <v-alert id="backerr-alert-fb" v-if="fbErrorState" color="rgba(217, 17, 17, 0.80)">
+                <v-row justify="center" class="white--text">
+                  <p style="text-align: center;">{{ fbErrorMessage }}</p>
+                </v-row>
+              </v-alert>
             <v-row justify="center" class="mb-5">
               <v-col cols="6">
                 <!-- Facebook button -->
@@ -264,6 +270,8 @@ export default {
       //Handling back server errors data
       errorMessage: "",
       errorState: false,
+      fbErrorState: false,
+      fbErrorMessage: "",
       //Set of rules for validation
       emailRules: [
         v => !!v || "Please enter your email",
@@ -370,6 +378,8 @@ export default {
       //clear the back error message & alert
       this.errorMessage = "";
       this.errorState = false;
+      this.fbErrorMessage = "";
+      this.fbErrorState = false;
       if (
         this.$refs.userDataForm.validate() &&
         this.userData.email == this.userData.emailToMatch
@@ -405,8 +415,13 @@ export default {
       }
     },
     signUpWithFacebook() {
+      this.errorMessage = "";
+      this.errorState = false;
+      this.fbErrorState = false;
+      this.fbErrorMessage = "";
       window.FB.login(response => {
-        if (response.status == "connected") this.loading = true;
+        if (response.status == "connected") {
+        this.loading = true;
         axios
           .post("/v1/users/auth/facebook/Symphonia", {
             access_token: response.authResponse.accessToken
@@ -440,8 +455,15 @@ export default {
           })
           .catch(err => {
             this.loading = false;
+            this.fbErrorState = true;
+            this.fbErrorMessage = "Please try again later"
             console.log(err);
           });
+        }
+        else {
+          this.fbErrorState = true;
+          this.fbErrorMessage = "cannot connect to facebook ... Please try again later";
+        }
       });
     }
   }

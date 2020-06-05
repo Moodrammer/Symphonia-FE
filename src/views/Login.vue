@@ -271,8 +271,11 @@ export default {
      * then retrieve the user data from the server to login the user
      */
     loginWithFacebook() {
+      this.errorState = false;
+      this.errorMessage = "";
       window.FB.login(response => {
-        if (response.status == "connected") this.loading = true;
+        if (response.status == "connected") {
+        this.loading = true;
         axios
           .post("/v1/users/auth/facebook/Symphonia", {
             access_token: response.authResponse.accessToken
@@ -306,8 +309,15 @@ export default {
           })
           .catch(err => {
             this.loading = false;
+            this.errorState = true;
+            this.errorMessage = "Please try again later"
             console.log(err);
           });
+        }
+        else{
+          this.errorState = true;
+          this.errorMessage = "Cannot connect to Facebook ... Please try again later";
+        }
       });
     }
   },
