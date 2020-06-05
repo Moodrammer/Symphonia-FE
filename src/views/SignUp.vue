@@ -1,5 +1,13 @@
 <template>
   <div>
+    <v-progress-linear 
+      v-if="loading"
+     indeterminate
+     stream
+     height="3"
+     fixed
+     >
+     </v-progress-linear>
     <!-- Header of Sign Up page  -->
     <symphonia-Header></symphonia-Header>
 
@@ -300,7 +308,8 @@ export default {
         "October",
         "November",
         "December"
-      ]
+      ],
+      loading: false
     };
   },
   mixins: [getuserType],
@@ -371,6 +380,7 @@ export default {
         this.$refs.userDataForm.validate() &&
         this.userData.email == this.userData.emailToMatch
       ) {
+        this.loading = true;
         //Store the user's date of birth in the store
         this.$store.commit("setuserDOB", this.DateOfBirth);
         //This action returns a promise to show whether the user had sighned up successfully or not
@@ -385,6 +395,8 @@ export default {
           })
           //if an error object was caught temporarily display it in the console
           .catch(error => {
+            this.loading = false;
+            this.$vuetify.goTo(0,{duration: 1000});
             if (error.status == "fail") {
               this.errorMessage = error.msg;
               this.errorState = true;
@@ -395,10 +407,14 @@ export default {
             // console.log(error);
           });
       }
+      else{
+        this.$vuetify.goTo(0,{duration: 1000})
+      }
     },
     signUpWithFacebook() {
       window.FB.login(response => {
         if (response.status == "connected")
+          this.loading = true;
           axios
             .post("/v1/users/auth/facebook/Symphonia", {
               access_token: response.authResponse.accessToken
@@ -431,6 +447,7 @@ export default {
               this.$router.push(this.$route.query.redirect || "/webhome/home");
             })
             .catch(err => {
+              this.loading = false;
               console.log(err);
             });
       });

@@ -1,5 +1,11 @@
 <template>
   <div @keyup="checkEnterKey">
+    <v-progress-linear 
+    indeterminate 
+    v-if="loading" 
+    stream 
+    height="3">
+    </v-progress-linear>
     <symphonia-header></symphonia-header>
     <v-divider></v-divider>
     <!-- container for login section -->
@@ -208,8 +214,7 @@ export default {
         v => /.+@.+\..+/.test(v) || "E-mail must be valid"
       ],
       passwordRules: [v => !!v || "Please enter your password."],
-      //Facebook login handling data
-      FBObject: {}
+      loading: false
     };
   },
   methods: {
@@ -231,6 +236,7 @@ export default {
       this.errorState = false;
       //if the form validates and had no restrictions
       if (this.$refs.loginForm.validate()) {
+        this.loading = true;
         this.$store
           .dispatch("loginuser", {
             email: this.formData.email,
@@ -252,6 +258,7 @@ export default {
             this.$router.push(this.$route.query.redirect || "/webhome/home");
           })
           .catch(err => {
+            this.loading = false;
             if (err.status == "fail") {
               this.errorMessage = err.msg;
               this.errorState = true;
@@ -270,6 +277,7 @@ export default {
     loginWithFacebook() {
       window.FB.login(response => {
         if (response.status == "connected")
+          this.loading = true;
           axios
             .post("/v1/users/auth/facebook/Symphonia", {
               access_token: response.authResponse.accessToken
@@ -302,6 +310,7 @@ export default {
               this.$router.push(this.$route.query.redirect || "/webhome/home");
             })
             .catch(err => {
+              this.loading = false;
               console.log(err);
             });
       });

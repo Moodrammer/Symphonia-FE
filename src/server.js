@@ -508,6 +508,24 @@ export function makeServer({ environment = "development" } = {}) {
             msg: "Incorrect email or password"
           }
         );
+      }, {timing: 2000}),
+      //Intercept login with facebook request and return a static user
+      // This request will be intercepted by mock only if the app in facebook developers dashboard
+      // is set to development, otherwise it doesn't allow local host to retrieve the access token 
+      // so the request of sending the access token to our servers will not be accomplished
+      this.post("/v1/users/auth/facebook/Symphonia", () => {
+          return new Response(200, {}, {
+            token:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM2MzQzMWFmZDY5MGZlMDY5ODU2MCIsImlhdCI6MTU4MzU3MzQ2MiwiZXhwIjoxNTgzNTc3MDYyfQ.P_nm8thbkOzKBnbpqkBL1_SuRzZxt5eFFFN0aZ6AbBQ",
+            user: {
+              email: "facebookMockUser@test.com",
+              imageFacebookUrl: "../public/fbuser.png",
+              name: "FB Mock User",
+              premium: "false",
+              type: "user",
+              _id: 3
+            }
+          })
       }),
         //Intercepts post requests from Register page
         this.post("/v1/users/signup", (schema, request) => {
@@ -568,7 +586,7 @@ export function makeServer({ environment = "development" } = {}) {
               }
             );
           }
-        }),
+        }, {timing: 2000}),
         //Handling the Forget password request(asking for changing password email)
         this.post("/v1/users/forgotpassword", (schema, request) => {
           let attrs = JSON.parse(request.requestBody);
