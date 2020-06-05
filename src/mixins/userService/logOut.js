@@ -5,6 +5,9 @@ export default {
      * @public
      */
     logOut() {
+      if (sessionStorage.getItem("authType") == "facebook") {
+        window.FB.logout();
+      }
       localStorage.removeItem("allowNotifications");
       if (localStorage.getItem("userToken") != null) {
         localStorage.removeItem("userToken");
