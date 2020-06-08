@@ -51,15 +51,13 @@
                   id="signUp"
                   class="white--text px-12 mt-5 mb-5"
                   rounded
-                  to="/signup"
+                  @click="toSignUp"
                   >SIGN UP FREE</v-btn
                 >
               </v-row>
               <v-row justify="center" class="white--text">
                 <p class="mr-2">Already have an account?</p>
-                <router-link to="/login" class="white--text">
-                  <h4 id="login">LOG IN</h4>
-                </router-link>
+                <h4 id="login" class="white--text" @click="toLogin">LOG IN</h4>
               </v-row>
             </v-col>
           </v-row>
@@ -91,10 +89,15 @@ export default {
     close: function() {
       this.$store.commit("webplayerHome/toggleLogoutPopUpState");
       this.dialog = false;
+    },
+    toSignUp: function() {
+      this.$router.push("/signup");
+      this.close();
+    },
+    toLogin: function() {
+      this.$router.push("/login");
+      this.close();
     }
-  },
-  destroyed: function() {
-    this.close();
   },
   mixins: [getDeviceSize]
 };
@@ -140,10 +143,8 @@ export default {
 .lg-header {
   font-size: 35px;
 }
-a {
-  text-decoration: none;
-}
 #login:hover {
   transform: scale(1.05, 1.05);
+  cursor: pointer;
 }
 </style>

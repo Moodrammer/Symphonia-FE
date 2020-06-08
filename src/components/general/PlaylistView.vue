@@ -285,8 +285,7 @@ export default {
      */
     followPlaylist: function() {
       this.$store.dispatch("playlist/followPlaylist", {
-        id: this.id,
-        token: this.getuserToken()
+        id: this.id
       });
     },
 

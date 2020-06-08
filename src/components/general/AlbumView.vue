@@ -255,10 +255,7 @@ export default {
      * @param {none}
      */
     followAlbum: function() {
-      this.$store.dispatch("album/followAlbum", {
-        albumID: this.id,
-        token: this.getuserToken()
-      });
+      this.$store.dispatch("album/followAlbum",this.id);
     },
     /**
      * Gets called when the user clicks on heart icon to unfollow the album
@@ -266,10 +263,7 @@ export default {
      * @param {none}
      */
     unfollowAlbum: async function() {
-      await this.$store.dispatch("album/unfollowAlbum", {
-        id: this.id,
-        token: this.getuserToken()
-      });
+      await this.$store.dispatch("album/unfollowAlbum",this.id);
     },
     /**
      * Function to set the right click menu data

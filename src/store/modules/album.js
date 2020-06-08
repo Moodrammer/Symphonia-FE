@@ -1,4 +1,5 @@
 import axios from "axios";
+import getuserToken from "../../mixins/userService/getUserToken";
 
 //--------------------------------------------------------
 //             The stored album's data
@@ -134,33 +135,37 @@ const actions = {
   //-------------------------------------------------
   //      Save an album for the current user
   //-------------------------------------------------
-  followAlbum({ commit }, payload) {
-    axios
-      .put(
-        "/v1/me/albums?ids=" + payload.albumID,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${payload.token}`
+  followAlbum({ commit }, albumID) {
+    const userToken = getuserToken.methods.getuserToken();
+    if (userToken) {
+      axios
+        .put(
+          "/v1/me/albums?ids=" + albumID,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`
+            }
           }
-        }
-      )
-      .then(() => {
-        commit("followedAlbum");
-      })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
+        )
+        .then(() => {
+          commit("followedAlbum");
+        })
+        .catch(error => {
+          console.log("axios caught an error");
+          console.log(error);
+        });
+    } else commit("webplayerHome/toggleLogoutPopUpState", null, { root: true });
   },
   //-------------------------------------------------
   //    Delete an album from user's followed albums
   //-------------------------------------------------
-  unfollowAlbum({ commit }, payload) {
+  unfollowAlbum({ commit }, albumID) {
+    const userToken = getuserToken.methods.getuserToken();
     axios
-      .delete("/v1/me/albums?ids=" + payload.id, {
+      .delete("/v1/me/albums?ids=" + albumID, {
         headers: {
-          Authorization: `Bearer ${payload.token}`
+          Authorization: `Bearer ${userToken}`
         }
       })
       .then(() => {

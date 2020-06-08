@@ -1,5 +1,5 @@
 import axios from "axios";
-//import webplayerHomeModule from "./webplayerHome.js";
+import getuserToken from "../../mixins/userService/getUserToken";
 
 const state = {
   userSavedPlaylists: [],
@@ -223,24 +223,29 @@ const actions = {
   //          Follow a playlist (Not created by user)
   //--------------------------------------------------------
   followPlaylist({ commit }, payload) {
-    axios
-      .put(
-        "/v1/playlists/" + payload.id + "/followers",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${payload.token}`
+    const userToken = getuserToken.methods.getuserToken();
+    if (userToken) {
+      axios
+        .put(
+          "/v1/playlists/" + payload.id + "/followers",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`
+            }
           }
-        }
-      )
-      .then(() => {
-        commit("followedPlaylist");
-      })
-      .catch(error => {
-        if (error.response.statusText === "Unauthorized") {
-          commit("webplayerHome/toggleLogoutPopUpState", null, { root: true });
-        }
-      });
+        )
+        .then(() => {
+          commit("followedPlaylist");
+        })
+        .catch(error => {
+          if (error.response.statusText === "Unauthorized") {
+            commit("webplayerHome/toggleLogoutPopUpState", null, {
+              root: true
+            });
+          }
+        });
+    } else commit("webplayerHome/toggleLogoutPopUpState", null, { root: true });
   },
   //--------------------------------------------------------
   //          Unfollow a playlist (Not created by user)

@@ -1,10 +1,18 @@
 const state = {
-  logoutPopUpState: false
+  logoutPopUpState: false,
+  logoutRequest: {
+    requestType: null,
+    requestPayload: null
+  }
 };
 
 const mutations = {
   toggleLogoutPopUpState(state) {
     state.logoutPopUpState = !state.logoutPopUpState;
+  },
+  setLogoutRequest(state, payload) {
+    state.logoutRequest.requestType = payload.requestType;
+    state.logoutRequest.requestPayload = payload.requestPayload;
   }
 };
 
