@@ -51,6 +51,7 @@
 import CardGrid from "./general/CardGrid";
 import getuserToken from "../mixins/userService/getUserToken";
 import getuserID from "../mixins/userService/getuserID";
+import isLoggedIn from "../mixins/userService/isLoggedIn";
 import { mapGetters, mapActions } from "vuex";
 /**
  * @displayName User Interface
@@ -62,7 +63,7 @@ export default {
   components: {
     CardGrid
   },
-  mixins: [getuserToken, getuserID],
+  mixins: [getuserToken, getuserID, isLoggedIn],
   data() {
     return {
       user: {
@@ -130,7 +131,7 @@ export default {
      */
 
     isVisitor() {
-      return this.$route.params.id != this.getuserID();
+      return isLoggedIn() && this.$route.params.id != this.getuserID();
     }
   },
   watch: {

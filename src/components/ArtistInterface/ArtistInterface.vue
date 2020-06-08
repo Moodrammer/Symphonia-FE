@@ -96,6 +96,7 @@
  */
 import getuserToken from "../../mixins/userService/getUserToken";
 import getuserID from "../../mixins/userService/getuserID";
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -205,7 +206,7 @@ export default {
      */
 
     isVisitor() {
-      return this.artistID != this.getuserID();
+      return isLoggedIn() && this.artistID != this.getuserID();
     }
   },
   watch: {
@@ -231,7 +232,7 @@ export default {
       ]
     };
   },
-  mixins: [getuserToken, getuserID]
+  mixins: [getuserToken, getuserID, isLoggedIn]
 };
 </script>
 
