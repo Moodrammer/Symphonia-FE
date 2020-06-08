@@ -216,29 +216,31 @@ export default {
      * @param {none}
      */
     play: async function() {
-      if (this.id != this.contextID) {
-        this.$store.commit("track/setContextData", {
-          contextID: this.id,
-          contextType: "album",
-          contextUrl: "https://thesymphonia.ddns.net/api"
-        });
-        await this.$store.dispatch(
-          "track/playTrackInQueue",
-          this.tracks[0]._id
-        );
-        await this.$store.dispatch("track/getTrackInformation", {
-          token: "Bearer " + this.getuserToken(),
-          trackId: this.tracks[0]._id
-        });
+      if (this.firstNonPreimum) {
+        if (this.id != this.contextID) {
+          this.$store.commit("track/setContextData", {
+            contextID: this.id,
+            contextType: "album",
+            contextUrl: "https://thesymphonia.ddns.net/api"
+          });
+          await this.$store.dispatch(
+            "track/playTrackInQueue",
+            this.firstNonPreimum
+          );
+          await this.$store.dispatch("track/getTrackInformation", {
+            token: "Bearer " + this.getuserToken(),
+            trackId: this.firstNonPreimum
+          });
 
-        await this.$store.dispatch(
-          "track/updateQueue",
-          "Bearer " + this.getuserToken()
-        );
-      } else {
-        this.$store.dispatch("track/togglePauseAndPlay");
+          await this.$store.dispatch(
+            "track/updateQueue",
+            "Bearer " + this.getuserToken()
+          );
+        } else {
+          this.$store.dispatch("track/togglePauseAndPlay");
+        }
+        this.$store.commit("track/setIsTrackPaused", this.isPaused);
       }
-      this.$store.commit("track/setIsTrackPaused", this.isPaused);
     },
     /**
      * Gets called when the user clicks on the pause button/icon
@@ -319,6 +321,9 @@ export default {
     },
     contextID() {
       return this.$store.state.track.contextId;
+    },
+    firstNonPreimum() {
+      return this.$store.state.album.nonPremiumTrackID;
     }
   },
   props: ["contextMenu"],

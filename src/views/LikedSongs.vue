@@ -184,6 +184,9 @@ export default {
     },
     contextType() {
       return this.$store.state.track.contextType;
+    },
+    firstNonPreimum() {
+      return this.$store.state.track.nonPremiumTrackID;
     }
   },
   methods: {
@@ -193,7 +196,7 @@ export default {
      * @param {none}
      */
     playLikedSongs: async function() {
-      if (this.numOfTracks) {
+      if (this.numOfTracks && this.firstNonPreimum) {
         if (this.contextType != "liked") {
           this.$store.commit("track/setContextData", {
             contextID: "1",
@@ -202,12 +205,12 @@ export default {
           });
           await this.$store.dispatch(
             "track/playTrackInQueue",
-            this.tracks[0]._id
+            this.firstNonPreimum
           );
 
           await this.$store.dispatch("track/getTrackInformation", {
             token: "Bearer " + this.getuserToken(),
-            trackId: this.tracks[0]._id
+            trackId: this.firstNonPreimum
           });
 
           await this.$store.dispatch(
@@ -236,7 +239,8 @@ export default {
 </script>
 
 <style scoped>
-#playBtn,#pauseBtn {
+#playBtn,
+#pauseBtn {
   background-color: #1aa34a;
   border-width: 0;
   border-radius: 500px;

@@ -47,6 +47,7 @@ const state = {
   savedTracks: [],
   savedTracksNum: null,
   updateSavedTracks: false,
+  nonPremiumTrackID: null,
 
   audioContext: undefined
 };
@@ -138,6 +139,12 @@ const mutations = {
   },
   load_tracks(state, list) {
     state.savedTracks = list;
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].premium == false) {
+        state.nonPremiumTrackID = list[i]._id;
+        break;
+      }
+    }
   },
   setTracksNum(state, num) {
     state.savedTracksNum = num;

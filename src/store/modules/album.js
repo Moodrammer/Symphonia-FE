@@ -11,7 +11,8 @@ const state = {
   singleAlbum: null,
   albumTracks: [],
   isFollowdAlbum: true,
-  isLoading: false
+  isLoading: false,
+  nonPremiumTrackID: null
 };
 
 //-----------------------------------------------------------------
@@ -27,6 +28,12 @@ const mutations = {
   },
   setAlbumTracks(state, albumTracks) {
     state.albumTracks = albumTracks;
+    for (let i = 0; i < albumTracks.length; i++) {
+      if (albumTracks[i].premium == false) {
+        state.nonPremiumTrackID = albumTracks[i]._id;
+        break;
+      }
+    }
   },
   setFollowed(state, payload) {
     state.isFollowdAlbum = payload[0];

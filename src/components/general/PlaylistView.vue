@@ -236,7 +236,7 @@ export default {
      * @param {none}
      */
     play: async function() {
-      if (this.playlist.tracksCount) {
+      if (this.playlist.tracksCount && this.firstNonPreimum) {
         if (this.id != this.contextID) {
           this.$store.commit("track/setContextData", {
             contextID: this.id,
@@ -245,12 +245,12 @@ export default {
           });
           await this.$store.dispatch(
             "track/playTrackInQueue",
-            this.tracks[0]._id
+            this.firstNonPreimum
           );
 
           await this.$store.dispatch("track/getTrackInformation", {
             token: "Bearer " + this.getuserToken(),
-            trackId: this.tracks[0]._id
+            trackId: this.firstNonPreimum
           });
 
           await this.$store.dispatch(
@@ -396,6 +396,9 @@ export default {
     },
     contextID() {
       return this.$store.state.track.contextId;
+    },
+    firstNonPreimum() {
+      return this.$store.state.playlist.nonPremiumTrackID;
     }
   },
   props: {

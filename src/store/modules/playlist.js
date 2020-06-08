@@ -11,7 +11,7 @@ const state = {
   deletedFlag: false,
   playlistID: null,
   updateTracksFlag: null,
-
+  nonPremiumTrackID: null,
   createWithTrack: false,
 
   //The tracks' IDs to be added
@@ -47,6 +47,12 @@ const mutations = {
   },
   setPlaylistTracks(state, tracks) {
     state.playlistTracks = tracks;
+    for (let i = 0; i < tracks.length; i++) {
+      if (tracks[i].premium == false) {
+        state.nonPremiumTrackID = tracks[i]._id;
+        break;
+      }
+    }
   },
   setOwnedPlaylists(state, playlists) {
     state.ownedPlaylists = playlists;
