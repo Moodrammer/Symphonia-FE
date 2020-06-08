@@ -12,6 +12,8 @@ describe("login", () => {
   let wrapper;
   let vuetify;
   let actions;
+  let allowNotifications = true;
+  let notifyMutations;
   let store;
   let mockState = "";
 
@@ -19,6 +21,9 @@ describe("login", () => {
     //tell vue global constructor to use vuex
     Vue.use(Vuex);
     //define a mocking vuex store
+    notifyMutations = {
+      setPushNotificationsPermission: jest.fn()
+    }
     actions = {
       loginuser: jest.fn(() => {
         if (mockState == "fail")
@@ -34,7 +39,15 @@ describe("login", () => {
       })
     };
     store = new Vuex.Store({
-      actions
+      modules: {
+        notification: {
+          namespaced: true,
+          mutations: notifyMutations
+        },
+        user: {
+          actions
+        }
+      },
     });
     //define the other plugins
     //const router = new VueRouter();
@@ -47,15 +60,22 @@ describe("login", () => {
         redirect: "/webhome/home"
       }
     };
+    window.FB =  {
+        login: jest.fn()
+    }
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
     //in order to find the elements by their ids
     wrapper = mount(login, {
       vuetify,
       store,
       stubs: ["router-link"],
-      mocks: { $router, $route }
+      mocks: { $router, $route},
+      methods: {
+        isNotificationsAllowed(){
+          return allowNotifications;
+        }
+      }
     });
-    //console.log(wrapper)
   });
 
   //rendering tests
@@ -68,11 +88,6 @@ describe("login", () => {
   it("renders a vue instance", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
-
-  //check if it contains a text field
-  //  it("Contains text field", () => {
-  //     expect(wrapper.html()).toContain("<v-text-field");
-  //   });
 
   //check if it contains a login button
   it("renders the Log in button text correctly", () => {
@@ -126,7 +141,6 @@ describe("login", () => {
     const email_wrp = wrapper.find("#login-username");
     //simulate entering an invalid email by the user
     email_wrp.element.value = "mahmoud";
-    console.log(email_wrp.element.value);
     email_wrp.trigger("input");
     //await the next tick as vue batches the changes to the dom to prevent unnecessary re-renders
     await wrapper.vm.$nextTick();
@@ -184,6 +198,7 @@ describe("login", () => {
   });
 
   it("checks if the form is submitted on pressing the enter key", () => {
+    allowNotifications = false;
     const email_wrp = wrapper.find("#login-username");
     //simulate entering the data by the user
     email_wrp.element.value = "Bob@gmail.com";
@@ -270,4 +285,9 @@ describe("login", () => {
     //expect the action has been dispatched
     expect(wrapper.vm.$router[0]).toBe("/webhome/home");
   });
+
+  it("calls login from facebook sdk", () => {
+    wrapper.vm.loginWithFacebook();
+    expect(wrapper.vm.errorState).toBe(false);
+  })
 });
