@@ -93,7 +93,12 @@
                   <h1 class="mt-5">{{ album.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">
-                  <p class="mt-2" id="year">{{ album.artist.name }}</p>
+                  <router-link
+                    v-bind:to="'/webhome/artist/' + this.album.artist._id"
+                    class="white--text"
+                  >
+                    <p class="mt-2" id="year">{{ album.artist.name }}</p>
+                  </router-link>
                 </v-row>
                 <!--The play button-->
                 <v-row justify-lg="center">

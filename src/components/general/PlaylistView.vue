@@ -92,9 +92,14 @@
                   <h1 class="mt-5">{{ playlist.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">
-                  <p class="mt-1" style="opacity:0.4">
-                    {{ playlist.owner.name }}
-                  </p>
+                  <router-link
+                    v-bind:to="'/webhome/user/' + this.playlist.owner._id"
+                    class="white--text"
+                  >
+                    <p class="mt-1" style="opacity:0.4">
+                      {{ playlist.owner.name }}
+                    </p>
+                  </router-link>
                 </v-row>
 
                 <!--The play button-->

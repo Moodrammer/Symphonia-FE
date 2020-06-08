@@ -53,10 +53,17 @@
       <v-list-item-subtitle class="mt-3 pl-3 white--text">
         <!--Display the artist and the album/playlist name-->
         <v-row>
-          <p class="subtitle mr-2" v-bind:class="{ 'disabled-2': isDisabled }">
-            {{ artistName }}
-          </p>
-
+          <router-link
+            v-bind:to="'/webhome/artist/' + this.artistID"
+            class="white--text"
+          >
+            <p
+              class="subtitle mr-2"
+              v-bind:class="{ 'disabled-2': isDisabled }"
+            >
+              {{ artistName }}
+            </p>
+          </router-link>
           <p v-if="!isAlbum">.</p>
           <router-link
             v-bind:to="'/webhome/album/' + this.albumID"
