@@ -9,12 +9,19 @@ describe("NotificationHistorylist", () => {
     let wrapper;
     let store;
     let vuetify;
+    let mutations;
+    let actions;
     
     beforeEach(() => {
         vuetify = new Vuetify();
         Vue.use(Vuetify);
         Vue.use(Vuex);
-        
+        mutations =  {
+            setnoNotificationHistory: jest.fn()
+        }
+        actions =  {
+            getNotificationHistoryList: jest.fn()
+        }
         store = new Vuex.Store({
             modules: {
             notification: {
@@ -23,12 +30,8 @@ describe("NotificationHistorylist", () => {
                     historyList: [],
                     noNotificationHistory: false
                 },
-                mutations: {
-                    setnoNotificationHistory: jest.fn()
-                },
-                actions: {
-                    getNotificationHistoryList: jest.fn()
-                }
+                mutations,
+                actions
             }
         }
     })
@@ -52,11 +55,11 @@ describe("NotificationHistorylist", () => {
   //                   Testing Functionality
   //--------------------------------------------------------
     it("gets notification history list when created", () => {
-        expect("getNotificationHistoryList").toBeCalled
+        expect(actions.getNotificationHistoryList).toBeCalled()
     })
 
     it("sets noNotificationHistory to true if the historyList is not empty", () => {
         store.state.notification.historyList.push("a notification");
-        expect("setnoNotificationHistory").toBeCalled
+        expect(mutations.setnoNotificationHistory).toBeCalled()
     })
 })

@@ -9,13 +9,14 @@ describe("notificationPopup", () => {
     let wrapper;
     let vuetify;
     let store;
+    let actions;
 
     beforeEach(() => {
         vuetify = new Vuetify();
         Vue.use(Vuetify);
         Vue.use(Vuex);
         const $router = [];
-        const actions = {
+        actions = {
             setNotification: jest.fn()
         }
         store = new Vuex.Store({
@@ -60,7 +61,7 @@ describe("notificationPopup", () => {
     //-------------------------------------------------------------//
     it("closes Snackbar", () => {
         wrapper.vm.closeSnackbar();
-        expect("setNotification").toBeCalled;
+        expect(actions.setNotification).toBeCalled();
     })
 
     it("test goToPage functionality", () => {
