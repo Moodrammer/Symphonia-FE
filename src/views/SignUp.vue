@@ -1,5 +1,7 @@
 <template>
   <div>
+    <v-progress-linear v-if="loading" indeterminate stream height="3" fixed>
+    </v-progress-linear>
     <!-- Header of Sign Up page  -->
     <symphonia-Header></symphonia-Header>
 
@@ -9,43 +11,29 @@
       <v-content max-width="500px">
         <v-row justify="center">
           <v-col cols="12">
-            <!-- Facebook and Google SignUp division -->
+            <!-- Facebook SignUp division -->
+              <!-- alert to show any errors returning from back server -->
+              <v-alert id="backerr-alert-fb" v-if="fbErrorState" color="rgba(217, 17, 17, 0.80)">
+                <v-row justify="center" class="white--text">
+                  <p style="text-align: center;">{{ fbErrorMessage }}</p>
+                </v-row>
+              </v-alert>
             <v-row justify="center" class="mb-5">
               <v-col cols="6">
                 <!-- Facebook button -->
-                <a
-                  href="https://thesymphonia.ddns.net/api/v1/users/auth/facebook"
-                >
-                  <v-row justify="center" class="mb-2">
-                    <v-btn
-                      id="fb-sign-btn"
-                      rounded
-                      color="#3B5998"
-                      class="white--text"
-                      style="font-size: 14px"
-                      large
-                      block
-                      >Sign up with Facebook</v-btn
-                    >
-                  </v-row>
-                </a>
-                <!-- Google button -->
-                <a
-                  href="https://thesymphonia.ddns.net/api/v1/users/auth/google"
-                >
-                  <v-row justify="center" class="my-0">
-                    <v-btn
-                      id="ggl-sign-btn"
-                      rounded
-                      color="#dd4b39"
-                      class="white--text"
-                      style="font-size: 14px"
-                      large
-                      block
-                      ><div class="px-2">Sign up with Google</div></v-btn
-                    >
-                  </v-row>
-                </a>
+                <v-row justify="center" class="mb-2">
+                  <v-btn
+                    id="fb-sign-btn"
+                    rounded
+                    color="#3B5998"
+                    class="white--text"
+                    style="font-size: 14px"
+                    large
+                    block
+                    @click="signUpWithFacebook"
+                    >Sign up with Facebook</v-btn
+                  >
+                </v-row>
               </v-col>
             </v-row>
 
@@ -258,6 +246,7 @@
 <script>
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
 import getuserType from "@/mixins/userService/getuserType";
+import axios from "axios";
 
 export default {
   components: {
@@ -281,6 +270,8 @@ export default {
       //Handling back server errors data
       errorMessage: "",
       errorState: false,
+      fbErrorState: false,
+      fbErrorMessage: "",
       //Set of rules for validation
       emailRules: [
         v => !!v || "Please enter your email",
@@ -319,7 +310,8 @@ export default {
         "October",
         "November",
         "December"
-      ]
+      ],
+      loading: false
     };
   },
   mixins: [getuserType],
@@ -386,10 +378,13 @@ export default {
       //clear the back error message & alert
       this.errorMessage = "";
       this.errorState = false;
+      this.fbErrorMessage = "";
+      this.fbErrorState = false;
       if (
         this.$refs.userDataForm.validate() &&
         this.userData.email == this.userData.emailToMatch
       ) {
+        this.loading = true;
         //Store the user's date of birth in the store
         this.$store.commit("setuserDOB", this.DateOfBirth);
         //This action returns a promise to show whether the user had sighned up successfully or not
@@ -404,6 +399,8 @@ export default {
           })
           //if an error object was caught temporarily display it in the console
           .catch(error => {
+            this.loading = false;
+            this.$vuetify.goTo(0, { duration: 1000 });
             if (error.status == "fail") {
               this.errorMessage = error.msg;
               this.errorState = true;
@@ -413,7 +410,61 @@ export default {
             }
             // console.log(error);
           });
+      } else {
+        this.$vuetify.goTo(0, { duration: 1000 });
       }
+    },
+    signUpWithFacebook() {
+      this.errorMessage = "";
+      this.errorState = false;
+      this.fbErrorState = false;
+      this.fbErrorMessage = "";
+      window.FB.login(response => {
+        if (response.status == "connected") {
+        this.loading = true;
+        axios
+          .post("/v1/users/auth/facebook/Symphonia", {
+            access_token: response.authResponse.accessToken
+          })
+          .then(response => {
+            sessionStorage.setItem("userToken", response.data.token);
+            //store the frequently used user data
+            sessionStorage.setItem("username", response.data.user.name);
+            sessionStorage.setItem("email", response.data.user.email);
+            sessionStorage.setItem("userID", response.data.user._id);
+            sessionStorage.setItem("type", response.data.user.type);
+            sessionStorage.setItem(
+              "imageUrl",
+              response.data.user.imageFacebookUrl
+            );
+            sessionStorage.setItem("authType", "facebook");
+            if (response.data.user.registraionToken == undefined) {
+              localStorage.setItem("allowNotifications", false);
+              this.$store.commit(
+                "notification/setPushNotificationsPermission",
+                false
+              );
+            } else {
+              localStorage.setItem("allowNotifications", true);
+              this.$store.commit(
+                "notification/setPushNotificationsPermission",
+                true
+              );
+            }
+            this.$router.push(this.$route.query.redirect || "/webhome/home");
+          })
+          .catch(err => {
+            this.loading = false;
+            this.fbErrorState = true;
+            this.fbErrorMessage = "Please try again later"
+            console.log(err);
+          });
+        }
+        else {
+          this.fbErrorState = true;
+          this.fbErrorMessage = "cannot connect to facebook ... Please try again later";
+        }
+      });
     }
   }
 };
