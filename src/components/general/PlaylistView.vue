@@ -204,6 +204,11 @@
             <v-row justify="center" class="my-5">
               <p>Let's find some songs for your playlist</p>
             </v-row>
+            <v-row justify="center">
+              <v-btn rounded class="px-8" id="discoverBtn" to="/webhome/search">
+                DISCOVER
+              </v-btn>
+            </v-row>
           </div>
         </v-col>
       </v-row>

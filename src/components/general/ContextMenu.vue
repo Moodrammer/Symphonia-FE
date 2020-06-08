@@ -205,7 +205,6 @@ export default {
         token: this.getuserToken()
       });
       this.playlistMenu = [];
-      this.playlistMenu.push("Start Radio");
 
       if (this.isOwnedPlaylist) {
         if (this.isPublicPlaylist) this.playlistMenu.push("Make secret");
@@ -227,7 +226,6 @@ export default {
       });
 
       this.albumMenu = [];
-      this.albumMenu.push("Start Radio");
 
       if (this.isAlbumSaved) this.albumMenu.push("Remove from your Library");
       else this.albumMenu.push("Save to Your Library");
@@ -245,13 +243,10 @@ export default {
       });
       this.trackMenu = [];
 
-      this.trackMenu.push("Start Radio");
-
       if (this.isTrackSaved)
         this.trackMenu.push("Remove from your Liked Songs");
       else this.trackMenu.push("Save to your Liked Songs");
 
-      this.trackMenu.push("Add to Queue");
       this.trackMenu.push("Add to Playlist");
 
       if (this.inUserPlaylist) this.trackMenu.push("Remove from this Playlist");

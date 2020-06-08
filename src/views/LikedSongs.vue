@@ -131,6 +131,25 @@
             :contextMenu="contextMenu"
           />
         </v-list>
+        <div v-if="!numOfTracks" class="white--text ">
+          <v-row justify="center" class="my-5">
+            <v-icon color="white" large>mdi-camera-outline</v-icon>
+          </v-row>
+          <v-row justify="center" class="my-5">
+            <h1>Songs you've liked</h1>
+          </v-row>
+          <v-row justify="center" class="my-5">
+            <p>
+              Find more of the songs you love in Browse and save to your Liked
+              Songs
+            </p>
+          </v-row>
+          <v-row justify="center">
+            <v-btn rounded class="px-8" id="discoverBtn" to="/webhome/search">
+              DISCOVER
+            </v-btn>
+          </v-row>
+        </div>
       </v-col>
     </v-row>
   </v-container>
