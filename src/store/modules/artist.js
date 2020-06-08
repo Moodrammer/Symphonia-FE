@@ -20,13 +20,27 @@ const mutations = {
       artist => !list.includes(artist._id)
     );
     state.FollowingArtistsBool = [false];
-    if (state.currentArtist) state.currentArtist.followersCount--;
+    if (state.currentArtist && state.currentArtist.followersCount)
+      state.currentArtist.followersCount--;
   },
   follow_artists: state => {
     state.FollowingArtistsBool = [true];
     if (state.currentArtist) state.currentArtist.followersCount++;
   },
-  load_artistAlbums: (state, list) => (state.artistAlbums = list),
+  load_artistAlbums: (state, list) => {
+    if (
+      !state.artistAlbums ||
+      list.albums.offset == 0 ||
+      list.albums.offset == state.artistAlbums.albums.offset
+    ) {
+      state.artistAlbums = list;
+    } else {
+      state.artistAlbums.albums.items = state.artistAlbums.albums.items.concat(
+        list.albums.items
+      );
+      state.artistAlbums.albums.limit = state.artistAlbums.albums.items.length;
+    }
+  },
   load_newAlbum: (state, album) => state.artistAlbums.albums.items.push(album),
   load_artistTopTracks: (state, list) => (state.artistTopTracks = list),
   load_artistRelatedArtists: (state, list) =>
@@ -385,19 +399,28 @@ const actions = {
    * @param {object} payload contains the token and the artist id
    */
 
-  getArtistAlbums({ commit }, payload) {
+  getArtistAlbums({ commit, dispatch }, payload) {
+    const limit = 1;
     axios
       .get(`/v1/artists/${payload.id}/albums`, {
         headers: {
           Authorization: `Bearer ${payload.token}`
         },
         params: {
-          limit: payload.limit,
+          limit: limit,
           offset: payload.offset
         }
       })
       .then(response => {
         commit("load_artistAlbums", response.data);
+        if (response.data.albums.items.length >= limit) {
+          dispatch("getArtistAlbums", {
+            token: payload.token,
+            id: payload.id,
+            limit: limit,
+            offset: payload.offset + limit
+          });
+        }
       })
       .catch(error => {
         console.log("axios caught an error in getArtistAlbums");

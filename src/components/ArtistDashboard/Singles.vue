@@ -376,7 +376,6 @@ export default {
     this.getArtistAlbums({
       token: this.getuserToken(),
       id: this.getuserID(),
-      limit: 50,
       offset: 0
     });
   },

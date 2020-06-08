@@ -131,7 +131,7 @@ export default {
      */
 
     isVisitor() {
-      return isLoggedIn() && this.$route.params.id != this.getuserID();
+      return this.isLoggedIn() && this.$route.params.id != this.getuserID();
     }
   },
   watch: {

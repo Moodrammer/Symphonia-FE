@@ -206,7 +206,7 @@ export default {
      */
 
     isVisitor() {
-      return isLoggedIn() && this.artistID != this.getuserID();
+      return this.isLoggedIn() && this.artistID != this.getuserID();
     }
   },
   watch: {

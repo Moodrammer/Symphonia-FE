@@ -1052,7 +1052,17 @@ export function makeServer({ environment = "development" } = {}) {
             tracks: tracks
           });
         });
-        return { albums: { items: resp } };
+
+        return {
+          albums: {
+            items: resp.slice(
+              request.queryParams.offset,
+              request.queryParams.offset + request.queryParams.limit
+            ),
+            offset: request.queryParams.offset,
+            limit: request.queryParams.limit
+          }
+        };
       });
 
       ///// ADD ARTIST ALBUM
