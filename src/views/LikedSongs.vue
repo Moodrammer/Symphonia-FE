@@ -90,8 +90,9 @@
                   Pause
                 </v-btn>
                 <v-btn
+                  v-else
                   rounded
-                  class="white--text px-8"
+                  class="white--text px-8 my-4"
                   id="playBtn"
                   @click="playLikedSongs"
                   v-bind:class="{ disabled: numOfTracks == 0 }"
@@ -235,7 +236,7 @@ export default {
 </script>
 
 <style scoped>
-#playBtn {
+#playBtn,#pauseBtn {
   background-color: #1aa34a;
   border-width: 0;
   border-radius: 500px;

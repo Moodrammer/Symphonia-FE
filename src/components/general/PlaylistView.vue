@@ -109,6 +109,7 @@
                     Pause
                   </v-btn>
                   <v-btn
+                    v-else
                     rounded
                     class="white--text px-8"
                     id="playBtn"
