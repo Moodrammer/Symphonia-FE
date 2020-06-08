@@ -29,7 +29,11 @@
               </td>
               <td>
                 <div>
-                  <v-switch v-model="IsPushNotificationsAllowed" color="green">
+                  <v-switch 
+                  v-model="IsPushNotificationsAllowed"
+                  color="green"
+                  id="notification-permission-switch"
+                  >
                   </v-switch>
                 </div>
               </td>
@@ -49,9 +53,6 @@ import getuserToken from "../../mixins/userService/getUserToken";
 import isNotificationsAllowed from "../../mixins/userService/isNotificationsAllowed";
 
 export default {
-  data() {
-    return {};
-  },
   created() {
     if (this.isNotificationsAllowed() == true) {
       this.$store.commit("notification/setPushNotificationsPermission", true);
