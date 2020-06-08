@@ -88,14 +88,6 @@ describe("login", () => {
     expect(fb_btn_wrp.text()).toBe("CONTINUE WITH FACEBOOK");
   });
 
-  //check if the continue with google button renders correctly
-  it("renders the continue with Google button text correctly", () => {
-    //find the facebook button through it id
-    const ggl_btn_wrp = wrapper.find("#ggl-login");
-    //assert that it renders correctly
-    expect(ggl_btn_wrp.text()).toBe("CONTINUE WITH GOOGLE");
-  });
-
   //check if the alert appears on wrong submission
   it("shows an alert when the errorState is set to true", async () => {
     //set the errorState to true
