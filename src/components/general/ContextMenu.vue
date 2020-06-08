@@ -333,10 +333,10 @@ export default {
     //                     Album Functions
     //-----------------------------------------------------------------
     followAlbum() {
-      this.$store.dispatch("album/followAlbum",this.id);
+      this.$store.dispatch("album/followAlbum", this.id);
     },
     async unfollowAlbum() {
-      await this.$store.dispatch("album/unfollowAlbum",this.id);
+      await this.$store.dispatch("album/unfollowAlbum", this.id);
     },
     async addAlbumTracksToPlaylist() {
       if (this.getuserToken()) {

@@ -43,7 +43,7 @@
                     absolute
                     opacity="0.8"
                   >
-                    <v-btn fab outlined color="white">
+                    <v-btn fab outlined color="white" v-bind:class="{ disabled: numOfTracks==0 }">
                       <v-icon
                         large
                         color="white"
@@ -88,17 +88,8 @@
                   rounded
                   class="white--text px-8"
                   id="playBtn"
-                  v-else-if="numOfTracks"
                   @click="playLikedSongs"
-                >
-                  Play
-                </v-btn>
-                <v-btn
-                  v-else
-                  rounded
-                  class="white--text px-8"
-                  id="playBtn"
-                  disabled
+                  v-bind:class="{ disabled: numOfTracks==0 }"
                 >
                   Play
                 </v-btn>
@@ -196,6 +187,7 @@ export default {
      * @param {none}
      */
     playLikedSongs: async function() {
+      if(this.numOfTracks){
       if (this.contextType != "liked") {
         this.$store.commit("track/setContextData", {
           contextID: "1",
@@ -220,6 +212,7 @@ export default {
         this.$store.dispatch("track/togglePauseAndPlay");
       }
       this.$store.commit("track/setIsTrackPaused", this.isPaused);
+      }
     },
     /**
      * Gets called when the user clicks on the pause button/icon
@@ -274,5 +267,8 @@ export default {
 
 h5 {
   opacity: 0.5;
+}
+.disabled {
+  cursor: no-drop;
 }
 </style>
