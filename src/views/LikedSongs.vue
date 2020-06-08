@@ -43,7 +43,12 @@
                     absolute
                     opacity="0.8"
                   >
-                    <v-btn fab outlined color="white" v-bind:class="{ disabled: numOfTracks==0 }">
+                    <v-btn
+                      fab
+                      outlined
+                      color="white"
+                      v-bind:class="{ disabled: numOfTracks == 0 }"
+                    >
                       <v-icon
                         large
                         color="white"
@@ -89,7 +94,7 @@
                   class="white--text px-8"
                   id="playBtn"
                   @click="playLikedSongs"
-                  v-bind:class="{ disabled: numOfTracks==0 }"
+                  v-bind:class="{ disabled: numOfTracks == 0 }"
                 >
                   Play
                 </v-btn>
@@ -187,31 +192,31 @@ export default {
      * @param {none}
      */
     playLikedSongs: async function() {
-      if(this.numOfTracks){
-      if (this.contextType != "liked") {
-        this.$store.commit("track/setContextData", {
-          contextID: "1",
-          contextType: "liked",
-          contextUrl: "https://thesymphonia.ddns.net/api"
-        });
-        await this.$store.dispatch(
-          "track/playTrackInQueue",
-          this.tracks[0]._id
-        );
+      if (this.numOfTracks) {
+        if (this.contextType != "liked") {
+          this.$store.commit("track/setContextData", {
+            contextID: "1",
+            contextType: "liked",
+            contextUrl: "https://thesymphonia.ddns.net/api"
+          });
+          await this.$store.dispatch(
+            "track/playTrackInQueue",
+            this.tracks[0]._id
+          );
 
-        await this.$store.dispatch("track/getTrackInformation", {
-          token: "Bearer " + this.getuserToken(),
-          trackId: this.tracks[0]._id
-        });
+          await this.$store.dispatch("track/getTrackInformation", {
+            token: "Bearer " + this.getuserToken(),
+            trackId: this.tracks[0]._id
+          });
 
-        await this.$store.dispatch(
-          "track/updateQueue",
-          "Bearer " + this.getuserToken()
-        );
-      } else {
-        this.$store.dispatch("track/togglePauseAndPlay");
-      }
-      this.$store.commit("track/setIsTrackPaused", this.isPaused);
+          await this.$store.dispatch(
+            "track/updateQueue",
+            "Bearer " + this.getuserToken()
+          );
+        } else {
+          this.$store.dispatch("track/togglePauseAndPlay");
+        }
+        this.$store.commit("track/setIsTrackPaused", this.isPaused);
       }
     },
     /**
