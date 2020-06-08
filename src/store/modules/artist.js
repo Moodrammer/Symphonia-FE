@@ -20,9 +20,11 @@ const mutations = {
       artist => !list.includes(artist._id)
     );
     state.FollowingArtistsBool = [false];
+    if (state.currentArtist) state.currentArtist.followersCount--;
   },
   follow_artists: state => {
     state.FollowingArtistsBool = [true];
+    if (state.currentArtist) state.currentArtist.followersCount++;
   },
   load_artistAlbums: (state, list) => (state.artistAlbums = list),
   load_newAlbum: (state, album) => state.artistAlbums.albums.items.push(album),
@@ -409,7 +411,6 @@ const actions = {
    */
 
   getArtistTopTracks({ commit }, payload) {
-    console.log("load", payload);
     axios
       .get(`/v1/artists/${payload.id}/top-tracks`, {
         headers: {

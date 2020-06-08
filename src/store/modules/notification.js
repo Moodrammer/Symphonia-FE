@@ -11,7 +11,8 @@ const state = {
     notificationBody: "",
     notificationIcon: "/s11.png",
     color: "",
-    timeout: 0
+    timeout: 0,
+    pushUrl: ""
   },
   isTokenSentToServer: false,
   historyList: [],
@@ -27,6 +28,7 @@ const mutations = {
     state.notificationData.notificationIcon = payload.notificationIcon;
     state.notificationData.timeout = payload.timeout;
     state.notificationData.color = payload.color;
+    state.notificationData.pushUrl = payload.pushUrl;
   },
 
   setIsNotificationShown(state, payload) {
@@ -142,20 +144,22 @@ const actions = {
   //--------------------------------------------------------------------------------------------------------------//
   setRecieveNotificationHandler({ dispatch }) {
     messaging.onMessage(payload => {
-      console.log(payload);
+      let data = JSON.parse(payload.data.data);
+      let notificationTitle = payload.notification.title;
+      let notificationUrl = `/webhome/user/${data.from}`;
       const notificationData = {
         notificationState: true,
-        notificationTitle: payload.notification.title,
+        notificationTitle: notificationTitle,
         notificationBody: payload.notification.body,
         notificationIcon: payload.notification.icon,
         color: "rgba(18, 17, 17, 0.9)",
-        timeout: 0
+        timeout: 0,
+        pushUrl: notificationUrl
       };
-      let data = JSON.parse(payload.data.data);
+
       //make sure a user is logged in
       if (isLoggedIn.methods.isLoggedIn()) {
         // make sure that the sent notification id matches the current user ID
-        console.log(data.to);
         if (getuserID.methods.getuserID() == data.to) {
           dispatch("setNotification", notificationData);
           //reload the history
