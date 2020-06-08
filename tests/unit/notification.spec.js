@@ -2,7 +2,7 @@
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import Vuex from 'vuex'
+import Vuex from "vuex";
 //Importing the component to be tested
 import notification from "@/components/User Settings/notification.vue";
 describe("notification", () => {
@@ -16,13 +16,13 @@ describe("notification", () => {
     vuetify = new Vuetify();
     Vue.use(Vuetify);
     Vue.use(Vuex);
-    mutations =  {
+    mutations = {
       setPushNotificationsPermission: jest.fn()
-    }
+    };
     actions = {
       getRegistrationToken: jest.fn(),
       unsubscribeUser: jest.fn()
-    }
+    };
     store = new Vuex.Store({
       modules: {
         notification: {
@@ -34,16 +34,16 @@ describe("notification", () => {
           actions
         }
       }
-    })
+    });
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
     //in order to find the elements by their ids
     wrapper = mount(notification, {
       vuetify,
       store,
       methods: {
-        isNotificationsAllowed(){
+        isNotificationsAllowed() {
           return allowNotifications;
-        } 
+        }
       }
     });
   });
@@ -62,19 +62,19 @@ describe("notification", () => {
   //----------------------------------------------------------------------
   it("enables notifications if allowed on creation", () => {
     allowNotifications = true;
-    expect(mutations.setPushNotificationsPermission).toBeCalled()
+    expect(mutations.setPushNotificationsPermission).toBeCalled();
   });
 
   it("disables notifications if not allowed on creation", () => {
     allowNotifications = false;
-    expect(mutations.setPushNotificationsPermission).toBeCalled()
+    expect(mutations.setPushNotificationsPermission).toBeCalled();
   });
 
   it("switching on and off the switch", () => {
-    const permissionSwitch = wrapper.find("#notification-permission-switch")
-    permissionSwitch.trigger("change")
+    const permissionSwitch = wrapper.find("#notification-permission-switch");
+    permissionSwitch.trigger("change");
     expect(actions.unsubscribeUser).toBeCalled();
-    permissionSwitch.trigger("change")
+    permissionSwitch.trigger("change");
     expect(actions.getRegistrationToken).toBeCalled();
   });
 });

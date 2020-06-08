@@ -273,23 +273,26 @@ export default {
     loginWithFacebook() {
       this.errorState = false;
       this.errorMessage = "";
-      window.FB.login(response => {
-        if (response.status == "connected") {
-        this.loading = true;
-        this.sendAccessToken(response.authResponse.accessToken);
-        }
-        else{
-          this.errorState = true;
-          this.errorMessage = "Cannot connect to Facebook ... Please try again later";
-        }
-      },{scope: 'public_profile,email'});
+      window.FB.login(
+        response => {
+          if (response.status == "connected") {
+            this.loading = true;
+            this.sendAccessToken(response.authResponse.accessToken);
+          } else {
+            this.errorState = true;
+            this.errorMessage =
+              "Cannot connect to Facebook ... Please try again later";
+          }
+        },
+        { scope: "public_profile,email" }
+      );
     },
     /**
      * @public
      * A function to send facebook access token to the server
      * @param {string} FBAccessToken - The access token used by the server to access the user's facebook data
-    */
-    sendAccessToken(FBAccessToken){
+     */
+    sendAccessToken(FBAccessToken) {
       axios
         .post("/v1/users/auth/facebook/Symphonia", {
           access_token: FBAccessToken
@@ -324,7 +327,7 @@ export default {
         .catch(err => {
           this.loading = false;
           this.errorState = true;
-          this.errorMessage = "Please try again later"
+          this.errorMessage = "Please try again later";
           console.log(err);
         });
     }

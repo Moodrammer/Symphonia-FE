@@ -29,10 +29,10 @@
               </td>
               <td>
                 <div>
-                  <v-switch 
-                  v-model="IsPushNotificationsAllowed"
-                  color="green"
-                  id="notification-permission-switch"
+                  <v-switch
+                    v-model="IsPushNotificationsAllowed"
+                    color="green"
+                    id="notification-permission-switch"
                   >
                   </v-switch>
                 </div>

@@ -23,7 +23,7 @@ describe("login", () => {
     //define a mocking vuex store
     notifyMutations = {
       setPushNotificationsPermission: jest.fn()
-    }
+    };
     actions = {
       loginuser: jest.fn(() => {
         if (mockState == "fail")
@@ -47,7 +47,7 @@ describe("login", () => {
         user: {
           actions
         }
-      },
+      }
     });
     //define the other plugins
     //const router = new VueRouter();
@@ -60,18 +60,18 @@ describe("login", () => {
         redirect: "/webhome/home"
       }
     };
-    window.FB =  {
-        login: jest.fn()
-    }
+    window.FB = {
+      login: jest.fn()
+    };
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
     //in order to find the elements by their ids
     wrapper = mount(login, {
       vuetify,
       store,
       stubs: ["router-link"],
-      mocks: { $router, $route},
+      mocks: { $router, $route },
       methods: {
-        isNotificationsAllowed(){
+        isNotificationsAllowed() {
           return allowNotifications;
         }
       }
@@ -289,5 +289,5 @@ describe("login", () => {
   it("calls login from facebook sdk", () => {
     wrapper.vm.loginWithFacebook();
     expect(wrapper.vm.errorState).toBe(false);
-  })
+  });
 });

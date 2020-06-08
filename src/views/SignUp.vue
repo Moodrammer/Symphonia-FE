@@ -12,12 +12,16 @@
         <v-row justify="center">
           <v-col cols="12">
             <!-- Facebook SignUp division -->
-              <!-- alert to show any errors returning from back server -->
-              <v-alert id="backerr-alert-fb" v-if="fbErrorState" color="rgba(217, 17, 17, 0.80)">
-                <v-row justify="center" class="white--text">
-                  <p style="text-align: center;">{{ fbErrorMessage }}</p>
-                </v-row>
-              </v-alert>
+            <!-- alert to show any errors returning from back server -->
+            <v-alert
+              id="backerr-alert-fb"
+              v-if="fbErrorState"
+              color="rgba(217, 17, 17, 0.80)"
+            >
+              <v-row justify="center" class="white--text">
+                <p style="text-align: center;">{{ fbErrorMessage }}</p>
+              </v-row>
+            </v-alert>
             <v-row justify="center" class="mb-5">
               <v-col cols="6">
                 <!-- Facebook button -->
@@ -423,23 +427,26 @@ export default {
       this.errorState = false;
       this.fbErrorState = false;
       this.fbErrorMessage = "";
-      window.FB.login(response => {
-        if (response.status == "connected") {
-        this.loading = true;
-        this.sendAccessToken(response.authResponse.accessToken);
-        }
-        else {
-          this.fbErrorState = true;
-          this.fbErrorMessage = "cannot connect to facebook ... Please try again later";
-        }
-      },{scope: 'public_profile,email'});
+      window.FB.login(
+        response => {
+          if (response.status == "connected") {
+            this.loading = true;
+            this.sendAccessToken(response.authResponse.accessToken);
+          } else {
+            this.fbErrorState = true;
+            this.fbErrorMessage =
+              "cannot connect to facebook ... Please try again later";
+          }
+        },
+        { scope: "public_profile,email" }
+      );
     },
     /**
      * @public
      * A function to send facebook access token to the server
      * @param {string} FBAccessToken - The access token used by the server to access the user's facebook data
      */
-    sendAccessToken(FBAccessToken){
+    sendAccessToken(FBAccessToken) {
       axios
         .post("/v1/users/auth/facebook/Symphonia", {
           access_token: FBAccessToken
@@ -474,7 +481,7 @@ export default {
         .catch(err => {
           this.loading = false;
           this.fbErrorState = true;
-          this.fbErrorMessage = "Please try again later"
+          this.fbErrorMessage = "Please try again later";
           console.log(err);
         });
     }
