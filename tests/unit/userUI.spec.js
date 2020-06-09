@@ -3,16 +3,22 @@ import userUI from "@/components/UserUI.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
-import VueRouter from "vue-router";
+
+let router = {
+  $route: {
+    name: "user/:id",
+    params: {
+      id: "0"
+    }
+  }
+};
 
 describe("Dashboard.vue", () => {
   let wrapper, store;
 
   beforeEach(() => {
     const vuetify = new Vuetify();
-    const router = new VueRouter();
     Vue.use(Vuetify);
-    Vue.use(VueRouter);
     Vue.use(Vuex);
 
     store = new Vuex.Store(storeMock);
@@ -20,7 +26,7 @@ describe("Dashboard.vue", () => {
     wrapper = shallowMount(userUI, {
       vuetify,
       store,
-      router
+      mocks: router
     });
   });
 
@@ -55,6 +61,11 @@ describe("Dashboard.vue", () => {
   /////////////////////////////////////////////////////////
   //////////////     WATCHERS TESTS     ///////////////////
   /////////////////////////////////////////////////////////
+
+  it("userID watcher", async () => {
+    (router.$route.params.id = "134312234"), await wrapper.vm.$nextTick();
+    expect("updateUser").toBeCalled;
+  });
 
   it("updating user info", async () => {
     store.state.userPublicProfile.info = 3;

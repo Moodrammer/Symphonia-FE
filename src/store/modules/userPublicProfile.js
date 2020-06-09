@@ -42,7 +42,6 @@ const getters = {
     return playlists;
   },
   allInfo: function(state) {
-    console.log("teto", state.userInfo);
     if (state.userInfo)
       return {
         name: state.userInfo.name,
