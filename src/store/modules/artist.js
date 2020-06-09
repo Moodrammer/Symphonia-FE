@@ -26,9 +26,10 @@ const mutations = {
     }
   },
   unfollow_artists: (state, list) => {
-    state.followedArtists = state.followedArtists.filter(
-      artist => !list.includes(artist._id)
-    );
+    if (state.followedArtists && state.followedArtists.items)
+      state.followedArtists.items = state.followedArtists.items.filter(
+        artist => !list.includes(artist._id)
+      );
     state.FollowingArtistsBool = [false];
     if (state.currentArtist && state.currentArtist.followersCount)
       state.currentArtist.followersCount--;
