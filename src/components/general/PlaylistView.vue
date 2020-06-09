@@ -289,7 +289,8 @@ export default {
      */
     followPlaylist: function() {
       this.$store.dispatch("playlist/followPlaylist", {
-        id: this.id
+        id: this.id,
+        name: this.$store.state.playlist.singlePlaylist.name
       });
     },
 

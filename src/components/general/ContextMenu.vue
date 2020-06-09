@@ -391,7 +391,8 @@ export default {
      */
     followPlaylist() {
       this.$store.dispatch("playlist/followPlaylist", {
-        id: this.id
+        id: this.id,
+        name: this.$store.state.playlist.menuPlaylist.name
       });
     },
 

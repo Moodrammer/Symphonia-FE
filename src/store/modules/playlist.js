@@ -60,11 +60,24 @@ const mutations = {
   setFollowed(state, payload) {
     state.isFollowed = payload[0];
   },
-  followedPlaylist(state) {
+  followedPlaylist(state, payload) {
     state.isFollowed = true;
+    console.log(payload);
+    let playlist = {
+      name: payload.playlistName,
+      id: payload.playlistID,
+      type: "playlist"
+    };
+    state.userSavedPlaylists.push(playlist);
   },
   unfollowedPlaylist(state) {
     state.isFollowed = false;
+  },
+  removeFollowedPlaylist(state, playlistID) {
+    let playlists = state.userSavedPlaylists.filter(function(userPlaylists) {
+      return userPlaylists.id != playlistID;
+    });
+    state.userSavedPlaylists = playlists;
   },
   changeDeleteModel(state) {
     state.deletePlaylist = !state.deletePlaylist;
@@ -242,7 +255,10 @@ const actions = {
           }
         )
         .then(() => {
-          commit("followedPlaylist");
+          commit("followedPlaylist", {
+            playlistID: payload.id,
+            playlistName: payload.name
+          });
         })
         .catch(error => {
           if (error.response.statusText === "Unauthorized") {
@@ -265,6 +281,7 @@ const actions = {
       })
       .then(() => {
         commit("unfollowedPlaylist");
+        commit("removeFollowedPlaylist", payload.id);
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -315,6 +332,7 @@ const actions = {
       })
       .then(() => {
         commit("setDeletedFlag");
+        commit("removeFollowedPlaylist", state.playlistID);
       })
       .catch(error => {
         console.log("axios caught an error");

@@ -70,7 +70,7 @@ export default {
       this.$store.dispatch("playlist/deletePlaylist", this.getuserToken());
       this.$store.dispatch("playlist/getPlaylists", this.getuserToken());
       this.$store.commit("playlist/changeDeleteModel");
-      this.$router.push(`/webhome/collection/playlists`);
+      this.$router.push(`/webhome/collection/playlists`).catch(() => {});
       this.dialog = false;
     },
     /**

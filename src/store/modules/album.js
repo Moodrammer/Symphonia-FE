@@ -46,6 +46,12 @@ const mutations = {
   },
   setLoading() {
     state.isLoading = true;
+  },
+  removeFollowedAlbum(state, albumID) {
+    let albums = state.followedAlbums.filter(function(userAlbums) {
+      return userAlbums._id != albumID;
+    });
+    state.followedAlbums = albums;
   }
 };
 
@@ -177,6 +183,7 @@ const actions = {
       })
       .then(() => {
         commit("notFollowedAlbum");
+        commit("removeFollowedAlbum", albumID);
       })
       .catch(error => {
         console.log("axios caught an error");
