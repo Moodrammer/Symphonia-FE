@@ -10,7 +10,6 @@ jest.mock("axios", () => ({
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import axios from "axios";
 //Importing the component to be tested
 import PassReset from "@/components/PasswordMangement/PassReset.vue";
 

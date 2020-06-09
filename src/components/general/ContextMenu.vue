@@ -205,7 +205,6 @@ export default {
         token: this.getuserToken()
       });
       this.playlistMenu = [];
-      this.playlistMenu.push("Start Radio");
 
       if (this.isOwnedPlaylist) {
         if (this.isPublicPlaylist) this.playlistMenu.push("Make secret");
@@ -227,7 +226,6 @@ export default {
       });
 
       this.albumMenu = [];
-      this.albumMenu.push("Start Radio");
 
       if (this.isAlbumSaved) this.albumMenu.push("Remove from your Library");
       else this.albumMenu.push("Save to Your Library");
@@ -245,13 +243,10 @@ export default {
       });
       this.trackMenu = [];
 
-      this.trackMenu.push("Start Radio");
-
       if (this.isTrackSaved)
         this.trackMenu.push("Remove from your Liked Songs");
       else this.trackMenu.push("Save to your Liked Songs");
 
-      this.trackMenu.push("Add to Queue");
       this.trackMenu.push("Add to Playlist");
 
       if (this.inUserPlaylist) this.trackMenu.push("Remove from this Playlist");
@@ -309,8 +304,12 @@ export default {
      * @param {none}
      */
     addToPlaylist() {
-      this.$store.commit("playlist/setAddedTracks", [this.id]);
-      this.$store.commit("playlist/changeAddTrackModel");
+      if (this.getuserToken()) {
+        this.$store.commit("playlist/setAddedTracks", [this.id]);
+        this.$store.commit("playlist/changeAddTrackModel");
+      } else {
+        this.$store.commit("webplayerHome/toggleLogoutPopUpState");
+      }
     },
 
     /**
@@ -329,24 +328,22 @@ export default {
     //                     Album Functions
     //-----------------------------------------------------------------
     followAlbum() {
-      this.$store.dispatch("album/followAlbum", {
-        albumID: this.id,
-        token: this.getuserToken()
-      });
+      this.$store.dispatch("album/followAlbum", this.id);
     },
     async unfollowAlbum() {
-      await this.$store.dispatch("album/unfollowAlbum", {
-        id: this.id,
-        token: this.getuserToken()
-      });
+      await this.$store.dispatch("album/unfollowAlbum", this.id);
     },
     async addAlbumTracksToPlaylist() {
-      await this.$store.dispatch("album/getAlbum", this.id);
-      this.$store.commit(
-        "playlist/setAddedTracks",
-        this.$store.state.album.singleAlbum.tracks
-      );
-      this.$store.commit("playlist/changeAddTrackModel");
+      if (this.getuserToken()) {
+        await this.$store.dispatch("album/getAlbum", this.id);
+        this.$store.commit(
+          "playlist/setAddedTracks",
+          this.$store.state.album.singleAlbum.tracks
+        );
+        this.$store.commit("playlist/changeAddTrackModel");
+      } else {
+        this.$store.commit("webplayerHome/toggleLogoutPopUpState");
+      }
     },
     //----------------------------------------------------------------
     //                       Playlist Functions
@@ -395,7 +392,7 @@ export default {
     followPlaylist() {
       this.$store.dispatch("playlist/followPlaylist", {
         id: this.id,
-        token: this.getuserToken()
+        name: this.$store.state.playlist.menuPlaylist.name
       });
     },
 

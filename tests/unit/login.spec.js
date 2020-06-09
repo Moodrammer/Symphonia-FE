@@ -3,6 +3,9 @@ import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
+import axios from "axios";
+
+jest.mock("axios");
 //Importing the component to be tested
 import login from "@/views/Login.vue";
 
@@ -289,5 +292,51 @@ describe("login", () => {
   it("calls login from facebook sdk", () => {
     wrapper.vm.loginWithFacebook();
     expect(wrapper.vm.errorState).toBe(false);
+  });
+
+  it("sends the access token to the server on facebook login", async () => {
+    const data = {
+      data: {
+        token: "1",
+        user: {
+          name: "Bob",
+          email: "Bob@gmail.com",
+          _id: "1",
+          type: "user",
+          imageFacebookUrl: "1"
+        }
+      }
+    };
+    axios.post.mockImplementationOnce(() => Promise.resolve(data));
+    wrapper.vm.sendAccessToken("1");
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.$router[0]).toBe("/webhome/home");
+  });
+
+  it("sets a notification permission on recieving a registration token from server", async () => {
+    const data = {
+      data: {
+        token: "1",
+        user: {
+          name: "Bob",
+          email: "Bob@gmail.com",
+          _id: "1",
+          type: "user",
+          imageFacebookUrl: "1",
+          registraionToken: "1"
+        }
+      }
+    };
+    axios.post.mockImplementationOnce(() => Promise.resolve(data));
+    wrapper.vm.sendAccessToken("1");
+    await wrapper.vm.$nextTick();
+    expect(notifyMutations.setPushNotificationsPermission).toBeCalled();
+  });
+
+  it("catches server error on facebook login", async () => {
+    axios.post.mockImplementationOnce(() => Promise.reject("failed"));
+    wrapper.vm.sendAccessToken("1");
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.errorState).toBe(true);
   });
 });

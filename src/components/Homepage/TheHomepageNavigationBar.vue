@@ -36,7 +36,7 @@
           style="padding-right:0px;"
         >
           <router-link
-            to="/premium/?checkout=false"
+            to="/premium"
             class="toolbar-link-1"
             v-bind:class="{ 'blue-hover': isLoggedIn() }"
             >Premium</router-link

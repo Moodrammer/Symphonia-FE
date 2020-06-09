@@ -37,7 +37,7 @@ npm run styleguide:build
 
 ### Lints and fixes files
 ```
-npm run lint
+npm run lint --fix
 ```
 
 ## Runing on Mock server
@@ -58,11 +58,6 @@ some changes should be made in the development env :
 ```javascript
 axios.defaults.baseURL = "https://thesymphonia.ddns.net/api";
 ```
-3. From **src/components/TheSoundPlayer/TheSoundPlayer.vue** inside the **init** function prevent mocking by changing development to production as follows
-```javascript
-this.isMocking = process.env.NODE_ENV === "production";
-```
-note: switching from development to production is done manually while serving in development environment to let the conditions where the process.env = development fail ,but it should be changed in the next phase
 
 
 ## Runing on real server
