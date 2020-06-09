@@ -1,7 +1,13 @@
 <template>
   <v-container fluid fill>
     <!-- <img src="../../assets/s11 .png" alt=""> -->
-    <h1 class="display-4 grey--text ml-12 my-4">Singles</h1>
+    <h1
+      class="display-4 grey--text ml-12 my-4"
+      v-if="!$vuetify.breakpoint.mdAndDown"
+    >
+      Singles
+    </h1>
+    <h1 class="display-1 grey--text" v-else>Singles</h1>
     <v-dialog persistent max-width="1000" v-model="startLoading">
       <v-card-title class="white--text">Please Wait...</v-card-title>
       <v-progress-linear v-model="uploadingDone" height="25" reactive>

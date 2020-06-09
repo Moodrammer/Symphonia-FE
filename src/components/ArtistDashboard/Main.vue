@@ -8,10 +8,10 @@
     </v-row>
     <v-row fill-height align="center" class="mx-0 px-0"
       >>
-      <v-col cols="5">
+      <v-col>
         <v-img src="../../assets/logo_artist.png" alt=""> </v-img>
       </v-col>
-      <v-col cols="6">
+      <v-col v-if="!$vuetify.breakpoint.mdAndDown">
         <v-card-title
           class="display-3 white--text"
           style="word-break: normal; line-height: 1.6;"
@@ -22,6 +22,17 @@
             ><em>- {{ mainQuote.artist }}</em></span
           >
         </v-card-title>
+      </v-col>
+    </v-row>
+    <v-row v-if="$vuetify.breakpoint.mdAndDown" align="center">
+      <v-col>
+        <v-card-subtitle class="white--text">
+          <strong>{{ mainQuote.quote }}</strong
+          ><br />
+          <span
+            ><em>- {{ mainQuote.artist }}</em></span
+          >
+        </v-card-subtitle>
       </v-col>
     </v-row>
   </v-container>
