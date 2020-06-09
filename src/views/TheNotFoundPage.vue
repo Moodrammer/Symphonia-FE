@@ -1,15 +1,11 @@
 <template>
   <div class="root">
     <v-col cols="12">
-    <v-row 
-    justify="center"
-    align-content="center"
-    class="centering"
-    >
-      <p class="display-1" style="text-align: center; overflow: hidden;">
-        <strong> Sorry we couldn't find that page 😔</strong>
-      </p>
-    </v-row>
+      <v-row justify="center" align-content="center" class="centering">
+        <p class="display-1" style="text-align: center; overflow: hidden;">
+          <strong> Sorry we couldn't find that page 😔</strong>
+        </p>
+      </v-row>
     </v-col>
   </div>
 </template>
@@ -21,13 +17,13 @@ export default {
 </script>
 
 <style scoped>
-  .root {
-    background-color: lightblue;
-    height: 100%;
-    width: 100%;
-  }
+.root {
+  background-color: lightblue;
+  height: 100%;
+  width: 100%;
+}
 
-  .centering {
+.centering {
   top: 0;
   bottom: 0;
   left: 0;
@@ -37,5 +33,4 @@ export default {
   width: 95%;
   margin: auto;
 }
-
 </style>
