@@ -129,6 +129,8 @@
             :isDisabled="track.premium"
             :ownedPlaylist="false"
             :contextMenu="contextMenu"
+            contextType="liked"
+            contextID="id"
           />
         </v-list>
         <div v-if="!numOfTracks" class="white--text ">
@@ -218,7 +220,7 @@ export default {
       if (this.numOfTracks && this.firstNonPreimum) {
         if (this.contextType != "liked") {
           this.$store.commit("track/setContextData", {
-            contextID: "1",
+            contextID: "id",
             contextType: "liked",
             contextUrl: "https://thesymphonia.ddns.net/api"
           });

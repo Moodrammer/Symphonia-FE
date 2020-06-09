@@ -932,6 +932,11 @@ export function makeServer({ environment = "development" } = {}) {
           contextTracks = schema.albums
             .all()
             .models.filter(album => album.artist._id == contextID)[0].tracks;
+        } else if (contextType == "liked") {
+          let savedTracks = schema.tracks.where({ liked: true }).models;
+          for (let i = 0; i < savedTracks.length; i++) {
+            contextTracks.push(savedTracks[i].id);
+          }
         }
         mockTracks = [];
         for (let i = 0; i < contextTracks.length; i++) {
