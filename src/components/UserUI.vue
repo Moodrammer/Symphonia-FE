@@ -101,6 +101,10 @@ export default {
         token: this.getuserToken(),
         id: this.$route.params.id
       });
+      this.isFollowingArtists({
+        token: this.getuserToken(),
+        artists: [this.$route.params.id]
+      });
       this.getPublicPlaylists({
         token: this.getuserToken(),
         id: this.$route.params.id,

@@ -3,7 +3,7 @@ import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
-import Vuex from "vuex"
+import Vuex from "vuex";
 //Importing the component to be tested
 import UserSettings from "@/views/UserSettings.vue";
 
@@ -23,7 +23,7 @@ describe("User_Settings", () => {
       getRegistrationToken: jest.fn(),
       setRecieveNotificationHandler: jest.fn(),
       setRefreshTokenHandler: jest.fn()
-    }
+    };
     store = new Vuex.Store({
       modules: {
         notification: {
@@ -31,7 +31,7 @@ describe("User_Settings", () => {
           actions: notifyActions
         }
       }
-    })
+    });
     wrapper = shallowMount(UserSettings, {
       router,
       vuetify,
@@ -59,14 +59,14 @@ describe("User_Settings", () => {
     expect(notifyActions.getRegistrationToken).toBeCalled();
     expect(notifyActions.setRecieveNotificationHandler).toBeCalled();
     expect(notifyActions.setRefreshTokenHandler).toBeCalled();
-  })
+  });
 
   it("doesn't initialize notification handlers incase the user is logged out", () => {
     notifyActions = {
       getRegistrationToken: jest.fn(),
       setRecieveNotificationHandler: jest.fn(),
       setRefreshTokenHandler: jest.fn()
-    }
+    };
     const router = new VueRouter();
     wrapper = shallowMount(UserSettings, {
       store,
@@ -81,17 +81,17 @@ describe("User_Settings", () => {
         }
       }
     });
-      expect(notifyActions.getRegistrationToken).not.toBeCalled();
-      expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
-      expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
-  })
+    expect(notifyActions.getRegistrationToken).not.toBeCalled();
+    expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
+    expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
+  });
 
   it("doesn't initialize notification handlers incase the user is logged in but disabling notifications", () => {
     notifyActions = {
       getRegistrationToken: jest.fn(),
       setRecieveNotificationHandler: jest.fn(),
       setRefreshTokenHandler: jest.fn()
-    }
+    };
     const router = new VueRouter();
     wrapper = shallowMount(UserSettings, {
       store,
@@ -106,8 +106,8 @@ describe("User_Settings", () => {
         }
       }
     });
-      expect(notifyActions.getRegistrationToken).not.toBeCalled();
-      expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
-      expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
-  })
+    expect(notifyActions.getRegistrationToken).not.toBeCalled();
+    expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
+    expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
+  });
 });

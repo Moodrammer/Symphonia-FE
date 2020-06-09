@@ -135,7 +135,7 @@ describe("Homepage Login Content", () => {
       getRegistrationToken: jest.fn(),
       setRecieveNotificationHandler: jest.fn(),
       setRefreshTokenHandler: jest.fn()
-    }
+    };
     store = new Vuex.Store({
       modules: {
         notification: {
@@ -143,7 +143,7 @@ describe("Homepage Login Content", () => {
           actions: notifyActions
         }
       }
-    })
+    });
 
     wrapper = shallowMount(HomepageLoginContent, {
       vuetify,
@@ -176,14 +176,14 @@ describe("Homepage Login Content", () => {
     expect(notifyActions.getRegistrationToken).toBeCalled();
     expect(notifyActions.setRefreshTokenHandler).toBeCalled();
     expect(notifyActions.setRecieveNotificationHandler).toBeCalled();
-  })
+  });
 
   it("doesn't initialize notification handlers on creation if notifications are allowed", () => {
     notifyActions = {
       getRegistrationToken: jest.fn(),
       setRecieveNotificationHandler: jest.fn(),
       setRefreshTokenHandler: jest.fn()
-    }
+    };
     const router = new VueRouter();
     wrapper = shallowMount(HomepageLoginContent, {
       vuetify,
@@ -205,7 +205,7 @@ describe("Homepage Login Content", () => {
     expect(notifyActions.getRegistrationToken).not.toBeCalled();
     expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
     expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
-  })
+  });
 });
 
 describe("Homepage Navigation Bar", () => {
