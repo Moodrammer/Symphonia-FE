@@ -80,7 +80,7 @@ export default {
   created() {
     if (this.isLoggedIn()) {
       if (this.isNotificationsAllowed()) {
-        //get registration token from the user if the user is logged in 
+        //get registration token from the user if the user is logged in
         this.$store.dispatch(
           "notification/getRegistrationToken",
           this.getuserToken()

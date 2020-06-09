@@ -97,7 +97,7 @@
                     v-bind:to="'/webhome/artist/' + this.album.artist._id"
                     class="white--text"
                   >
-                    <p class="mt-2" id="year">{{ album.artist.name }}</p>
+                    <p class="mt-2" id="artistName">{{ album.artist.name }}</p>
                   </router-link>
                 </v-row>
                 <!--The play button-->
@@ -114,7 +114,7 @@
                   <v-btn
                     rounded
                     class="white--text px-8 my-4"
-                    id="playBtn"
+                    id="pauseBtn"
                     @click="pause"
                     v-else
                   >
@@ -371,7 +371,8 @@ export default {
   height: 157px;
 }
 
-#year {
+#year,
+#artistName {
   opacity: 0.6;
 }
 

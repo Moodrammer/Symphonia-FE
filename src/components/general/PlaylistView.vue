@@ -96,7 +96,7 @@
                     v-bind:to="'/webhome/user/' + this.playlist.owner._id"
                     class="white--text"
                   >
-                    <p class="mt-1" style="opacity:0.4">
+                    <p class="mt-1" style="opacity:0.4" id="owner">
                       {{ playlist.owner.name }}
                     </p>
                   </router-link>
@@ -107,7 +107,7 @@
                   <v-btn
                     rounded
                     class="white--text px-8 my-4"
-                    id="playBtn"
+                    id="pauseBtn"
                     @click="pause"
                     v-if="!isPaused"
                   >

@@ -32,8 +32,8 @@ describe("Context Menu", () => {
       modules: {
         webplayerHome: {
           namespaced: true,
-          mutations:{
-            toggleLogoutPopUpState:jest.fn()
+          mutations: {
+            toggleLogoutPopUpState: jest.fn()
           }
         },
         playlist: {

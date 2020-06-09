@@ -11,6 +11,7 @@
       class="mr-2 pb-9"
       v-bind:class="{ enabled: !isPlaying, playing: isPlaying }"
       @click="pauseTrack"
+      id="pauseIcon"
     >
       mdi-pause
     </v-icon>
@@ -19,6 +20,7 @@
       v-else-if="hover && !isDisabled"
       v-bind:class="{ enabled: !isPlaying, playing: isPlaying }"
       @click="playTrack"
+      id="playIcon"
       >mdi-play</v-icon
     >
 
@@ -30,6 +32,7 @@
         playing: isPlaying
       }"
       v-else
+      id="noteEight"
     >
       mdi-music-note-eighth</v-icon
     >
@@ -60,6 +63,7 @@
             <p
               class="subtitle mr-2"
               v-bind:class="{ 'disabled-2': isDisabled }"
+              id="routeToArtist"
             >
               {{ artistName }}
             </p>
