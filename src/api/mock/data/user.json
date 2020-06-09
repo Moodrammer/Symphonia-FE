@@ -1,0 +1,41 @@
+[
+  {
+    "name": "Bobuser",
+    "email": "Bob@gmail.com",
+    "password": "12345678",
+    "dateOfBirth": "1980-12-12",
+    "gender": "male",
+    "type": "user",
+    "country": "EG",
+    "imageUrl":
+      "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+    "followed": false,
+    "premium": false
+  },
+  {
+    "name": "Nasser Al-Qatami",
+    "email": "artist@gmail.com",
+    "password": "12345678",
+    "dateOfBirth": "1995-12-18",
+    "gender": "male",
+    "type": "artist",
+    "country": "EG",
+    "imageUrl":
+      "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg",
+    "followed": false,
+    "premium": false
+  },
+  {
+    "name": "Preimum User",
+    "email": "premium@gmail.com",
+    "password": "12345678",
+    "dateOfBirth": "2000-1-1",
+    "gender": "female",
+    "type": "user",
+    "country": "EG",
+    "imageUrl":
+      "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+    "followed": false,
+    "premium": true
+  }
+]
