@@ -2,7 +2,7 @@ import axios from "axios";
 import { Math } from "core-js";
 
 const state = {
-  followedArtists: [],
+  followedArtists: null,
   artistAlbums: null,
   artistTopTracks: [],
   artistRelatedArtists: [],
@@ -14,7 +14,17 @@ const state = {
 };
 
 const mutations = {
-  load_followedArtists: (state, list) => (state.followedArtists = list),
+  load_followedArtists: (state, artists) => {
+    // state.followedArtists = list
+    if (!state.followedArtists || artists.offset == 0) {
+      state.followedArtists = artists;
+    } else {
+      state.followedArtists.items = state.followedArtists.items.concat(
+        artists.items
+      );
+      state.followedArtists.offset = artists.offset;
+    }
+  },
   unfollow_artists: (state, list) => {
     state.followedArtists = state.followedArtists.filter(
       artist => !list.includes(artist._id)
@@ -156,9 +166,9 @@ const getters = {
   },
 
   allFollowedArtists: state => {
-    var newValue = state.followedArtists;
+    if (!state.followedArtists || !state.followedArtists.items) return;
     var artists = [];
-    newValue.forEach(element => {
+    state.followedArtists.items.forEach(element => {
       var k = {
         name: element.name,
         image: element.imageUrl,
@@ -377,16 +387,28 @@ const actions = {
    * called to get followed artists by current user
    * @param {object} payload contains the token
    */
-  getFollowedArtists({ commit }, payload) {
+  getFollowedArtists({ commit, dispatch }, payload) {
+    const limit = 50;
     axios
       .get("/v1/me/following", {
         headers: {
           Authorization: `Bearer ${payload.token}`
         },
-        params: { type: "artist", limit: payload.limit }
+        params: { type: "artist", limit: limit, after: payload.after }
       })
       .then(response => {
-        commit("load_followedArtists", response.data.artists.items);
+        commit("load_followedArtists", {
+          items: response.data.artists.items,
+          offset: payload.offset
+        });
+        if (response.data.next) {
+          dispatch("getFollowedArtists", {
+            token: payload.token,
+            limit: limit,
+            offset: payload.offset + limit,
+            after: response.data.cursors.after
+          });
+        }
       })
       .catch(error => {
         console.log("axios caught an error in getFollowedArtists");
@@ -400,7 +422,7 @@ const actions = {
    */
 
   getArtistAlbums({ commit, dispatch }, payload) {
-    const limit = 1;
+    const limit = 50;
     axios
       .get(`/v1/artists/${payload.id}/albums`, {
         headers: {

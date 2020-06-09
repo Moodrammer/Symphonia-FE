@@ -1,7 +1,11 @@
 <template>
   <v-content class="pa-0 mr-5">
     <h1>Artists</h1>
-    <CardGrid :cardItems="cardItems" :contextMenu="contextMenu" />
+    <CardGrid
+      v-if="cardItems.items"
+      :cardItems="cardItems"
+      :contextMenu="contextMenu"
+    />
   </v-content>
 </template>
 
@@ -25,7 +29,7 @@ export default {
       contextMenuCardIndex: null,
 
       cardItems: {
-        items: []
+        items: null
       }
     };
   },
@@ -34,7 +38,11 @@ export default {
   },
   mixins: [getuserToken],
   created() {
-    this.getFollowedArtists({ token: this.getuserToken(), limit: 50 });
+    this.getFollowedArtists({
+      token: this.getuserToken(),
+      offset: 0,
+      after: null
+    });
   },
 
   computed: mapGetters("artist", ["allFollowedArtists"]),

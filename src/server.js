@@ -1191,10 +1191,31 @@ export function makeServer({ environment = "development" } = {}) {
       ///// GET FOLLOWED ARTISTS
 
       this.get("/v1/me/following", (schema, request) => {
-        if (request.queryParams.type === "artist")
-          return {
-            artists: { items: schema.artists.where({ followed: true }).models }
-          };
+        if (request.queryParams.type !== "artist") return;
+        let afterFound = request.queryParams.after == null;
+        console.log(afterFound);
+        let items = [];
+        let count = 0;
+        let followedArtists = schema.artists.where({ followed: true }).models;
+        let i = 0;
+        for (i; i < followedArtists.length; i++) {
+          if (afterFound) {
+            items.push(followedArtists[i]);
+            count++;
+            if (count >= request.queryParams.limit) {
+              break;
+            }
+          } else if (followedArtists[i]._id == request.queryParams.after) {
+            afterFound = true;
+          }
+        }
+        return {
+          artists: { items: items },
+          cursors: {
+            after: i < followedArtists.length ? followedArtists[i]._id : null
+          },
+          next: followedArtists.length - 1 > i
+        };
       });
 
       ///// UNFOLLOW ARTIST
