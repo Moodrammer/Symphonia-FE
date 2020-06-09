@@ -270,7 +270,8 @@ export default {
   transform: scale(1.1, 1.1);
 }
 
-#playBtn:hover {
+#playBtn:hover,
+#pauseBtn:hover {
   background-color: #1ed760;
   transform: scale(1.05, 1.05);
 }

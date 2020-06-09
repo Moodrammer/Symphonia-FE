@@ -337,7 +337,8 @@ export default {
 </script>
 
 <style scoped>
-#playBtn {
+#playBtn,
+#pauseBtn {
   background-color: #1aa34a;
   border-width: 0;
   border-radius: 500px;
@@ -347,7 +348,8 @@ export default {
   transform: scale(1.1, 1.1);
 }
 
-#playBtn:hover {
+#playBtn:hover,
+#pauseBtn:hover {
   background-color: #1ed760;
   transform: scale(1.05, 1.05);
 }

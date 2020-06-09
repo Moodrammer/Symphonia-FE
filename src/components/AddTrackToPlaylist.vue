@@ -27,6 +27,7 @@
       <v-row class="ml-4">
         <v-card
           v-for="(playlist, index) in playlists"
+          :id="playlist.id"
           :key="playlist.id"
           class="ma-2 white--text"
           color="transparent"

@@ -47,6 +47,7 @@
           class="my-4"
           v-for="(item, index) in cardItems.items.slice(0, maxItems)"
           :key="item.id"
+          :id="item.id"
         >
           <v-card
             width="240"
@@ -158,6 +159,7 @@
         class="my-4"
         v-for="(item, index) in cardItems.items"
         :key="item.id"
+        :id="item.id"
       >
         <!-- adding the cards -->
         <div class="card">
