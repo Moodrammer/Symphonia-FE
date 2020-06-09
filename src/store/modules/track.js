@@ -143,9 +143,6 @@ const mutations = {
     let premium = isPremium.methods.isPremium();
     if (premium) {
       state.nonPremiumTrackID = list[0]._id;
-      for (let i = 0; i < list.length; i++) {
-        list[i].premium = false;
-      }
     } else {
       for (let i = 0; i < list.length; i++) {
         if (list[i].premium == false) {

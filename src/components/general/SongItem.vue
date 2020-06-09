@@ -17,7 +17,7 @@
     </v-icon>
     <v-icon
       class="mr-2 pb-9"
-      v-else-if="hover && !isDisabled"
+      v-else-if="hover && !disabledTrack"
       v-bind:class="{ enabled: !isPlaying, playing: isPlaying }"
       @click="playTrack"
       id="playIcon"
@@ -27,8 +27,8 @@
     <v-icon
       class="mr-2 pb-9"
       v-bind:class="{
-        'disabled-1': isDisabled,
-        enabled: !isDisabled && !isPlaying,
+        'disabled-1': disabledTrack,
+        enabled: !disabledTrack && !isPlaying,
         playing: isPlaying
       }"
       v-else
@@ -46,8 +46,8 @@
     <v-list-item-title
       class="draweritem"
       v-bind:class="{
-        'disabled-1': isDisabled,
-        'white--text': !isDisabled && !isPlaying,
+        'disabled-1': disabledTrack,
+        'white--text': !disabledTrack && !isPlaying,
         playing: isPlaying
       }"
     >
@@ -62,7 +62,7 @@
           >
             <p
               class="subtitle mr-2"
-              v-bind:class="{ 'disabled-2': isDisabled }"
+              v-bind:class="{ 'disabled-2': disabledTrack }"
               id="routeToArtist"
             >
               {{ artistName }}
@@ -74,7 +74,7 @@
             class="white--text"
           >
             <p
-              v-bind:class="{ 'disabled-2': isDisabled }"
+              v-bind:class="{ 'disabled-2': disabledTrack }"
               class="subtitle ml-2"
               v-if="!isAlbum"
               id="routeToAlbum"
@@ -95,14 +95,14 @@
       class="mx-2"
       v-if="hover"
       id="menu"
-      v-bind:class="{ 'disabled-2': isDisabled }"
+      v-bind:class="{ 'disabled-2': disabledTrack }"
       @click.stop="menuClick($event, ID)"
     >
       mdi-dots-horizontal
     </v-icon>
 
     <!--Display the song's duration-->
-    <p class="white--text ml-12" v-bind:class="{ 'disabled-2': isDisabled }">
+    <p class="white--text ml-12" v-bind:class="{ 'disabled-2': disabledTrack }">
       {{ min }}:{{ sec }}
     </p>
   </v-list-item>
@@ -111,6 +111,7 @@
 <script>
 import getuserToken from "../../mixins/userService/getUserToken";
 import isLoggedIn from "../../mixins/userService/isLoggedIn";
+import isPremium from "../../mixins/userService/isPremium";
 /**
  * Song component contains the track name , duration , artist's name , album's name
  * @displayName Song Item
@@ -147,12 +148,14 @@ export default {
     return {
       hover: "false",
       min: 0,
-      sec: 0
+      sec: 0,
+      disabledTrack: null
     };
   },
   created() {
     this.hover = false;
     this.convert(this.$props.songDuration);
+    this.disabledTrack = this.$props.isDisabled && !this.isPremium();
   },
   computed: {
     isPlaying() {
@@ -161,6 +164,9 @@ export default {
     isPaused() {
       if (this.isPlaying) return this.$store.state.track.isTrackPaused;
       else return true;
+    },
+    currentContextID() {
+      return this.$store.state.track.contextID;
     }
   },
   methods: {
@@ -191,14 +197,16 @@ export default {
      * @param {none}
      */
     playTrack: async function() {
-      if (!this.isPlaying) {
+      if (
+        !this.isPlaying ||
+        (this.isPlaying && this.contextID != this.currentContextID)
+      ) {
         this.$store.commit("track/setContextData", {
           contextID: this.contextID,
           contextType: this.contextType,
           contextUrl: "https://thesymphonia.ddns.net/api"
         });
         await this.$store.dispatch("track/playTrackInQueue", this.ID);
-
         await this.$store.dispatch("track/getTrackInformation", {
           token: "Bearer " + this.getuserToken(),
           trackId: this.ID
@@ -222,7 +230,7 @@ export default {
       this.$store.commit("track/setIsTrackPaused", this.isPaused);
     }
   },
-  mixins: [getuserToken, isLoggedIn]
+  mixins: [getuserToken, isLoggedIn, isPremium]
 };
 </script>
 

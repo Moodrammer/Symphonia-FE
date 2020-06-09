@@ -6,6 +6,7 @@ import albumsJSON from "./api/mock/data/album.json";
 import categoryJSON from "./api/mock/data/category.json";
 import historyJSON from "./api/mock/data/history.json";
 import notificationsJSON from "./api/mock/data/notifications.json";
+import userJSON from "./api/mock/data/user.json";
 import getuserID from "./mixins/userService/getuserID.js";
 import getusername from "./mixins/userService/getusername.js";
 // import usersJSON from "./api/mock/data/users.json";
@@ -28,44 +29,9 @@ export function makeServer({ environment = "development" } = {}) {
     },
 
     seeds(server) {
-      //creating a user for testing purposes
-      server.create("user", {
-        name: "Bobuser",
-        email: "Bob@gmail.com",
-        password: "12345678",
-        dateOfBirth: "1980-12-12",
-        gender: "male",
-        type: "user",
-        country: "EG",
-        imageUrl:
-          "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
-        followed: false,
-        premium: false
+      userJSON.forEach(element => {
+        server.create("user", element);
       });
-      //creating an artist for testing purposes
-      server.create("user", {
-        name: "Nasser Al-Qatami",
-        email: "artist@gmail.com",
-        password: "12345678",
-        dateOfBirth: "1995-12-18",
-        gender: "male",
-        type: "artist",
-        country: "EG",
-        imageUrl:
-          "https://i1.sndcdn.com/artworks-000102741362-wev1tn-t500x500.jpg",
-        followed: false,
-        premium: false
-      });
-
-      //This part is just to fake mirage in order to persist the data of only one user
-      if (sessionStorage.getItem("SignedUpUser") != null) {
-        //The signed up user should remain in the localstorage so that when mirage loads each time it loads his data
-        server.create(
-          "user",
-          JSON.parse(sessionStorage.getItem("SignedUpUser"))
-        );
-        localStorage.removeItem("SignedUpUser");
-      }
 
       playlistJson.items.forEach(element => {
         server.create("playlist", element);
@@ -89,6 +55,16 @@ export function makeServer({ environment = "development" } = {}) {
       notificationsJSON.items.forEach(element =>
         server.create("notification", element)
       );
+
+      //This part is just to fake mirage in order to persist the data of only one user
+      if (sessionStorage.getItem("SignedUpUser") != null) {
+        //The signed up user should remain in the localstorage so that when mirage loads each time it loads his data
+        server.create(
+          "user",
+          JSON.parse(sessionStorage.getItem("SignedUpUser"))
+        );
+        localStorage.removeItem("SignedUpUser");
+      }
     },
 
     //Define serializers to format the responses
@@ -918,6 +894,15 @@ export function makeServer({ environment = "development" } = {}) {
         var link =
           "http://thesymphonia.ddns.net/api/v1/me/player/tracks/" +
           request.params.track_id;
+        let userID;
+        if (localStorage.getItem("userToken") != null) {
+          userID = localStorage.getItem("userID");
+        }
+        //If not found in the localStorage then the user has chosen not to be remembered and the token is in the sessionStorage
+        else if (sessionStorage.getItem("userToken") != null) {
+          userID = sessionStorage.getItem("userID");
+        }
+        let premium = schema.users.where({ id: userID }).models[0].premium;
 
         let contextID = JSON.parse(request.requestBody).contextId;
         let contextType = JSON.parse(request.requestBody).context_type;
@@ -932,12 +917,22 @@ export function makeServer({ environment = "development" } = {}) {
           contextTracks = schema.albums
             .all()
             .models.filter(album => album.artist._id == contextID)[0].tracks;
+        } else if (contextType == "liked") {
+          let savedTracks = schema.tracks.where({ liked: true }).models;
+          for (let i = 0; i < savedTracks.length; i++) {
+            contextTracks.push(savedTracks[i].id);
+          }
         }
         mockTracks = [];
         for (let i = 0; i < contextTracks.length; i++) {
-          mockTracks.push(
-            schema.tracks.where({ id: contextTracks[i] }).models[0].link
-          );
+          if (
+            schema.tracks.where({ id: contextTracks[i] }).models[0].premium ==
+              false ||
+            premium
+          )
+            mockTracks.push(
+              schema.tracks.where({ id: contextTracks[i] }).models[0].link
+            );
         }
         currentlyPlayingIndex = mockTracks.indexOf(link);
 

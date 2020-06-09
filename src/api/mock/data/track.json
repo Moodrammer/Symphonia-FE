@@ -5,6 +5,7 @@
     "id":"116",
     "_id":"116",
     "name": "Surah Nooh",
+    "premium": false,
     "durationMs": 62000,
     "link":"http://thesymphonia.ddns.net/api/v1/me/player/tracks/116",
     "__v": 0,
