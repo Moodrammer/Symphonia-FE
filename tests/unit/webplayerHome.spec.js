@@ -13,6 +13,9 @@ describe("Webplayer Home", () => {
   let wrapper;
   let vuetify;
   let store;
+  let notifyActions;
+  let categoryMutations;
+  let playlistActions;
 
   beforeEach(() => {
     vuetify = new Vuetify();
@@ -25,8 +28,24 @@ describe("Webplayer Home", () => {
     const $forceUpdate = jest.fn();
     const contextID = jest.fn();
 
+    notifyActions = {
+      getRegistrationToken: jest.fn(),
+      setRecieveNotificationHandler: jest.fn(),
+      setRefreshTokenHandler: jest.fn()
+    }
+
+    playlistActions = {
+      getPlaylists: jest.fn()
+    }
+    categoryMutations = {
+      changeLogoutUpdate: jest.fn()
+    }
     store = new Vuex.Store({
       modules: {
+        notification: {
+          namespaced: true,
+          actions: notifyActions
+        },
         webplayerHome: {
           namespaced: true,
           state: {
@@ -41,18 +60,14 @@ describe("Webplayer Home", () => {
             createPlaylist: false,
             addTrack: false
           },
-          actions: {
-            getPlaylists: jest.fn()
-          }
+          actions: playlistActions
         },
         category: {
           namespaced: true,
           state: {
             logoutUpdate: false
           },
-          mutations: {
-            changeLogoutUpdate: jest.fn()
-          }
+          mutations: categoryMutations
         }
       }
     });
@@ -64,6 +79,14 @@ describe("Webplayer Home", () => {
       contextID,
       propsData: {
         contextMenu: { event: "event", type: "type", id: "1234" }
+      },
+      methods: {
+        isLoggedIn() {
+          return true;
+        },
+        isNotificationsAllowed() {
+          return true;
+        }
       }
     });
   });
@@ -100,8 +123,79 @@ describe("Webplayer Home", () => {
   it("Update after logout", async () => {
     wrapper.vm.$options.watch.isLogoutUpdate.call(wrapper.vm);
     store.state.category.logoutUpdate = true;
-    expect("changeLogoutUpdate").toHaveBeenCalled;
+    await wrapper.vm.nextTick();
+    expect(categoryMutations.changeLogoutUpdate).toHaveBeenCalled();
   });
+
+  it("intializes notification handlers on creation if user is logged in and allowing notifications", () => {
+    expect(notifyActions.getRegistrationToken).toBeCalled();
+    expect(notifyActions.setRecieveNotificationHandler).toBeCalled();
+    expect(notifyActions.setRefreshTokenHandler).toBeCalled();
+  })
+
+  it("doesn't initialize notification handlers incase the user is logged out", () => {
+    notifyActions = {
+      getRegistrationToken: jest.fn(),
+      setRecieveNotificationHandler: jest.fn(),
+      setRefreshTokenHandler: jest.fn()
+    }
+    const router = new VueRouter();
+    const $forceUpdate = jest.fn();
+    const contextID = jest.fn();
+    wrapper = shallowMount(WebplayerHome, {
+      store,
+      router,
+      vuetify,
+      $forceUpdate,
+      contextID,
+      propsData: {
+        contextMenu: { event: "event", type: "type", id: "1234" }
+      },
+      methods: {
+        isLoggedIn() {
+          return false;
+        },
+        isNotificationsAllowed() {
+          return false;
+        }
+      }
+    });
+      expect(notifyActions.getRegistrationToken).not.toBeCalled();
+      expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
+      expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
+  })
+
+  it("doesn't initialize notification handlers incase the user is logged in but disabling notifications", () => {
+    notifyActions = {
+      getRegistrationToken: jest.fn(),
+      setRecieveNotificationHandler: jest.fn(),
+      setRefreshTokenHandler: jest.fn()
+    }
+    const router = new VueRouter();
+    const $forceUpdate = jest.fn();
+    const contextID = jest.fn();
+    wrapper = shallowMount(WebplayerHome, {
+      store,
+      router,
+      vuetify,
+      $forceUpdate,
+      contextID,
+      propsData: {
+        contextMenu: { event: "event", type: "type", id: "1234" }
+      },
+      methods: {
+        isLoggedIn() {
+          return true;
+        },
+        isNotificationsAllowed() {
+          return false;
+        }
+      }
+    });
+      expect(notifyActions.getRegistrationToken).not.toBeCalled();
+      expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
+      expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
+  })
 
   // it("Watch the context menu id", async () => {
   //   wrapper.setData({ contextMenu: { id: "124" } });
