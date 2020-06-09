@@ -220,6 +220,7 @@
 import SongItem from "./SongItem";
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getuserToken from "../../mixins/userService/getUserToken";
+import isPremium from "../../mixins/userService/isPremium";
 import getuserID from "../../mixins/userService/getuserID";
 import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
@@ -352,7 +353,7 @@ export default {
     }
   },
   created: function() {
-    if (this.isLoggedIn()) {
+    if (this.isLoggedIn() && !this.isPremium()) {
       this.$store.commit("playlist/changeAdsPopup");
     }
     this.getPlaylistData();
@@ -415,7 +416,7 @@ export default {
   props: {
     contextMenu: {}
   },
-  mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID]
+  mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID, isPremium]
 };
 </script>
 

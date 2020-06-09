@@ -1,5 +1,6 @@
 import axios from "axios";
 import getuserToken from "../../mixins/userService/getUserToken";
+import isPremium from "../../mixins/userService/isPremium";
 
 const state = {
   token: "",
@@ -139,12 +140,21 @@ const mutations = {
   },
   load_tracks(state, list) {
     state.savedTracks = list;
+    let premium = isPremium.methods.isPremium();
+    if(premium){
+      state.nonPremiumTrackID = list[0]._id;
+      for (let i = 0; i < list.length; i++) {
+        list[i].premium = false;
+      }
+    }
+    else{
     for (let i = 0; i < list.length; i++) {
       if (list[i].premium == false) {
         state.nonPremiumTrackID = list[i]._id;
         break;
       }
     }
+  }
   },
   setTracksNum(state, num) {
     state.savedTracksNum = num;

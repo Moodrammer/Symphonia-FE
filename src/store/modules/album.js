@@ -1,5 +1,6 @@
 import axios from "axios";
 import getuserToken from "../../mixins/userService/getUserToken";
+import isPremium from "../../mixins/userService/isPremium";
 
 //--------------------------------------------------------
 //             The stored album's data
@@ -28,10 +29,18 @@ const mutations = {
   },
   setAlbumTracks(state, albumTracks) {
     state.albumTracks = albumTracks;
-    for (let i = 0; i < albumTracks.length; i++) {
-      if (albumTracks[i].premium == false) {
-        state.nonPremiumTrackID = albumTracks[i]._id;
-        break;
+    let premium = isPremium.methods.isPremium();
+    if (premium) {
+      state.nonPremiumTrackID = albumTracks[0]._id;
+      for (let i = 0; i < albumTracks.length; i++) {
+        albumTracks[i].premium = false;
+      }
+    } else {
+      for (let i = 0; i < albumTracks.length; i++) {
+        if (albumTracks[i].premium == false) {
+          state.nonPremiumTrackID = albumTracks[i]._id;
+          break;
+        }
       }
     }
   },

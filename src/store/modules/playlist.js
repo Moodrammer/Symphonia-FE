@@ -1,5 +1,6 @@
 import axios from "axios";
 import getuserToken from "../../mixins/userService/getUserToken";
+import isPremium from "../../mixins/userService/isPremium";
 
 const state = {
   userSavedPlaylists: [],
@@ -47,10 +48,18 @@ const mutations = {
   },
   setPlaylistTracks(state, tracks) {
     state.playlistTracks = tracks;
-    for (let i = 0; i < tracks.length; i++) {
-      if (tracks[i].premium == false) {
-        state.nonPremiumTrackID = tracks[i]._id;
-        break;
+    let premium = isPremium.methods.isPremium();
+    if (premium) {
+      state.nonPremiumTrackID = tracks[0]._id;
+      for (let i = 0; i < tracks.length; i++) {
+        tracks[i].premium = false;
+      }
+    } else {
+      for (let i = 0; i < tracks.length; i++) {
+        if (tracks[i].premium == false) {
+          state.nonPremiumTrackID = tracks[i]._id;
+          break;
+        }
       }
     }
   },
