@@ -102,7 +102,7 @@
     </v-icon>
 
     <!--Display the song's duration-->
-    <p class="white--text ml-12" v-bind:class="{ 'disabled-2': isDisabled }">
+    <p class="white--text ml-12" v-bind:class="{ 'disabled-2': isDisabled || this.isPremium() }">
       {{ min }}:{{ sec }}
     </p>
   </v-list-item>
@@ -111,6 +111,7 @@
 <script>
 import getuserToken from "../../mixins/userService/getUserToken";
 import isLoggedIn from "../../mixins/userService/isLoggedIn";
+import isPremium from "../../mixins/userService/isPremium";
 /**
  * Song component contains the track name , duration , artist's name , album's name
  * @displayName Song Item
@@ -191,6 +192,7 @@ export default {
      * @param {none}
      */
     playTrack: async function() {
+            console.log("this.$props.contextType")
       if (!this.isPlaying) {
         this.$store.commit("track/setContextData", {
           contextID: this.contextID,
@@ -198,7 +200,6 @@ export default {
           contextUrl: "https://thesymphonia.ddns.net/api"
         });
         await this.$store.dispatch("track/playTrackInQueue", this.ID);
-
         await this.$store.dispatch("track/getTrackInformation", {
           token: "Bearer " + this.getuserToken(),
           trackId: this.ID
@@ -222,7 +223,7 @@ export default {
       this.$store.commit("track/setIsTrackPaused", this.isPaused);
     }
   },
-  mixins: [getuserToken, isLoggedIn]
+  mixins: [getuserToken, isLoggedIn,isPremium]
 };
 </script>
 

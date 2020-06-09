@@ -129,8 +129,8 @@
             :isDisabled="track.premium"
             :ownedPlaylist="false"
             :contextMenu="contextMenu"
-            contextType="liked"
-            contextID="id"
+            :contextType="'liked'"
+            :contextID="'id'"
           />
         </v-list>
         <div v-if="!numOfTracks" class="white--text ">
