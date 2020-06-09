@@ -122,21 +122,43 @@ describe("Homepage Footer", () => {
 describe("Homepage Login Content", () => {
   let wrapper;
   let vuetify;
+  let store;
+  let notifyActions;
 
   beforeEach(() => {
     vuetify = new Vuetify();
     const router = new VueRouter();
     Vue.use(Vuetify);
     Vue.use(VueRouter);
+    Vue.use(Vuex);
+    notifyActions = {
+      getRegistrationToken: jest.fn(),
+      setRecieveNotificationHandler: jest.fn(),
+      setRefreshTokenHandler: jest.fn()
+    }
+    store = new Vuex.Store({
+      modules: {
+        notification: {
+          namespaced: true,
+          actions: notifyActions
+        }
+      }
+    })
 
     wrapper = shallowMount(HomepageLoginContent, {
       vuetify,
       router,
+      store,
       mocks: {
         $vuetify: {
           breakpoint: {
             sm: true
           }
+        }
+      },
+      methods: {
+        isNotificationsAllowed() {
+          return true;
         }
       }
     });
@@ -149,6 +171,41 @@ describe("Homepage Login Content", () => {
   it("renders a vue instance", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
+
+  it("initializes notification handlers on creation if notifications are allowed", () => {
+    expect(notifyActions.getRegistrationToken).toBeCalled();
+    expect(notifyActions.setRefreshTokenHandler).toBeCalled();
+    expect(notifyActions.setRecieveNotificationHandler).toBeCalled();
+  })
+
+  it("doesn't initialize notification handlers on creation if notifications are allowed", () => {
+    notifyActions = {
+      getRegistrationToken: jest.fn(),
+      setRecieveNotificationHandler: jest.fn(),
+      setRefreshTokenHandler: jest.fn()
+    }
+    const router = new VueRouter();
+    wrapper = shallowMount(HomepageLoginContent, {
+      vuetify,
+      router,
+      store,
+      mocks: {
+        $vuetify: {
+          breakpoint: {
+            sm: true
+          }
+        }
+      },
+      methods: {
+        isNotificationsAllowed() {
+          return false;
+        }
+      }
+    });
+    expect(notifyActions.getRegistrationToken).not.toBeCalled();
+    expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
+    expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
+  })
 });
 
 describe("Homepage Navigation Bar", () => {
