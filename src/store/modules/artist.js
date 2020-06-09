@@ -404,7 +404,6 @@ const actions = {
         if (response.data.next) {
           dispatch("getFollowedArtists", {
             token: payload.token,
-            limit: limit,
             offset: payload.offset + limit,
             after: response.data.cursors.after
           });
@@ -439,7 +438,6 @@ const actions = {
           dispatch("getArtistAlbums", {
             token: payload.token,
             id: payload.id,
-            limit: limit,
             offset: payload.offset + limit
           });
         }

@@ -42,7 +42,11 @@
     </v-row>
 
     <v-container align="center" justify="center">
-      <CardGrid :cardItems="cardItems" :contextMenu="contextMenu" />
+      <CardGrid
+        v-if="cardItems.items"
+        :cardItems="cardItems"
+        :contextMenu="contextMenu"
+      />
     </v-container>
   </v-content>
 </template>
@@ -71,7 +75,7 @@ export default {
         image: ""
       },
       cardItems: {
-        items: []
+        items: null
       }
     };
   },
@@ -82,7 +86,8 @@ export default {
     });
     this.getPublicPlaylists({
       token: this.getuserToken(),
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      offset: 0
     });
   },
 
@@ -137,6 +142,8 @@ export default {
   watch: {
     allInfo(newValue) {
       this.user = newValue;
+      if (newValue && newValue.type === "artist")
+        this.$router.push(`/webhome/artist/${this.$route.params.id}`);
     },
     allPublicPlaylists(newValue) {
       this.cardItems.items = newValue;

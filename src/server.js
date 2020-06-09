@@ -451,12 +451,14 @@ export function makeServer({ environment = "development" } = {}) {
         };
       });
       ///////////////////////USER UI/////////////////////////////////////////////////
-      this.get("/v1/users/:id/playlists", schema => {
-        let x = schema.playlists.all().models;
+      this.get("/v1/users/:id/playlists", (schema, request) => {
+        let puplicPlaylists = schema.playlists.where({ public: true }).models;
         let z = [];
-        x.forEach(element => {
+        let limit = parseInt(request.queryParams.limit);
+        let offset = parseInt(request.queryParams.offset);
+        puplicPlaylists.forEach(element => {
           let y = {
-            name: x.name,
+            name: element.name,
             images: element.images,
             _id: element.id,
             owner: { name: "user" },
@@ -464,11 +466,21 @@ export function makeServer({ environment = "development" } = {}) {
           };
           z.push(y);
         });
-        return { playlists: { items: z } };
+
+        return {
+          playlists: {
+            items: z.slice(offset, offset + limit),
+            offset: offset,
+            limit: limit
+          }
+        };
+
+        // return { playlists: { items: z } };
       });
+
       this.get("/v1/me/user/:id", (schema, request) => {
         let x = schema.users.findBy(user => user.id === request.params.id);
-        return { name: x.name, imageUrl: x.imageUrl };
+        return { name: x.name, imageUrl: x.imageUrl, type: x.type };
       });
       //////////////////////////////////////////////////////////////////////////////
       //Intercepting Login post requests
@@ -1053,14 +1065,14 @@ export function makeServer({ environment = "development" } = {}) {
           });
         });
 
+        let limit = parseInt(request.queryParams.limit);
+        let offset = parseInt(request.queryParams.offset);
+
         return {
           albums: {
-            items: resp.slice(
-              request.queryParams.offset,
-              request.queryParams.offset + request.queryParams.limit
-            ),
-            offset: request.queryParams.offset,
-            limit: request.queryParams.limit
+            items: resp.slice(offset, offset + limit),
+            offset: offset,
+            limit: limit
           }
         };
       });
