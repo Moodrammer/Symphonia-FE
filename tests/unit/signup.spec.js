@@ -74,11 +74,6 @@ describe("signup", () => {
     expect(btn_wrp.text()).toBe("Sign up with Facebook");
   });
 
-  it("renders the Signup with Google button", () => {
-    const btn_wrp = wrapper.find("#ggl-sign-btn");
-    expect(btn_wrp.text()).toBe("Sign up with Google");
-  });
-
   it("renders the email textbox", () => {
     const eml_wrp = wrapper.find("#user-email");
     expect(eml_wrp.exists()).toBe(true);
