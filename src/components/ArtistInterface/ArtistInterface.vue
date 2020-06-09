@@ -15,7 +15,7 @@
         'pt-12': true,
         'py-7': true,
         'md-and-up-margin': $vuetify.breakpoint.mdAndUp,
-        'sm-and-down-margin': $vuetify.breakpoint.smAndDown
+        'sm-and-down-margin': !$vuetify.breakpoint.mdAndUp
       }"
     >
       <p class="caption white--text">
