@@ -1,4 +1,6 @@
 import axios from "axios";
+import getuserToken from "../../mixins/userService/getUserToken";
+import isPremium from "../../mixins/userService/isPremium";
 
 const state = {
   token: "",
@@ -46,6 +48,7 @@ const state = {
   savedTracks: [],
   savedTracksNum: null,
   updateSavedTracks: false,
+  nonPremiumTrackID: null,
 
   audioContext: undefined
 };
@@ -116,11 +119,41 @@ const mutations = {
   setContextUrl(state, contextUrl) {
     state.contextUrl = contextUrl;
   },
+  setFacebookTwiterUrl(state) {
+    var url =
+      window.location.host +
+      "/" +
+      "webhome/" +
+      state.contextType +
+      "/" +
+      state.contextId;
+
+    state.facebookUrl =
+      "https://www.facebook.com/sharer/sharer.php?u=" +
+      url +
+      "&amp;src=sdkpreparse";
+
+    state.twitterUrl = "https://twitter.com/intent/tweet?url=" + url;
+  },
   setPicInPicCanvas(state, picInPicCanvas) {
     state.picInPicCanvas = picInPicCanvas;
   },
   load_tracks(state, list) {
     state.savedTracks = list;
+    let premium = isPremium.methods.isPremium();
+    if (premium) {
+      state.nonPremiumTrackID = list[0]._id;
+      for (let i = 0; i < list.length; i++) {
+        list[i].premium = false;
+      }
+    } else {
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].premium == false) {
+          state.nonPremiumTrackID = list[i]._id;
+          break;
+        }
+      }
+    }
   },
   setTracksNum(state, num) {
     state.savedTracksNum = num;
@@ -140,67 +173,73 @@ const mutations = {
     }
   },
   setContextData(state, payload) {
-    state.contextId = payload.contextID;
-    state.contextType = payload.contextType;
-    state.contextUrl = payload.contextUrl;
-    state.audioElement.autoplay = true;
-    state.isBuffering = true;
+    const userToken = getuserToken.methods.getuserToken();
+    if (userToken) {
+      state.contextId = payload.contextID;
+      state.contextType = payload.contextType;
+      state.contextUrl = payload.contextUrl;
+      state.audioElement.autoplay = true;
+      state.isBuffering = true;
+    }
   }
 };
 
 const actions = {
   async getTrackInformation({ state, dispatch }, payload) {
-    if (payload.trackId != null) {
-      await axios
-        .get("/v1/users/track/" + payload.trackId, {
-          headers: {
-            Authorization: payload.token
-          }
-        })
-        .then(async response => {
-          let trackData = response.data;
+    const userToken = getuserToken.methods.getuserToken();
+    if (userToken) {
+      if (payload.trackId != null) {
+        await axios
+          .get("/v1/users/track/" + payload.trackId, {
+            headers: {
+              Authorization: payload.token
+            }
+          })
+          .then(async response => {
+            let trackData = response.data;
 
-          state.trackName = trackData.name;
-          state.trackTotalDurationMs = trackData.durationMs;
-          state.trackId = trackData._id;
-          state.trackAlbumImageUrl = trackData.album.image;
+            state.trackName = trackData.name;
+            state.trackTotalDurationMs = trackData.durationMs;
+            state.trackId = trackData._id;
+            state.trackAlbumImageUrl = trackData.album.image;
 
-          if (document.pictureInPictureEnabled) {
-            //configure PicInPicCanvasRdy
-            state.isPicInPicCanvasRdy = false;
+            if (document.pictureInPictureEnabled) {
+              //configure PicInPicCanvasRdy
+              state.isPicInPicCanvasRdy = false;
 
-            const image = new Image();
-            image.crossOrigin = true;
-            image.src = trackData.album.image;
-            await image.decode();
-            var ctx = state.picInPicCanvas.getContext("2d");
-            ctx.drawImage(image, 0, 0, 512, 512);
+              const image = new Image();
+              image.crossOrigin = true;
+              image.src = trackData.album.image;
+              await image.decode();
+              var ctx = state.picInPicCanvas.getContext("2d");
+              ctx.drawImage(image, 0, 0, 512, 512);
 
-            ctx.font = "30px Comic Sans MS";
-            ctx.fillStyle = "white";
-            ctx.textAlign = "center";
-            ctx.fillText(trackData.name, 512 / 2, 512 / 2);
+              ctx.font = "30px Comic Sans MS";
+              ctx.fillStyle = "white";
+              ctx.textAlign = "center";
+              ctx.fillText(trackData.name, 512 / 2, 512 / 2);
 
-            state.isPicInPicCanvasRdy = true;
-          }
+              state.isPicInPicCanvasRdy = true;
+            }
 
-          state.trackAlbumName = trackData.album.name;
-          state.trackArtistName = trackData.artist.name;
+            state.trackAlbumName = trackData.album.name;
+            state.trackArtistName = trackData.artist.name;
 
-          var token = payload.token.slice(
-            payload.token.indexOf("Bearer ") + "Bearer ".length,
-            payload.token.length
-          );
+            var token = payload.token.slice(
+              payload.token.indexOf("Bearer ") + "Bearer ".length,
+              payload.token.length
+            );
 
-          dispatch("checkSaved", {
-            token: token,
-            id: state.trackId
+            dispatch("checkSaved", {
+              token: token,
+              id: state.trackId
+            });
+          })
+          .catch(error => {
+            console.log("axios caught an error");
+            console.log(error);
           });
-        })
-        .catch(error => {
-          console.log("axios caught an error");
-          console.log(error);
-        });
+      }
     }
   },
   async checkSaved({ commit }, payload) {
@@ -239,23 +278,26 @@ const actions = {
       });
   },
   async saveTrack({ commit }, payload) {
-    await axios
-      .put(
-        "/v1/me/tracks?ids=" + payload.id,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${payload.token}`
+    const userToken = getuserToken.methods.getuserToken();
+    if (userToken) {
+      await axios
+        .put(
+          "/v1/me/tracks?ids=" + payload.id,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${payload.token}`
+            }
           }
-        }
-      )
-      .then(() => {
-        commit("likeTrack", payload.id);
-      })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
+        )
+        .then(() => {
+          commit("likeTrack", payload.id);
+        })
+        .catch(error => {
+          console.log("axios caught an error");
+          console.log(error);
+        });
+    } else commit("webplayerHome/toggleLogoutPopUpState", null, { root: true });
   },
   /**
    * update the queue
@@ -263,42 +305,45 @@ const actions = {
    * @param {string} token the authorization token with the Bearer prefix
    */
   async updateQueue({ state, dispatch }, token) {
-    await axios({
-      method: "get",
-      url: "/v1/me/player/queue",
-      headers: {
-        Authorization: token
-      }
-    }).then(response => {
-      state.queueTracks = response.data.data.queueTracks;
-
-      dispatch("updateQueueTracksInfo", token);
-
-      if (state.queueTracks.length == 0) {
-        state.isLastTrackInQueue = false;
-        state.isFirstTrackInQueue = false;
-      } else {
-        if (
-          response.data.data.previousTrack == null ||
-          state.queueTracks[0] ==
-            response.data.data.currentlyPlaying.currentTrack
-        ) {
-          state.isFirstTrackInQueue = true;
-        } else {
-          state.isFirstTrackInQueue = false;
+    const userToken = getuserToken.methods.getuserToken();
+    if (userToken) {
+      await axios({
+        method: "get",
+        url: "/v1/me/player/queue",
+        headers: {
+          Authorization: token
         }
+      }).then(response => {
+        state.queueTracks = response.data.data.queueTracks;
 
-        if (
-          response.data.data.nextTrack == null ||
-          state.queueTracks[state.queueTracks.length - 1] ==
-            response.data.data.currentlyPlaying.currentTrack
-        ) {
-          state.isLastTrackInQueue = true;
-        } else {
+        dispatch("updateQueueTracksInfo", token);
+
+        if (state.queueTracks.length == 0) {
           state.isLastTrackInQueue = false;
+          state.isFirstTrackInQueue = false;
+        } else {
+          if (
+            response.data.data.previousTrack == null ||
+            state.queueTracks[0] ==
+              response.data.data.currentlyPlaying.currentTrack
+          ) {
+            state.isFirstTrackInQueue = true;
+          } else {
+            state.isFirstTrackInQueue = false;
+          }
+
+          if (
+            response.data.data.nextTrack == null ||
+            state.queueTracks[state.queueTracks.length - 1] ==
+              response.data.data.currentlyPlaying.currentTrack
+          ) {
+            state.isLastTrackInQueue = true;
+          } else {
+            state.isLastTrackInQueue = false;
+          }
         }
-      }
-    });
+      });
+    }
   },
   /**
    * initialize the queue status (repeat, repeatOnce, shuffle)
@@ -576,51 +621,55 @@ const actions = {
    * @param {string} trackId the track Id to be played
    */
   async playTrackInQueue({ state, dispatch, commit }, trackId) {
-    if (trackId != null) {
-      await axios({
-        method: "post",
-        url: "/v1/me/player/tracks/" + trackId,
-        data: {
-          contextId: state.contextId,
-          context_type: state.contextType,
-          context_url: state.contextUrl,
-          device: "Chrome"
-        },
-        headers: {
-          Authorization: state.token
-        }
-      }).then(response => {
-        axios({
-          method: "get",
-          url: "/v1/me/player/queue",
+    const userToken = getuserToken.methods.getuserToken();
+    if (userToken) {
+      commit("setFacebookTwiterUrl");
+      if (trackId != null) {
+        await axios({
+          method: "post",
+          url: "/v1/me/player/tracks/" + trackId,
+          data: {
+            contextId: state.contextId,
+            context_type: state.contextType,
+            context_url: state.contextUrl,
+            device: "Chrome"
+          },
           headers: {
             Authorization: state.token
           }
         }).then(response => {
-          if (response.data.data.repeat != state.isRepeatEnabled) {
-            state.isRepeatEnabled = false;
-            dispatch("toggleRepeat");
-          } else if (response.data.data.repeat != state.isRepeatEnabled) {
-            state.isRepeatEnabled = false;
-            dispatch("toggleRepeatOnce");
-          }
+          axios({
+            method: "get",
+            url: "/v1/me/player/queue",
+            headers: {
+              Authorization: state.token
+            }
+          }).then(response => {
+            if (response.data.data.repeat != state.isRepeatEnabled) {
+              state.isRepeatEnabled = false;
+              dispatch("toggleRepeat");
+            } else if (response.data.data.repeat != state.isRepeatEnabled) {
+              state.isRepeatEnabled = false;
+              dispatch("toggleRepeatOnce");
+            }
 
-          if (response.data.data.shuffle != state.isShuffleEnabled) {
-            state.isShuffleEnabled = false;
-            dispatch("toggleShuffle");
-          }
+            if (response.data.data.shuffle != state.isShuffleEnabled) {
+              state.isShuffleEnabled = false;
+              dispatch("toggleShuffle");
+            }
+          });
+
+          state.trackToken = response.data.data;
+          var audioSource =
+            axios.defaults.baseURL +
+            "/v1/me/player/tracks/" +
+            trackId +
+            "/" +
+            state.trackToken;
+          commit("setTrackUrl", audioSource);
         });
-
-        state.trackToken = response.data.data;
-        var audioSource =
-          axios.defaults.baseURL +
-          "/v1/me/player/tracks/" +
-          trackId +
-          "/" +
-          state.trackToken;
-        commit("setTrackUrl", audioSource);
-      });
-    }
+      }
+    } else commit("webplayerHome/toggleLogoutPopUpState", null, { root: true });
   },
   /**
    * toggle repeat once

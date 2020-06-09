@@ -11,6 +11,7 @@
       class="mr-2 pb-9"
       v-bind:class="{ enabled: !isPlaying, playing: isPlaying }"
       @click="pauseTrack"
+      id="pauseIcon"
     >
       mdi-pause
     </v-icon>
@@ -19,6 +20,7 @@
       v-else-if="hover && !isDisabled"
       v-bind:class="{ enabled: !isPlaying, playing: isPlaying }"
       @click="playTrack"
+      id="playIcon"
       >mdi-play</v-icon
     >
 
@@ -30,6 +32,7 @@
         playing: isPlaying
       }"
       v-else
+      id="noteEight"
     >
       mdi-music-note-eighth</v-icon
     >
@@ -53,10 +56,18 @@
       <v-list-item-subtitle class="mt-3 pl-3 white--text">
         <!--Display the artist and the album/playlist name-->
         <v-row>
-          <p class="subtitle mr-2" v-bind:class="{ 'disabled-2': isDisabled }">
-            {{ artistName }}
-          </p>
-
+          <router-link
+            v-bind:to="'/webhome/artist/' + this.artistID"
+            class="white--text"
+          >
+            <p
+              class="subtitle mr-2"
+              v-bind:class="{ 'disabled-2': isDisabled }"
+              id="routeToArtist"
+            >
+              {{ artistName }}
+            </p>
+          </router-link>
           <p v-if="!isAlbum">.</p>
           <router-link
             v-bind:to="'/webhome/album/' + this.albumID"
@@ -180,21 +191,25 @@ export default {
      * @param {none}
      */
     playTrack: async function() {
-      this.$store.commit("track/setContextData", {
-        contextID: this.contextID,
-        contextType: this.contextType,
-        contextUrl: "https://thesymphonia.ddns.net/api"
-      });
-      await this.$store.dispatch("track/playTrackInQueue", this.ID);
+      if (!this.isPlaying) {
+        this.$store.commit("track/setContextData", {
+          contextID: this.contextID,
+          contextType: this.contextType,
+          contextUrl: "https://thesymphonia.ddns.net/api"
+        });
+        await this.$store.dispatch("track/playTrackInQueue", this.ID);
 
-      await this.$store.dispatch("track/getTrackInformation", {
-        token: "Bearer " + this.getuserToken(),
-        trackId: this.ID
-      });
-      await this.$store.dispatch(
-        "track/updateQueue",
-        "Bearer " + this.getuserToken()
-      );
+        await this.$store.dispatch("track/getTrackInformation", {
+          token: "Bearer " + this.getuserToken(),
+          trackId: this.ID
+        });
+        await this.$store.dispatch(
+          "track/updateQueue",
+          "Bearer " + this.getuserToken()
+        );
+      } else {
+        this.$store.dispatch("track/togglePauseAndPlay");
+      }
       this.$store.commit("track/setIsTrackPaused", this.isPaused);
     },
     /**

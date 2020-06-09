@@ -1,4 +1,6 @@
 import axios from "axios";
+import getuserToken from "../../mixins/userService/getUserToken";
+import isPremium from "../../mixins/userService/isPremium";
 
 const state = {
   userSavedPlaylists: [],
@@ -10,7 +12,7 @@ const state = {
   deletedFlag: false,
   playlistID: null,
   updateTracksFlag: null,
-
+  nonPremiumTrackID: null,
   createWithTrack: false,
 
   //The tracks' IDs to be added
@@ -46,6 +48,20 @@ const mutations = {
   },
   setPlaylistTracks(state, tracks) {
     state.playlistTracks = tracks;
+    let premium = isPremium.methods.isPremium();
+    if (premium) {
+      state.nonPremiumTrackID = tracks[0]._id;
+      for (let i = 0; i < tracks.length; i++) {
+        tracks[i].premium = false;
+      }
+    } else {
+      for (let i = 0; i < tracks.length; i++) {
+        if (tracks[i].premium == false) {
+          state.nonPremiumTrackID = tracks[i]._id;
+          break;
+        }
+      }
+    }
   },
   setOwnedPlaylists(state, playlists) {
     state.ownedPlaylists = playlists;
@@ -53,11 +69,24 @@ const mutations = {
   setFollowed(state, payload) {
     state.isFollowed = payload[0];
   },
-  followedPlaylist(state) {
+  followedPlaylist(state, payload) {
     state.isFollowed = true;
+    console.log(payload);
+    let playlist = {
+      name: payload.playlistName,
+      id: payload.playlistID,
+      type: "playlist"
+    };
+    state.userSavedPlaylists.push(playlist);
   },
   unfollowedPlaylist(state) {
     state.isFollowed = false;
+  },
+  removeFollowedPlaylist(state, playlistID) {
+    let playlists = state.userSavedPlaylists.filter(function(userPlaylists) {
+      return userPlaylists.id != playlistID;
+    });
+    state.userSavedPlaylists = playlists;
   },
   changeDeleteModel(state) {
     state.deletePlaylist = !state.deletePlaylist;
@@ -222,23 +251,32 @@ const actions = {
   //          Follow a playlist (Not created by user)
   //--------------------------------------------------------
   followPlaylist({ commit }, payload) {
-    axios
-      .put(
-        "/v1/playlists/" + payload.id + "/followers",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${payload.token}`
+    const userToken = getuserToken.methods.getuserToken();
+    if (userToken) {
+      axios
+        .put(
+          "/v1/playlists/" + payload.id + "/followers",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`
+            }
           }
-        }
-      )
-      .then(() => {
-        commit("followedPlaylist");
-      })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
+        )
+        .then(() => {
+          commit("followedPlaylist", {
+            playlistID: payload.id,
+            playlistName: payload.name
+          });
+        })
+        .catch(error => {
+          if (error.response.statusText === "Unauthorized") {
+            commit("webplayerHome/toggleLogoutPopUpState", null, {
+              root: true
+            });
+          }
+        });
+    } else commit("webplayerHome/toggleLogoutPopUpState", null, { root: true });
   },
   //--------------------------------------------------------
   //          Unfollow a playlist (Not created by user)
@@ -252,6 +290,7 @@ const actions = {
       })
       .then(() => {
         commit("unfollowedPlaylist");
+        commit("removeFollowedPlaylist", payload.id);
       })
       .catch(error => {
         console.log("axios caught an error");
@@ -302,6 +341,7 @@ const actions = {
       })
       .then(() => {
         commit("setDeletedFlag");
+        commit("removeFollowedPlaylist", state.playlistID);
       })
       .catch(error => {
         console.log("axios caught an error");

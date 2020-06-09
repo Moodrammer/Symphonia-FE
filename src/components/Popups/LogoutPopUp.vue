@@ -23,46 +23,41 @@
                 </v-img>
               </v-container>
             </v-col>
-            <v-col lg="6" sm="6" md="6" class="pr-3 mt-8">
+            <v-col lg="6" sm="6" md="6" class="pr-3 mt-5">
               <v-row justify="center">
                 <h2
-                  class="white--text font-weight-black mt-3 mr-2"
+                  class="white--text font-weight-black mr-1"
                   v-bind:class="{
                     'small-header': isSm(),
                     'xsmall-header': isXs(),
                     'lg-header': isLg() || isMd()
                   }"
                 >
-                  Enjoying
+                  Continue with a free
                 </h2>
                 <h2
-                  class="white--text font-weight-black mt-3"
+                  class="white--text font-weight-black"
                   v-bind:class="{
                     'small-header': isSm(),
                     'xsmall-header': isXs(),
                     'lg-header': isLg() || isMd()
                   }"
                 >
-                  Symphonia..?
+                  Symphonia account..?
                 </h2>
               </v-row>
-              <h2
-                class="white--text font-weight-bold mt-3 mr-3"
-                v-bind:class="{
-                  'small-header2': isSm(),
-                  'xsmall-header2': isXs()
-                }"
-              >
-                Become one of our premium members today.
-              </h2>
               <v-row justify="center">
                 <v-btn
-                  id="premium"
-                  class="white--text px-6 mt-5 mb-5"
+                  id="signUp"
+                  class="white--text px-12 mt-5 mb-5"
                   rounded
-                  to="/premium/?checkout=false"
-                  >Get Premium</v-btn
+                  @click="toSignUp"
+                  >SIGN UP FREE</v-btn
                 >
+              </v-row>
+              <v-row justify="center" class="white--text">
+                <p class="mr-2">Already have an account?</p>
+                <h4 id="login" class="white--text" @click="toLogin">LOG IN</h4>
               </v-row>
             </v-col>
           </v-row>
@@ -92,8 +87,16 @@ export default {
      * @param {none}
      */
     close: function() {
-      this.$store.commit("playlist/changeAdsPopup");
+      this.$store.commit("webplayerHome/toggleLogoutPopUpState");
       this.dialog = false;
+    },
+    toSignUp: function() {
+      this.$router.push("/signup");
+      this.close();
+    },
+    toLogin: function() {
+      this.$router.push("/login");
+      this.close();
     }
   },
   mixins: [getDeviceSize]
@@ -101,17 +104,17 @@ export default {
 </script>
 
 <style scoped>
-#premium {
+#signUp {
   color: #fff;
   background-color: #1db954;
   border-width: 0;
 }
-#premium:hover {
+#signUp:hover {
   background-color: #1ed760;
 }
 #card {
   margin-top: 90px;
-  background-image: linear-gradient(-225deg, #cbbacc 0%, #2580b3 100%);
+  background-image: linear-gradient(-20deg, #616161 0%, #9bc5c3 100%);
 }
 #close {
   border-width: 0;
@@ -122,26 +125,26 @@ export default {
 }
 
 .lg-img {
-  height: 300px;
-  width: 300px;
+  height: 260px;
+  width: 260px;
 }
 .xsmall-img {
-  height: 95px;
-  width: 95px;
+  height: 92px;
+  width: 90px;
 }
 .small-img {
   height: 220px;
   width: 220px;
 }
-.small-header,
-.xsmall-header {
-  font-size: 25px;
-}
-.small-header2,
-.xsmall-header2 {
-  font-size: 20px;
+.xsmall-header,
+.small-header {
+  font-size: 16px;
 }
 .lg-header {
-  font-size: 50px;
+  font-size: 35px;
+}
+#login:hover {
+  transform: scale(1.05, 1.05);
+  cursor: pointer;
 }
 </style>

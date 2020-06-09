@@ -1,4 +1,6 @@
 import axios from "axios";
+import getuserToken from "../../mixins/userService/getUserToken";
+import isPremium from "../../mixins/userService/isPremium";
 
 //--------------------------------------------------------
 //             The stored album's data
@@ -10,7 +12,8 @@ const state = {
   singleAlbum: null,
   albumTracks: [],
   isFollowdAlbum: true,
-  isLoading: false
+  isLoading: false,
+  nonPremiumTrackID: null
 };
 
 //-----------------------------------------------------------------
@@ -26,6 +29,20 @@ const mutations = {
   },
   setAlbumTracks(state, albumTracks) {
     state.albumTracks = albumTracks;
+    let premium = isPremium.methods.isPremium();
+    if (premium) {
+      state.nonPremiumTrackID = albumTracks[0]._id;
+      for (let i = 0; i < albumTracks.length; i++) {
+        albumTracks[i].premium = false;
+      }
+    } else {
+      for (let i = 0; i < albumTracks.length; i++) {
+        if (albumTracks[i].premium == false) {
+          state.nonPremiumTrackID = albumTracks[i]._id;
+          break;
+        }
+      }
+    }
   },
   setFollowed(state, payload) {
     state.isFollowdAlbum = payload[0];
@@ -38,6 +55,12 @@ const mutations = {
   },
   setLoading() {
     state.isLoading = true;
+  },
+  removeFollowedAlbum(state, albumID) {
+    let albums = state.followedAlbums.filter(function(userAlbums) {
+      return userAlbums._id != albumID;
+    });
+    state.followedAlbums = albums;
   }
 };
 
@@ -134,37 +157,42 @@ const actions = {
   //-------------------------------------------------
   //      Save an album for the current user
   //-------------------------------------------------
-  followAlbum({ commit }, payload) {
-    axios
-      .put(
-        "/v1/me/albums?ids=" + payload.albumID,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${payload.token}`
+  followAlbum({ commit }, albumID) {
+    const userToken = getuserToken.methods.getuserToken();
+    if (userToken) {
+      axios
+        .put(
+          "/v1/me/albums?ids=" + albumID,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`
+            }
           }
-        }
-      )
-      .then(() => {
-        commit("followedAlbum");
-      })
-      .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
-      });
+        )
+        .then(() => {
+          commit("followedAlbum");
+        })
+        .catch(error => {
+          console.log("axios caught an error");
+          console.log(error);
+        });
+    } else commit("webplayerHome/toggleLogoutPopUpState", null, { root: true });
   },
   //-------------------------------------------------
   //    Delete an album from user's followed albums
   //-------------------------------------------------
-  unfollowAlbum({ commit }, payload) {
+  unfollowAlbum({ commit }, albumID) {
+    const userToken = getuserToken.methods.getuserToken();
     axios
-      .delete("/v1/me/albums?ids=" + payload.id, {
+      .delete("/v1/me/albums?ids=" + albumID, {
         headers: {
-          Authorization: `Bearer ${payload.token}`
+          Authorization: `Bearer ${userToken}`
         }
       })
       .then(() => {
         commit("notFollowedAlbum");
+        commit("removeFollowedAlbum", albumID);
       })
       .catch(error => {
         console.log("axios caught an error");
