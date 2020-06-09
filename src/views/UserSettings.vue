@@ -31,7 +31,7 @@ import appFooter from "../components/Homepage/TheHomepageFooter.vue";
 import NotificationPopup from "../components/Notifications/TheNotificationPopUp";
 import isLoggedIn from "../mixins/userService/isLoggedIn";
 import isNotificationsAllowed from "../mixins/userService/isNotificationsAllowed";
-import getuserToken from "../mixins/userService/getUserToken"
+import getuserToken from "../mixins/userService/getUserToken";
 
 export default {
   data() {

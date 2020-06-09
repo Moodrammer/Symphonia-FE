@@ -32,14 +32,14 @@ describe("Webplayer Home", () => {
       getRegistrationToken: jest.fn(),
       setRecieveNotificationHandler: jest.fn(),
       setRefreshTokenHandler: jest.fn()
-    }
+    };
 
     playlistActions = {
       getPlaylists: jest.fn()
-    }
+    };
     categoryMutations = {
       changeLogoutUpdate: jest.fn()
-    }
+    };
     store = new Vuex.Store({
       modules: {
         notification: {
@@ -131,14 +131,14 @@ describe("Webplayer Home", () => {
     expect(notifyActions.getRegistrationToken).toBeCalled();
     expect(notifyActions.setRecieveNotificationHandler).toBeCalled();
     expect(notifyActions.setRefreshTokenHandler).toBeCalled();
-  })
+  });
 
   it("doesn't initialize notification handlers incase the user is logged out", () => {
     notifyActions = {
       getRegistrationToken: jest.fn(),
       setRecieveNotificationHandler: jest.fn(),
       setRefreshTokenHandler: jest.fn()
-    }
+    };
     const router = new VueRouter();
     const $forceUpdate = jest.fn();
     const contextID = jest.fn();
@@ -160,17 +160,17 @@ describe("Webplayer Home", () => {
         }
       }
     });
-      expect(notifyActions.getRegistrationToken).not.toBeCalled();
-      expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
-      expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
-  })
+    expect(notifyActions.getRegistrationToken).not.toBeCalled();
+    expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
+    expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
+  });
 
   it("doesn't initialize notification handlers incase the user is logged in but disabling notifications", () => {
     notifyActions = {
       getRegistrationToken: jest.fn(),
       setRecieveNotificationHandler: jest.fn(),
       setRefreshTokenHandler: jest.fn()
-    }
+    };
     const router = new VueRouter();
     const $forceUpdate = jest.fn();
     const contextID = jest.fn();
@@ -192,10 +192,10 @@ describe("Webplayer Home", () => {
         }
       }
     });
-      expect(notifyActions.getRegistrationToken).not.toBeCalled();
-      expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
-      expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
-  })
+    expect(notifyActions.getRegistrationToken).not.toBeCalled();
+    expect(notifyActions.setRecieveNotificationHandler).not.toBeCalled();
+    expect(notifyActions.setRefreshTokenHandler).not.toBeCalled();
+  });
 
   // it("Watch the context menu id", async () => {
   //   wrapper.setData({ contextMenu: { id: "124" } });
