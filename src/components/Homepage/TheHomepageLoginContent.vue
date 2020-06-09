@@ -8,6 +8,7 @@
       }"
     >
       <v-container style="padding-top:130px;">
+        <notification-popup></notification-popup>
         <v-row>
           <v-col md="10" offset-md="1" xs="12">
             <h1
@@ -173,7 +174,10 @@
 
 <script>
 import getDeviceSize from "../../mixins/getDeviceSize";
-
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
+import isNotificationsAllowed from "../../mixins/userService/isNotificationsAllowed";
+import getuserToken from "../../mixins/userService/getUserToken";
+import NotificationPopup from "../Notifications/TheNotificationPopUp"
 /**
  * The homepage content after login.
  * @version 1.0.0
@@ -181,17 +185,29 @@ import getDeviceSize from "../../mixins/getDeviceSize";
 
 export default {
   name: "HomepageLoginContent",
-
-  components: {},
-
   data() {
     return {
       bestSixSongsLoaded: false,
       bestSixSongs: false
     };
   },
-
-  mixins: [getDeviceSize]
+  components: {
+    NotificationPopup
+  },
+  created() {
+    if (this.isNotificationsAllowed()) {
+      //get registration token from the user if the user is logged in
+      this.$store.dispatch(
+        "notification/getRegistrationToken",
+        this.getuserToken()
+      );
+      //set up a listener to catch notification messages in webhome
+      this.$store.dispatch("notification/setRecieveNotificationHandler");
+      //set up a listener for any change in token in the fcm server to refersh the token
+      this.$store.dispatch("notification/setRefreshTokenHandler");
+    } 
+  },
+  mixins: [getDeviceSize, isLoggedIn, getuserToken, isNotificationsAllowed]
 };
 </script>
 

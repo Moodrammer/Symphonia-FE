@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-progress-linear v-if="loading" indeterminate stream height="3" fixed>
+    <v-progress-linear v-if="loading" indeterminate stream height="4" fixed>
     </v-progress-linear>
     <!-- Header of Sign Up page  -->
     <symphonia-Header></symphonia-Header>

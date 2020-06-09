@@ -136,7 +136,8 @@ const actions = {
             "Push notifications are blocked from the browser. You can unblock them later from the browser then enable them from the settings page",
           notificationIcon: "",
           color: "rgba(197, 57, 57, 0.93)",
-          timeout: 0
+          timeout: 0,
+          pushUrl: "/account/notifications"
         };
         dispatch("setNotification", notificationData);
       });

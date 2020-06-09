@@ -1,6 +1,6 @@
 <template>
   <div @keyup="checkEnterKey">
-    <v-progress-linear indeterminate v-if="loading" stream height="3">
+    <v-progress-linear indeterminate v-if="loading" stream height="4" fixed>
     </v-progress-linear>
     <symphonia-header></symphonia-header>
     <v-divider></v-divider>
