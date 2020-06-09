@@ -42,7 +42,7 @@ const actions = {
         .get("/v1/search/" + state.searchText + "?limit=6")
         .then(response => {
           // the user is exist then put his data in the status to make the view take the required data
-          if (response.status == 200 || response.status == 201) {
+          if (response.status == 200 || response.status == 201 || response.status ==203) {
             let albums = response.data.albums;
             let category = response.data.category;
             let playlist = response.data.playlist;
@@ -55,7 +55,19 @@ const actions = {
             category.forEach(element => {
               element.type = "gerne";
               element.description = "Gerne";
-              element.image = element.url;
+              element.image = element.icons[0].url;
+            });
+            artists.forEach(element => {
+              element.id = element._id;
+              element.image = element.imageUrl;
+            });
+            playlist.forEach(element => {
+              element.image = element.images[0];
+              element.type = "playlist";
+            });
+            profiles.forEach(element =>{
+              element.image = element.imageUrl;
+              element.id = element._id;
             });
             commit("setAlbums", albums);
             commit("setCategory", category);

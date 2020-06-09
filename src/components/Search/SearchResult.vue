@@ -4,22 +4,66 @@
       <div>
         <h1>Search for `{{ this.$route.params.name }}`</h1>
       </div>
-      <div style="margin-top:15px;">
+      <v-row style="margin-top:15px;">
         <h2>Artists</h2>
-        <CardGrid :cardItems="artists" cardStyle="artist" />
-      </div>
-      <div style="margin-top:15px;">
+        <v-spacer></v-spacer>
+        <router-link
+          class="white--text mt-3"
+          :to="
+            '/webhome/search/' + encodeURI(this.$route.params.name) + '/Artists'
+          "
+          ><p id="seeAll">See All</p></router-link
+        >
+        <CardGrid :cardItems="artists" />
+      </v-row>
+      <v-row style="margin-top:15px;">
         <h2>Albums</h2>
+        <v-spacer></v-spacer>
+        <router-link
+          class="white--text mt-3"
+          :to="
+            '/webhome/search/' + encodeURI(this.$route.params.name) + '/Albums'
+          "
+          ><p id="seeAll">See All</p></router-link
+        >
         <CardGrid :cardItems="albums" />
-      </div>
-      <div style="margin-top:15px;">
+      </v-row>
+      <v-row style="margin-top:15px;">
         <h2>Playlist</h2>
+        <v-spacer></v-spacer>
+        <router-link
+          class="white--text mt-3"
+          :to="
+            '/webhome/search/' + encodeURI(this.$route.params.name) + '/Playlists'
+          "
+          ><p id="seeAll">See All</p></router-link
+        >
         <CardGrid :cardItems="playlist" />
-      </div>
-      <div style="margin-top:15px;">
+      </v-row>
+      <v-row style="margin-top:15px;">
+        <h2>Profiles</h2>
+        <v-spacer></v-spacer>
+        <router-link
+          class="white--text mt-3"
+          :to="
+            '/webhome/search/' + encodeURI(this.$route.params.name) + '/Profiles'
+          "
+          ><p id="seeAll">See All</p></router-link
+        >
+        <CardGrid :cardItems="profiles" />
+      </v-row>
+      <v-row style="margin-top:15px;">
         <h2>Gernes</h2>
+        <v-spacer></v-spacer>
+        <router-link
+          class="white--text mt-3"
+          :to="
+            '/webhome/search/' + encodeURI(this.$route.params.name) + '/Gernes'
+          "
+          ><p id="seeAll">See All</p></router-link
+        >
         <CardGrid :cardItems="category" />
-      </div>
+      </v-row>
     </v-container>
   </v-content>
 </template>
@@ -51,6 +95,12 @@ export default {
     },
     artists() {
       return { items: this.$store.state.search.artists };
+    },
+    profiles() {
+      return { items: this.$store.state.search.profiles };
+    },
+    tracks() {
+      return this.$store.state.search.tracks;
     }
   }
 };
@@ -60,5 +110,15 @@ export default {
 h2 {
   margin-left: 10px;
   margin-bottom: -15px;
+}
+a:hover {
+  opacity: 1;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+a {
+  text-decoration: none;
+  opacity: 0.6;
 }
 </style>
