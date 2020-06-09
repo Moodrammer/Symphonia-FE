@@ -27,6 +27,15 @@ describe("Webplayer Home", () => {
 
     store = new Vuex.Store({
       modules: {
+        webplayerHome:{
+          namespaced: true,
+          state: {
+            logoutPopUpState:false
+          },
+          mutations: {
+
+          }
+        },
         playlist: {
           namespaced: true,
           state: {

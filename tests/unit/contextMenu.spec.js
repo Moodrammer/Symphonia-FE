@@ -30,9 +30,14 @@ describe("Context Menu", () => {
     };
     store = new Vuex.Store({
       modules: {
+        webplayerHome: {
+          namespaced: true,
+          mutations:{
+            toggleLogoutPopUpState:jest.fn()
+          }
+        },
         playlist: {
           namespaced: true,
-
           state: {
             singlePlaylist: {
               name: "QuranPlaylist1",
