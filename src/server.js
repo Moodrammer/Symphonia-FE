@@ -940,10 +940,13 @@ export function makeServer({ environment = "development" } = {}) {
         }
         mockTracks = [];
         for (let i = 0; i < contextTracks.length; i++) {
-          if(schema.tracks.where({ id: contextTracks[i] }).models[0].premium==false)
-          mockTracks.push(
-            schema.tracks.where({ id: contextTracks[i] }).models[0].link
-          );
+          if (
+            schema.tracks.where({ id: contextTracks[i] }).models[0].premium ==
+            false
+          )
+            mockTracks.push(
+              schema.tracks.where({ id: contextTracks[i] }).models[0].link
+            );
         }
         currentlyPlayingIndex = mockTracks.indexOf(link);
 
