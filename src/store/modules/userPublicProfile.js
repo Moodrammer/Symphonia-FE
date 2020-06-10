@@ -6,7 +6,7 @@ const state = {
 };
 
 const mutations = {
-  load_playlists: (state, list) => {
+  setPlaylists: (state, list) => {
     list.playlists.items = list.playlists.items.filter(e => e.public);
     if (
       !state.playlists ||
@@ -21,7 +21,7 @@ const mutations = {
       state.playlists.limit = state.playlists.items.length;
     }
   },
-  load_userInfo: (state, info) => (state.userInfo = info)
+  setUserInfo: (state, info) => (state.userInfo = info)
 };
 
 const getters = {
@@ -65,7 +65,7 @@ const actions = {
         }
       })
       .then(response => {
-        commit("load_userInfo", response.data);
+        commit("setUserInfo", response.data);
       })
       .catch(error => {
         console.log("axios caught an error in getUserInfo");
@@ -88,7 +88,7 @@ const actions = {
         params: { limit: limit, offset: payload.offset }
       })
       .then(response => {
-        commit("load_playlists", response.data);
+        commit("setPlaylists", response.data);
         if (response.data.playlists.items.length >= limit) {
           dispatch("getPublicPlaylists", {
             token: payload.token,
