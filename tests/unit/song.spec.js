@@ -9,12 +9,28 @@ describe("Song Component", () => {
   let wrapper;
   let vuetify;
   let store;
+  let trackActions;
+  let trackMutations;
 
   beforeEach(() => {
     vuetify = new Vuetify();
     Vue.use(Vuetify);
     Vue.use(Vuex);
 
+    trackActions={
+      removeSavedTrack: jest.fn(),
+      checkSaved: jest.fn(),
+      saveTrack: jest.fn(),
+      togglePauseAndPlay: jest.fn(),
+      getTrackInformation: jest.fn(),
+      playTrackInQueue: jest.fn(),
+      updateQueue: jest.fn()
+    };
+
+    trackMutations={
+      setContextData: jest.fn(),
+      setIsTrackPaused: jest.fn()
+    };
     //mocking the store
     store = new Vuex.Store({
       modules: {
@@ -23,21 +39,11 @@ describe("Song Component", () => {
           state: {
             generalLiked: true,
             trackId: "1",
-            isTrackPaused: true
+            isTrackPaused: true,
+            contextID:"id"
           },
-          mutations: {
-            setContextData: jest.fn(),
-            setIsTrackPaused: jest.fn()
-          },
-          actions: {
-            removeSavedTrack: jest.fn(),
-            checkSaved: jest.fn(),
-            saveTrack: jest.fn(),
-            togglePauseAndPlay: jest.fn(),
-            getTrackInformation: jest.fn(),
-            playTrackInQueue: jest.fn(),
-            updateQueue: jest.fn()
-          }
+          mutations: trackMutations,
+          actions: trackActions
         }
       }
     });
@@ -54,7 +60,9 @@ describe("Song Component", () => {
           type: "type",
           id: "1234"
         },
-        ID: "2"
+        ID: "2",
+        contextID:"context",
+        isDisabled: true
       }
     });
   });
@@ -90,12 +98,17 @@ describe("Song Component", () => {
   //---------------------------------------------------
   //    Test soundplayer interaction with song item
   //---------------------------------------------------
-  it("Play a new track", () => {
+  it("Play a new track from the same context", () => {
     wrapper.vm.playTrack();
-    expect("playTrackInQueue").toHaveBeenCalled;
-    expect("setContextData").toHaveBeenCalled;
-    expect("getTrackInformation").toHaveBeenCalled;
-    expect("setIsTrackPaused").toHaveBeenCalled;
+    expect(trackActions.playTrackInQueue).toHaveBeenCalled();
+    expect(trackMutations.setContextData).toHaveBeenCalled();
+  });
+
+  it("Play a new track from the another context", () => {
+    store.state.track.trackId = "2";
+    wrapper.vm.playTrack();
+    expect(trackActions.playTrackInQueue).toHaveBeenCalled();
+    expect(trackMutations.setContextData).toHaveBeenCalled();
   });
 
   it("Check if the track is the currently playing track", () => {
@@ -110,9 +123,21 @@ describe("Song Component", () => {
     expect(wrapper.vm.isPaused).toBe(true);
   });
 
+  it("Play the current track",()=>{
+    wrapper.setProps({ ID: "1" });
+    wrapper.setProps({ contextID: "id" });
+    wrapper.vm.playTrack();
+    expect(trackActions.togglePauseAndPlay).toHaveBeenCalled();
+    expect(trackMutations.setIsTrackPaused).toHaveBeenCalled();
+  });
+
   it("Pause the currently playing track", () => {
     wrapper.vm.pauseTrack();
-    expect("togglePauseAndPlay").toHaveBeenCalled;
-    expect("setIsTrackPaused").toHaveBeenCalled;
+    expect(trackActions.togglePauseAndPlay).toHaveBeenCalled();
+    expect(trackMutations.setIsTrackPaused).toHaveBeenCalled();
+  });
+
+  it("Set disabled flag",()=>{
+    expect(wrapper.vm.disabledTrack).toBe(true);
   });
 });
