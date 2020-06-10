@@ -40,7 +40,9 @@
               encodeURIComponent(this.$route.params.name) +
               '/Artists'
           "
-          ><p id="seeAll" v-if="artists.items.length == 6">See All</p></router-link
+          ><p id="seeAll" v-if="artists.items.length == 6">
+            See All
+          </p></router-link
         >
         <CardGrid :cardItems="artists" />
       </v-row>
@@ -52,7 +54,9 @@
           :to="
             '/webhome/search/' + encodeURI(this.$route.params.name) + '/Albums'
           "
-          ><p id="seeAll" v-if="albums.items.length == 6">See All</p></router-link
+          ><p id="seeAll" v-if="albums.items.length == 6">
+            See All
+          </p></router-link
         >
         <CardGrid :cardItems="albums" />
       </v-row>
@@ -66,7 +70,9 @@
               encodeURI(this.$route.params.name) +
               '/Playlists'
           "
-          ><p id="seeAll" v-if="playlist.items.length == 6">See All</p></router-link
+          ><p id="seeAll" v-if="playlist.items.length == 6">
+            See All
+          </p></router-link
         >
         <CardGrid :cardItems="playlist" />
       </v-row>
@@ -80,7 +86,9 @@
               encodeURI(this.$route.params.name) +
               '/Profiles'
           "
-          ><p id="seeAll" v-if="profiles.items.length == 6">See All</p></router-link
+          ><p id="seeAll" v-if="profiles.items.length == 6">
+            See All
+          </p></router-link
         >
         <CardGrid :cardItems="profiles" />
       </v-row>
@@ -92,7 +100,9 @@
           :to="
             '/webhome/search/' + encodeURI(this.$route.params.name) + '/Gernes'
           "
-          ><p id="seeAll" v-if="category.items.length == 6">See All</p></router-link
+          ><p id="seeAll" v-if="category.items.length == 6">
+            See All
+          </p></router-link
         >
         <CardGrid :cardItems="category" />
       </v-row>
