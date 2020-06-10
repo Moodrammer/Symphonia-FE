@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import userUI from "@/components/UserUI.vue";
+import UserInterface from "@/components/UserInterface.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
@@ -23,7 +23,7 @@ describe("Dashboard.vue", () => {
 
     store = new Vuex.Store(storeMock);
 
-    wrapper = shallowMount(userUI, {
+    wrapper = shallowMount(UserInterface, {
       vuetify,
       store,
       mocks: router

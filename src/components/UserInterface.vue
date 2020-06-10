@@ -62,7 +62,7 @@ import { mapGetters, mapActions } from "vuex";
  * @example [none]
  */
 export default {
-  name: "UserUI",
+  name: "UserInterface",
   props: ["contextMenu"],
   components: {
     CardGrid
