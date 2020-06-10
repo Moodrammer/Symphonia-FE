@@ -7,8 +7,8 @@
         </v-btn>
       </template>
       <v-list
-        max-height="600"
-        width="500"
+        max-height="400"
+        max-width="500"
         dark
         dense
         tile
@@ -54,6 +54,11 @@
 </template>
 
 <script>
+/**
+ * The Notification history list component displays the user's previous recieved push Notifications
+ * @displayName Notification History List
+ * @example [none]
+ */
 export default {
   name: "NotificationHistorylist",
   created() {

@@ -217,7 +217,7 @@ export default {
      * @param {none}
      */
     playLikedSongs: async function() {
-      if (this.numOfTracks && this.firstNonPreimum) {
+      if (this.numOfTracks && this.firstNonPreimum != null) {
         if (this.contextType != "liked") {
           this.$store.commit("track/setContextData", {
             contextID: "id",

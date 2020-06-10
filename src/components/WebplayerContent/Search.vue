@@ -16,9 +16,6 @@
 <script>
 import cardGerne from "../Search/CardGenre.vue";
 export default {
-  data() {
-    return {};
-  },
   components: {
     cardGerne: cardGerne
   },

@@ -3,7 +3,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import Vuetify from "vuetify";
 
-import notificationPopup from "../../src/components/Notifications/TheNotificationPopUp";
+import notificationPopup from "../../src/components/Notifications/NotificationPopUp";
 
 describe("notificationPopup", () => {
   let wrapper;

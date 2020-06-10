@@ -9,7 +9,8 @@ const state = {
   playlist: [],
   profiles: [],
   tracks: [],
-  next: null
+  next: null,
+  word: ""
 };
 const mutations = {
   setSearchText(state, payload) {
@@ -106,6 +107,7 @@ const actions = {
       //commit("clearState", []);
       commit("setNext", null);
     }
+    state.word = payload.word;
     return new Promise((resolve, reject) => {
       axios
         .get(payload.q)

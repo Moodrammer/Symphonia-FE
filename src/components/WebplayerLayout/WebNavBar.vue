@@ -247,7 +247,6 @@ export default {
         this.showSearch = true;
         this.showCollection = false;
         this.showUpgrade = false;
-        this.search = this.$route.params.name;
       } else if (
         item === "Playlists" ||
         item === "Artists" ||
@@ -257,6 +256,10 @@ export default {
         this.showCollection = true;
         this.showUpgrade = false;
         this.search = "";
+      } else if (item === "searchSeeAll") {
+        this.showSearch = false;
+        this.showCollection = false;
+        this.showUpgrade = false;
       } else {
         this.showCollection = false;
         this.showSearch = false;

@@ -71,6 +71,12 @@
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import symphoniaHeader from "@/components/SymphoniaHeader.vue";
 import axios from "axios";
+
+/**
+ *  The artist activation page where the artist is first redirected on email confirmation to begin his journey in our website
+ * @displayName Artist Activation
+ * @example [none]
+ */
 export default {
   name: "ArtistActivation",
   data() {

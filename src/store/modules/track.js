@@ -140,6 +140,7 @@ const mutations = {
   },
   load_tracks(state, list) {
     state.savedTracks = list;
+    state.nonPremiumTrackID = null;
     let premium = isPremium.methods.isPremium();
     if (premium) {
       state.nonPremiumTrackID = list[0]._id;

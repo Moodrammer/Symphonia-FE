@@ -35,7 +35,7 @@ import DeletePlaylist from "../components/DeletePlaylist.vue";
 import CreatePlaylist from "../components/CreatePlaylist.vue";
 import AddTrackToPlaylist from "../components/AddTrackToPlaylist.vue";
 import AdsPopup from "../components/Popups/AdsPopup.vue";
-import NotificationPopup from "../components/Notifications/TheNotificationPopUp.vue";
+import NotificationPopup from "../components/Notifications/NotificationPopUp.vue";
 import LogoutPopUp from "../components/Popups/LogoutPopUp.vue";
 /**
  * The webplayer view it contains (the side bar - the navigation bar - the sound player)

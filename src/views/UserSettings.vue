@@ -28,7 +28,7 @@ import PreAds from "../components/User Settings/PremiumAds.vue";
 import SideBar from "../components/User Settings/SideBar.vue";
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
-import NotificationPopup from "../components/Notifications/TheNotificationPopUp";
+import NotificationPopup from "../components/Notifications/NotificationPopUp";
 import isLoggedIn from "../mixins/userService/isLoggedIn";
 import isNotificationsAllowed from "../mixins/userService/isNotificationsAllowed";
 import getuserToken from "../mixins/userService/getUserToken";

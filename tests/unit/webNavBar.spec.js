@@ -10,11 +10,16 @@ describe("Nav Bar", () => {
   let wrapper;
   let vuetify;
   let store;
+  let $route = {
+    name: "/webhome/search/:name",
+    params: {
+      name: ""
+    }
+  };
 
   beforeEach(() => {
-    const router = new VueRouter();
     vuetify = new Vuetify();
-
+    const router = new VueRouter();
     Vue.use(Vuetify);
     Vue.use(VueRouter);
     Vue.use(Vuex);
@@ -34,7 +39,10 @@ describe("Nav Bar", () => {
       store,
       vuetify,
       attachToDocument: true,
-      removeEventListener: jest.fn()
+      removeEventListener: jest.fn(),
+      mocks: {
+        $route
+      }
     });
   });
 
@@ -78,13 +86,6 @@ describe("Nav Bar", () => {
   it("Logout function", () => {
     wrapper.vm.logOutAndRerender();
     expect(wrapper.vm.logOut()).toHaveBeenCalled;
-  });
-
-  it("Handles searvh view tabs", () => {
-    wrapper.vm.handleTabs("search");
-    expect(wrapper.vm.showSearch).toBe(true);
-    expect(wrapper.vm.showCollection).toBe(false);
-    expect(wrapper.vm.showUpgrade).toBe(false);
   });
 
   it("Handles Home tabs", () => {
@@ -137,5 +138,23 @@ describe("Nav Bar", () => {
   it("Destory the event listener", () => {
     wrapper.destroy();
     expect(wrapper.vm.updateScroll()).toHaveBeenCalled;
+  });
+  it("check if search is empty then the router at search/", () => {
+    wrapper.vm.search = "";
+    wrapper.vm.request();
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.$route.fullPath).toBe("/webhome/search/");
+  });
+  it("check if search is not empty then the router at searchItem", () => {
+    wrapper.vm.search = "assa";
+    wrapper.vm.request();
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.$route.fullPath).toBe("/");
+  });
+  it("Handles Search see all tabs", () => {
+    wrapper.vm.handleTabs("searchSeeAll");
+    expect(wrapper.vm.showSearch).toBe(false);
+    expect(wrapper.vm.showCollection).toBe(false);
+    expect(wrapper.vm.showUpgrade).toBe(false);
   });
 });
