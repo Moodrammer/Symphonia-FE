@@ -36,24 +36,24 @@ describe("Context Menu", () => {
       }
     };
 
-    artistActions={
+    artistActions = {
       isFollowingArtists: jest.fn(),
       followArtist: jest.fn(),
       unfollowArtist: jest.fn()
     };
 
-    trackActions={
+    trackActions = {
       followAlbum: jest.fn(),
       checkSaved: jest.fn(),
       saveTrack: jest.fn(),
       removeSavedTrack: jest.fn()
     };
 
-    trackMutations={
+    trackMutations = {
       changeUpdateTracks: jest.fn()
     };
 
-    playlistActions={
+    playlistActions = {
       changeDetails: jest.fn(),
       followPlaylist: jest.fn(),
       unfollowPlaylist: jest.fn(),
@@ -62,21 +62,21 @@ describe("Context Menu", () => {
       checkFollowed: jest.fn()
     };
 
-    playlistMutations={
+    playlistMutations = {
       setPlaylistID: jest.fn(),
       changeDeleteModel: jest.fn(),
       changeAddTrackModel: jest.fn(),
       setAddedTracks: jest.fn()
     };
 
-    albumActions={
+    albumActions = {
       followAlbum: jest.fn(),
       unfollowAlbum: jest.fn(),
       checkFollowed: jest.fn(),
       getAlbum: jest.fn()
     };
 
-    webplayerHomeMutations={
+    webplayerHomeMutations = {
       toggleLogoutPopUpState: jest.fn()
     };
 
@@ -183,7 +183,7 @@ describe("Context Menu", () => {
   it("Check if the user follow a playlist", () => {
     wrapper.vm.playlist();
     store.state.playlist.isFollowed = true;
-    store.state.playlist.menuPlaylist.public=true;
+    store.state.playlist.menuPlaylist.public = true;
     expect(wrapper.vm.isPlaylistSaved).toBe(true);
     expect(wrapper.vm.isPublicPlaylist).toBe(true);
   });

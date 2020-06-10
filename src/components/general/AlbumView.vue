@@ -221,7 +221,7 @@ export default {
      * @param {none}
      */
     play: async function() {
-      if (this.firstNonPreimum !==null) {
+      if (this.firstNonPreimum !== null) {
         if (this.id != this.contextID) {
           this.$store.commit("track/setContextData", {
             contextID: this.id,

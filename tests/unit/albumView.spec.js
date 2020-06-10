@@ -22,19 +22,19 @@ describe("Album View", () => {
     Vue.use(VueRouter);
     Vue.use(Vuex);
 
-    trackActions={
+    trackActions = {
       playTrackInQueue: jest.fn(),
       updateQueue: jest.fn(),
       getTrackInformation: jest.fn(),
       togglePauseAndPlay: jest.fn()
     };
 
-    trackMutations={
+    trackMutations = {
       setContextData: jest.fn(),
       setIsTrackPaused: jest.fn()
     };
 
-    albumActions={
+    albumActions = {
       followAlbum: jest.fn(),
       unfollowAlbum: jest.fn(),
       checkFollowed: jest.fn(),
