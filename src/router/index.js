@@ -350,6 +350,14 @@ const routes = [
     }
   },
   {
+    path: "/help",
+    name: "Help",
+    component: () => import("../views/Help.vue"),
+    meta: {
+      allowAnonymous: true
+    }
+  },
+  {
     path: "*",
     name: "notfound",
     component: notfound,

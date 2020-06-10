@@ -42,7 +42,7 @@
             >Premium</router-link
           >
           <router-link
-            to="/"
+            to="/help"
             class="toolbar-link-1"
             v-bind:class="{ 'blue-hover': isLoggedIn() }"
             >Help</router-link

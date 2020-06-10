@@ -36,7 +36,9 @@
                 <td class="table-data">
                   <button v-show="!playlist.restored" @click="restore(index)">
                     Restore</button
-                  ><b class="restored" v-show="playlist.restored">Restored</b>
+                  ><b class="restored" v-show="playlist.restored" :id="index"
+                    >Restored</b
+                  >
                 </td>
               </tr>
             </tbody>
