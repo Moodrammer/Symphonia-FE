@@ -219,7 +219,13 @@ export default {
       this.$store.dispatch("notification/setRefreshTokenHandler");
     }
   },
-  mixins: [getDeviceSize, isLoggedIn, getuserToken, isNotificationsAllowed, isPremium]
+  mixins: [
+    getDeviceSize,
+    isLoggedIn,
+    getuserToken,
+    isNotificationsAllowed,
+    isPremium
+  ]
 };
 </script>
 
