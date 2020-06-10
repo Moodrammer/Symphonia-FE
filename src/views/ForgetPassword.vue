@@ -22,8 +22,7 @@
  * @displayName Forget Password
  * @example [none]
  */
-export default {
-};
+export default {};
 </script>
 
 <style scoped>
