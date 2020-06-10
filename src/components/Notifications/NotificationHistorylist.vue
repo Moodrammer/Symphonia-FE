@@ -7,8 +7,8 @@
         </v-btn>
       </template>
       <v-list
-        max-height="600"
-        width="500"
+        max-height="400"
+        max-width="500"
         dark
         dense
         tile
