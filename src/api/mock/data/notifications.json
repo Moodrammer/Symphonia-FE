@@ -1,59 +1,81 @@
 {
     "items" : [
         {
-            "title": "Like a playlist",
-            "body" : "User1 has liked your playlist",
-            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+            "title": "Like Playlist",
+            "body" : "BobUser has liked your playlist",
+            "icon" : "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+            "date" : "2020-06-09T21:02:20.438Z",
+            "from" : "1"
         },
         {
-            "title": "Like a playlist",
-            "body" : "User2 has liked your playlist",
-            "icon" : "http://source.unsplash.com/Az_mSeq7vQQ"
+            "title": "Like Playlist",
+            "body" : "BobUser has liked your playlist",
+            "icon" : "https://thesymphonia.ddns.net/api/v1/images/users/default.png",
+            "date" : "2020-06-09T21:02:20.438Z",
+            "from" : "1"
         },
         {
-            "title": "Following user",
-            "body" : "User2 started follwing you",
-            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+            "title": "Following User",
+            "body" : "BobUser started follwing you",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4",
+            "date" : "2020-06-09T21:02:20.438Z",
+            "from" : "1"
         },
         {
-            "title": "New track",
-            "body" : "artist1 has uploaded a new track",
-            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
-        },
-        {
-            "title": "Like a playlist",
+            "title": "Tracks Updated",
             "body" : "artist has uploaded a new track",
-            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4",
+            "date" : "2020-06-09T21:02:20.438Z",
+            "from" : "1"
         },
         {
-            "title": "Like a playlist",
-            "body" : "User1 has liked your playlist",
-            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+            "title": "Tracks Updated",
+            "body" : "artist has uploaded a new track",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4",
+            "date" : "2020-06-09T21:02:20.438Z",
+            "from" : "1"
         },
         {
-            "title": "Like a playlist",
-            "body" : "User1 has liked your playlist",
-            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+            "title": "Like Playlist",
+            "body" : "BobUser has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4",
+            "date" : "2020-06-09T21:02:20.438Z",
+            "from" : "1"
         },
         {
-            "title": "Like a playlist",
-            "body" : "User1 has liked your playlist",
-            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+            "title": "Tracks Updated",
+            "body" : "BobUser has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4",
+            "date" : "2020-06-09T21:02:20.438Z",
+            "from" : "1"
         },
         {
-            "title": "Like a playlist",
-            "body" : "User1 has liked your playlist",
-            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+            "title": "Like Playlist",
+            "body" : "BobUser has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4",
+            "date" : "2020-06-09T21:02:20.438Z",
+            "from" : "1"
         },
         {
-            "title": "Like a playlist",
-            "body" : "User1 has liked your playlist",
-            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+            "title": "Like Playlist",
+            "body" : "BobUser has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4",
+            "date" : "2020-06-09T21:02:20.438Z",
+            "from" : "1"
         },
         {
-            "title": "Like a playlist",
-            "body" : "User1 has liked your playlist",
-            "icon" : "http://source.unsplash.com/PsEXbDsSlV4"
+            "title": "Like Playlist",
+            "body" : "BobUser has liked your playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4",
+            "date" : "2020-06-09T21:02:20.438Z",
+            "from" : "1"
+        },
+        {
+            "title": "PlayList Updated",
+            "body" : "BobUser has added a track to his playlist",
+            "icon" : "http://source.unsplash.com/PsEXbDsSlV4",
+            "date" : "2020-06-09T21:02:20.438Z",
+            "from" : "1"
         }
     ]
 }
