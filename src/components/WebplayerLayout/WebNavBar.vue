@@ -243,10 +243,11 @@ export default {
      * @param {string} item route name
      */
     handleTabs: function(item) {
-      if (item === "search" || item === "searchItem") {
+      if (item === "search" || item === "searchItem" || item == "searchNone") {
         this.showSearch = true;
         this.showCollection = false;
         this.showUpgrade = false;
+        this.search = this.$route.params.name;
       } else if (
         item === "Playlists" ||
         item === "Artists" ||
@@ -255,10 +256,12 @@ export default {
         this.showSearch = false;
         this.showCollection = true;
         this.showUpgrade = false;
+        this.search = "";
       } else {
         this.showCollection = false;
         this.showSearch = false;
         this.showUpgrade = true;
+        this.search = "";
       }
     },
     /**
@@ -315,8 +318,16 @@ export default {
      * @param {none}
      */
     request() {
-      this.$router.push("/webhome/search/" + this.search);
-      return;
+      if (this.search === "") {
+        this.$router.push("/webhome/search/");
+      } else {
+        this.$router.push({
+          name: "searchItem",
+          params: {
+            name: encodeURI(this.search)
+          }
+        });
+      }
     }
   },
   mounted() {

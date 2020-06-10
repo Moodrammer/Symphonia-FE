@@ -5,7 +5,7 @@
         <h1>Browse all</h1>
       </div>
       <v-row justify="start">
-        <v-col v-for="(genre, idx) in genres" :key="idx" cols="3">
+        <v-col v-for="genre in gernes" :key="genre.id" cols="3">
           <cardGerne :name="genre.name" :ID="genre.id" />
         </v-col>
       </v-row>
@@ -17,19 +17,18 @@
 import cardGerne from "../Search/CardGenre.vue";
 export default {
   data() {
-    return {
-      genres: []
-    };
+    return {};
   },
   components: {
     cardGerne: cardGerne
   },
   created() {
-    this.$store.dispatch("category/loadGenres").then(() => {
-      this.$store.state.category.savedGenres.forEach(element => {
-        this.genres.push(element);
-      });
-    });
+    this.$store.dispatch("category/loadGenres");
+  },
+  computed: {
+    gernes() {
+      return this.$store.state.category.savedGenres;
+    }
   }
 };
 </script>

@@ -129,7 +129,7 @@ const routes = [
         },
         children: [
           {
-            name: "search",
+            name: "searchNone",
             path: "/",
             component: Search,
             meta: {
