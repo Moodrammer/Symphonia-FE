@@ -37,9 +37,19 @@
               <strong v-html="notification.title"></strong>
             </v-list-item-title>
             <v-list-item-subtitle v-html="notification.body"
-              >test user started to follow you</v-list-item-subtitle
+              ></v-list-item-subtitle
             >
+            <p style="font-size: 10px;">{{ notification.date }}</p>
+            <v-divider></v-divider>
           </v-list-item-content>
+          <v-list-item-action>
+            <v-btn 
+            rounded
+            :to="notification.pushUrl"
+            >
+              view
+            </v-btn>
+          </v-list-item-action>
         </v-list-item>
       </v-list>
     </v-menu>

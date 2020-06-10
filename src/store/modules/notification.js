@@ -147,7 +147,12 @@ const actions = {
     messaging.onMessage(payload => {
       let data = JSON.parse(payload.data.data);
       let notificationTitle = payload.notification.title;
-      let notificationUrl = `/webhome/user/${data.from}`;
+      let notificationUrl;
+      //handling NotificationUrl
+      if(notificationTitle == "Like Playlist") notificationUrl = `/webhome/user/${data.from}`
+      else if(notificationTitle == "Following User") notificationUrl = `/webhome/user/${data.from}`
+      else if(notificationTitle == "Tracks Updated") notificationUrl = `/webhome/album/${data.from}`
+      else if(notificationTitle == "PlayList Updated") notificationUrl = `/webhome/playlist/${data.from}`
       const notificationData = {
         notificationState: true,
         notificationTitle: notificationTitle,
@@ -200,14 +205,31 @@ const actions = {
       .then(response => {
         let list = response.data.notifications.items;
         let newList = [];
+        //options for date
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         list.forEach(element => {
+          let data = JSON.parse(element.data.data)
+          //handling the notification route
+          let route;
+          if(element.notification.title == "Like Playlist") route = `/webhome/user/${data.from}`
+          else if(element.notification.title == "Following User") route = `/webhome/user/${data.from}`
+          else if(element.notification.title == "Tracks Updated") route = `/webhome/album/${data.from}`
+          else if(element.notification.title == "PlayList Updated") route = `/webhome/playlist/${data.from}`
+          //handling the notification date
+          let date = new Date(element.date)
+          let day = date.toLocaleDateString('en-US', options)
+          let time = date.toLocaleTimeString('en-US')
+          let notificationDate = `${day} ${time}`
           var notification = {
             title: element.notification.title,
             body: element.notification.body,
-            icon: element.notification.icon
+            icon: element.notification.icon,
+            pushUrl: route,
+            date: notificationDate
           };
           newList.push(notification);
         });
+        newList.reverse();
         commit("setNotificationHistoryList", newList);
       })
       .catch(() => {
