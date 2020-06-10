@@ -86,9 +86,11 @@
                 Web Player
               </li>
             </router-link>
-            <li class="links-column-item">
-              For Mobile App
-            </li>
+            <router-link to="/download">
+              <li class="links-column-item">
+                For Mobile App
+              </li>
+            </router-link>
           </ul>
         </v-container>
 

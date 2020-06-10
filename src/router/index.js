@@ -342,6 +342,14 @@ const routes = [
     }
   },
   {
+    path: "/download",
+    name: "Download",
+    component: () => import("../views/DownloadApp.vue"),
+    meta: {
+      allowAnonymous: true
+    }
+  },
+  {
     path: "*",
     name: "notfound",
     component: notfound,

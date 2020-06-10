@@ -48,7 +48,7 @@
             >Help</router-link
           >
           <router-link
-            to="/"
+            to="/download"
             class="toolbar-link-1"
             v-bind:class="{ 'blue-hover': isLoggedIn() }"
             >Download</router-link
