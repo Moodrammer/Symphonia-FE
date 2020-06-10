@@ -11,6 +11,13 @@ describe("Context Menu", () => {
   let vuetify;
   let store;
   let $route;
+  let artistActions;
+  let trackActions;
+  let trackMutations;
+  let playlistActions;
+  let playlistMutations;
+  let albumActions;
+  let webplayerHomeMutations;
 
   beforeEach(() => {
     vuetify = new Vuetify();
@@ -28,13 +35,56 @@ describe("Context Menu", () => {
         id: ""
       }
     };
+
+    artistActions={
+      isFollowingArtists: jest.fn(),
+      followArtist: jest.fn(),
+      unfollowArtist: jest.fn()
+    };
+
+    trackActions={
+      followAlbum: jest.fn(),
+      checkSaved: jest.fn(),
+      saveTrack: jest.fn(),
+      removeSavedTrack: jest.fn()
+    };
+
+    trackMutations={
+      changeUpdateTracks: jest.fn()
+    };
+
+    playlistActions={
+      changeDetails: jest.fn(),
+      followPlaylist: jest.fn(),
+      unfollowPlaylist: jest.fn(),
+      removePlaylistTrack: jest.fn(),
+      getPlaylist: jest.fn(),
+      checkFollowed: jest.fn()
+    };
+
+    playlistMutations={
+      setPlaylistID: jest.fn(),
+      changeDeleteModel: jest.fn(),
+      changeAddTrackModel: jest.fn(),
+      setAddedTracks: jest.fn()
+    };
+
+    albumActions={
+      followAlbum: jest.fn(),
+      unfollowAlbum: jest.fn(),
+      checkFollowed: jest.fn(),
+      getAlbum: jest.fn()
+    };
+
+    webplayerHomeMutations={
+      toggleLogoutPopUpState: jest.fn()
+    };
+
     store = new Vuex.Store({
       modules: {
         webplayerHome: {
           namespaced: true,
-          mutations: {
-            toggleLogoutPopUpState: jest.fn()
-          }
+          mutations: webplayerHomeMutations
         },
         playlist: {
           namespaced: true,
@@ -56,20 +106,8 @@ describe("Context Menu", () => {
             isFollowed: false,
             updateTracksFlag: false
           },
-          mutations: {
-            setPlaylistID: jest.fn(),
-            changeDeleteModel: jest.fn(),
-            changeAddTrackModel: jest.fn(),
-            setAddedTracks: jest.fn()
-          },
-          actions: {
-            changeDetails: jest.fn(),
-            followPlaylist: jest.fn(),
-            unfollowPlaylist: jest.fn(),
-            removePlaylistTrack: jest.fn(),
-            getPlaylist: jest.fn(),
-            checkFollowed: jest.fn()
-          }
+          mutations: playlistMutations,
+          actions: playlistActions
         },
         album: {
           namespaced: true,
@@ -92,12 +130,7 @@ describe("Context Menu", () => {
             },
             isFollowdAlbum: false
           },
-          actions: {
-            followAlbum: jest.fn(),
-            unfollowAlbum: jest.fn(),
-            checkFollowed: jest.fn(),
-            getAlbum: jest.fn()
-          }
+          actions: albumActions
         },
         track: {
           namespaced: true,
@@ -105,26 +138,15 @@ describe("Context Menu", () => {
           state: {
             generalLiked: true
           },
-          mutations: {
-            changeUpdateTracks: jest.fn()
-          },
-          actions: {
-            followAlbum: jest.fn(),
-            checkSaved: jest.fn(),
-            saveTrack: jest.fn(),
-            removeSavedTrack: jest.fn()
-          }
+          mutations: trackMutations,
+          actions: trackActions
         },
         artist: {
           namespaced: true,
           state: {
             FollowingArtistsBool: [false]
           },
-          actions: {
-            isFollowingArtists: jest.fn(),
-            followArtist: jest.fn(),
-            unfollowArtist: jest.fn()
-          }
+          actions: artistActions
         }
       }
     });
@@ -155,14 +177,15 @@ describe("Context Menu", () => {
     wrapper.vm.type = "playlist";
     wrapper.vm.openMenu("", "1", "playlist");
     expect(wrapper.vm.playlist()).toHaveBeenCalled;
-    expect("getPlaylist").toHaveBeenCalled;
-    expect("checkFollowed").toHaveBeenCalled;
+    expect(playlistActions.getPlaylist).toHaveBeenCalled();
   });
 
   it("Check if the user follow a playlist", () => {
     wrapper.vm.playlist();
     store.state.playlist.isFollowed = true;
+    store.state.playlist.menuPlaylist.public=true;
     expect(wrapper.vm.isPlaylistSaved).toBe(true);
+    expect(wrapper.vm.isPublicPlaylist).toBe(true);
   });
 
   it("Check if it is a user's playlist", () => {
@@ -170,33 +193,41 @@ describe("Context Menu", () => {
     store.state.playlist.menuPlaylist.owner._id = null;
     wrapper.vm.playlist();
     expect(wrapper.vm.isOwnedPlaylist).toBe(true);
-    //expect(wrapper.vm.isPublicPlaylist).toBe(true);
+  });
+
+  it("Check if the user's playlist is pubic", () => {
+    Storage.prototype.getItem = jest.fn(() => "id");
+    store.state.playlist.menuPlaylist.public = true;
+    store.state.playlist.menuPlaylist.owner._id = "id";
+    wrapper.vm.playlist();
+    expect(wrapper.vm.isOwnedPlaylist).toBe(true);
+    expect(wrapper.vm.isPublicPlaylist).toBe(true);
   });
 
   it("Follow a playlist", () => {
     wrapper.vm.followPlaylist();
-    expect("followPlaylist").toHaveBeenCalled;
+    expect(playlistActions.followPlaylist).toHaveBeenCalled();
   });
 
   it("Unfollow a playlist", async () => {
     await wrapper.vm.unfollowPlaylist();
-    expect("unfollowPlaylist").toHaveBeenCalled;
+    expect(playlistActions.unfollowPlaylist).toHaveBeenCalled();
   });
 
   it("Delete a user's playlist", () => {
     wrapper.vm.deleteUserPlaylist();
-    expect("setPlaylistID").toHaveBeenCalled;
-    expect("changeDeleteModel").toHaveBeenCalled;
+    expect(playlistMutations.setPlaylistID).toHaveBeenCalled();
+    expect(playlistMutations.changeDeleteModel).toHaveBeenCalled();
   });
 
   it("Make a user's playlist public", () => {
     wrapper.vm.makePlaylistPublic();
-    expect("changeDetails").toHaveBeenCalled;
+    expect(playlistActions.changeDetails).toHaveBeenCalled();
   });
 
   it("Make a user's playlist secret", () => {
     wrapper.vm.makePlaylistSecret();
-    expect("changeDetails").toHaveBeenCalled;
+    expect(playlistActions.changeDetails).toHaveBeenCalled();
   });
 
   it("Call function at clicking on Make secret", () => {
@@ -234,7 +265,7 @@ describe("Context Menu", () => {
   it("Gets the album's data", () => {
     wrapper.vm.openMenu("", "3", "album");
     expect(wrapper.vm.album()).toHaveBeenCalled;
-    expect("checkFollowed").toHaveBeenCalled;
+    expect(albumActions.checkFollowed).toHaveBeenCalled();
   });
 
   it("Check if the user follows this album", () => {
@@ -244,20 +275,27 @@ describe("Context Menu", () => {
   });
 
   it("Add album's tracks to specific playlist", async () => {
+    Storage.prototype.getItem = jest.fn(() => "token");
     await wrapper.vm.addAlbumTracksToPlaylist();
-    expect("getAlbum").toHaveBeenCalled;
-    expect("setAddedTracks").toHaveBeenCalled;
-    expect("changeAddTrackModel").toHaveBeenCalled;
+    expect(albumActions.getAlbum).toHaveBeenCalled();
+    expect(playlistMutations.setAddedTracks).toHaveBeenCalled();
+    expect(playlistMutations.changeAddTrackModel).toHaveBeenCalled();
+  });
+
+  it("Add album's tracks to specific playlist logout", async () => {
+    Storage.prototype.getItem = jest.fn(() => null);
+    await wrapper.vm.addAlbumTracksToPlaylist();
+    expect(webplayerHomeMutations.toggleLogoutPopUpState).toHaveBeenCalled();
   });
 
   it("Follow an album", () => {
     wrapper.vm.followAlbum();
-    expect("followAlbum").toHaveBeenCalled;
+    expect(albumActions.followAlbum).toHaveBeenCalled();
   });
 
   it("Unfollow an album", async () => {
     await wrapper.vm.unfollowAlbum();
-    expect("unfollowAlbum").toHaveBeenCalled;
+    expect(albumActions.unfollowAlbum).toHaveBeenCalled();
   });
 
   it("Call function at clicking on Save to Your Library", () => {
@@ -285,7 +323,7 @@ describe("Context Menu", () => {
   it("Gets the track's data", async () => {
     wrapper.vm.openMenu("", "2", "track");
     expect(await wrapper.vm.track()).toHaveBeenCalled;
-    expect("checkSaved").toHaveBeenCalled;
+    expect(trackActions.checkSaved).toHaveBeenCalled();
   });
 
   it("Check if the user saves this track", () => {
@@ -296,24 +334,31 @@ describe("Context Menu", () => {
 
   it("Save track for user", () => {
     wrapper.vm.saveTrack();
-    expect("saveTrack").toHaveBeenCalled;
+    expect(trackActions.saveTrack).toHaveBeenCalled();
   });
 
   it("Remove track from user's saved tracks", async () => {
     await wrapper.vm.removeTrackForUser();
-    expect("removeSavedTrack").toHaveBeenCalled;
+    expect(trackActions.removeSavedTrack).toHaveBeenCalled();
     expect("changeUpdateTracks").toHaveBeenCalled;
   });
 
   it("Add track to a specific playlist", () => {
+    Storage.prototype.getItem = jest.fn(() => "token");
     wrapper.vm.addToPlaylist();
-    expect("setAddedTracks").toHaveBeenCalled;
-    expect("changeAddTrackModel").toHaveBeenCalled;
+    expect(playlistMutations.setAddedTracks).toHaveBeenCalled();
+    expect(playlistMutations.changeAddTrackModel).toHaveBeenCalled();
+  });
+
+  it("Add track to a specific playlist logout", () => {
+    Storage.prototype.getItem = jest.fn(() => null);
+    wrapper.vm.addToPlaylist();
+    expect(webplayerHomeMutations.toggleLogoutPopUpState).toHaveBeenCalled();
   });
 
   it("Remove track from a specific playlist", async () => {
     await wrapper.vm.removeTrackFromPlaylist();
-    expect("removePlaylistTrack").toHaveBeenCalled;
+    expect(playlistActions.removePlaylistTrack).toHaveBeenCalled();
   });
 
   it("Call save tracks at clicking on Save to your Liked Songs", () => {
@@ -424,11 +469,12 @@ describe("Context Menu", () => {
     expect(wrapper.vm.inUserPlaylist).toBe(false);
   });
 
-  it("At playlist View", () => {
+  it("At User playlist View", () => {
     if (!process || process.env.NODE_ENV !== "test") {
       Vue.use(VueRouter);
     }
-    store.state.playlist.singlePlaylist.owner._id = undefined;
+    Storage.prototype.getItem = jest.fn(() => "id");
+    store.state.playlist.singlePlaylist.owner._id = "id";
     wrapper.vm.track();
     expect(wrapper.vm.inUserPlaylist).toBe(true);
   });
