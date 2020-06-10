@@ -148,60 +148,60 @@ const actions = {
                 break;
               }
               case "category": {
-                let count =0;
+                let count = 0;
                 commit("setNext", response.data.category.next);
-                
+
                 response.data.category.items.forEach(element => {
                   if (state.category.length == 6 && count < 6) {
                     count += 1;
                   } else {
-                  element.type = "gerne";
-                  element.description = "Gerne";
-                  element.image = element.icons[0].url;
-                  state.category.push(element);
-                  count+=1;
-                }
+                    element.type = "gerne";
+                    element.description = "Gerne";
+                    element.image = element.icons[0].url;
+                    state.category.push(element);
+                    count += 1;
+                  }
                 });
                 break;
               }
               case "album": {
-                let count =0;
+                let count = 0;
                 commit("setNext", response.data.album.next);
                 response.data.album.items.forEach(element => {
                   if (state.albums.length == 6 && count < 6) {
                     count += 1;
                   } else {
-                  element.description = "";
-                  state.albums.push(element);
-                  count+=1;
+                    element.description = "";
+                    state.albums.push(element);
+                    count += 1;
                   }
                 });
                 break;
               }
               case "profile": {
-                let count =0 ;
+                let count = 0;
                 commit("setNext", response.data.profile.next);
                 response.data.profile.items.forEach(element => {
                   if (state.profiles.length == 6 && count < 6) {
                     count += 1;
                   } else {
-                  element.image = element.imageUrl;
-                  element.id = element._id;
-                  state.profiles.push(element);
-                  count+=1;
+                    element.image = element.imageUrl;
+                    element.id = element._id;
+                    state.profiles.push(element);
+                    count += 1;
                   }
                 });
                 break;
               }
               case "track": {
-                let count =0;
+                let count = 0;
                 commit("setNext", response.data.track.next);
                 response.data.track.items.forEach(element => {
                   if (state.tracks.length == 6 && count < 6) {
                     count += 1;
                   } else {
-                  state.tracks.push(element);
-                  count+=1
+                    state.tracks.push(element);
+                    count += 1;
                   }
                 });
                 break;

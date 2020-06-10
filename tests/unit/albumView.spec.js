@@ -11,6 +11,9 @@ describe("Album View", () => {
   let wrapper;
   let vuetify;
   let store;
+  let trackActions;
+  let trackMutations;
+  let albumActions;
 
   beforeEach(() => {
     vuetify = new Vuetify();
@@ -19,6 +22,24 @@ describe("Album View", () => {
     Vue.use(VueRouter);
     Vue.use(Vuex);
 
+    trackActions = {
+      playTrackInQueue: jest.fn(),
+      updateQueue: jest.fn(),
+      getTrackInformation: jest.fn(),
+      togglePauseAndPlay: jest.fn()
+    };
+
+    trackMutations = {
+      setContextData: jest.fn(),
+      setIsTrackPaused: jest.fn()
+    };
+
+    albumActions = {
+      followAlbum: jest.fn(),
+      unfollowAlbum: jest.fn(),
+      checkFollowed: jest.fn(),
+      getAlbum: jest.fn()
+    };
     //Mocking the store
     store = new Vuex.Store({
       modules: {
@@ -26,18 +47,11 @@ describe("Album View", () => {
           namespaced: true,
           state: {
             contextId: "1",
-            isTrackPaused: true
+            isTrackPaused: true,
+            nonPremiumTrackID: "1"
           },
-          mutations: {
-            setContextData: jest.fn(),
-            setIsTrackPaused: jest.fn()
-          },
-          actions: {
-            playTrackInQueue: jest.fn(),
-            updateQueue: jest.fn(),
-            getTrackInformation: jest.fn(),
-            togglePauseAndPlay: jest.fn()
-          }
+          mutations: trackMutations,
+          actions: trackActions
         },
         album: {
           namespaced: true,
@@ -69,12 +83,7 @@ describe("Album View", () => {
             ],
             isFollowdAlbum: false
           },
-          actions: {
-            followAlbum: jest.fn(),
-            unfollowAlbum: jest.fn(),
-            checkFollowed: jest.fn(),
-            getAlbum: jest.fn()
-          }
+          actions: albumActions
         }
       }
     });
@@ -115,7 +124,7 @@ describe("Album View", () => {
   });
 
   it("Check if the user's follow this album", () => {
-    expect("checkFollowed").toHaveBeenCalled;
+    expect(albumActions.checkFollowed).toHaveBeenCalled();
   });
   //---------------------------------------------------
   //       Test user functionalities
@@ -133,23 +142,29 @@ describe("Album View", () => {
 
   it("Follow an album", () => {
     wrapper.vm.followAlbum();
-    expect("followAlbum").toHaveBeenCalled;
+    expect(albumActions.followAlbum).toHaveBeenCalled();
   });
 
   it("Unfollow an album", () => {
     wrapper.vm.unfollowAlbum();
-    expect("unfollowAlbum").toHaveBeenCalled;
+    expect(albumActions.unfollowAlbum).toHaveBeenCalled();
   });
 
   it("Pause the currently playing album", () => {
     wrapper.vm.pause();
-    expect("togglePauseAndPlay").toHaveBeenCalled;
-    expect("setIsTrackPaused").toHaveBeenCalled;
+    expect(trackActions.togglePauseAndPlay).toHaveBeenCalled();
+    expect(trackMutations.setIsTrackPaused).toHaveBeenCalled();
   });
 
   it("Play the album", () => {
     wrapper.vm.id = "1";
     wrapper.vm.play();
-    expect("togglePauseAndPlay").toHaveBeenCalled;
+    expect(trackActions.togglePauseAndPlay).toHaveBeenCalled();
+  });
+
+  it("Contains preimum tracks only", () => {
+    store.state.album.nonPremiumTrackID = null;
+    wrapper.vm.play();
+    expect(trackMutations.setIsTrackPaused).not.toBeCalled();
   });
 });

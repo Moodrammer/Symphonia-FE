@@ -20,7 +20,7 @@ import RelatedArtists from "../components/ArtistInterface/RelatedArtists";
 import Queue from "../views/TheQueue.vue";
 import GenreView from "../components/general/GenreView.vue";
 import AlbumView from "../components/general/AlbumView.vue";
-import UserUI from "../components/UserUI.vue";
+import UserInterface from "../components/UserInterface.vue";
 import ArtistActivation from "../views/ArtistActivation.vue";
 import SymphoniaArtist from "../components/ArtistDashboard/Dashboard.vue";
 import SymphoniaArtistMain from "../components/ArtistDashboard/Main.vue";
@@ -81,9 +81,9 @@ const routes = [
     redirect: "webhome/home",
     children: [
       {
-        name: "UserUI",
+        name: "UserInterface",
         path: "user/:id",
-        component: UserUI,
+        component: UserInterface,
         meta: {
           allowAnonymous: false
         }

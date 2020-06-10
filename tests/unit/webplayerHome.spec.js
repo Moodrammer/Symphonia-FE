@@ -120,10 +120,9 @@ describe("Webplayer Home", () => {
     expect(wrapper.vm.addTrack).toBe(false);
   });
 
-  it("Update after logout", async () => {
-    wrapper.vm.$options.watch.isLogoutUpdate.call(wrapper.vm);
+  it("Update after logout", () => {
     store.state.category.logoutUpdate = true;
-    await wrapper.vm.nextTick();
+    wrapper.vm.$options.watch.isLogoutUpdate.call(wrapper.vm);
     expect(categoryMutations.changeLogoutUpdate).toHaveBeenCalled();
   });
 

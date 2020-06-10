@@ -5,7 +5,7 @@ import Vuex from "vuex";
 
 import AdsPopup from "@/components/Popups/AdsPopup.vue";
 
-describe("CreatePlaylist", () => {
+describe("Ads PopUp", () => {
   let wrapper;
   let vuetify;
   let store;
