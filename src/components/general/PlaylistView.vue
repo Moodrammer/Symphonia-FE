@@ -247,7 +247,7 @@ export default {
      * @param {none}
      */
     play: async function() {
-      if (this.playlist.tracksCount && this.firstNonPreimum) {
+      if (this.playlist.tracksCount && this.firstNonPreimum != null) {
         if (this.id != this.contextID) {
           this.$store.commit("track/setContextData", {
             contextID: this.id,

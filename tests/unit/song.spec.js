@@ -17,7 +17,7 @@ describe("Song Component", () => {
     Vue.use(Vuetify);
     Vue.use(Vuex);
 
-    trackActions={
+    trackActions = {
       removeSavedTrack: jest.fn(),
       checkSaved: jest.fn(),
       saveTrack: jest.fn(),
@@ -27,7 +27,7 @@ describe("Song Component", () => {
       updateQueue: jest.fn()
     };
 
-    trackMutations={
+    trackMutations = {
       setContextData: jest.fn(),
       setIsTrackPaused: jest.fn()
     };
@@ -40,7 +40,7 @@ describe("Song Component", () => {
             generalLiked: true,
             trackId: "1",
             isTrackPaused: true,
-            contextID:"id"
+            contextID: "id"
           },
           mutations: trackMutations,
           actions: trackActions
@@ -61,7 +61,7 @@ describe("Song Component", () => {
           id: "1234"
         },
         ID: "2",
-        contextID:"context",
+        contextID: "context",
         isDisabled: true
       }
     });
@@ -123,7 +123,7 @@ describe("Song Component", () => {
     expect(wrapper.vm.isPaused).toBe(true);
   });
 
-  it("Play the current track",()=>{
+  it("Play the current track", () => {
     wrapper.setProps({ ID: "1" });
     wrapper.setProps({ contextID: "id" });
     wrapper.vm.playTrack();
@@ -137,7 +137,7 @@ describe("Song Component", () => {
     expect(trackMutations.setIsTrackPaused).toHaveBeenCalled();
   });
 
-  it("Set disabled flag",()=>{
+  it("Set disabled flag", () => {
     expect(wrapper.vm.disabledTrack).toBe(true);
   });
 });

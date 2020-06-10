@@ -77,6 +77,11 @@ describe("CardGrid.vue", () => {
     expect(wrapper.vm.$router.currentRoute.fullPath).toBe("/webhome/1/1");
   });
 
+  it("Route to genre",()=>{
+    wrapper.vm.cardClicked(1, "gerne",true);
+    expect(wrapper.vm.$router.currentRoute.fullPath).toBe("/genre/1");
+  });
+
   it("showMore clicked", async () => {
     wrapper.setData({ showMoreBtn: false });
     wrapper.vm.showMore();
