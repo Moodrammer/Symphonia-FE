@@ -28,6 +28,7 @@ const mutations = {
     state.isLoading = false;
   },
   setAlbumTracks(state, albumTracks) {
+    state.nonPremiumTrackID = null;
     state.albumTracks = albumTracks;
     let premium = isPremium.methods.isPremium();
     if (premium) {
