@@ -33,7 +33,7 @@ describe("Logout PopUp", () => {
     wrapper = shallowMount(LogoutPopUp, {
       vuetify,
       store,
-      mocks: {$router},
+      mocks: { $router }
     });
   });
 
@@ -43,13 +43,13 @@ describe("Logout PopUp", () => {
     expect(wrapper.vm.dialog).toBe(false);
   });
 
-  it("Route to sign up and close the popup",()=>{
+  it("Route to sign up and close the popup", () => {
     wrapper.vm.toSignUp();
     expect(wrapper.vm.$router[0]).toBe("/signup");
     expect(wrapper.vm.close()).toHaveBeenCalled;
   });
 
-  it("Route to login and close the popup",()=>{
+  it("Route to login and close the popup", () => {
     wrapper.vm.toLogin();
     expect(wrapper.vm.$router[0]).toBe("/login");
     expect(wrapper.vm.close()).toHaveBeenCalled;
