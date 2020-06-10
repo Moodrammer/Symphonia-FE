@@ -130,7 +130,7 @@
                 </v-col>
 
                 <v-col cols="6" class="pb-1">
-                  <v-overflow-btn
+                  <v-select
                     placeholder="month"
                     outlined
                     width="90%"
@@ -138,7 +138,7 @@
                     :rules="monthRules"
                     v-model="userData.monthSelected"
                     id="birth-month"
-                  ></v-overflow-btn>
+                  ></v-select>
                 </v-col>
 
                 <v-col cols="3" class="pr-0 pb-1">
