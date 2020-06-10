@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="this.$store.state.user.userType == 'user'">
     <div class="jumbotron">
       <div class="hidden-sm-only hidden-xl-only hidden-md-only hidden-lg-only">
         <v-menu

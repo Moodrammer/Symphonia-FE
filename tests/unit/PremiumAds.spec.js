@@ -1,6 +1,7 @@
 //Importing plugins and helpers
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
+import Vuex from "vuex";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
@@ -9,14 +10,26 @@ import PremiumAds from "@/components/User Settings/PremiumAds.vue";
 describe("PremiumAds", () => {
   let wrapper;
   let vuetify;
+  let store;
+  let state;
   beforeEach(() => {
     const router = new VueRouter();
     vuetify = new Vuetify();
     Vue.use(Vuetify);
     Vue.use(VueRouter);
+    Vue.use(Vuex);
+    state = {
+      user: {
+        userType: "user"
+      }
+    };
+    store = new Vuex.Store({
+      state
+    });
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
     //in order to find the elements by their ids
     wrapper = mount(PremiumAds, {
+      store,
       router,
       vuetify,
       data() {
