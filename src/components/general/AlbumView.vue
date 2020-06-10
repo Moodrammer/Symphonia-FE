@@ -93,7 +93,12 @@
                   <h1 class="mt-5">{{ album.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">
-                  <p class="mt-2" id="year">{{ album.artist.name }}</p>
+                  <router-link
+                    v-bind:to="'/webhome/artist/' + this.album.artist._id"
+                    class="white--text"
+                  >
+                    <p class="mt-2" id="artistName">{{ album.artist.name }}</p>
+                  </router-link>
                 </v-row>
                 <!--The play button-->
                 <v-row justify-lg="center">
@@ -109,7 +114,7 @@
                   <v-btn
                     rounded
                     class="white--text px-8 my-4"
-                    id="playBtn"
+                    id="pauseBtn"
                     @click="pause"
                     v-else
                   >
@@ -216,29 +221,31 @@ export default {
      * @param {none}
      */
     play: async function() {
-      if (this.id != this.contextID) {
-        this.$store.commit("track/setContextData", {
-          contextID: this.id,
-          contextType: "album",
-          contextUrl: "https://thesymphonia.ddns.net/api"
-        });
-        await this.$store.dispatch(
-          "track/playTrackInQueue",
-          this.tracks[0]._id
-        );
-        await this.$store.dispatch("track/getTrackInformation", {
-          token: "Bearer " + this.getuserToken(),
-          trackId: this.tracks[0]._id
-        });
+      if (this.firstNonPreimum) {
+        if (this.id != this.contextID) {
+          this.$store.commit("track/setContextData", {
+            contextID: this.id,
+            contextType: "album",
+            contextUrl: "https://thesymphonia.ddns.net/api"
+          });
+          await this.$store.dispatch(
+            "track/playTrackInQueue",
+            this.firstNonPreimum
+          );
+          await this.$store.dispatch("track/getTrackInformation", {
+            token: "Bearer " + this.getuserToken(),
+            trackId: this.firstNonPreimum
+          });
 
-        await this.$store.dispatch(
-          "track/updateQueue",
-          "Bearer " + this.getuserToken()
-        );
-      } else {
-        this.$store.dispatch("track/togglePauseAndPlay");
+          await this.$store.dispatch(
+            "track/updateQueue",
+            "Bearer " + this.getuserToken()
+          );
+        } else {
+          this.$store.dispatch("track/togglePauseAndPlay");
+        }
+        this.$store.commit("track/setIsTrackPaused", this.isPaused);
       }
-      this.$store.commit("track/setIsTrackPaused", this.isPaused);
     },
     /**
      * Gets called when the user clicks on the pause button/icon
@@ -255,10 +262,7 @@ export default {
      * @param {none}
      */
     followAlbum: function() {
-      this.$store.dispatch("album/followAlbum", {
-        albumID: this.id,
-        token: this.getuserToken()
-      });
+      this.$store.dispatch("album/followAlbum", this.id);
     },
     /**
      * Gets called when the user clicks on heart icon to unfollow the album
@@ -266,10 +270,7 @@ export default {
      * @param {none}
      */
     unfollowAlbum: async function() {
-      await this.$store.dispatch("album/unfollowAlbum", {
-        id: this.id,
-        token: this.getuserToken()
-      });
+      await this.$store.dispatch("album/unfollowAlbum", this.id);
     },
     /**
      * Function to set the right click menu data
@@ -325,6 +326,9 @@ export default {
     },
     contextID() {
       return this.$store.state.track.contextId;
+    },
+    firstNonPreimum() {
+      return this.$store.state.album.nonPremiumTrackID;
     }
   },
   props: ["contextMenu"],
@@ -333,7 +337,8 @@ export default {
 </script>
 
 <style scoped>
-#playBtn {
+#playBtn,
+#pauseBtn {
   background-color: #1aa34a;
   border-width: 0;
   border-radius: 500px;
@@ -343,7 +348,8 @@ export default {
   transform: scale(1.1, 1.1);
 }
 
-#playBtn:hover {
+#playBtn:hover,
+#pauseBtn:hover {
   background-color: #1ed760;
   transform: scale(1.05, 1.05);
 }
@@ -367,7 +373,8 @@ export default {
   height: 157px;
 }
 
-#year {
+#year,
+#artistName {
   opacity: 0.6;
 }
 

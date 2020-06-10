@@ -3,6 +3,9 @@ import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
+import axios from "axios";
+
+jest.mock("axios");
 //Importing the component to be tested
 import signup from "@/views/SignUp.vue";
 
@@ -14,6 +17,7 @@ describe("signup", () => {
   let mutations;
   let store;
   let mockState = "";
+  let notifyMutations;
 
   beforeEach(() => {
     Vue.use(Vuex);
@@ -32,18 +36,28 @@ describe("signup", () => {
         else return Promise.resolve();
       })
     };
+    notifyMutations = {
+      setPushNotificationsPermission: jest.fn()
+    };
     mutations = {
       setuserDOB: jest.fn()
     };
     store = new Vuex.Store({
+      modules: {
+        notification: {
+          namespaced: true,
+          mutations: notifyMutations
+        }
+      },
       actions,
       mutations
     });
     const $route = {
       query: {
-        redirect: "webhome/home"
+        redirect: "/webhome/home"
       }
     };
+    const $router = [];
     vuetify = new Vuetify();
     Vue.use(Vuetify);
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
@@ -52,7 +66,7 @@ describe("signup", () => {
       vuetify,
       store,
       stubs: ["router-link"],
-      mocks: { $route }
+      mocks: { $route, $router }
     });
   });
   //-------------------------------------------------------------------------//
@@ -72,11 +86,6 @@ describe("signup", () => {
   it("renders the Signup with facebook button", () => {
     const btn_wrp = wrapper.find("#fb-sign-btn");
     expect(btn_wrp.text()).toBe("Sign up with Facebook");
-  });
-
-  it("renders the Signup with Google button", () => {
-    const btn_wrp = wrapper.find("#ggl-sign-btn");
-    expect(btn_wrp.text()).toBe("Sign up with Google");
   });
 
   it("renders the email textbox", () => {
@@ -132,7 +141,6 @@ describe("signup", () => {
   //-------------------------------------------------------------------------//
   //                        Simulating user input                            //
   //-------------------------------------------------------------------------//
-
   //check if the data changes when an input is added to the user email text field
   it("stores user email data in the component local state", async () => {
     const email_wrp = wrapper.find("#user-email");
@@ -186,11 +194,61 @@ describe("signup", () => {
   //-------------------------------------------------------------------------//
   //                        Submitting the form                             //
   //-------------------------------------------------------------------------//
-  // it("submits the form on valid input", () => {
-  //   //set the mockState so that the stub action returns the suitable promise result
-  //   mockState = "fail"
-  //   wrapper.vm.submitForm()
-  //   expect(wrapper.vm.errorState).toBe(true)
+  it("sends the access token to the server on facebook login", async () => {
+    const data = {
+      data: {
+        token: "1",
+        user: {
+          name: "Bob",
+          email: "Bob@gmail.com",
+          _id: "1",
+          type: "user",
+          imageFacebookUrl: "1"
+        }
+      }
+    };
+    axios.post.mockImplementationOnce(() => Promise.resolve(data));
+    wrapper.vm.sendAccessToken("1");
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.$router[0]).toBe("/webhome/home");
+  });
 
-  //})
+  it("sets a notification permission on recieving a registration token from server", async () => {
+    const data = {
+      data: {
+        token: "1",
+        user: {
+          name: "Bob",
+          email: "Bob@gmail.com",
+          _id: "1",
+          type: "user",
+          imageFacebookUrl: "1",
+          registraionToken: "1"
+        }
+      }
+    };
+    axios.post.mockImplementationOnce(() => Promise.resolve(data));
+    wrapper.vm.sendAccessToken("1");
+    await wrapper.vm.$nextTick();
+    expect(notifyMutations.setPushNotificationsPermission).toBeCalled();
+  });
+
+  it("catches server error on facebook login", async () => {
+    axios.post.mockImplementationOnce(() => Promise.reject("failed"));
+    wrapper.vm.sendAccessToken("1");
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.fbErrorState).toBe(true);
+  });
+
+  it("checks the matching of the email & the confirmation email", () => {
+    wrapper.vm.userData.email = "Bob@gmail.com";
+    wrapper.vm.userData.emailToMatch = "Bob@gmail.co";
+    expect(wrapper.vm.checkEmailConf()).toBe("Email must match");
+  });
+
+  it("returns an empty string if both emails match", () => {
+    wrapper.vm.userData.email = "Bob@gmail.com";
+    wrapper.vm.userData.emailToMatch = "Bob@gmail.com";
+    expect(wrapper.vm.checkEmailConf()).toBe("");
+  });
 });

@@ -29,6 +29,9 @@ import SideBar from "../components/User Settings/SideBar.vue";
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
 import NotificationPopup from "../components/Notifications/TheNotificationPopUp";
+import isLoggedIn from "../mixins/userService/isLoggedIn";
+import isNotificationsAllowed from "../mixins/userService/isNotificationsAllowed";
+import getuserToken from "../mixins/userService/getUserToken";
 
 export default {
   data() {
@@ -40,7 +43,23 @@ export default {
     navBar: navBar,
     appFooter: appFooter,
     NotificationPopup
-  }
+  },
+  created() {
+    if (this.isLoggedIn()) {
+      if (this.isNotificationsAllowed()) {
+        //get registration token from the user if the user is logged in
+        this.$store.dispatch(
+          "notification/getRegistrationToken",
+          this.getuserToken()
+        );
+        //set up a listener to catch notification messages in webhome
+        this.$store.dispatch("notification/setRecieveNotificationHandler");
+        //set up a listener for any change in token in the fcm server to refersh the token
+        this.$store.dispatch("notification/setRefreshTokenHandler");
+      }
+    }
+  },
+  mixins: [isLoggedIn, isNotificationsAllowed, getuserToken]
 };
 </script>
 

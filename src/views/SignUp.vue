@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-progress-linear v-if="loading" indeterminate stream height="3" fixed>
+    <v-progress-linear v-if="loading" indeterminate stream height="4" fixed>
     </v-progress-linear>
     <!-- Header of Sign Up page  -->
     <symphonia-Header></symphonia-Header>
@@ -12,12 +12,16 @@
         <v-row justify="center">
           <v-col cols="12">
             <!-- Facebook SignUp division -->
-              <!-- alert to show any errors returning from back server -->
-              <v-alert id="backerr-alert-fb" v-if="fbErrorState" color="rgba(217, 17, 17, 0.80)">
-                <v-row justify="center" class="white--text">
-                  <p style="text-align: center;">{{ fbErrorMessage }}</p>
-                </v-row>
-              </v-alert>
+            <!-- alert to show any errors returning from back server -->
+            <v-alert
+              id="backerr-alert-fb"
+              v-if="fbErrorState"
+              color="rgba(217, 17, 17, 0.80)"
+            >
+              <v-row justify="center" class="white--text">
+                <p style="text-align: center;">{{ fbErrorMessage }}</p>
+              </v-row>
+            </v-alert>
             <v-row justify="center" class="mb-5">
               <v-col cols="6">
                 <!-- Facebook button -->
@@ -408,63 +412,78 @@ export default {
               this.errorMessage = "Please try again later";
               this.errorState = true;
             }
-            // console.log(error);
           });
       } else {
         this.$vuetify.goTo(0, { duration: 1000 });
       }
     },
+    /**
+     * @public
+     * A function used to request the access token , send it to the server,
+     * then retrieve the user data from the server to register the user
+     */
     signUpWithFacebook() {
       this.errorMessage = "";
       this.errorState = false;
       this.fbErrorState = false;
       this.fbErrorMessage = "";
-      window.FB.login(response => {
-        if (response.status == "connected") {
-        this.loading = true;
-        axios
-          .post("/v1/users/auth/facebook/Symphonia", {
-            access_token: response.authResponse.accessToken
-          })
-          .then(response => {
-            sessionStorage.setItem("userToken", response.data.token);
-            //store the frequently used user data
-            sessionStorage.setItem("username", response.data.user.name);
-            sessionStorage.setItem("email", response.data.user.email);
-            sessionStorage.setItem("userID", response.data.user._id);
-            sessionStorage.setItem("type", response.data.user.type);
-            sessionStorage.setItem(
-              "imageUrl",
-              response.data.user.imageFacebookUrl
-            );
-            sessionStorage.setItem("authType", "facebook");
-            if (response.data.user.registraionToken == undefined) {
-              localStorage.setItem("allowNotifications", false);
-              this.$store.commit(
-                "notification/setPushNotificationsPermission",
-                false
-              );
-            } else {
-              localStorage.setItem("allowNotifications", true);
-              this.$store.commit(
-                "notification/setPushNotificationsPermission",
-                true
-              );
-            }
-            this.$router.push(this.$route.query.redirect || "/webhome/home");
-          })
-          .catch(err => {
-            this.loading = false;
+      window.FB.login(
+        response => {
+          if (response.status == "connected") {
+            this.loading = true;
+            this.sendAccessToken(response.authResponse.accessToken);
+          } else {
             this.fbErrorState = true;
-            this.fbErrorMessage = "Please try again later"
-            console.log(err);
-          });
-        }
-        else {
+            this.fbErrorMessage =
+              "cannot connect to facebook ... Please try again later";
+          }
+        },
+        { scope: "public_profile,email" }
+      );
+    },
+    /**
+     * @public
+     * A function to send facebook access token to the server
+     * @param {string} FBAccessToken - The access token used by the server to access the user's facebook data
+     */
+    sendAccessToken(FBAccessToken) {
+      axios
+        .post("/v1/users/auth/facebook/Symphonia", {
+          access_token: FBAccessToken
+        })
+        .then(response => {
+          sessionStorage.setItem("userToken", response.data.token);
+          //store the frequently used user data
+          sessionStorage.setItem("username", response.data.user.name);
+          sessionStorage.setItem("email", response.data.user.email);
+          sessionStorage.setItem("userID", response.data.user._id);
+          sessionStorage.setItem("type", response.data.user.type);
+          sessionStorage.setItem(
+            "imageUrl",
+            response.data.user.imageFacebookUrl
+          );
+          sessionStorage.setItem("authType", "facebook");
+          if (response.data.user.registraionToken == undefined) {
+            localStorage.setItem("allowNotifications", false);
+            this.$store.commit(
+              "notification/setPushNotificationsPermission",
+              false
+            );
+          } else {
+            localStorage.setItem("allowNotifications", true);
+            this.$store.commit(
+              "notification/setPushNotificationsPermission",
+              true
+            );
+          }
+          this.$router.push(this.$route.query.redirect || "/webhome/home");
+        })
+        .catch(err => {
+          this.loading = false;
           this.fbErrorState = true;
-          this.fbErrorMessage = "cannot connect to facebook ... Please try again later";
-        }
-      });
+          this.fbErrorMessage = "Please try again later";
+          console.log(err);
+        });
     }
   }
 };

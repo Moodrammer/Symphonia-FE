@@ -92,9 +92,14 @@
                   <h1 class="mt-5">{{ playlist.name }}</h1>
                 </v-row>
                 <v-row justify-lg="center">
-                  <p class="mt-1" style="opacity:0.4">
-                    {{ playlist.owner.name }}
-                  </p>
+                  <router-link
+                    v-bind:to="'/webhome/user/' + this.playlist.owner._id"
+                    class="white--text"
+                  >
+                    <p class="mt-1" style="opacity:0.4" id="owner">
+                      {{ playlist.owner.name }}
+                    </p>
+                  </router-link>
                 </v-row>
 
                 <!--The play button-->
@@ -102,27 +107,19 @@
                   <v-btn
                     rounded
                     class="white--text px-8 my-4"
-                    id="playBtn"
+                    id="pauseBtn"
                     @click="pause"
                     v-if="!isPaused"
                   >
                     Pause
                   </v-btn>
                   <v-btn
-                    rounded
-                    class="white--text px-8"
-                    id="playBtn"
-                    @click="play"
-                    v-else-if="playlist.tracksCount"
-                  >
-                    Play
-                  </v-btn>
-                  <v-btn
                     v-else
                     rounded
-                    class="white--text px-8"
-                    id="playBtnDisabled"
-                    disabled
+                    class="white--text px-8 my-4"
+                    id="playBtn"
+                    @click="play"
+                    v-bind:class="{ disabled: playlist.tracksCount == 0 }"
                   >
                     Play
                   </v-btn>
@@ -207,6 +204,11 @@
             <v-row justify="center" class="my-5">
               <p>Let's find some songs for your playlist</p>
             </v-row>
+            <v-row justify="center">
+              <v-btn rounded class="px-8" id="discoverBtn" to="/webhome/search">
+                DISCOVER
+              </v-btn>
+            </v-row>
           </div>
         </v-col>
       </v-row>
@@ -218,6 +220,7 @@
 import SongItem from "./SongItem";
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getuserToken from "../../mixins/userService/getUserToken";
+import isPremium from "../../mixins/userService/isPremium";
 import getuserID from "../../mixins/userService/getuserID";
 import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
@@ -233,7 +236,6 @@ export default {
   data: function() {
     return {
       hover: false,
-      iconClick: false,
       id: this.$route.params.id,
       disable: false
     };
@@ -245,30 +247,32 @@ export default {
      * @param {none}
      */
     play: async function() {
-      if (this.id != this.contextID) {
-        this.$store.commit("track/setContextData", {
-          contextID: this.id,
-          contextType: "playlist",
-          contextUrl: "https://thesymphonia.ddns.net/api"
-        });
-        await this.$store.dispatch(
-          "track/playTrackInQueue",
-          this.tracks[0]._id
-        );
+      if (this.playlist.tracksCount && this.firstNonPreimum) {
+        if (this.id != this.contextID) {
+          this.$store.commit("track/setContextData", {
+            contextID: this.id,
+            contextType: "playlist",
+            contextUrl: "https://thesymphonia.ddns.net/api"
+          });
+          await this.$store.dispatch(
+            "track/playTrackInQueue",
+            this.firstNonPreimum
+          );
 
-        await this.$store.dispatch("track/getTrackInformation", {
-          token: "Bearer " + this.getuserToken(),
-          trackId: this.tracks[0]._id
-        });
+          await this.$store.dispatch("track/getTrackInformation", {
+            token: "Bearer " + this.getuserToken(),
+            trackId: this.firstNonPreimum
+          });
 
-        await this.$store.dispatch(
-          "track/updateQueue",
-          "Bearer " + this.getuserToken()
-        );
-      } else {
-        this.$store.dispatch("track/togglePauseAndPlay");
+          await this.$store.dispatch(
+            "track/updateQueue",
+            "Bearer " + this.getuserToken()
+          );
+        } else {
+          this.$store.dispatch("track/togglePauseAndPlay");
+        }
+        this.$store.commit("track/setIsTrackPaused", this.isPaused);
       }
-      this.$store.commit("track/setIsTrackPaused", this.isPaused);
     },
     /**
      * Gets called when the user clicks on the pause button/icon
@@ -287,7 +291,7 @@ export default {
     followPlaylist: function() {
       this.$store.dispatch("playlist/followPlaylist", {
         id: this.id,
-        token: this.getuserToken()
+        name: this.$store.state.playlist.singlePlaylist.name
       });
     },
 
@@ -349,7 +353,7 @@ export default {
     }
   },
   created: function() {
-    if (this.isLoggedIn()) {
+    if (this.isLoggedIn() && !this.isPremium()) {
       this.$store.commit("playlist/changeAdsPopup");
     }
     this.getPlaylistData();
@@ -404,17 +408,21 @@ export default {
     },
     contextID() {
       return this.$store.state.track.contextId;
+    },
+    firstNonPreimum() {
+      return this.$store.state.playlist.nonPremiumTrackID;
     }
   },
   props: {
     contextMenu: {}
   },
-  mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID]
+  mixins: [getDeviceSize, getuserToken, isLoggedIn, getuserID, isPremium]
 };
 </script>
 
 <style scoped>
-#playBtn {
+#playBtn,
+#pauseBtn {
   background-color: #1aa34a;
   border-width: 0;
   border-radius: 500px;
@@ -424,7 +432,8 @@ export default {
   transform: scale(1.1, 1.1);
 }
 
-#playBtn:hover {
+#playBtn:hover,
+#pauseBtn:hover {
   background-color: #1ed760;
   transform: scale(1.05, 1.05);
 }
@@ -460,5 +469,9 @@ h5 {
   height: 50%;
   width: 50%;
   margin: auto;
+}
+
+.disabled {
+  cursor: no-drop;
 }
 </style>

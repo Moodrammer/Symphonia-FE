@@ -20,7 +20,6 @@ import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
-import axios from "axios";
 //Importing the component to be tested
 import PassChange from "@/components/PasswordMangement/PassChange.vue";
 

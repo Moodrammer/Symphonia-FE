@@ -42,7 +42,11 @@
     </v-row>
 
     <v-container align="center" justify="center">
-      <CardGrid :cardItems="cardItems" :contextMenu="contextMenu" />
+      <CardGrid
+        v-if="cardItems.items"
+        :cardItems="cardItems"
+        :contextMenu="contextMenu"
+      />
     </v-container>
   </v-content>
 </template>
@@ -51,6 +55,7 @@
 import CardGrid from "./general/CardGrid";
 import getuserToken from "../mixins/userService/getUserToken";
 import getuserID from "../mixins/userService/getuserID";
+import isLoggedIn from "../mixins/userService/isLoggedIn";
 import { mapGetters, mapActions } from "vuex";
 /**
  * @displayName User Interface
@@ -62,7 +67,7 @@ export default {
   components: {
     CardGrid
   },
-  mixins: [getuserToken, getuserID],
+  mixins: [getuserToken, getuserID, isLoggedIn],
   data() {
     return {
       user: {
@@ -70,19 +75,12 @@ export default {
         image: ""
       },
       cardItems: {
-        items: []
+        items: null
       }
     };
   },
   created() {
-    this.getUserInfo({
-      token: this.getuserToken(),
-      id: this.$route.params.id
-    });
-    this.getPublicPlaylists({
-      token: this.getuserToken(),
-      id: this.$route.params.id
-    });
+    this.updateUser();
   },
 
   methods: {
@@ -92,6 +90,27 @@ export default {
       "followArtist",
       "unfollowArtist"
     ]),
+    /**
+     * Function updates the user interface info
+     * @public This is a public method
+     * @param {none}
+     */
+
+    updateUser() {
+      this.getUserInfo({
+        token: this.getuserToken(),
+        id: this.$route.params.id
+      });
+      this.isFollowingArtists({
+        token: this.getuserToken(),
+        artists: [this.$route.params.id]
+      });
+      this.getPublicPlaylists({
+        token: this.getuserToken(),
+        id: this.$route.params.id,
+        offset: 0
+      });
+    },
     /**
      * Function to follow the user of this interface
      * @public This is a public method
@@ -130,15 +149,20 @@ export default {
      */
 
     isVisitor() {
-      return this.$route.params.id != this.getuserID();
+      return this.isLoggedIn() && this.$route.params.id != this.getuserID();
     }
   },
   watch: {
     allInfo(newValue) {
       this.user = newValue;
+      if (newValue && newValue.type === "artist")
+        this.$router.push(`/webhome/artist/${this.$route.params.id}`);
     },
     allPublicPlaylists(newValue) {
       this.cardItems.items = newValue;
+    },
+    "$route.params.id"() {
+      this.updateUser();
     }
   }
 };

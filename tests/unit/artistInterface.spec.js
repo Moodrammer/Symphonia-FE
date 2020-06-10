@@ -19,11 +19,6 @@ describe("ArtistInterface.vue", () => {
 
   beforeEach(() => {
     global.document.execCommand = function execCommandMock() {};
-    const document = {
-      createElement(name) {
-        return name;
-      }
-    };
     vuetify = new Vuetify();
     Vue.use(Vuetify);
     Vue.use(Vuex);

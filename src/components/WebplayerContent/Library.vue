@@ -12,12 +12,6 @@ import getuserToken from "../../mixins/userService/getUserToken";
 export default {
   name: "Library",
   mixins: [getuserToken],
-  props: ["contextMenu"],
-  created() {
-    if (!this.getuserToken()) {
-      console.log("redirect to home");
-      this.$router.push("../");
-    }
-  }
+  props: ["contextMenu"]
 };
 </script>

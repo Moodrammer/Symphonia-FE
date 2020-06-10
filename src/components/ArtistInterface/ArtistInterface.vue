@@ -3,81 +3,100 @@
     v-if="currentArtistGetter"
     :style="{
       backgroundImage: 'url(' + currentArtistGetter.imageUrl + ')',
-      backgroundSize: '100% Auto'
+      backgroundSize: '60% Auto',
+      backgroundPosition: 'center top',
+      backgroundRepeat: 'repeat'
     }"
   >
-    <div class="pl-10 pt-12 mt-12 gradient-body py-7">
+    <div
+      :class="{
+        'gradient-body': true,
+        'pl-10': true,
+        'pt-12': true,
+        'py-7': true,
+        'md-and-up-margin': $vuetify.breakpoint.mdAndUp,
+        'sm-and-down-margin': !$vuetify.breakpoint.mdAndUp
+      }"
+    >
       <p class="caption white--text">
         {{ currentArtistGetter.followersCount }} Followers
       </p>
       <h1 class="display-3 font-weight-bold white--text my-5">
         {{ currentArtistGetter.name }}
       </h1>
+      <v-row>
+        <v-menu bottom dark offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              color="success"
+              min-width="110"
+              min-height="40"
+              dark
+              v-on="on"
+              rounded
+            >
+              Share
+            </v-btn>
+          </template>
 
-      <v-menu bottom dark offset-y>
-        <template v-slot:activator="{ on }">
+          <v-list>
+            <v-list-item
+              v-for="(item, i) in shareList"
+              :key="i"
+              @click="share(item.name)"
+            >
+              <v-btn :title="item.name" icon
+                ><v-icon>{{ item.icon }}</v-icon></v-btn
+              >
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <template v-if="isVisitor">
           <v-btn
+            rounded
+            outlined
             color="success"
-            min-width="110"
+            min-width="160"
             min-height="40"
             dark
-            v-on="on"
+            class="mx-3"
+            v-if="!isFollowed || !isFollowed[0]"
+            @click="follow()"
+            success
+            >Follow</v-btn
+          >
+          <v-btn
             rounded
+            outlined
+            color="error"
+            min-width="160"
+            min-height="40"
+            dark
+            class="mx-3"
+            v-else
+            @click="unfollow()"
+            alert
+            >Unfollow</v-btn
           >
-            Share
-          </v-btn>
         </template>
-
-        <v-list>
-          <v-list-item
-            v-for="(item, i) in shareList"
-            :key="i"
-            @click="share(item.name)"
-          >
-            <v-btn :title="item.name" icon
-              ><v-icon>{{ item.icon }}</v-icon></v-btn
-            >
-          </v-list-item>
-        </v-list>
-      </v-menu>
-      <template v-if="isVisitor">
-        <v-btn
-          rounded
-          outlined
-          color="success"
-          min-width="160"
-          min-height="40"
-          dark
-          class="mx-3"
-          v-if="!isFollowed || !isFollowed[0]"
-          @click="follow()"
-          success
-          >Follow</v-btn
-        >
-        <v-btn
-          rounded
-          outlined
-          color="error"
-          min-width="160"
-          min-height="40"
-          dark
-          class="mx-3"
-          v-else
-          @click="unfollow()"
-          alert
-          >Unfollow</v-btn
-        >
-      </template>
+      </v-row>
     </div>
     <div class="pl-3 content-container">
       <div class="pl-9 mb-10">
-        <v-btn text color="white" class="mx-2" :to="{ name: 'Overview' }">
-          <span class="text-capitalize white--text">Overview</span>
-        </v-btn>
+        <v-row>
+          <v-btn text color="white" class="mx-2" :to="{ name: 'Overview' }">
+            <span class="text-capitalize white--text">Overview</span>
+          </v-btn>
 
-        <v-btn text color="white" class="mx-2" :to="{ name: 'RelatedArtists' }">
-          <span class="text-capitalize white--text">Related Artists</span>
-        </v-btn>
+          <v-btn
+            text
+            color="white"
+            class="ml-2 mr-0"
+            :to="{ name: 'RelatedArtists' }"
+          >
+            <span class="text-capitalize white--text">Related Artists</span>
+          </v-btn>
+        </v-row>
       </div>
 
       <router-view
@@ -96,6 +115,7 @@
  */
 import getuserToken from "../../mixins/userService/getUserToken";
 import getuserID from "../../mixins/userService/getuserID";
+import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -140,7 +160,7 @@ export default {
       }
     },
     /**
-     * Function updates the user interface info
+     * Function updates the artist interface info
      * @public This is a public method
      * @param {none}
      */
@@ -205,7 +225,7 @@ export default {
      */
 
     isVisitor() {
-      return this.artistID != this.getuserID();
+      return this.isLoggedIn() && this.artistID != this.getuserID();
     }
   },
   watch: {
@@ -231,7 +251,7 @@ export default {
       ]
     };
   },
-  mixins: [getuserToken, getuserID]
+  mixins: [getuserToken, getuserID, isLoggedIn]
 };
 </script>
 
@@ -243,6 +263,12 @@ export default {
     rgba(26, 26, 26, 1) 0%,
     rgba(26, 26, 26, 0) 100%
   );
+}
+.md-and-up-margin {
+  margin-top: 20%;
+}
+.sm-and-down {
+  margin-top: 8%;
 }
 .content-container {
   background: #1a1a1a;

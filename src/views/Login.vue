@@ -1,6 +1,6 @@
 <template>
   <div @keyup="checkEnterKey">
-    <v-progress-linear indeterminate v-if="loading" stream height="3">
+    <v-progress-linear indeterminate v-if="loading" stream height="4" fixed>
     </v-progress-linear>
     <symphonia-header></symphonia-header>
     <v-divider></v-divider>
@@ -273,52 +273,63 @@ export default {
     loginWithFacebook() {
       this.errorState = false;
       this.errorMessage = "";
-      window.FB.login(response => {
-        if (response.status == "connected") {
-        this.loading = true;
-        axios
-          .post("/v1/users/auth/facebook/Symphonia", {
-            access_token: response.authResponse.accessToken
-          })
-          .then(response => {
-            sessionStorage.setItem("userToken", response.data.token);
-            //store the frequently used user data
-            sessionStorage.setItem("username", response.data.user.name);
-            sessionStorage.setItem("email", response.data.user.email);
-            sessionStorage.setItem("userID", response.data.user._id);
-            sessionStorage.setItem("type", response.data.user.type);
-            sessionStorage.setItem(
-              "imageUrl",
-              response.data.user.imageFacebookUrl
-            );
-            sessionStorage.setItem("authType", "facebook");
-            if (response.data.user.registraionToken == undefined) {
-              localStorage.setItem("allowNotifications", false);
-              this.$store.commit(
-                "notification/setPushNotificationsPermission",
-                false
-              );
-            } else {
-              localStorage.setItem("allowNotifications", true);
-              this.$store.commit(
-                "notification/setPushNotificationsPermission",
-                true
-              );
-            }
-            this.$router.push(this.$route.query.redirect || "/webhome/home");
-          })
-          .catch(err => {
-            this.loading = false;
+      window.FB.login(
+        response => {
+          if (response.status == "connected") {
+            this.loading = true;
+            this.sendAccessToken(response.authResponse.accessToken);
+          } else {
             this.errorState = true;
-            this.errorMessage = "Please try again later"
-            console.log(err);
-          });
-        }
-        else{
+            this.errorMessage =
+              "Cannot connect to Facebook ... Please try again later";
+          }
+        },
+        { scope: "public_profile,email" }
+      );
+    },
+    /**
+     * @public
+     * A function to send facebook access token to the server
+     * @param {string} FBAccessToken - The access token used by the server to access the user's facebook data
+     */
+    sendAccessToken(FBAccessToken) {
+      axios
+        .post("/v1/users/auth/facebook/Symphonia", {
+          access_token: FBAccessToken
+        })
+        .then(response => {
+          sessionStorage.setItem("userToken", response.data.token);
+          //store the frequently used user data
+          sessionStorage.setItem("username", response.data.user.name);
+          sessionStorage.setItem("email", response.data.user.email);
+          sessionStorage.setItem("userID", response.data.user._id);
+          sessionStorage.setItem("type", response.data.user.type);
+          sessionStorage.setItem(
+            "imageUrl",
+            response.data.user.imageFacebookUrl
+          );
+          sessionStorage.setItem("authType", "facebook");
+          if (response.data.user.registraionToken == undefined) {
+            localStorage.setItem("allowNotifications", false);
+            this.$store.commit(
+              "notification/setPushNotificationsPermission",
+              false
+            );
+          } else {
+            localStorage.setItem("allowNotifications", true);
+            this.$store.commit(
+              "notification/setPushNotificationsPermission",
+              true
+            );
+          }
+          this.$router.push(this.$route.query.redirect || "/webhome/home");
+        })
+        .catch(err => {
+          this.loading = false;
           this.errorState = true;
-          this.errorMessage = "Cannot connect to Facebook ... Please try again later";
-        }
-      });
+          this.errorMessage = "Please try again later";
+          console.log(err);
+        });
     }
   },
   mixins: [isNotificationsAllowed]
