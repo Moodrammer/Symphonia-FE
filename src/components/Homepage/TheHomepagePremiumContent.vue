@@ -11,17 +11,25 @@
         <v-row>
           <v-col sm="1" v-if="isSm()"></v-col>
           <v-col sm="10" md="12" lg="12" xs="12">
-            <h1
+            <h1 
+              v-if="!isPremium()"
               class="premium-header"
               v-bind:class="{ 'premium-header-xs': isXs() }"
             >
               Get Premium free for 1 month
             </h1>
+            <h1 
+              v-if="isPremium()"
+              class="premium-header"
+              v-bind:class="{ 'premium-header-xs': isXs() }"
+            >
+              You are already premium !
+            </h1>
           </v-col>
           <v-col sm="1" v-if="isSm()"></v-col>
         </v-row>
 
-        <v-row>
+        <v-row v-if="!isPremium()">
           <v-col sm="1" v-if="isSm()"></v-col>
           <v-col sm="10" md="12" lg="12" xs="12">
             <p class="price" v-bind:class="{ 'price-xs': isXs() }">
@@ -31,7 +39,7 @@
           <v-col sm="1" v-if="isSm()"></v-col>
         </v-row>
 
-        <v-row>
+        <v-row v-if="!isPremium()">
           <v-col sm="1" v-if="isSm()"></v-col>
           <v-col sm="10" md="12" lg="12" xs="12">
             <a
@@ -48,7 +56,7 @@
     </v-content>
 
     <!-- Benefits -->
-    <v-content>
+    <v-content v-if="!isPremium()">
       <v-row>
         <v-col>
           <h1 class="why-premium">Why go Premium?</h1>
@@ -93,7 +101,7 @@
       </v-row>
     </v-content>
 
-    <v-content>
+    <v-content v-if="!isPremium()">
       <v-card class="mx-auto my-12" max-width="374">
         <v-card-title style="font-size 32px; color: black;"
           >Symphonia Premium</v-card-title
@@ -133,7 +141,7 @@
 <script>
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getuserToken from "../../mixins/userService/getUserToken";
-
+import isPremium from "../../mixins/userService/isPremium";
 import { mapMutations, mapActions } from "vuex";
 
 import axios from "axios";
@@ -215,7 +223,7 @@ export default {
     this.setNavigationBarColor("rgba(0, 0, 0, 0.6)");
   },
 
-  mixins: [getDeviceSize, getuserToken]
+  mixins: [getDeviceSize, getuserToken, isPremium]
 };
 </script>
 
