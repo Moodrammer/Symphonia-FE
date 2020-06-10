@@ -54,6 +54,11 @@
 </template>
 
 <script>
+/**
+ * The Notification history list component displays the user's previous recieved push Notifications
+ * @displayName Notification History List
+ * @example [none]
+ */
 export default {
   name: "NotificationHistorylist",
   created() {

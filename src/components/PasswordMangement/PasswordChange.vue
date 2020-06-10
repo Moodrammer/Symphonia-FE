@@ -113,7 +113,11 @@
 
 <script>
 import axios from "axios";
-
+/**
+ * The password change component used in the Forget Password view
+ * @displayName Password Change
+ * @example [none]
+ */
 export default {
   data() {
     return {
@@ -186,6 +190,7 @@ export default {
     /**
      * This method checks on any keyup event if the user has pressed the Enter key to submit the password change form
      * @public
+     * @param {event} e - keyboard event
      */
     checkEnterKey(e) {
       if (e.keyCode == "13") this.updatePass();

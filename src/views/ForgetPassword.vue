@@ -17,12 +17,12 @@
 </template>
 
 <script>
-//import Footer from "../components/Homepage/TheHomepageFooter";
-
+/**
+ * The Forget password page used by the user to reset his password
+ * @displayName Forget Password
+ * @example [none]
+ */
 export default {
-  // components: {
-  //     Footer,
-  // },
 };
 </script>
 

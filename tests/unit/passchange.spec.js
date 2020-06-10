@@ -21,7 +21,7 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
-import PassChange from "@/components/PasswordMangement/PassChange.vue";
+import PassChange from "@/components/PasswordMangement/PasswordChange.vue";
 
 describe("PassChange", () => {
   let wrapper;

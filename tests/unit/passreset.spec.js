@@ -11,7 +11,7 @@ import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 //Importing the component to be tested
-import PassReset from "@/components/PasswordMangement/PassReset.vue";
+import PassReset from "@/components/PasswordMangement/PasswordReset.vue";
 
 let mockState = "";
 

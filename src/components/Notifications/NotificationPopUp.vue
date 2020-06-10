@@ -32,6 +32,11 @@
 </template>
 
 <script>
+/**
+ * The Notification Popup displays the user's recieved Push Notifications
+ * @displayName Notification PopUp
+ * @example [none]
+ */
 export default {
   name: "NotificationPopup",
   methods: {

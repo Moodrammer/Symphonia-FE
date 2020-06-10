@@ -188,6 +188,11 @@ import symphoniaHeader from "@/components/SymphoniaHeader.vue";
 import isNotificationsAllowed from "../mixins/userService/isNotificationsAllowed.js";
 import axios from "axios";
 
+/**
+ * This Page is used for User Login
+ * @displayName Login
+ * @example [none]
+ */
 export default {
   name: "login",
   components: {
@@ -217,6 +222,7 @@ export default {
     /**
      * This method checks on any keyup event if the user has pressed the Enter key to submit the Login form
      * @public
+     * @param {event} e - keyboard event
      */
     checkEnterKey(e) {
       if (e.keyCode == "13") this.login();

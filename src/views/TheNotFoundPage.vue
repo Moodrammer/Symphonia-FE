@@ -23,6 +23,12 @@
 <script>
 import NavigationBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import Footer from "../components/Homepage/TheHomepageFooter";
+
+/**
+ * A page for all Urls not found in our website
+ * @displayName Not Found
+ * @example [none]
+ */
 export default {
   name: "notfound",
   components: {
