@@ -252,6 +252,11 @@ import symphoniaHeader from "@/components/SymphoniaHeader.vue";
 import getuserType from "@/mixins/userService/getuserType";
 import axios from "axios";
 
+/**
+ * This page is used to register the user to our website
+ * @displayName Sign Up
+ * @example [none]
+ */
 export default {
   components: {
     symphoniaHeader

@@ -250,6 +250,7 @@
               text
               class="mr-6"
               title="visit album"
+              :id="'visitAlbum' + item.id"
               @click="goToAlbum(item.id)"
               ><v-icon>mdi-play</v-icon></v-btn
             >
@@ -259,16 +260,28 @@
               small
               text
               title="add songs to the album"
+              :id="'addToAlbum' + item.id"
               @click="setOperationData('addSong', item.name, item.id, null)"
               ><v-icon>mdi-plus</v-icon></v-btn
             >
-            <v-btn fab small text class="mx-6" title="edit album name"
+            <v-btn
+              fab
+              small
+              text
+              class="mx-6"
+              title="edit album name"
+              :id="'renameAlbum' + item.id"
               ><v-icon
                 @click="setOperationData('rename', item.name, item.id, null)"
                 >mdi-pencil</v-icon
               ></v-btn
             >
-            <v-btn fab small text title="delete album"
+            <v-btn
+              fab
+              small
+              text
+              title="delete album"
+              :id="'deleteAlbum' + item.id"
               ><v-icon
                 @click="setOperationData('remove', item.name, item.id, null)"
                 >mdi-delete</v-icon
@@ -288,7 +301,13 @@
               <v-list-item-title v-text="subItem.name"></v-list-item-title>
             </v-list-item-content>
             <v-spacer></v-spacer>
-            <v-btn fab x-small text title="edit song name" class="mx-6"
+            <v-btn
+              :id="'renameSong' + subItem._id"
+              fab
+              x-small
+              text
+              title="edit song name"
+              class="mx-6"
               ><v-icon
                 @click="
                   setOperationData('rename', subItem.name, item.id, subItem._id)
@@ -296,7 +315,12 @@
                 >mdi-pencil</v-icon
               ></v-btn
             >
-            <v-btn fab x-small text title="delete song"
+            <v-btn
+              fab
+              x-small
+              text
+              title="delete song"
+              :id="'deleteSong' + subItem._id"
               ><v-icon
                 @click="
                   setOperationData('remove', subItem.name, item.id, subItem._id)

@@ -73,7 +73,11 @@
 
 <script>
 import axios from "axios";
-
+/**
+ * The password reset component used in the Forget password view
+ * @displayName Password Reset
+ * @example [none]
+ */
 export default {
   name: "PassReset",
   data() {
@@ -93,6 +97,7 @@ export default {
     /**
      * This method checks on any keyup event if the user has pressed the Enter key to submit the password reset form
      * @public
+     * @param {event} e - keyboard event
      */
     checkEnterKey(e) {
       if (e.keyCode == "13") this.resetPass();

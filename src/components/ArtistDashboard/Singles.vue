@@ -251,11 +251,18 @@
               text
               class="mr-6"
               title="add song file to the single"
+              :id="'addToSingle' + item.id"
               v-if="item.tracks.length < 1"
               @click="setOperationData('addSong', item.name, item.id, null)"
               ><v-icon>mdi-plus</v-icon></v-btn
             >
-            <v-btn fab small text class="mr-6" title="edit single name"
+            <v-btn
+              fab
+              small
+              text
+              class="mr-6"
+              title="edit single name"
+              :id="'renameSingle' + item.id"
               ><v-icon
                 @click="
                   setOperationData(
@@ -268,7 +275,12 @@
                 >mdi-pencil</v-icon
               ></v-btn
             >
-            <v-btn fab small text title="delete single"
+            <v-btn
+              fab
+              small
+              text
+              title="delete single"
+              :id="'deleteSingle' + item.id"
               ><v-icon
                 @click="setOperationData('remove', item.name, item.id, null)"
                 >mdi-delete</v-icon
@@ -288,7 +300,12 @@
               <v-list-item-title v-text="subItem.name"></v-list-item-title>
             </v-list-item-content>
             <v-spacer></v-spacer>
-            <v-btn fab x-small text title="delete song file"
+            <v-btn
+              fab
+              x-small
+              text
+              title="delete song file"
+              :id="'deleteSong' + subItem._id"
               ><v-icon
                 @click="
                   setOperationData('remove', subItem.name, item.id, subItem._id)

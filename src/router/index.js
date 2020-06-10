@@ -12,8 +12,8 @@ import HomeContent from "../components/WebplayerContent/HomeContentRouter.vue";
 import Tracks from "../views/LikedSongs.vue";
 import HomepagePremium from "../views/PremiumOffer.vue";
 import PlaylistView from "../components/general/PlaylistView.vue";
-import PassReset from "../components/PasswordMangement/PassReset.vue";
-import PassChange from "../components/PasswordMangement/PassChange.vue";
+import PasswordReset from "../components/PasswordMangement/PasswordReset.vue";
+import PasswordChange from "../components/PasswordMangement/PasswordChange.vue";
 import ArtistUI from "../components/ArtistInterface/ArtistInterface.vue";
 import Overview from "../components/ArtistInterface/Overview";
 import RelatedArtists from "../components/ArtistInterface/RelatedArtists";
@@ -26,8 +26,7 @@ import SymphoniaArtist from "../components/ArtistDashboard/Dashboard.vue";
 import SymphoniaArtistMain from "../components/ArtistDashboard/Main.vue";
 import SymphoniaArtistAlbums from "../components/ArtistDashboard/Albums.vue";
 import SymphoniaArtistSingles from "../components/ArtistDashboard/Singles.vue";
-// import soundGrapher from "../components/TheSoundPlayer/TheSoundGrapher.vue";
-import notfound from "../views/TheNotFoundPage.vue";
+import NotFound from "../views/TheNotFoundPage.vue";
 
 import isLoggedIn from "@/mixins/userService/isLoggedIn";
 
@@ -303,13 +302,13 @@ const routes = [
   {
     path: "/password-reset",
     name: "forgetpassword",
-    component: () => import("../views/ForgetPass.vue"),
+    component: () => import("../views/ForgetPassword.vue"),
     redirect: "/password-reset/reset",
     children: [
       {
         path: "reset",
         name: "reset",
-        component: PassReset,
+        component: PasswordReset,
         meta: {
           allowAnonymous: true
         }
@@ -317,7 +316,7 @@ const routes = [
       {
         path: "change/:resettoken",
         name: "change",
-        component: PassChange,
+        component: PasswordChange,
         meta: {
           allowAnonymous: true
         }
@@ -360,7 +359,7 @@ const routes = [
   {
     path: "*",
     name: "notfound",
-    component: notfound,
+    component: NotFound,
     meta: {
       allowAnonymous: true
     }

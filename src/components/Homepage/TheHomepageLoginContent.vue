@@ -12,6 +12,7 @@
         <v-row>
           <v-col md="10" offset-md="1" xs="12">
             <h1
+              v-if="!isPremium()"
               class="premium-header"
               v-bind:class="{
                 'premium-header-sm': isSm(),
@@ -20,10 +21,20 @@
             >
               Go Premium. Be happy.
             </h1>
+            <h1
+              v-if="isPremium()"
+              class="premium-header"
+              v-bind:class="{
+                'premium-header-sm': isSm(),
+                'premium-header-xs': isXs()
+              }"
+            >
+              Welcome back !
+            </h1>
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row v-if="!isPremium()">
           <v-col md="10" offset-md="1" xs="12" align="center">
             <router-link to="/premium" class="download-button-large">
               start free trial
@@ -177,7 +188,8 @@ import getDeviceSize from "../../mixins/getDeviceSize";
 import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import isNotificationsAllowed from "../../mixins/userService/isNotificationsAllowed";
 import getuserToken from "../../mixins/userService/getUserToken";
-import NotificationPopup from "../Notifications/TheNotificationPopUp";
+import isPremium from "../../mixins/userService/isPremium";
+import NotificationPopup from "../Notifications/NotificationPopUp";
 /**
  * The homepage content after login.
  * @version 1.0.0
@@ -207,7 +219,13 @@ export default {
       this.$store.dispatch("notification/setRefreshTokenHandler");
     }
   },
-  mixins: [getDeviceSize, isLoggedIn, getuserToken, isNotificationsAllowed]
+  mixins: [
+    getDeviceSize,
+    isLoggedIn,
+    getuserToken,
+    isNotificationsAllowed,
+    isPremium
+  ]
 };
 </script>
 
