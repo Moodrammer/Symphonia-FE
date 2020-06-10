@@ -1274,12 +1274,18 @@ export function makeServer({ environment = "development" } = {}) {
         let notifyList = [];
         for (let i = 1; i <= schema.notifications.all().length; i++) {
           var x = schema.notifications.find(i);
+          let from  = JSON.parse(`{"to": "1","from": ${x.from}}`)
+          from = JSON.stringify(from)
           var element = {
+            data: {
+              data: from 
+            },
             notification: {
               title: x.title,
               body: x.body,
               icon: x.icon
-            }
+            },
+            date: x.date
           };
           notifyList.push(element);
         }
