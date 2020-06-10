@@ -284,7 +284,11 @@ export default {
      */
 
     cardClicked(id, type) {
-      this.$router.push(`/webhome/${type}/${id}`);
+      if (type === "gerne") {
+        this.$router.push(`/genre/${id}`);
+      } else {
+        this.$router.push(`/webhome/${type}/${id}`);
+      }
     },
 
     /**

@@ -80,15 +80,7 @@ export default {
     };
   },
   created() {
-    this.getUserInfo({
-      token: this.getuserToken(),
-      id: this.$route.params.id
-    });
-    this.getPublicPlaylists({
-      token: this.getuserToken(),
-      id: this.$route.params.id,
-      offset: 0
-    });
+    this.updateUser();
   },
 
   methods: {
@@ -98,6 +90,27 @@ export default {
       "followArtist",
       "unfollowArtist"
     ]),
+    /**
+     * Function updates the user interface info
+     * @public This is a public method
+     * @param {none}
+     */
+
+    updateUser() {
+      this.getUserInfo({
+        token: this.getuserToken(),
+        id: this.$route.params.id
+      });
+      this.isFollowingArtists({
+        token: this.getuserToken(),
+        artists: [this.$route.params.id]
+      });
+      this.getPublicPlaylists({
+        token: this.getuserToken(),
+        id: this.$route.params.id,
+        offset: 0
+      });
+    },
     /**
      * Function to follow the user of this interface
      * @public This is a public method
@@ -147,6 +160,9 @@ export default {
     },
     allPublicPlaylists(newValue) {
       this.cardItems.items = newValue;
+    },
+    "$route.params.id"() {
+      this.updateUser();
     }
   }
 };

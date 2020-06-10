@@ -9,6 +9,7 @@ import artist from "./modules/artist";
 import userPublicProfile from "./modules/userPublicProfile";
 import homepage from "./modules/homepage";
 import notification from "./modules/notification";
+import search from "./modules/search";
 import webplayerHome from "./modules/webplayerHome";
 
 Vue.use(Vuex);
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     artist,
     homepage,
     notification,
+    search,
     webplayerHome
   }
 });

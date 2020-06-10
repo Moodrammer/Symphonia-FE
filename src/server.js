@@ -837,6 +837,279 @@ export function makeServer({ environment = "development" } = {}) {
           return new Response(400, {}, {});
         }
       });
+      /////////////////////////////////////////////////////////////////////////////////
+      //     Search Generic for a keyword in all types(user,artist,playlist,...)
+      /////////////////////////////////////////////////////////////////////////////////
+      this.get("/v1/search/:name", (schema, request) => {
+        let keyword = request.params.name;
+        let limit = request.queryParams.limit;
+        // get all data to ssearch in it
+        let allUsers = schema.users.where(
+          user =>
+            user.name.includes(keyword) ||
+            user.name.includes(keyword.toUpperCase()) ||
+            user.name.includes(keyword.toLowerCase())
+        );
+
+        let allPlaylists = schema.playlists.where(
+          playlist =>
+            playlist.name.includes(keyword) ||
+            playlist.name.includes(keyword.toUpperCase()) ||
+            playlist.name.includes(keyword.toLowerCase())
+        );
+        let allTracks = schema.tracks.where(
+          track =>
+            track.name.includes(keyword) ||
+            track.name.includes(keyword.toUpperCase()) ||
+            track.name.includes(keyword.toLowerCase())
+        );
+        let allAlbums = schema.albums.where(
+          album =>
+            album.name.includes(keyword) ||
+            album.name.includes(keyword.toUpperCase()) ||
+            album.name.includes(keyword.toLowerCase())
+        );
+        let allAtrists = schema.artists.where(
+          artist =>
+            artist.name.includes(keyword) ||
+            artist.name.includes(keyword.toUpperCase()) ||
+            artist.name.includes(keyword.toLowerCase())
+        );
+        let allCategory = schema.categories.where(
+          category =>
+            category.name.includes(keyword) ||
+            category.name.includes(keyword.toUpperCase()) ||
+            category.name.includes(keyword.toLowerCase())
+        );
+        // prepare the arrays to send
+        let counter = 0;
+        let sendUsers = [];
+        allUsers.models.forEach(element => {
+          if (counter < 6) {
+            sendUsers.push(element.attrs);
+            counter += 1;
+          }
+        });
+        let sendPlaylists = [];
+        counter = 0;
+        allPlaylists.models.forEach(element => {
+          if (counter < limit) {
+            sendPlaylists.push(element.attrs);
+            counter += 1;
+          }
+        });
+        let sendTracks = [];
+        counter = 0;
+        allTracks.models.forEach(element => {
+          if (counter < limit) {
+            sendTracks.push(element.attrs);
+            counter += 1;
+          }
+        });
+        let sendAlbums = [];
+        counter = 0;
+        allAlbums.models.forEach(element => {
+          if (counter < limit) {
+            sendAlbums.push(element.attrs);
+            counter += 1;
+          }
+        });
+        let sendArtists = [];
+        counter = 0;
+        allAtrists.models.forEach(element => {
+          if (counter < limit) {
+            sendArtists.push(element.attrs);
+            counter += 1;
+          }
+        });
+        let sendCategories = [];
+        counter = 0;
+        allCategory.models.forEach(element => {
+          if (counter < limit) {
+            sendCategories.push(element.attrs);
+            counter += 1;
+          }
+        });
+        return new Response(
+          200,
+          {},
+          {
+            profiles: sendUsers,
+            artists: sendArtists,
+            tracks: sendTracks,
+            albums: sendAlbums,
+            category: sendCategories,
+            playlist: sendPlaylists
+          }
+        );
+      });
+      this.get("/v1/search", (schema, request) => {
+        let keyword = request.queryParams.q;
+        let offset = request.queryParams.offset;
+        let limit = request.queryParams.limit;
+        let type = request.queryParams.type;
+        let sendArr = [];
+        // get the data
+        let counter = 0;
+        switch (type) {
+          case "profile": {
+            let allUsers = schema.users.where(
+              user =>
+                user.name.includes(keyword) ||
+                user.name.includes(keyword.toUpperCase()) ||
+                user.name.includes(keyword.toLowerCase())
+            );
+            allUsers.models.forEach(element => {
+              if (counter >= offset && counter < offset + limit) {
+                sendArr.push(element.attrs);
+                counter += 1;
+              } else {
+                counter += 1;
+              }
+            });
+            return new Response(
+              200,
+              {},
+              {
+                profile: {
+                  items: sendArr,
+                  next: counter > offset + limit ? "ayHaga" : null
+                }
+              }
+            );
+          }
+          case "playlist": {
+            let allPlaylists = schema.playlists.where(
+              playlist =>
+                playlist.name.includes(keyword) ||
+                playlist.name.includes(keyword.toUpperCase()) ||
+                playlist.name.includes(keyword.toLowerCase())
+            );
+            allPlaylists.models.forEach(element => {
+              if (counter >= offset && counter < offset + limit) {
+                sendArr.push(element.attrs);
+                counter += 1;
+              } else {
+                counter += 1;
+              }
+            });
+            return new Response(
+              200,
+              {},
+              {
+                playlist: {
+                  items: sendArr,
+                  next: counter > offset + limit ? "ayHaga" : null
+                }
+              }
+            );
+          }
+          case "track": {
+            let allTracks = schema.tracks.where(
+              track =>
+                track.name.includes(keyword) ||
+                track.name.includes(keyword.toUpperCase()) ||
+                track.name.includes(keyword.toLowerCase())
+            );
+            allTracks.models.forEach(element => {
+              if (counter >= offset && counter < offset + limit) {
+                sendArr.push(element.attrs);
+                counter += 1;
+              } else {
+                counter += 1;
+              }
+            });
+            return new Response(
+              200,
+              {},
+              {
+                track: {
+                  items: sendArr,
+                  next: counter > offset + limit ? "ayHaga" : null
+                }
+              }
+            );
+          }
+          case "album": {
+            let allAlbums = schema.albums.where(
+              album =>
+                album.name.includes(keyword) ||
+                album.name.includes(keyword.toUpperCase()) ||
+                album.name.includes(keyword.toLowerCase())
+            );
+            allAlbums.models.forEach(element => {
+              if (counter >= offset && counter < offset + limit) {
+                sendArr.push(element.attrs);
+                counter += 1;
+              } else {
+                counter += 1;
+              }
+            });
+            return new Response(
+              200,
+              {},
+              {
+                album: {
+                  items: sendArr,
+                  next: counter > offset + limit ? "ayHaga" : null
+                }
+              }
+            );
+          }
+          case "artist": {
+            let allAtrists = schema.artists.where(
+              artist =>
+                artist.name.includes(keyword) ||
+                artist.name.includes(keyword.toUpperCase()) ||
+                artist.name.includes(keyword.toLowerCase())
+            );
+            allAtrists.models.forEach(element => {
+              if (counter >= offset && counter < offset + limit) {
+                sendArr.push(element.attrs);
+                counter += 1;
+              } else {
+                counter += 1;
+              }
+            });
+            return new Response(
+              200,
+              {},
+              {
+                artist: {
+                  items: sendArr,
+                  next: counter > offset + limit ? "ayHaga" : null
+                }
+              }
+            );
+          }
+          case "category": {
+            let allCategory = schema.categories.where(
+              category =>
+                category.name.includes(keyword) ||
+                category.name.includes(keyword.toUpperCase()) ||
+                category.name.includes(keyword.toLowerCase())
+            );
+            allCategory.models.forEach(element => {
+              if (counter >= offset && counter < offset + limit) {
+                sendArr.push(element.attrs);
+                counter += 1;
+              } else {
+                counter += 1;
+              }
+            });
+            return new Response(
+              200,
+              {},
+              {
+                category: {
+                  items: sendArr,
+                  next: counter > offset + limit ? "ayHaga" : null
+                }
+              }
+            );
+          }
+        }
+      });
 
       //////////////////////////////////////////////////////////////////////////////////////
       //SOUNDPLAYER
@@ -1274,12 +1547,18 @@ export function makeServer({ environment = "development" } = {}) {
         let notifyList = [];
         for (let i = 1; i <= schema.notifications.all().length; i++) {
           var x = schema.notifications.find(i);
+          let from  = JSON.parse(`{"to": "1","from": ${x.from}}`)
+          from = JSON.stringify(from)
           var element = {
+            data: {
+              data: from 
+            },
             notification: {
               title: x.title,
               body: x.body,
               icon: x.icon
-            }
+            },
+            date: x.date
           };
           notifyList.push(element);
         }

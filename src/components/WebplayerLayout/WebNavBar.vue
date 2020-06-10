@@ -33,6 +33,8 @@
       color="black"
       class="tf ml-3 py-0"
       v-show="showSearch"
+      v-model="search"
+      @input="request()"
     ></v-text-field>
     <!--The tabs of the the library-->
     <div
@@ -198,7 +200,8 @@ export default {
       selectedItem: "More..",
       moreMenu: ["More..", "Artists", "Albums"],
       scrollPosition: null,
-      scrolled: null
+      scrolled: null,
+      search: ""
     };
   },
   components: {
@@ -207,6 +210,7 @@ export default {
   created() {
     this.itemChosen(this.$route.name);
     this.handleTabs(this.$route.name);
+    this.search = this.$route.params.name;
   },
   watch: {
     $route: function() {
@@ -239,10 +243,11 @@ export default {
      * @param {string} item route name
      */
     handleTabs: function(item) {
-      if (item === "search") {
+      if (item === "search" || item === "searchItem" || item == "searchNone") {
         this.showSearch = true;
         this.showCollection = false;
         this.showUpgrade = false;
+        this.search = this.$route.params.name;
       } else if (
         item === "Playlists" ||
         item === "Artists" ||
@@ -251,10 +256,12 @@ export default {
         this.showSearch = false;
         this.showCollection = true;
         this.showUpgrade = false;
+        this.search = "";
       } else {
         this.showCollection = false;
         this.showSearch = false;
         this.showUpgrade = true;
+        this.search = "";
       }
     },
     /**
@@ -304,6 +311,23 @@ export default {
       this.logOut();
       this.$forceUpdate();
       this.$store.commit("category/changeLogoutUpdate");
+    },
+    /**
+     * Gets called when the user input text for search
+     * @public This is a public method
+     * @param {none}
+     */
+    request() {
+      if (this.search === "") {
+        this.$router.push("/webhome/search/");
+      } else {
+        this.$router.push({
+          name: "searchItem",
+          params: {
+            name: encodeURI(this.search)
+          }
+        });
+      }
     }
   },
   mounted() {

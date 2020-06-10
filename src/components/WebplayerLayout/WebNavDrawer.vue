@@ -43,6 +43,23 @@
         </v-list-item-title>
       </v-list-item>
 
+      <!-- Adding Symphonia Artist Button -->
+
+      <v-list-item
+        v-if="getuserType() == 'artist'"
+        router
+        :to="`/SymphoniaArtist/${getuserID()}`"
+        id="Go to Symphonia Artist"
+        class="listItem mainMenu"
+        active-class="active"
+      >
+        <v-icon class="mr-2">mdi-account-music</v-icon>
+
+        <v-list-item-title class="draweritem white--text">
+          Go to Symphonia Artist
+        </v-list-item-title>
+      </v-list-item>
+
       <!--This will be showed only if the user is logged in -->
       <v-list-item-subtitle
         class="ml-2"
@@ -147,14 +164,6 @@ export default {
     playlists: function() {
       return this.$store.state.playlist.userSavedPlaylists;
     }
-  },
-  created() {
-    if (this.getuserType() == "artist")
-      this.items.push({
-        icon: "mdi-account-music",
-        text: "Go to Symphonia Artist",
-        route: `/SymphoniaArtist/${this.getuserID()}`
-      });
   },
   data: function() {
     return {

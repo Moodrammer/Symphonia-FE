@@ -160,7 +160,7 @@ export default {
       }
     },
     /**
-     * Function updates the user interface info
+     * Function updates the artist interface info
      * @public This is a public method
      * @param {none}
      */
