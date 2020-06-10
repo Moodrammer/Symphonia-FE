@@ -5,17 +5,18 @@ import Vuex from "vuex";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 //Importing the component to be tested
-import SearchResult from "@/components/Search/SearchResult.vue";
+import SeeAll from "@/components/Search/SeeAll.vue";
 import CardGrid from "@/components/general/CardGrid.vue";
 import SongItem from "@/components/general/SongItem.vue";
 
-describe("SearchResult", () => {
+describe("SeeAll", () => {
   let wrapper;
   let vuetify;
   let store;
   let actions;
   let state;
   let mockState = "";
+  let type = "Tracks";
   beforeEach(() => {
     const router = new VueRouter();
     vuetify = new Vuetify();
@@ -23,7 +24,7 @@ describe("SearchResult", () => {
     Vue.use(VueRouter);
     Vue.use(Vuex);
     actions = {
-      searchFor: jest.fn(() => {
+      searchByType: jest.fn(() => {
         if (mockState == "fail")
           return Promise.reject({
             status: "fail"
@@ -49,7 +50,7 @@ describe("SearchResult", () => {
     });
     //using mount not shallowMount to render the true html behind vuetify's components which are child components
     //in order to find the elements by their ids
-    wrapper = shallowMount(SearchResult, {
+    wrapper = shallowMount(SeeAll, {
       router,
       vuetify,
       store,
@@ -61,7 +62,22 @@ describe("SearchResult", () => {
         SongItem
       },
       beforeUpdate: jest.fn(),
-      computed: {}
+      computed: {},
+      data() {
+        return {
+          tracks: false,
+          type: "",
+          limit: 12,
+          offset: 12
+        };
+      },
+      mocks: {
+        $route: {
+          params: {
+            type
+          }
+        }
+      }
     });
   });
   //rendering tests
@@ -71,15 +87,5 @@ describe("SearchResult", () => {
   //check if it is a vue instance
   it("renders a vue instance", () => {
     expect(wrapper.isVueInstance()).toBe(true);
-  });
-  it("check the computed functions", () => {
-    expect(wrapper.vm.albums).toHaveBeenCalled;
-    expect(wrapper.vm.playlist).toHaveBeenCalled;
-    expect(wrapper.vm.tracks).toHaveBeenCalled;
-    expect(wrapper.vm.artists).toHaveBeenCalled;
-    expect(wrapper.vm.category).toHaveBeenCalled;
-    state.tracks = ["change"];
-    wrapper.vm.$nextTick();
-    expect(wrapper.vm.beforeUpdate).toHaveBeenCalled;
   });
 });
