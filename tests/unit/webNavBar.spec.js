@@ -152,4 +152,10 @@ describe("Nav Bar", () => {
     wrapper.vm.$nextTick();
     expect(wrapper.vm.$route.fullPath).toBe("/");
   });
+  it("Handles Search see all tabs", () => {
+    wrapper.vm.handleTabs("searchSeeAll");
+    expect(wrapper.vm.showSearch).toBe(false);
+    expect(wrapper.vm.showCollection).toBe(false);
+    expect(wrapper.vm.showUpgrade).toBe(false);
+  });
 });

@@ -247,11 +247,6 @@ export default {
         this.showSearch = true;
         this.showCollection = false;
         this.showUpgrade = false;
-        if (decodeURIComponent(this.$router.params.name) === undefined) {
-          this.search = "";
-        } else {
-          this.search = decodeURIComponent(this.$router.params.name);
-        }
       } else if (
         item === "Playlists" ||
         item === "Artists" ||
@@ -261,7 +256,11 @@ export default {
         this.showCollection = true;
         this.showUpgrade = false;
         this.search = "";
-      } else {
+      } else if(item === "searchSeeAll"){
+        this.showSearch = false;
+        this.showCollection = false;
+        this.showUpgrade = false;
+      }else{
         this.showCollection = false;
         this.showSearch = false;
         this.showUpgrade = true;

@@ -15,8 +15,6 @@ describe("SeeAll", () => {
   let store;
   let actions;
   let state;
-  let mockState = "";
-  let type = "Tracks";
   beforeEach(() => {
     const router = new VueRouter();
     vuetify = new Vuetify();
@@ -25,11 +23,7 @@ describe("SeeAll", () => {
     Vue.use(Vuex);
     actions = {
       searchByType: jest.fn(() => {
-        if (mockState == "fail")
-          return Promise.reject({
-            status: "fail"
-          });
-        else return Promise.resolve();
+        return Promise.resolve();
       })
     };
     state = {
@@ -61,8 +55,6 @@ describe("SeeAll", () => {
         CardGrid,
         SongItem
       },
-      beforeUpdate: jest.fn(),
-      computed: {},
       data() {
         return {
           tracks: false,
@@ -71,12 +63,8 @@ describe("SeeAll", () => {
           offset: 12
         };
       },
-      mocks: {
-        $route: {
-          params: {
-            type
-          }
-        }
+      method: {
+        loadMore: jest.fn()
       }
     });
   });
@@ -87,5 +75,30 @@ describe("SeeAll", () => {
   //check if it is a vue instance
   it("renders a vue instance", () => {
     expect(wrapper.isVueInstance()).toBe(true);
+  });
+  it("check computed function", () => {
+    expect(wrapper.vm.array).toHaveBeenCalled;
+    wrapper.vm.type = "artist";
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.array).toHaveBeenCalled;
+    wrapper.vm.type = "album";
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.array).toHaveBeenCalled;
+    wrapper.vm.type = "category";
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.array).toHaveBeenCalled;
+    wrapper.vm.type = "track";
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.array).toHaveBeenCalled;
+    wrapper.vm.type = "profile";
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.array).toHaveBeenCalled;
+    wrapper.vm.type = "playlist";
+    wrapper.vm.$nextTick();
+    expect(wrapper.vm.array).toHaveBeenCalled;
+  });
+  it("check if the loadMore function called", () => {
+    wrapper.vm.loadMore();
+    expect(wrapper.vm.loadMore).toHaveBeenCalled;
   });
 });

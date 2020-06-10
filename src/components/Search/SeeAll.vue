@@ -54,9 +54,6 @@ export default {
     SongItem
   },
   created() {
-    if (this.$route.params.type === "Tracks") {
-      this.tracks = true;
-    }
     switch (this.$route.params.type) {
       case "Artists":
         this.type = "artist";
@@ -75,6 +72,7 @@ export default {
         break;
       case "Tracks":
         this.type = "track";
+        this.tracks = true;
         break;
     }
     this.$store.dispatch("searchByType", {
@@ -85,29 +83,30 @@ export default {
         this.type +
         "&limit=12&offset=0",
       offset: 0,
-      type: this.type
+      type: this.type,
+      word: this.$route.params.name
     });
   },
   computed: {
     array() {
       let arr;
-      switch (this.$route.params.type) {
-        case "Artists":
+      switch (this.type) {
+        case "artist":
           arr = { items: this.$store.state.search.artists };
           break;
-        case "Playlists":
+        case "playlist":
           arr = { items: this.$store.state.search.playlist };
           break;
-        case "Gernes":
+        case "category":
           arr = { items: this.$store.state.search.category };
           break;
-        case "Albums":
+        case "album":
           arr = { items: this.$store.state.search.albums };
           break;
-        case "Profiles":
+        case "profile":
           arr = { items: this.$store.state.search.profiles };
           break;
-        case "Tracks":
+        case "track":
           arr = this.$store.state.search.tracks;
           break;
       }
