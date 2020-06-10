@@ -158,7 +158,6 @@ describe("login", () => {
     expect(wrapper.vm.formData.rememberMe).toBe(true);
   });
 
-
   //form submission tests
   it("dispatches the submit action data if the data is valid", () => {
     const email_wrp = wrapper.find("#login-username");

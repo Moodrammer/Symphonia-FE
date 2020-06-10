@@ -11,9 +11,9 @@ describe("Nav Bar", () => {
   let vuetify;
   let store;
   let $route = {
-    name:"/webhome/search/:name",
-    params:{
-      name:""
+    name: "/webhome/search/:name",
+    params: {
+      name: ""
     }
   };
 
@@ -23,7 +23,6 @@ describe("Nav Bar", () => {
     Vue.use(Vuetify);
     Vue.use(VueRouter);
     Vue.use(Vuex);
-    
 
     store = new Vuex.Store({
       modules: {
@@ -41,7 +40,7 @@ describe("Nav Bar", () => {
       vuetify,
       attachToDocument: true,
       removeEventListener: jest.fn(),
-      mocks:{
+      mocks: {
         $route
       }
     });

@@ -1,17 +1,21 @@
 <template>
   <v-content style="overflow:scroll; padding: 0px;">
-  <navigation-bar></navigation-bar>
-  <v-container fluid style="height: 80%; background-color: lightblue;" class="wrap">
-  <v-content class="centering">
-    <v-col cols="12" lg="12" md="12" sm="12" xs="12">
-      <v-row justify="center" align-content="center">
-        <p class="display-1" style="text-align: center; ">
-          <strong> Sorry we couldn't find that page 😔</strong>
-        </p>
-      </v-row>
-    </v-col>
-  </v-content>
-  </v-container>
+    <navigation-bar></navigation-bar>
+    <v-container
+      fluid
+      style="height: 80%; background-color: lightblue;"
+      class="wrap"
+    >
+      <v-content class="centering">
+        <v-col cols="12" lg="12" md="12" sm="12" xs="12">
+          <v-row justify="center" align-content="center">
+            <p class="display-1" style="text-align: center; ">
+              <strong> Sorry we couldn't find that page 😔</strong>
+            </p>
+          </v-row>
+        </v-col>
+      </v-content>
+    </v-container>
     <Footer></Footer>
   </v-content>
 </template>
@@ -23,9 +27,8 @@ export default {
   name: "notfound",
   components: {
     NavigationBar,
-    Footer,
-  },
-
+    Footer
+  }
 };
 </script>
 

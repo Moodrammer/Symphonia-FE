@@ -256,11 +256,11 @@ export default {
         this.showCollection = true;
         this.showUpgrade = false;
         this.search = "";
-      } else if(item === "searchSeeAll"){
+      } else if (item === "searchSeeAll") {
         this.showSearch = false;
         this.showCollection = false;
         this.showUpgrade = false;
-      }else{
+      } else {
         this.showCollection = false;
         this.showSearch = false;
         this.showUpgrade = true;

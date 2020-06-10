@@ -164,153 +164,150 @@ describe("signup", () => {
   //-------------------------------------------------------------------------//
   //                        Submitting the form                             //
   //-------------------------------------------------------------------------//
-  it("submits the user data on valid input",async () => {
+  it("submits the user data on valid input", async () => {
     //simulate the user input
     // Enter email
-    const emailWrapper = wrapper.find('#user-email')
+    const emailWrapper = wrapper.find("#user-email");
     emailWrapper.element.value = "Bob@gmail.com";
-    emailWrapper.trigger('input');
+    emailWrapper.trigger("input");
     // Enter Confirm email
-    const emailConfWrapper = wrapper.find('#user-confirmation-email')
+    const emailConfWrapper = wrapper.find("#user-confirmation-email");
     emailConfWrapper.element.value = "Bob@gmail.com";
-    emailConfWrapper.trigger('input');
+    emailConfWrapper.trigger("input");
     // Enter Password
-    const passWrapper = wrapper.find('#user-password')
+    const passWrapper = wrapper.find("#user-password");
     passWrapper.element.value = "password";
-    passWrapper.trigger('input');
+    passWrapper.trigger("input");
     // Enter UserName
-    const nameWrapper = wrapper.find('#username')
+    const nameWrapper = wrapper.find("#username");
     nameWrapper.element.value = "Bob";
-    nameWrapper.trigger('input');
+    nameWrapper.trigger("input");
     // Enter day of birth
-    const dayWrapper = wrapper.find('#birth-day')
+    const dayWrapper = wrapper.find("#birth-day");
     dayWrapper.element.value = "11";
-    dayWrapper.trigger('input');
+    dayWrapper.trigger("input");
     // Enter month of birth
-    const monthSelect = wrapper.find('#birth-month');
-    monthSelect.element.value = "January"
+    const monthSelect = wrapper.find("#birth-month");
+    monthSelect.element.value = "January";
     monthSelect.trigger("keydown");
     monthSelect.trigger("input");
     monthSelect.trigger("change");
     // Enter Year of birth
-    const yearWrapper = wrapper.find('#birth-year')
-    yearWrapper.element.value = "1999"
-    yearWrapper.trigger('input')
+    const yearWrapper = wrapper.find("#birth-year");
+    yearWrapper.element.value = "1999";
+    yearWrapper.trigger("input");
     // Enter Gender
-    const genderWrapper = wrapper.find('#male-select')
-    genderWrapper.trigger('change')
+    const genderWrapper = wrapper.find("#male-select");
+    genderWrapper.trigger("change");
     // Enter User Type
-    const typeWrapper = wrapper.find('#listener-select')
-    typeWrapper.trigger('change')
-    // Submit form 
-    const submitBtn = wrapper.find('#sign-up-btn')
-    submitBtn.trigger('click')
+    const typeWrapper = wrapper.find("#listener-select");
+    typeWrapper.trigger("change");
+    // Submit form
+    const submitBtn = wrapper.find("#sign-up-btn");
+    submitBtn.trigger("click");
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.$router[0]).toBe("/webhome/home")
-    
-  })
+    expect(wrapper.vm.$router[0]).toBe("/webhome/home");
+  });
 
-  it("asserts errorState message on failure",async () => {
-    mockState = 'fail'
+  it("asserts errorState message on failure", async () => {
+    mockState = "fail";
     //simulate the user input
     // Enter email
-    const emailWrapper = wrapper.find('#user-email')
+    const emailWrapper = wrapper.find("#user-email");
     emailWrapper.element.value = "Bob@gmail.com";
-    emailWrapper.trigger('input');
+    emailWrapper.trigger("input");
     // Enter Confirm email
-    const emailConfWrapper = wrapper.find('#user-confirmation-email')
+    const emailConfWrapper = wrapper.find("#user-confirmation-email");
     emailConfWrapper.element.value = "Bob@gmail.com";
-    emailConfWrapper.trigger('input');
+    emailConfWrapper.trigger("input");
     // Enter Password
-    const passWrapper = wrapper.find('#user-password')
+    const passWrapper = wrapper.find("#user-password");
     passWrapper.element.value = "password";
-    passWrapper.trigger('input');
+    passWrapper.trigger("input");
     // Enter UserName
-    const nameWrapper = wrapper.find('#username')
+    const nameWrapper = wrapper.find("#username");
     nameWrapper.element.value = "Bob";
-    nameWrapper.trigger('input');
+    nameWrapper.trigger("input");
     // Enter day of birth
-    const dayWrapper = wrapper.find('#birth-day')
+    const dayWrapper = wrapper.find("#birth-day");
     dayWrapper.element.value = "11";
-    dayWrapper.trigger('input');
+    dayWrapper.trigger("input");
     // Enter month of birth
-    const monthSelect = wrapper.find('#birth-month');
-    monthSelect.element.value = "January"
+    const monthSelect = wrapper.find("#birth-month");
+    monthSelect.element.value = "January";
     monthSelect.trigger("keydown");
     monthSelect.trigger("input");
     monthSelect.trigger("change");
     // Enter Year of birth
-    const yearWrapper = wrapper.find('#birth-year')
-    yearWrapper.element.value = "1999"
-    yearWrapper.trigger('input')
+    const yearWrapper = wrapper.find("#birth-year");
+    yearWrapper.element.value = "1999";
+    yearWrapper.trigger("input");
     // Enter Gender
-    const genderWrapper = wrapper.find('#male-select')
-    genderWrapper.trigger('change')
+    const genderWrapper = wrapper.find("#male-select");
+    genderWrapper.trigger("change");
     // Enter User Type
-    const typeWrapper = wrapper.find('#listener-select')
-    typeWrapper.trigger('change')
-    // Submit form 
-    const submitBtn = wrapper.find('#sign-up-btn')
-    submitBtn.trigger('click')
+    const typeWrapper = wrapper.find("#listener-select");
+    typeWrapper.trigger("change");
+    // Submit form
+    const submitBtn = wrapper.find("#sign-up-btn");
+    submitBtn.trigger("click");
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.errorState).toBe(true)
-    
-  })
+    expect(wrapper.vm.errorState).toBe(true);
+  });
 
-  it("asserts errorState message on server error",async () => {
-    mockState = 'error'
+  it("asserts errorState message on server error", async () => {
+    mockState = "error";
     //simulate the user input
     // Enter email
-    const emailWrapper = wrapper.find('#user-email')
+    const emailWrapper = wrapper.find("#user-email");
     emailWrapper.element.value = "Bob@gmail.com";
-    emailWrapper.trigger('input');
+    emailWrapper.trigger("input");
     // Enter Confirm email
-    const emailConfWrapper = wrapper.find('#user-confirmation-email')
+    const emailConfWrapper = wrapper.find("#user-confirmation-email");
     emailConfWrapper.element.value = "Bob@gmail.com";
-    emailConfWrapper.trigger('input');
+    emailConfWrapper.trigger("input");
     // Enter Password
-    const passWrapper = wrapper.find('#user-password')
+    const passWrapper = wrapper.find("#user-password");
     passWrapper.element.value = "password";
-    passWrapper.trigger('input');
+    passWrapper.trigger("input");
     // Enter UserName
-    const nameWrapper = wrapper.find('#username')
+    const nameWrapper = wrapper.find("#username");
     nameWrapper.element.value = "Bob";
-    nameWrapper.trigger('input');
+    nameWrapper.trigger("input");
     // Enter day of birth
-    const dayWrapper = wrapper.find('#birth-day')
+    const dayWrapper = wrapper.find("#birth-day");
     dayWrapper.element.value = "8";
-    dayWrapper.trigger('input');
+    dayWrapper.trigger("input");
     // Enter month of birth
-    const monthSelect = wrapper.find('#birth-month');
-    monthSelect.element.value = "November"
+    const monthSelect = wrapper.find("#birth-month");
+    monthSelect.element.value = "November";
     monthSelect.trigger("keydown");
     monthSelect.trigger("input");
     monthSelect.trigger("change");
     // Enter Year of birth
-    const yearWrapper = wrapper.find('#birth-year')
-    yearWrapper.element.value = "1999"
-    yearWrapper.trigger('input')
+    const yearWrapper = wrapper.find("#birth-year");
+    yearWrapper.element.value = "1999";
+    yearWrapper.trigger("input");
     // Enter Gender
-    const genderWrapper = wrapper.find('#male-select')
-    genderWrapper.trigger('change')
+    const genderWrapper = wrapper.find("#male-select");
+    genderWrapper.trigger("change");
     // Enter User Type
-    const typeWrapper = wrapper.find('#listener-select')
-    typeWrapper.trigger('change')
-    // Submit form 
-    const submitBtn = wrapper.find('#sign-up-btn')
-    submitBtn.trigger('click')
+    const typeWrapper = wrapper.find("#listener-select");
+    typeWrapper.trigger("change");
+    // Submit form
+    const submitBtn = wrapper.find("#sign-up-btn");
+    submitBtn.trigger("click");
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.errorState).toBe(true)
-    
-  })
+    expect(wrapper.vm.errorState).toBe(true);
+  });
 
   it("doesn't submit the form if invalid", async () => {
-    // Submit form 
-    const submitBtn = wrapper.find('#sign-up-btn')
-    submitBtn.trigger('click')
+    // Submit form
+    const submitBtn = wrapper.find("#sign-up-btn");
+    submitBtn.trigger("click");
     await wrapper.vm.$nextTick();
-    expect(actions.registerUser).not.toBeCalled(); 
-  })
+    expect(actions.registerUser).not.toBeCalled();
+  });
 
   it("sends the access token to the server on facebook login", async () => {
     const data = {
