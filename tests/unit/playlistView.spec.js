@@ -12,6 +12,10 @@ describe("Playlist View", () => {
   let wrapper;
   let vuetify;
   let store;
+  let trackActions;
+  let trackMutations;
+  let playlistActions;
+  let playlistMutations;
 
   beforeEach(() => {
     vuetify = new Vuetify();
@@ -20,6 +24,30 @@ describe("Playlist View", () => {
     Vue.use(VueRouter);
     Vue.use(Vuex);
 
+    trackActions = {
+      playTrackInQueue: jest.fn(),
+      updateQueue: jest.fn(),
+      getTrackInformation: jest.fn(),
+      togglePauseAndPlay: jest.fn()
+    };
+
+    trackMutations = {
+      setContextData: jest.fn(),
+      setIsTrackPaused: jest.fn()
+    };
+
+    playlistActions = {
+      followPlaylist: jest.fn(),
+      unfollowPlaylist: jest.fn(),
+      checkFollowed: jest.fn(),
+      getPlaylist: jest.fn(),
+      getPlaylistTracks: jest.fn()
+    };
+
+    playlistMutations = {
+      changeAdsPopup: jest.fn(),
+      changeUpdatePlaylistTracks: jest.fn()
+    };
     //Mocking the store
     store = new Vuex.Store({
       modules: {
@@ -29,20 +57,13 @@ describe("Playlist View", () => {
             contextId: "1",
             isTrackPaused: true
           },
-          mutations: {
-            setContextData: jest.fn(),
-            setIsTrackPaused: jest.fn()
-          },
-          actions: {
-            playTrackInQueue: jest.fn(),
-            updateQueue: jest.fn(),
-            getTrackInformation: jest.fn(),
-            togglePauseAndPlay: jest.fn()
-          }
+          mutations: trackMutations,
+          actions: trackActions
         },
         playlist: {
           namespaced: true,
           state: {
+            nonPremiumTrackID: 0,
             singlePlaylist: {
               tracksCount: 1,
               owner: { _id: "5e8b6d866253cb184eaac150", name: "User" },
@@ -62,23 +83,15 @@ describe("Playlist View", () => {
                 durationMs: 30000,
                 _id: "5e8a39f24e11cd46c8bde654",
                 artist: { _id: "5e8b6d866253cb184eaac150", name: "Symphonia" },
-                album: { _id: "5e8b6d866253cb184eaac150", name: "New Album" }
+                album: { _id: "5e8b6d866253cb184eaac150", name: "New Album" },
+                premium: false
               }
             ],
             isFollowed: false,
             updateTracksFlag: false
           },
-          mutations: {
-            changeAdsPopup: jest.fn(),
-            changeUpdatePlaylistTracks: jest.fn()
-          },
-          actions: {
-            followPlaylist: jest.fn(),
-            unfollowPlaylist: jest.fn(),
-            checkFollowed: jest.fn(),
-            getPlaylist: jest.fn(),
-            getPlaylistTracks: jest.fn()
-          }
+          mutations: playlistMutations,
+          actions: playlistActions
         }
       }
     });
@@ -97,7 +110,6 @@ describe("Playlist View", () => {
           id: "1234"
         }
       }
-      //localStorageMock
     });
   });
 
@@ -133,15 +145,15 @@ describe("Playlist View", () => {
   //         Testing created hook cycle actions
   //--------------------------------------------------
   it("Gets the playlist's data", () => {
-    expect("getPlaylist").toHaveBeenCalled;
+    expect(playlistActions.getPlaylist).toHaveBeenCalled();
   });
 
   it("Gets the playlist's tracks", () => {
-    expect("getPlaylistTracks").toHaveBeenCalled;
+    expect(playlistActions.getPlaylistTracks).toHaveBeenCalled();
   });
 
   it("Check if the user's follow this playlist", () => {
-    expect("checkFollowed").toHaveBeenCalled;
+    expect(playlistActions.checkFollowed).toHaveBeenCalled();
   });
   //---------------------------------------------------
   //       Test user functionalities
@@ -159,12 +171,12 @@ describe("Playlist View", () => {
 
   it("Follow a playlist", () => {
     wrapper.vm.followPlaylist();
-    expect("followPlaylist").toHaveBeenCalled;
+    expect(playlistActions.followPlaylist).toHaveBeenCalled();
   });
 
   it("Unfollow a playlist", () => {
     wrapper.vm.unfollowPlaylist();
-    expect("unfollowPlaylist").toHaveBeenCalled;
+    expect(playlistActions.unfollowPlaylist).toHaveBeenCalled();
   });
 
   it("Update Saved tracks", () => {
@@ -172,37 +184,42 @@ describe("Playlist View", () => {
     store.state.playlist.updateTracksFlag = true;
     expect(wrapper.vm.getPlaylistData()).toBeCalled;
     expect(wrapper.vm.getPlaylistTracks()).toBeCalled;
-    expect("changeUpdatePlaylistTracks").toBeCalled;
   });
 
   it("Update content after routing", () => {
     wrapper.vm.$options.watch.playlistID.call(wrapper.vm);
-    expect("getPlaylist").toHaveBeenCalled;
-    expect("getPlaylistTracks").toHaveBeenCalled;
-    expect("checkFollowed").toHaveBeenCalled;
+    expect(playlistActions.getPlaylist).toHaveBeenCalled();
+    expect(playlistActions.getPlaylistTracks).toHaveBeenCalled();
+    expect(playlistActions.checkFollowed).toHaveBeenCalled();
   });
 
   it("Open ads popup after route changing", () => {
     Storage.prototype.getItem = jest.fn(() => "token");
     wrapper.vm.$options.watch.playlistID.call(wrapper.vm);
-    expect("changeAdsPopup").toHaveBeenCalled;
+    expect(playlistMutations.changeAdsPopup).toHaveBeenCalled();
     expect(wrapper.vm.isLoggedIn()).toBe(true);
   });
 
   it("Open ads popup if the user logged in", () => {
     Storage.prototype.getItem = jest.fn(() => "token");
-    expect("changeAdsPopup").toHaveBeenCalled;
+    expect(playlistMutations.changeAdsPopup).toHaveBeenCalled();
   });
 
   it("Play the playlist", () => {
     wrapper.vm.id = "1";
     wrapper.vm.play();
-    expect("togglePauseAndPlay").toHaveBeenCalled;
+    expect(trackActions.togglePauseAndPlay).toHaveBeenCalled();
   });
 
   it("Pause the currently playing playlist", () => {
     wrapper.vm.pause();
-    expect("togglePauseAndPlay").toHaveBeenCalled;
-    expect("setIsTrackPaused").toHaveBeenCalled;
+    expect(trackActions.togglePauseAndPlay).toHaveBeenCalled();
+    expect(trackMutations.setIsTrackPaused).toHaveBeenCalled();
+  });
+
+  it("Contains preimum tracks only", () => {
+    store.state.playlist.nonPremiumTrackID = null;
+    wrapper.vm.play();
+    expect(trackMutations.setIsTrackPaused).not.toBeCalled();
   });
 });

@@ -48,6 +48,7 @@ const mutations = {
   },
   setPlaylistTracks(state, tracks) {
     state.playlistTracks = tracks;
+    state.nonPremiumTrackID = null;
     let premium = isPremium.methods.isPremium();
     if (premium) {
       state.nonPremiumTrackID = tracks[0]._id;

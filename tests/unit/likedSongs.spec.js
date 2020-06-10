@@ -10,12 +10,27 @@ describe("Liked Songs", () => {
   let wrapper;
   let vuetify;
   let store;
+  let trackActions;
+  let trackMutations;
 
   beforeEach(() => {
     vuetify = new Vuetify();
     Vue.use(Vuetify);
     Vue.use(Vuex);
 
+    trackActions = {
+      getTracks: jest.fn(),
+      togglePauseAndPlay: jest.fn(),
+      playTrackInQueue: jest.fn(),
+      getTrackInformation: jest.fn(),
+      updateQueue: jest.fn()
+    };
+
+    trackMutations = {
+      changeUpdateTracks: jest.fn(),
+      setIsTrackPaused: jest.fn(),
+      setContextData: jest.fn()
+    };
     //Mocking the store
     store = new Vuex.Store({
       modules: {
@@ -32,14 +47,12 @@ describe("Liked Songs", () => {
               }
             ],
             savedTracksNum: 1,
-            updateSavedTracks: false
+            updateSavedTracks: false,
+            contextType: "album",
+            nonPremiumTrackID: "1"
           },
-          mutations: {
-            changeUpdateTracks: jest.fn()
-          },
-          actions: {
-            getTracks: jest.fn()
-          }
+          mutations: trackMutations,
+          actions: trackActions
         }
       }
     });
@@ -80,10 +93,43 @@ describe("Liked Songs", () => {
   //-------------------------------------------------
   //             Update the tracks
   //-------------------------------------------------
-  it("Update Saved tracks", async () => {
-    wrapper.vm.$options.watch.isUpdateTracks.call(wrapper.vm);
+  it("Update Saved tracks", () => {
     store.state.track.updateSavedTracks = true;
-    expect("getTracks").toBeCalled;
-    expect("changeUpdateTracks").toBeCalled;
+    wrapper.vm.$options.watch.isUpdateTracks.call(wrapper.vm);
+    expect(trackActions.getTracks).toBeCalled();
+    expect(trackMutations.changeUpdateTracks).toBeCalled();
+  });
+
+  it("No track update", () => {
+    store.state.track.updateSavedTracks = false;
+    wrapper.vm.$options.watch.isUpdateTracks.call(wrapper.vm);
+    expect(trackMutations.changeUpdateTracks).not.toBeCalled();
+  });
+  //------------------------------------------------
+  //            Play/Pause liked tracks
+  //------------------------------------------------
+  it("Contains only premium tracks", () => {
+    store.state.track.nonPremiumTrackID = null;
+    wrapper.vm.playLikedSongs();
+    expect(trackMutations.setIsTrackPaused).not.toBeCalled();
+  });
+
+  it("Pause the currently playing track", () => {
+    wrapper.vm.pauseLikedSongs();
+    expect(trackActions.togglePauseAndPlay).toBeCalled();
+    expect(trackMutations.setIsTrackPaused).toBeCalled();
+  });
+
+  it("Play a new liked track", () => {
+    store.state.track.nonPremiumTrackID = "1";
+    wrapper.vm.playLikedSongs();
+    expect(trackMutations.setContextData).toBeCalled();
+  });
+
+  it("Liked songs is already playing", () => {
+    store.state.track.contextType = "liked";
+    wrapper.vm.playLikedSongs();
+    expect(trackActions.togglePauseAndPlay).toBeCalled();
+    expect(trackMutations.setIsTrackPaused).toBeCalled();
   });
 });
