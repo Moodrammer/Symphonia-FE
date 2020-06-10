@@ -138,21 +138,6 @@ describe("login", () => {
     expect(wrapper.vm.formData.email).toBe("m@gmail.com");
   });
 
-  //check if validation error message appears on wrong input to email address
-  it("causes a validation error on invalid email input", async () => {
-    //find the email text field input element by id
-    const email_wrp = wrapper.find("#login-username");
-    //simulate entering an invalid email by the user
-    email_wrp.element.value = "mahmoud";
-    email_wrp.trigger("input");
-    //await the next tick as vue batches the changes to the dom to prevent unnecessary re-renders
-    await wrapper.vm.$nextTick();
-    //assert that the validation message renders on wrong input
-    expect(wrapper.find(".v-messages__message").text()).toBe(
-      "E-mail must be valid"
-    );
-  });
-
   //check if the data changes when an input is added to password text field
   it("stores user password data in the component local state", async () => {
     const pass_wrp = wrapper.find("#login-password");
@@ -173,7 +158,6 @@ describe("login", () => {
     expect(wrapper.vm.formData.rememberMe).toBe(true);
   });
 
-  //check if validation error message appears on empty input
 
   //form submission tests
   it("dispatches the submit action data if the data is valid", () => {
