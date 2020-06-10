@@ -3,16 +3,16 @@ import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 //Importing the component to be tested
-import UserSettings from "@/views/About.vue";
+import About from "@/views/About.vue";
 
-describe("User_Settings", () => {
+describe("About", () => {
   let wrapper;
   let vuetify;
 
   beforeEach(() => {
     vuetify = new Vuetify();
     Vue.use(Vuetify);
-    wrapper = shallowMount(UserSettings, {
+    wrapper = shallowMount(About, {
       vuetify
     });
   });

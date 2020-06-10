@@ -247,7 +247,11 @@ export default {
         this.showSearch = true;
         this.showCollection = false;
         this.showUpgrade = false;
-        this.search = this.$route.params.name;
+        if (decodeURIComponent(this.$router.params.name) === undefined) {
+          this.search = "";
+        } else {
+          this.search = decodeURIComponent(this.$router.params.name);
+        }
       } else if (
         item === "Playlists" ||
         item === "Artists" ||
