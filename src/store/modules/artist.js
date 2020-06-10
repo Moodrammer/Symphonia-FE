@@ -218,6 +218,11 @@ const getters = {
 };
 
 const actions = {
+  /**
+   * Delete artist's track
+   * @param {object} payload contains token, id: track id
+   */
+
   deleteTrack({ commit }, payload) {
     axios
       .delete(`/v1/users/track/${payload.id}`, {
@@ -231,6 +236,12 @@ const actions = {
         console.log(error);
       });
   },
+
+  /**
+   * Delete artist's album/single
+   * @param {object} payload contains token, id: album/single id
+   */
+
   deleteAlbum({ commit }, payload) {
     axios
       .delete(`/v1/albums/${payload.id}`, {
@@ -244,6 +255,12 @@ const actions = {
         console.log(error);
       });
   },
+
+  /**
+   * Rename artist's album/single
+   * @param {object} payload contains token, id: album/single id, name: new name
+   */
+
   renameAlbum({ commit }, payload) {
     axios
       .patch(
@@ -265,6 +282,11 @@ const actions = {
       });
   },
 
+  /**
+   * Rename artist's track
+   * @param {object} payload contains token, id: track id, name: new name
+   */
+
   renameTrack({ commit }, payload) {
     axios
       .patch(
@@ -285,6 +307,11 @@ const actions = {
         console.log(error);
       });
   },
+
+  /**
+   * Add new artist's album/single
+   * @param {object} payload contains token, name: album/single name, cover: album/single image, type: 'album'/'single', copyrightsType: C/P, copyrightsText, releaseDate
+   */
 
   addNewAlbum({ commit, state }, payload) {
     const FormData = require("form-data");
@@ -314,6 +341,11 @@ const actions = {
       .catch(error => console.log(error));
   },
 
+  /**
+   * Get track's categories, simplified: only name and id of each category
+   * @param {object} payload contains token
+   */
+
   getSimplifiedCategories({ commit }, payload) {
     var categories = [];
     axios
@@ -335,6 +367,11 @@ const actions = {
         console.log(error);
       });
   },
+
+  /**
+   * Add new track to artist's album/single
+   * @param {object} payload contains token, name: track name, track: mp3 track file, explicit: boolean, premium: boolean, categories
+   */
 
   addTrackToAlbum({ commit, state }, payload) {
     const FormData = require("form-data");
@@ -365,6 +402,11 @@ const actions = {
       .catch(error => console.log(error));
   },
 
+  /**
+   * Get artist info
+   * @param {object} payload contains token, id: artist id
+   */
+
   getCurrentArtist({ commit }, payload) {
     axios
       .get(`v1/artists/${payload.id}`, {
@@ -381,8 +423,8 @@ const actions = {
       });
   },
   /**
-   * called to get followed artists by current user
-   * @param {object} payload contains the token
+   * Get followed artists by current user
+   * @param {object} payload contains token
    */
   getFollowedArtists({ commit, dispatch }, payload) {
     const limit = 50;
@@ -413,8 +455,8 @@ const actions = {
   },
 
   /**
-   * called to get artist's albums
-   * @param {object} payload contains the token and the artist id
+   * Get artist's albums
+   * @param {object} payload contains token and artist id
    */
 
   getArtistAlbums({ commit, dispatch }, payload) {
@@ -446,8 +488,8 @@ const actions = {
   },
 
   /**
-   * called to get artist's top tracks
-   * @param {object} payload contains the token and the artist id
+   * Get artist's top tracks
+   * @param {object} payload contains token and artist id
    */
 
   getArtistTopTracks({ commit }, payload) {
@@ -471,8 +513,8 @@ const actions = {
   },
 
   /**
-   * called to get artists related to a certain a artist
-   * @param {object} payload contains the token and the artist id
+   * Fet artists related to a certain a artist
+   * @param {object} payload contains token and artist id
    */
 
   getArtistRelatedArtists({ commit }, payload) {
@@ -490,6 +532,11 @@ const actions = {
         console.log(error);
       });
   },
+
+  /**
+   * Follow artist/user
+   * @param {object} payload contains token, id: user/artist id,type: 'user'/'artist'
+   */
 
   followArtist({ commit, dispatch }, payload) {
     axios
@@ -520,8 +567,8 @@ const actions = {
   },
 
   /**
-   * called to unfollow artist
-   * @param {object} payload contains the token and the artist id
+   * Unfollow artist/user
+   * @param {object} payload contains token, id: user/artist id,type: 'user'/'artist'
    */
 
   unfollowArtist({ commit }, payload) {
@@ -541,6 +588,11 @@ const actions = {
         console.log(error);
       });
   },
+
+  /**
+   * Know if the current user following artists/users
+   * @param {object} payload contains token, ids: list of users/artists ids
+   */
 
   isFollowingArtists({ commit }, payload) {
     axios
