@@ -52,9 +52,15 @@
 
 <script>
 import BottomContent from "./BottomContent.vue";
+/**
+ * This page is used to recover current user's deleted playlists
+ * @displayName Recover Playlist
+ * @example [none]
+ */
 export default {
   data() {
     return {
+      /** Data to store the deleted playlists if its exist and boolens to show contents */
       playlists: [],
       noPlaylists: false,
       playlistNoRecover: false,
@@ -62,9 +68,15 @@ export default {
     };
   },
   components: {
+    /** components to render */
     "bottom-content": BottomContent
   },
   methods: {
+    /**
+     * Restore single playlist if clicked
+     * @public This is a public method
+     * @param {Number} index the number of the playlist in table
+     */
     restore: function(index) {
       this.$store
         .dispatch("restorePlaylist", this.playlists[index].id)
@@ -75,6 +87,7 @@ export default {
     }
   },
   created() {
+    /** Get the data to recover it */
     this.$store
       .dispatch("deletedPlaylist", { limit: 15, offset: 0 })
       .then(() => {

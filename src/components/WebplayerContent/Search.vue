@@ -15,6 +15,11 @@
 
 <script>
 import cardGerne from "../Search/CardGenre.vue";
+/**
+ * This page is used to search for certain text and view our Genres
+ * @displayName Recover Playlist
+ * @example [none]
+ */
 export default {
   components: {
     cardGerne: cardGerne

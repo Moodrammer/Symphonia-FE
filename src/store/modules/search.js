@@ -2,17 +2,27 @@ import axios from "axios";
 import { Promise } from "core-js";
 
 const state = {
+  // The search keyword encodedURI to send it to the back
   searchText: "",
+  // Albums results
   albums: [],
+  // Artists results
   artists: [],
+  // Gernes resutls
   category: [],
+  // Playlist results
   playlist: [],
+  // Profiles results
   profiles: [],
+  // Tracks results
   tracks: [],
+  // If there is next to show
   next: null,
+  // The normal search word
   word: ""
 };
 const mutations = {
+  // Some setters to the state
   setSearchText(state, payload) {
     state.searchText = payload;
   },
@@ -49,6 +59,7 @@ const mutations = {
 };
 
 const actions = {
+  // Search for all type of data and get it results
   searchFor({ commit, state }, payload) {
     commit("setSearchText", payload);
     return new Promise((resolve, reject) => {
@@ -102,6 +113,7 @@ const actions = {
         });
     });
   },
+  // Search for single type of data and set results to state
   searchByType({ state, commit }, payload) {
     if (payload.offset == 0) {
       //commit("clearState", []);

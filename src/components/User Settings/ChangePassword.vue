@@ -69,6 +69,11 @@
 <script>
 import BottomContent from "./BottomContent.vue";
 import getuserID from "@/mixins/userService/getuserID.js";
+/**
+ * This page is used to chnage the current user's password
+ * @displayName User Change Password
+ * @example [none]
+ */
 export default {
   data() {
     return {
@@ -95,6 +100,11 @@ export default {
     "bottom-content": BottomContent
   },
   methods: {
+    /**
+     * Check for the validations of data inserted or empty
+     * @public This is a public method
+     * @param {None}
+     */
     check: function() {
       // Frist reset all errors
       this.errorWrongPass = false;
@@ -125,6 +135,11 @@ export default {
         this.updatePassword();
       }
     },
+    /**
+     * Submit the new password and send info
+     * @public This is a public method
+     * @param {None}
+     */
     updatePassword: function() {
       this.$store
         .dispatch("updatePass", {

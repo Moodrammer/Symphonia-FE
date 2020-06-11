@@ -41,7 +41,13 @@
 
 <script>
 export default {
+  /**
+   * This page is used to show the navigation side bar in user settings
+   * @displayName Side Bar
+   * @example [none]
+   */
   data() {
+    /** Image for user to show */
     return {
       image: ""
     };

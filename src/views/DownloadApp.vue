@@ -44,7 +44,15 @@
 <script>
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
+
+/**
+ * This page is used to download the andoird app
+ * @displayName Download App
+ * @example [none]
+ */
+
 export default {
+  /** Components to render */
   components: {
     navBar: navBar,
     appFooter: appFooter

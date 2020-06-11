@@ -805,6 +805,12 @@
 <script>
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
+
+/**
+ * This Page is used for About
+ * @displayName About
+ * @example [none]
+ */
 export default {
   components: {
     navBar: navBar,

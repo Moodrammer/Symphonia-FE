@@ -42,6 +42,11 @@
 <script>
 import CardGrid from "../general/CardGrid.vue";
 import SongItem from "../general/SongItem.vue";
+/**
+ * This page is used to see all the results of the search
+ * @displayName Seach See All
+ * @example [none]
+ */
 export default {
   data() {
     return { tracks: false, type: "", limit: 12, offset: 12 };
@@ -114,6 +119,11 @@ export default {
     }
   },
   methods: {
+    /**
+     * This function is used to load more data for pagination
+     * @public This is a public method
+     * @param {None}
+     */
     loadMore: function() {
       let q =
         "/v1/search?q=" +

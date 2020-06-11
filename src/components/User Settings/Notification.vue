@@ -52,6 +52,12 @@ import getuserType from "../../mixins/userService/getuserType";
 import getuserToken from "../../mixins/userService/getUserToken";
 import isNotificationsAllowed from "../../mixins/userService/isNotificationsAllowed";
 
+/**
+ * This page used to turn on/off notifications to user
+ * @displayName User Notifications
+ * @example [none]
+ */
+
 export default {
   created() {
     if (this.isNotificationsAllowed() == true) {
@@ -82,8 +88,10 @@ export default {
     }
   },
   components: {
+    /** components to render */
     "bottom-content": BottomContent
   },
+  /** some used global funtions */
   mixins: [getuserType, getuserToken, isNotificationsAllowed]
 };
 </script>
