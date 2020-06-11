@@ -327,12 +327,27 @@ export default {
     //-----------------------------------------------------------------
     //                     Album Functions
     //-----------------------------------------------------------------
+    /**
+     * Function to follow a album from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     followAlbum() {
       this.$store.dispatch("album/followAlbum", this.id);
     },
+    /**
+     * Function to unfollow a album from the menu list
+     * @public This is a public method
+     * @param {none}
+     */
     async unfollowAlbum() {
       await this.$store.dispatch("album/unfollowAlbum", this.id);
     },
+    /**
+     * Function to add the album's tracks to a playlist
+     * @public This is a public method
+     * @param {none}
+     */
     async addAlbumTracksToPlaylist() {
       if (this.getuserToken()) {
         await this.$store.dispatch("album/getAlbum", this.id);
