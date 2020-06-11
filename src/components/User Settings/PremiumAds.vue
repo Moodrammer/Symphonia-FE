@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="this.$store.state.user.userType == 'user'">
+  <div class="container">
     <div class="jumbotron">
       <div class="hidden-sm-only hidden-xl-only hidden-md-only hidden-lg-only">
         <v-menu
@@ -55,7 +55,7 @@
           </v-list>
         </v-menu>
       </div>
-      <div class="row">
+      <div class="row" v-if="this.$store.state.user.userType == 'normal'">
         <div class="col-lg-6 col-sm-7 col-lg-offset-1 content-ads col-lg-auto">
           <h1>Music without limits</h1>
           <p>

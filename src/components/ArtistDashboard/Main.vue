@@ -8,10 +8,10 @@
     </v-row>
     <v-row fill-height align="center" class="mx-0 px-0"
       >>
-      <v-col>
+      <v-col cols="12" md="5">
         <v-img src="../../assets/logo_artist.png" alt=""> </v-img>
       </v-col>
-      <v-col v-if="!$vuetify.breakpoint.mdAndDown">
+      <v-col v-if="!$vuetify.breakpoint.mdAndDown" cols="12" md="6">
         <v-card-title
           class="display-3 white--text"
           style="word-break: normal; line-height: 1.6;"
