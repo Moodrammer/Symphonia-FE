@@ -79,11 +79,9 @@
           <div class="card">
             <div class="card-header">
               <div class="card-title">
-                <!-- //Todo:: change the plan with the dynamic user's data -->
-                <!-- The user's plan -->
                 <span
                   class="card-span-title"
-                  v-if="this.$store.state.user.userType === 'user'"
+                  v-if="this.$store.state.user.userType === 'normal'"
                   >Symphonia Free</span
                 >
                 <span
@@ -104,7 +102,7 @@
                 </div>
                 <div>
                   <!-- The user's plan -->
-                  <h3 v-if="this.$store.state.user.userType === 'user'">
+                  <h3 v-if="this.$store.state.user.userType === 'noraml'">
                     Free
                   </h3>
                   <h3 v-if="this.$store.state.user.userType === 'premium'">
@@ -119,7 +117,7 @@
         <a
           class="btn-class"
           href="/premium/?checkout=false"
-          v-if="this.$store.state.user.userType == `user`"
+          v-if="this.$store.state.user.userType == `normal`"
           >Join Premium</a
         >
       </article>
