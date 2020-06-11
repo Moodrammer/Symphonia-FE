@@ -50,7 +50,8 @@ const state = {
   updateSavedTracks: false,
   nonPremiumTrackID: null,
 
-  audioContext: undefined
+  audioContext: undefined,
+  isLoading: false
 };
 
 const mutations = {
@@ -141,17 +142,20 @@ const mutations = {
   load_tracks(state, list) {
     state.savedTracks = list;
     state.nonPremiumTrackID = null;
-    let premium = isPremium.methods.isPremium();
-    if (premium) {
-      state.nonPremiumTrackID = list[0]._id;
-    } else {
-      for (let i = 0; i < list.length; i++) {
-        if (list[i].premium == false) {
-          state.nonPremiumTrackID = list[i]._id;
-          break;
+    if (list.length) {
+      let premium = isPremium.methods.isPremium();
+      if (premium) {
+        state.nonPremiumTrackID = list[0]._id;
+      } else {
+        for (let i = 0; i < list.length; i++) {
+          if (list[i].premium == false) {
+            state.nonPremiumTrackID = list[i]._id;
+            break;
+          }
         }
       }
     }
+    state.isLoading = false;
   },
   setTracksNum(state, num) {
     state.savedTracksNum = num;
@@ -179,6 +183,9 @@ const mutations = {
       state.audioElement.autoplay = true;
       state.isBuffering = true;
     }
+  },
+  setLoading() {
+    state.isLoading = true;
   }
 };
 
@@ -737,6 +744,7 @@ const actions = {
     document.body.removeChild(dummyTextAreaElement);
   },
   getTracks({ commit }, payload) {
+    commit("setLoading");
     axios
       .get("/v1/me/tracks", {
         headers: {
