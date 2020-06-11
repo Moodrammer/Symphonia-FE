@@ -81,7 +81,16 @@
               <div class="card-title">
                 <!-- //Todo:: change the plan with the dynamic user's data -->
                 <!-- The user's plan -->
-                <span class="card-span-title">Symphonia Free</span>
+                <span
+                  class="card-span-title"
+                  v-if="this.$store.state.user.userType === 'user'"
+                  >Symphonia Free</span
+                >
+                <span
+                  class="card-span-title"
+                  v-if="this.$store.state.user.userType === 'premium'"
+                  >Symphonia Premium</span
+                >
               </div>
             </div>
             <div class="card-body">
@@ -95,14 +104,24 @@
                 </div>
                 <div>
                   <!-- The user's plan -->
-                  <h3>Free</h3>
+                  <h3 v-if="this.$store.state.user.userType === 'user'">
+                    Free
+                  </h3>
+                  <h3 v-if="this.$store.state.user.userType === 'premium'">
+                    Premium
+                  </h3>
                 </div>
               </div>
             </div>
           </div>
         </section>
         <!-- If the user is free -->
-        <a class="btn-class" href="/premium/?checkout=false">Join Premium</a>
+        <a
+          class="btn-class"
+          href="/premium/?checkout=false"
+          v-if="this.$store.state.user.userType == `user`"
+          >Join Premium</a
+        >
       </article>
       <article class="section">
         <h3>Sign out everywhere</h3>

@@ -182,6 +182,13 @@ const actions = {
                 email: response.data.email
               }
             };
+            if (response.data.type == "artist") {
+              commit("setType", "artist");
+            } else if (response.data.type == "user" && response.data.premium) {
+              commit("setType", "premium");
+            } else {
+              commit("setType", "user");
+            }
             if (response.data.imageFacebookUrl) {
               commit("setImage", response.data.imageFacebookUrl);
               commit("setFacebook", true);

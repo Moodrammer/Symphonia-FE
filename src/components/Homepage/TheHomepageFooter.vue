@@ -78,17 +78,21 @@
             <li class="links-column-title">
               useful links
             </li>
-            <li class="links-column-item">
-              Help
-            </li>
+            <router-link to="/help">
+              <li class="links-column-item">
+                Help
+              </li>
+            </router-link>
             <router-link to="/webhome/home">
               <li class="links-column-item">
                 Web Player
               </li>
             </router-link>
-            <li class="links-column-item">
-              For Mobile App
-            </li>
+            <router-link to="/download">
+              <li class="links-column-item">
+                For Mobile App
+              </li>
+            </router-link>
           </ul>
         </v-container>
 

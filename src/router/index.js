@@ -341,6 +341,22 @@ const routes = [
     }
   },
   {
+    path: "/download",
+    name: "Download",
+    component: () => import("../views/DownloadApp.vue"),
+    meta: {
+      allowAnonymous: true
+    }
+  },
+  {
+    path: "/help",
+    name: "Help",
+    component: () => import("../views/Help.vue"),
+    meta: {
+      allowAnonymous: true
+    }
+  },
+  {
     path: "*",
     name: "notfound",
     component: NotFound,
