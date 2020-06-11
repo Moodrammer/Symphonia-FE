@@ -9,30 +9,23 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
 
-/*
-jest.mock('@/mixins/userService/getuserToken', () => ({
-    getuserToken: () => 1,
-}));
-
-jest.mock('@/mixins/userService/getuserID', () => ({
-    getuserID:  () => 2,
-}));
-
-
-jest.mock('@/mixins/userService/getuserType', () => ({
-    getuserType:  () => "artist",
-}));
-
-*/
-
 describe("Dashboard.vue", () => {
   let wrapper, store;
+  let router = {
+    $route: {
+      name: "SymphoniaArtist/:id",
+      params: {
+        id: "artist"
+      }
+    },
+    $router: {
+      push: jest.fn()
+    }
+  };
 
   beforeEach(() => {
     const vuetify = new Vuetify();
-    const router = new VueRouter();
     Vue.use(Vuetify);
-    Vue.use(VueRouter);
     Vue.use(Vuex);
 
     store = new Vuex.Store(storeMock);
@@ -40,13 +33,19 @@ describe("Dashboard.vue", () => {
     wrapper = shallowMount(dashboard, {
       vuetify,
       store,
-      router
+      stubs: ["router-view"],
+      mocks: router
     });
   });
 
   /////////////////////////////////////////////////////////
   /////////////     RENDERING TESTS     ///////////////////
   /////////////////////////////////////////////////////////
+
+  it("Creation condition", () => {
+    Storage.prototype.getItem = jest.fn(() => "artist");
+    expect(wrapper.exists()).toBe(true);
+  });
 
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
@@ -80,10 +79,11 @@ describe("Main.vue", () => {
   /////////////////////////////////////////////////////////
 
   it("goToArtist", () => {
+    Storage.prototype.getItem = jest.fn(() => "artist");
     let beforePush = wrapper.vm.$router.currentRoute.fullPath;
     wrapper.vm.goToArtist();
     expect(wrapper.vm.$router.currentRoute.fullPath).toBe(
-      "/webhome/artist/undefined"
+      "/webhome/artist/artist"
     );
     wrapper.vm.$router.push(beforePush);
   });

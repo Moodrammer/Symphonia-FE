@@ -1,4 +1,5 @@
 import axios from "axios";
+import getuserToken from "../../mixins/userService/getUserToken";
 import { Math } from "core-js";
 
 const state = {
@@ -539,31 +540,34 @@ const actions = {
    */
 
   followArtist({ commit, dispatch }, payload) {
-    axios
-      .put(
-        "v1/me/following",
-        {
-          type: payload.type,
-          ids: payload.artists.join()
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${payload.token}`
-          },
-
-          params: {
+    const userToken = getuserToken.methods.getuserToken();
+    if (userToken) {
+      axios
+        .put(
+          "v1/me/following",
+          {
+            type: payload.type,
             ids: payload.artists.join()
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${payload.token}`
+            },
+
+            params: {
+              ids: payload.artists.join()
+            }
           }
-        }
-      )
-      .then(() => {
-        commit("followMutation");
-        dispatch("getFollowedArtists", { token: payload.token });
-      })
-      .catch(error => {
-        console.log("axios caught an error in followArtist");
-        console.log(error);
-      });
+        )
+        .then(() => {
+          commit("followMutation");
+          dispatch("getFollowedArtists", { token: payload.token });
+        })
+        .catch(error => {
+          console.log("axios caught an error in followArtist");
+          console.log(error);
+        });
+    } else commit("webplayerHome/toggleLogoutPopUpState", null, { root: true });
   },
 
   /**

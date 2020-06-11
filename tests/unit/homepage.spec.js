@@ -362,4 +362,11 @@ describe("Homepage Premium Content", () => {
       "rgba(0, 0, 0, 0.6)"
     );
   });
+
+  it("premium button handler", () => {
+    wrapper.vm.isLoggedIn = () => {
+      return false;
+    };
+    wrapper.vm.premium();
+  });
 });

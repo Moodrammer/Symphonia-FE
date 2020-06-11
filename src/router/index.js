@@ -98,7 +98,7 @@ const routes = [
             path: "overview",
             component: Overview,
             meta: {
-              allowAnonymous: false
+              allowAnonymous: true
             }
           },
           {
@@ -106,7 +106,7 @@ const routes = [
             path: "related-artists",
             component: RelatedArtists,
             meta: {
-              allowAnonymous: false
+              allowAnonymous: true
             }
           }
         ]
@@ -336,6 +336,22 @@ const routes = [
     path: "/about",
     name: "aboutUs",
     component: () => import("../views/About.vue"),
+    meta: {
+      allowAnonymous: true
+    }
+  },
+  {
+    path: "/download",
+    name: "Download",
+    component: () => import("../views/DownloadApp.vue"),
+    meta: {
+      allowAnonymous: true
+    }
+  },
+  {
+    path: "/help",
+    name: "Help",
+    component: () => import("../views/Help.vue"),
     meta: {
       allowAnonymous: true
     }

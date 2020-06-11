@@ -38,7 +38,12 @@
     >
 
     <!--Display the song image -->
-    <v-list-item-avatar v-if="image" class="mx-4" tile size="70">
+    <v-list-item-avatar
+      v-if="image && (isLg() || isMd() || isSm())"
+      class="mx-4"
+      tile
+      size="70"
+    >
       <img :src="image" />
     </v-list-item-avatar>
 
@@ -68,10 +73,11 @@
               {{ artistName }}
             </p>
           </router-link>
-          <p v-if="!isAlbum">.</p>
+          <p v-if="!isAlbum && (isLg() || isMd() || isSm())">.</p>
           <router-link
             v-bind:to="'/webhome/album/' + this.albumID"
             class="white--text"
+            v-if="isLg() || isMd() || isSm()"
           >
             <p
               v-bind:class="{ 'disabled-2': disabledTrack }"
@@ -112,6 +118,7 @@
 import getuserToken from "../../mixins/userService/getUserToken";
 import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import isPremium from "../../mixins/userService/isPremium";
+import getDeviceSize from "../../mixins/getDeviceSize";
 /**
  * Song component contains the track name , duration , artist's name , album's name
  * @displayName Song Item
@@ -142,7 +149,11 @@ export default {
     },
     contextType: String,
     contextID: String,
-    contextMenu: {}
+    contextMenu: {},
+    isNextInQueue: {
+      type: Boolean,
+      default: false
+    }
   },
   data: function() {
     return {
@@ -155,7 +166,9 @@ export default {
   created() {
     this.hover = false;
     this.convert(this.$props.songDuration);
-    this.disabledTrack = this.$props.isDisabled && !this.isPremium();
+    this.disabledTrack =
+      (this.$props.isDisabled && !this.isPremium()) ||
+      this.$props.isNextInQueue;
   },
   computed: {
     isPlaying() {
@@ -230,7 +243,7 @@ export default {
       this.$store.commit("track/setIsTrackPaused", this.isPaused);
     }
   },
-  mixins: [getuserToken, isLoggedIn, isPremium]
+  mixins: [getuserToken, isLoggedIn, isPremium, getDeviceSize]
 };
 </script>
 

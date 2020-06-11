@@ -1,7 +1,19 @@
 <template>
   <!--The Liked Songs view-->
   <v-container class="pt-0">
-    <v-row justify="center">
+    <v-row
+      justify="center"
+      align-content="center"
+      v-if="isLoading"
+      class="centering"
+    >
+      <pulse-loader
+        :loading="isLoading"
+        color="white"
+        size="20px"
+      ></pulse-loader>
+    </v-row>
+    <v-row justify="center" v-else>
       <v-col lg="4" sm="12" md="12" cols="12" class="pr-10">
         <v-container class="pt-0">
           <v-row justify-lg="center">
@@ -161,6 +173,7 @@
 import SongItem from "../components/general/SongItem";
 import getDeviceSize from "../mixins/getDeviceSize";
 import getuserToken from "../mixins/userService/getUserToken";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
 /**
  * @displayName Liked Songs
@@ -168,7 +181,8 @@ import getuserToken from "../mixins/userService/getUserToken";
  */
 export default {
   components: {
-    SongItem
+    SongItem,
+    PulseLoader
   },
   data: function() {
     return {
@@ -208,6 +222,9 @@ export default {
     },
     firstNonPreimum() {
       return this.$store.state.track.nonPremiumTrackID;
+    },
+    isLoading() {
+      return this.$store.state.track.isLoading;
     }
   },
   methods: {
@@ -302,5 +319,16 @@ h5 {
 }
 .disabled {
   cursor: no-drop;
+}
+
+.centering {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  margin: auto;
 }
 </style>

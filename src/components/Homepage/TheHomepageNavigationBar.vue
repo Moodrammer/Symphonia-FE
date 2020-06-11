@@ -36,19 +36,20 @@
           style="padding-right:0px;"
         >
           <router-link
+            v-if="!isPremium()"
             to="/premium"
             class="toolbar-link-1"
             v-bind:class="{ 'blue-hover': isLoggedIn() }"
             >Premium</router-link
           >
           <router-link
-            to="/"
+            to="/help"
             class="toolbar-link-1"
             v-bind:class="{ 'blue-hover': isLoggedIn() }"
             >Help</router-link
           >
           <router-link
-            to="/"
+            to="/download"
             class="toolbar-link-1"
             v-bind:class="{ 'blue-hover': isLoggedIn() }"
             >Download</router-link
@@ -168,6 +169,7 @@
       <ul style="padding:0px;">
         <li>
           <router-link
+            v-if="!isPremium()"
             to="/premium/?checkout=false"
             class="toolbar-link-1 small-toolbar-btn-1"
             >Premium</router-link
@@ -231,6 +233,7 @@
 
 <script>
 import isLoggedIn from "../../mixins/userService/isLoggedIn";
+import isPremium from "../../mixins/userService/isPremium";
 import getDeviceSize from "../../mixins/getDeviceSize";
 import getimageUrl from "../../mixins/userService/getimageUrl";
 import logOut from "../../mixins/userService/logOut";
@@ -275,7 +278,7 @@ export default {
     }
   },
 
-  mixins: [isLoggedIn, getimageUrl, getDeviceSize, logOut]
+  mixins: [isLoggedIn, getimageUrl, getDeviceSize, logOut, isPremium]
 };
 </script>
 

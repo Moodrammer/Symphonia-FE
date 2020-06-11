@@ -22,6 +22,8 @@ export default {
     Drawer
   },
   created() {
+    console.log(this.getuserID());
+    console.log(this.getuserType());
     if (
       !this.getuserID() ||
       this.getuserID() != this.$route.params.id ||

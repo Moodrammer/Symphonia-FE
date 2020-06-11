@@ -182,6 +182,11 @@ const actions = {
                 email: response.data.email
               }
             };
+            if (response.data.premium) {
+              commit("setType", "premium");
+            } else {
+              commit("setType", "normal");
+            }
             if (response.data.imageFacebookUrl) {
               commit("setImage", response.data.imageFacebookUrl);
               commit("setFacebook", true);
@@ -193,7 +198,6 @@ const actions = {
             commit("setCountry", "EG");
             commit("setGender", response.data.gender);
             commit("setuserDOB", response.data.dateOfBirth);
-            commit("setType", response.data.type);
             resolve(true);
           }
         })
