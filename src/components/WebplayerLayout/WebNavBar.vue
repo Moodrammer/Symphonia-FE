@@ -323,9 +323,7 @@ export default {
      * @param {none}
      */
     request() {
-      if (this.search === "") {
-        this.$router.replace("/webhome/search/");
-      } else {
+      if (this.search && this.showSearch) {
         this.$store.dispatch("searchFor", encodeURI(this.search));
         this.$router.replace({
           name: "searchItem",
