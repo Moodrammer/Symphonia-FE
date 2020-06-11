@@ -23,9 +23,9 @@ describe("SeeAll", () => {
     const $route = {
       params: {
         type: "Artists"
-      } 
-    }
-    const $router = []
+      }
+    };
+    const $router = [];
     Vue.use(Vuex);
     actions = {
       searchByType: jest.fn(() => {
@@ -69,7 +69,7 @@ describe("SeeAll", () => {
       method: {
         loadMore: jest.fn()
       },
-      mocks: {$route, $router}
+      mocks: { $route, $router }
     });
   });
   //rendering tests
@@ -109,10 +109,10 @@ describe("SeeAll", () => {
   it("sets type to playlist if the route param has type Playlists", () => {
     const $route = {
       params: {
-        type: 'Playlists'
+        type: "Playlists"
       }
-    }
-    const $router = []
+    };
+    const $router = [];
     wrapper = shallowMount(SeeAll, {
       vuetify,
       store,
@@ -134,18 +134,18 @@ describe("SeeAll", () => {
       method: {
         loadMore: jest.fn()
       },
-      mocks: {$route, $router}
+      mocks: { $route, $router }
     });
-    expect(wrapper.vm.type).toBe('playlist');
-  })
+    expect(wrapper.vm.type).toBe("playlist");
+  });
 
   it("sets type to category if the route param has type Genres", () => {
     const $route = {
       params: {
-        type: 'Gernes'
+        type: "Gernes"
       }
-    }
-    const $router = []
+    };
+    const $router = [];
     wrapper = shallowMount(SeeAll, {
       vuetify,
       store,
@@ -167,18 +167,18 @@ describe("SeeAll", () => {
       method: {
         loadMore: jest.fn()
       },
-      mocks: {$route, $router}
+      mocks: { $route, $router }
     });
-    expect(wrapper.vm.type).toBe('category');
-  })
+    expect(wrapper.vm.type).toBe("category");
+  });
 
   it("sets type to album if the route param has type Albums", () => {
     const $route = {
       params: {
-        type: 'Albums'
+        type: "Albums"
       }
-    }
-    const $router = []
+    };
+    const $router = [];
     wrapper = shallowMount(SeeAll, {
       vuetify,
       store,
@@ -200,18 +200,18 @@ describe("SeeAll", () => {
       method: {
         loadMore: jest.fn()
       },
-      mocks: {$route, $router}
+      mocks: { $route, $router }
     });
-    expect(wrapper.vm.type).toBe('album');
-  })
+    expect(wrapper.vm.type).toBe("album");
+  });
 
   it("sets type to profile if the route param has type Profiles", () => {
     const $route = {
       params: {
-        type: 'Profiles'
+        type: "Profiles"
       }
-    }
-    const $router = []
+    };
+    const $router = [];
     wrapper = shallowMount(SeeAll, {
       vuetify,
       store,
@@ -233,18 +233,18 @@ describe("SeeAll", () => {
       method: {
         loadMore: jest.fn()
       },
-      mocks: {$route, $router}
+      mocks: { $route, $router }
     });
-    expect(wrapper.vm.type).toBe('profile');
-  })
+    expect(wrapper.vm.type).toBe("profile");
+  });
 
   it("sets type to track if the route param has type Tracks", () => {
     const $route = {
       params: {
-        type: 'Tracks'
+        type: "Tracks"
       }
-    }
-    const $router = []
+    };
+    const $router = [];
     wrapper = shallowMount(SeeAll, {
       vuetify,
       store,
@@ -266,8 +266,8 @@ describe("SeeAll", () => {
       method: {
         loadMore: jest.fn()
       },
-      mocks: {$route, $router}
+      mocks: { $route, $router }
     });
-    expect(wrapper.vm.type).toBe('track');
-  })
+    expect(wrapper.vm.type).toBe("track");
+  });
 });

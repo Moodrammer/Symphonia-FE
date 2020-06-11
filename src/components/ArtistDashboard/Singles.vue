@@ -215,6 +215,7 @@
           v-for="(item, index) in allArtistSingles"
           :key="index"
           v-model="item.active"
+          :id="index"
         >
           <template v-slot:activator>
             <v-col cols="1" class="ma-0 pa-0">

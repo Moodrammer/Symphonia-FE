@@ -25,6 +25,7 @@
         :key="item.title"
         link
         :to="item.route"
+        :id="item.id"
       >
         <v-list-item-icon>
           <v-icon>{{ item.icon }}</v-icon>
@@ -52,13 +53,24 @@ export default {
     return {
       drawer: true,
       items: [
-        { title: "Main", icon: "mdi-view-dashboard", route: "main" },
-        { title: "Singles", icon: "mdi-music-circle", route: "singles" },
-        { title: "Albums", icon: "mdi-album", route: "albums" },
+        {
+          title: "Main",
+          icon: "mdi-view-dashboard",
+          route: "main",
+          id: "main"
+        },
+        {
+          title: "Singles",
+          icon: "mdi-music-circle",
+          route: "singles",
+          id: "singles"
+        },
+        { title: "Albums", icon: "mdi-album", route: "albums", id: "albums" },
         {
           title: "Back to Symphonia",
           icon: "mdi-arrow-left-circle",
-          route: "/webhome"
+          route: "/webhome",
+          id: "backtoSymphonia"
         }
       ]
     };

@@ -32,7 +32,7 @@
         :key="item.text"
         router
         :to="item.route"
-        :id="item.text"
+        :id="item.id"
         class="listItem mainMenu"
         active-class="active"
       >
@@ -49,7 +49,7 @@
         v-if="getuserType() == 'artist'"
         router
         :to="`/SymphoniaArtist/${getuserID()}`"
-        id="Go to Symphonia Artist"
+        id="GotoSymphoniaArtist"
         class="listItem mainMenu"
         active-class="active"
       >
@@ -181,16 +181,19 @@ export default {
         {
           icon: "mdi-home-variant",
           text: "Home",
+          id: "Home",
           route: "/webhome/home"
         },
         {
           icon: "mdi-magnify",
           text: "Search",
+          id: "Search",
           route: "/webhome/search"
         },
         {
           icon: "mdi-bookshelf",
           text: "Your Library",
+          id: "YourLibrary",
           route: "/webhome/collection"
         }
       ]

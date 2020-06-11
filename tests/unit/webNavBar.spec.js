@@ -10,7 +10,6 @@ describe("Nav Bar", () => {
   let wrapper;
   let vuetify;
   let store;
-  let $route;
   let searchActions;
 
   beforeEach(() => {
@@ -20,9 +19,9 @@ describe("Nav Bar", () => {
     Vue.use(Vuex);
     Vue.use(VueRouter);
 
-    searchActions={
+    searchActions = {
       searchFor: jest.fn()
-    }
+    };
     store = new Vuex.Store({
       modules: {
         category: {
@@ -41,7 +40,7 @@ describe("Nav Bar", () => {
       store,
       vuetify,
       attachToDocument: true,
-      removeEventListener: jest.fn(),
+      removeEventListener: jest.fn()
     });
   });
 
@@ -157,7 +156,7 @@ describe("Nav Bar", () => {
   });
   it("check if search is not empty then the router at searchItem", () => {
     wrapper.vm.search = "playlist";
-    wrapper.vm.showSearch=true;
+    wrapper.vm.showSearch = true;
     wrapper.vm.request();
     expect(searchActions.searchFor).toBeCalled();
   });

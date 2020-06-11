@@ -32,22 +32,24 @@
       />
 
       <!--The actions of the popup cancel-create-->
-      <v-btn
-        color="white"
-        outlined
-        rounded
-        @click="close"
-        class="popbutton px-8 mx-8"
-        id="cancel"
-        >Cancel
-      </v-btn>
-      <v-btn
-        class="white--text popbutton px-8"
-        rounded
-        @click="create"
-        id="create"
-        >Create
-      </v-btn>
+      <div id="createPlaylistActions">
+        <v-btn
+          color="white"
+          outlined
+          rounded
+          @click="close"
+          class="popbutton px-8 mx-8"
+          id="cancel"
+          >Cancel
+        </v-btn>
+        <v-btn
+          class="white--text popbutton px-8"
+          rounded
+          @click="create"
+          id="create"
+          >Create
+        </v-btn>
+      </div>
     </v-card>
   </v-dialog>
 </template>

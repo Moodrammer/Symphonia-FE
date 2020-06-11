@@ -55,11 +55,11 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn color="normal darken-1" text @click="reset()">
+            <v-btn color="normal darken-1" text @click="reset()" id="cancel">
               Cancel
             </v-btn>
 
-            <v-btn color="success darken-1" text @click="rename()">
+            <v-btn color="success darken-1" text @click="rename()" id="confirm">
               Confirm
             </v-btn>
           </v-card-actions>
@@ -136,11 +136,11 @@
           </div>
 
           <v-col class="text-right">
-            <v-btn color="normal darken-1" text @click="reset()">
+            <v-btn color="normal darken-1" text @click="reset()" id="cancel">
               Cancel
             </v-btn>
 
-            <v-btn color="success darken-1" text @click="addAlbum">
+            <v-btn color="success darken-1" text @click="addAlbum" id="submit">
               Submit
             </v-btn>
           </v-col>
@@ -202,11 +202,11 @@
           </v-row>
 
           <v-col class="text-right">
-            <v-btn color="normal darken-1" text @click="reset()">
+            <v-btn color="normal darken-1" text @click="reset()" id="cancel">
               Cancel
             </v-btn>
 
-            <v-btn color="success darken-1" text @click="addSong()">
+            <v-btn color="success darken-1" text @click="addSong()" id="submit">
               Submit
             </v-btn>
           </v-col>
@@ -224,6 +224,7 @@
           v-for="(item, index) in allArtistAlbums"
           :key="index"
           v-model="item.active"
+          :id="index"
         >
           <template v-slot:activator>
             <v-col cols="1" class="ma-0 pa-0">
