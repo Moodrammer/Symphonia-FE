@@ -79,6 +79,10 @@
 
 <script>
 import getDeviceSize from "../../mixins/getDeviceSize";
+/**
+ * @displayName Ads Pop Up
+ * @example [none]
+ */
 export default {
   data: function() {
     return {

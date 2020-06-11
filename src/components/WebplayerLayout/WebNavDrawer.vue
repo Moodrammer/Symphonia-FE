@@ -148,9 +148,19 @@ export default {
     }
   },
   methods: {
+    /**
+     * Gets called when the user clicks on the create playlist button to open the pop up
+     * @public This is a public method
+     * @param {none}
+     */
     changeCreateModel: function() {
       this.$store.commit("playlist/changeCreateModel");
     },
+    /**
+     * Function to set the right click menu data
+     * @public This is a public method
+     * @param {Event} event the event type
+     */
     menuClick(event, playlistID) {
       this.$props.contextMenu.event = event;
       this.$props.contextMenu.id = playlistID;

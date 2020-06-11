@@ -74,6 +74,10 @@
 
 <script>
 import getDeviceSize from "../../mixins/getDeviceSize";
+/**
+ * @displayName Logout Pop Up
+ * @example [none]
+ */
 export default {
   data: function() {
     return {
@@ -90,10 +94,20 @@ export default {
       this.$store.commit("webplayerHome/toggleLogoutPopUpState");
       this.dialog = false;
     },
+    /**
+     * Gets called when the user clicks on the sign up button to route the sign up view
+     * @public This is a public method
+     * @param {none}
+     */
     toSignUp: function() {
       this.$router.push("/signup");
       this.close();
     },
+    /**
+     * Gets called when the user clicks on the login button to route the login view
+     * @public This is a public method
+     * @param {none}
+     */
     toLogin: function() {
       this.$router.push("/login");
       this.close();
