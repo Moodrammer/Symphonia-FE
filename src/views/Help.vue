@@ -150,7 +150,7 @@
                 large
                 to="/premium"
               >
-                Join US
+                Join Premium
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -164,13 +164,20 @@
 <script>
 import navBar from "../components/Homepage/TheHomepageNavigationBar.vue";
 import appFooter from "../components/Homepage/TheHomepageFooter.vue";
+/**
+ * This Page is used for Help
+ * @displayName Help
+ * @example [none]
+ */
 export default {
   components: {
+    // Render the Header and Footer for page
     navBar: navBar,
     appFooter: appFooter
   },
   data() {
     return {
+      // Checks for the used Tab
       tab1: true,
       tab2: false,
       tab3: false,
@@ -178,24 +185,44 @@ export default {
     };
   },
   methods: {
+    /**
+     * This function is used on clicking the first tab and to display first Content
+     * @param [none]
+     * @public
+     */
     tabOne: function() {
       this.tab1 = true;
       this.tab2 = false;
       this.tab3 = false;
       this.tab4 = false;
     },
+    /**
+     * This function is used on clicking the second tab and to display second Content
+     * @param [none]
+     * @public
+     */
     tabTwo: function() {
       this.tab1 = false;
       this.tab2 = true;
       this.tab3 = false;
       this.tab4 = false;
     },
+    /**
+     * This function is used on clicking the third tab and to display third Content
+     * @param [none]
+     * @public
+     */
     tabThree: function() {
       this.tab1 = false;
       this.tab2 = false;
       this.tab3 = true;
       this.tab4 = false;
     },
+    /**
+     * This function is used on clicking the fourth tab and to display fourth Content
+     * @param [none]
+     * @public
+     */
     tabFour: function() {
       this.tab1 = false;
       this.tab2 = false;

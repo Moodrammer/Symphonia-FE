@@ -80,10 +80,21 @@
 
 <script>
 export default {
+  /**
+   * This page is used to display premium ads to none premium users and show navigation bar
+   * in small views
+   * @displayName Premium Ads
+   * @example [none]
+   */
   data() {
     return {};
   },
   methods: {
+    /**
+     * Direct the none premium user to premium page
+     * @public This is a public method
+     * @param {None}
+     */
     direct: function() {
       this.$router.push("/premium/?checkout=false");
     }

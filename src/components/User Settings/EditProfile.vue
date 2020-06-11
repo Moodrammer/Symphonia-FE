@@ -114,6 +114,11 @@
 
 <script>
 import BottomContent from "./BottomContent.vue";
+/**
+ * This page is used to edit the current user's profile
+ * @displayName User Edit Profile
+ * @example [none]
+ */
 export default {
   data() {
     return {
@@ -142,7 +147,6 @@ export default {
     "bottom-content": BottomContent
   },
   created() {
-    //TODO :: check the user if from facebook or not
     this.facebook = false;
     // Get the user's data
     this.$store
@@ -201,7 +205,11 @@ export default {
     }
   },
   methods: {
-    // Used to update as V-model for the user's Date of Brith
+    /**
+     * Check the selected date and formate it to send info
+     * @public This is a public method
+     * @param {None}
+     */
     selectedDate: function() {
       let d =
         this.selectedDay.toString().length == 1
@@ -213,6 +221,11 @@ export default {
           : this.selectedMonth.toString();
       this.user.userDOB = this.selectedYear + "-" + m + "-" + d;
     },
+    /**
+     * This function to send the info when user press submit
+     * @public This is a public method
+     * @param {None}
+     */
     submit: function() {
       this.selectedDate();
       this.$store

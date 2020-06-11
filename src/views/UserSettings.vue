@@ -34,10 +34,14 @@ import isNotificationsAllowed from "../mixins/userService/isNotificationsAllowed
 import getuserToken from "../mixins/userService/getUserToken";
 
 export default {
-  data() {
-    return {};
-  },
+  /**
+   * This page is used to show user settings
+   * @displayName User Settings
+   * @example [none]
+   */
+
   components: {
+    // Components to render
     premiumAds: PreAds,
     "side-bar": SideBar,
     navBar: navBar,
@@ -45,6 +49,7 @@ export default {
     NotificationPopup
   },
   created() {
+    // check if the user logged in
     if (this.isLoggedIn()) {
       if (this.isNotificationsAllowed()) {
         //get registration token from the user if the user is logged in

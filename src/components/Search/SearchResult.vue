@@ -113,6 +113,11 @@
 <script>
 import CardGrid from "../general/CardGrid.vue";
 import SongItem from "../general/SongItem.vue";
+/**
+ * This page is used to show the search text results max 6
+ * @displayName Search Results
+ * @example [none]
+ */
 export default {
   data() {
     return {};

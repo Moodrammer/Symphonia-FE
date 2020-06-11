@@ -55,6 +55,11 @@
 
 <script>
 export default {
+  /**
+   * This page is used to take the user's review
+   * @displayName User Review
+   * @example [none]
+   */
   data() {
     return {
       first: true,
@@ -65,10 +70,20 @@ export default {
     };
   },
   methods: {
+    /**
+     * Check if the user ended the first stage and pass him/her to next stage
+     * @public This is a public method
+     * @param {None}
+     */
     secondStage: function() {
       this.first = !this.first;
       this.second = !this.second;
     },
+    /**
+     * Check if the user ended the second stage and pass him/her to next stage
+     * @public This is a public method
+     * @param {None}
+     */
     thirdStage: function() {
       if (this.text) {
         this.second = !this.second;

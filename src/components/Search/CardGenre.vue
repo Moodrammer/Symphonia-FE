@@ -14,6 +14,11 @@
 
 <script>
 export default {
+  /**
+   * This page is used to view the cards in search view
+   * @displayName Search Cards
+   * @example [none]
+   */
   props: {
     name: String,
     ID: String

@@ -147,19 +147,24 @@
 <script>
 import BottomContent from "./BottomContent.vue";
 
+/**
+ * This page is used to overview the user data
+ * @displayName User Overview
+ * @example [none]
+ */
 export default {
   data() {
     return {
-      // The current user's data got from the created request
+      /** The current user's data got from the created request */
       user: {}
     };
   },
   components: {
-    // The review section
+    /** The review section */
     "bottom-content": BottomContent
   },
   created() {
-    // Request to get the current user's data
+    /** Request to get the current user's data */
     this.$store
       .dispatch("userData")
       .then(() => {
