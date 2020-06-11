@@ -33,7 +33,8 @@ const state = {
   genresList: [],
   pushAgain: true,
   singleCategory: null,
-  savedGenres: []
+  savedGenres: [],
+  isLoading: false
 };
 
 const mutations = {
@@ -63,6 +64,7 @@ const mutations = {
     singleCategory.list.items = payload;
     state.singleCategory = singleCategory;
     state.categories.push(singleCategory);
+    state.isLoading = false;
   },
   setGenreName(state, payload) {
     state.categoryNameHolder = payload.name;
@@ -102,6 +104,9 @@ const mutations = {
     payload.forEach(element => {
       state.savedGenres.push(element);
     });
+  },
+  setLoading() {
+    state.isLoading = true;
   }
 };
 
@@ -124,6 +129,7 @@ const actions = {
   //         Get a category's playlist
   //-------------------------------------------------
   async getGenrePlaylists({ commit, dispatch }, categoryID) {
+    commit("setLoading");
     await dispatch("getCategory", categoryID);
     await axios
       .get("v1/browse/categories/" + categoryID + "/playlists")

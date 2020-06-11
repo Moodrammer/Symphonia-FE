@@ -98,7 +98,7 @@ const routes = [
             path: "overview",
             component: Overview,
             meta: {
-              allowAnonymous: false
+              allowAnonymous: true
             }
           },
           {
@@ -106,7 +106,7 @@ const routes = [
             path: "related-artists",
             component: RelatedArtists,
             meta: {
-              allowAnonymous: false
+              allowAnonymous: true
             }
           }
         ]

@@ -51,7 +51,7 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <template v-if="isVisitor">
+        <template>
           <v-btn
             rounded
             outlined
