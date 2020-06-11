@@ -241,6 +241,7 @@
               text
               class="mr-6"
               title="visit single"
+              :id="'visitSingle' + item.id"
               @click="goToSingle(item.id)"
               ><v-icon>mdi-play</v-icon></v-btn
             >
