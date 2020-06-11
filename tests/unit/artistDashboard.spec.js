@@ -18,11 +18,11 @@ describe("Dashboard.vue", () => {
         id: "artist"
       }
     },
-    $router:{
+    $router: {
       push: jest.fn()
     }
   };
-  
+
   beforeEach(() => {
     const vuetify = new Vuetify();
     Vue.use(Vuetify);
@@ -35,7 +35,6 @@ describe("Dashboard.vue", () => {
       store,
       stubs: ["router-view"],
       mocks: router
-
     });
   });
 
@@ -46,7 +45,7 @@ describe("Dashboard.vue", () => {
   it("Creation condition", () => {
     Storage.prototype.getItem = jest.fn(() => "artist");
     expect(wrapper.exists()).toBe(true);
-    });
+  });
 
   it("renders", () => {
     expect(wrapper.exists()).toBe(true);
@@ -55,7 +54,6 @@ describe("Dashboard.vue", () => {
   it("renders vue instance", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
-  
 });
 
 describe("Main.vue", () => {

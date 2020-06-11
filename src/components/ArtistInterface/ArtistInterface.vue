@@ -51,7 +51,7 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <template>
+        <template v-if="isVisitor">
           <v-btn
             rounded
             outlined
@@ -225,7 +225,7 @@ export default {
      */
 
     isVisitor() {
-      return this.isLoggedIn() && this.artistID != this.getuserID();
+      return this.artistID != this.getuserID();
     }
   },
   watch: {

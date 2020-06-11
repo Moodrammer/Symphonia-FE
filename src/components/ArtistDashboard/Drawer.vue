@@ -6,6 +6,7 @@
     :mini-variant="$vuetify.breakpoint.mdAndDown"
   >
     <v-list dense nav class="py-0">
+      <!-- Displaying artist info -->
       <v-list-item v-show="$vuetify.breakpoint.lgAndUp">
         <v-list-item-avatar size="200" class="mx-auto mt-4">
           <img :src="image" />
@@ -18,7 +19,7 @@
       </v-list-item>
 
       <v-divider class="mb-10"></v-divider>
-
+      <!-- Displaying routing buttons -->
       <v-list-item
         v-for="item in items"
         :key="item.title"
