@@ -324,9 +324,10 @@ export default {
      */
     request() {
       if (this.search === "") {
-        this.$router.push("/webhome/search/");
+        this.$router.replace("/webhome/search/");
       } else {
-        this.$router.push({
+        this.$store.dispatch("searchFor", encodeURI(this.search));
+        this.$router.replace({
           name: "searchItem",
           params: {
             name: encodeURI(this.search)
@@ -338,6 +339,7 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.updateScroll);
     this.handleTransparency();
+    this.request();
   },
   //Remove the listerner when the component is destroied
   beforeDestroy() {

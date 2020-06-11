@@ -143,12 +143,6 @@ export default {
     tracks() {
       return this.$store.state.search.tracks;
     }
-  },
-  created() {
-    this.$store.dispatch("searchFor", this.$route.params.name);
-  },
-  beforeUpdate() {
-    this.$store.dispatch("searchFor", this.$route.params.name);
   }
 };
 </script>
