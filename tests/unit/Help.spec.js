@@ -24,7 +24,7 @@ describe("About", () => {
   it("renders a vue instance", () => {
     expect(wrapper.isVueInstance()).toBe(true);
   });
-  it("check mehtods in tabs",()=>{
+  it("check mehtods in tabs", () => {
     wrapper.vm.tabOne();
     expect(wrapper.vm.tab1).toBe(true);
     expect(wrapper.vm.tab2).toBe(false);

@@ -102,7 +102,7 @@
       class="upgarde white--text px-8 py-2 hidden-sm-and-down"
       id="upgarde"
       v-show="showUpgrade"
-      v-if="isLoggedIn()"
+      v-if="isLoggedIn() && !isPremium()"
       to="/premium/?checkout=false"
     >
       UPGRADE
@@ -146,6 +146,7 @@
           class="hidden-md-and-up"
           id="upgardepremium"
           v-show="showUpgrade"
+          v-if="isLoggedIn() && !isPremium()"
           to="/premium/?checkout=false"
         >
           <v-list-item-title>Upgarde to premium</v-list-item-title>
@@ -185,6 +186,7 @@ import isLoggedIn from "../../mixins/userService/isLoggedIn";
 import getusername from "../../mixins/userService/getusername";
 import logOut from "../../mixins/userService/logOut";
 import NotificationHistorylist from "../Notifications/NotificationHistorylist";
+import isPremium from "../../mixins/userService/isPremium";
 /**
  * @displayName Webplayer Navigation Bar
  * @example [none]
@@ -341,7 +343,7 @@ export default {
   beforeDestroy() {
     window.removeEventListener("scroll", this.updateScroll);
   },
-  mixins: [isLoggedIn, getusername, logOut]
+  mixins: [isLoggedIn, getusername, logOut, isPremium]
 };
 </script>
 
