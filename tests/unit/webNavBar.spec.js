@@ -10,20 +10,19 @@ describe("Nav Bar", () => {
   let wrapper;
   let vuetify;
   let store;
-  let $route = {
-    name: "/webhome/search/:name",
-    params: {
-      name: ""
-    }
-  };
+  let $route;
+  let searchActions;
 
   beforeEach(() => {
-    vuetify = new Vuetify();
     const router = new VueRouter();
+    vuetify = new Vuetify();
     Vue.use(Vuetify);
-    Vue.use(VueRouter);
     Vue.use(Vuex);
+    Vue.use(VueRouter);
 
+    searchActions={
+      searchFor: jest.fn()
+    }
     store = new Vuex.Store({
       modules: {
         category: {
@@ -31,6 +30,9 @@ describe("Nav Bar", () => {
           mutations: {
             changeLogoutUpdate: jest.fn()
           }
+        },
+        search: {
+          actions: searchActions
         }
       }
     });
@@ -40,9 +42,6 @@ describe("Nav Bar", () => {
       vuetify,
       attachToDocument: true,
       removeEventListener: jest.fn(),
-      mocks: {
-        $route
-      }
     });
   });
 
@@ -102,6 +101,18 @@ describe("Nav Bar", () => {
     expect(wrapper.vm.showUpgrade).toBe(false);
   });
 
+  it("Handles search tabs", () => {
+    wrapper.vm.handleTabs("search");
+    expect(wrapper.vm.showSearch).toBe(true);
+    expect(wrapper.vm.showCollection).toBe(false);
+    expect(wrapper.vm.showUpgrade).toBe(false);
+
+    wrapper.vm.handleTabs("searchNone");
+    expect(wrapper.vm.showSearch).toBe(true);
+    expect(wrapper.vm.showCollection).toBe(false);
+    expect(wrapper.vm.showUpgrade).toBe(false);
+  });
+
   it("Handles menu items at artist view", () => {
     wrapper.vm.itemChosen("Artists");
     expect(wrapper.vm.selectedItem).toBe("Artists");
@@ -142,14 +153,13 @@ describe("Nav Bar", () => {
   it("check if search is empty then the router at search/", () => {
     wrapper.vm.search = "";
     wrapper.vm.request();
-    wrapper.vm.$nextTick();
-    expect(wrapper.vm.$route.fullPath).toBe("/webhome/search/");
+    expect(searchActions.searchFor).not.toBeCalled();
   });
   it("check if search is not empty then the router at searchItem", () => {
-    wrapper.vm.search = "assa";
+    wrapper.vm.search = "playlist";
+    wrapper.vm.showSearch=true;
     wrapper.vm.request();
-    wrapper.vm.$nextTick();
-    expect(wrapper.vm.$route.fullPath).toBe("/");
+    expect(searchActions.searchFor).toBeCalled();
   });
   it("Handles Search see all tabs", () => {
     wrapper.vm.handleTabs("searchSeeAll");
