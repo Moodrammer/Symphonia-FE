@@ -31,7 +31,7 @@
           <SongItem
             v-for="track in queueNextTracks"
             :key="track.name"
-            :isDisabled="true"
+            :isNextInQueue="true"
             :songName="track.name"
             :artistName="track.artistName"
             :songDuration="track.durationMs"
