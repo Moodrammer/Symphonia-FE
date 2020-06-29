@@ -1,7 +1,23 @@
+<img height="200" alt="symphonia logo" src="https://github.com/Moodrammer/Symphonia-FE/blob/master/public/slogo.png"></img>
+  
+[![GitHub contributors](https://img.shields.io/github/contributors/Moodrammer/Symphonia-FE)](https://github.com/Moodrammer/Symphonia-FE/graphs/contributors)
+[![GitHub stars](https://img.shields.io/github/stars/Moodrammer/Symphonia-FE)](https://github.com/Moodrammer/Symphonia-FE/stargazers)
+
+
 # Symphonia FE 🎵
 A Project that mimics the FrontEnd part of Spotify Web player.
 
 ___
+# Tools used
+- Vue js : **js framework**
+- Vuetify: **Components Library**
+- Vue router: **routing**
+- Vuex: **State Mangement**
+- Mirage js: **Mock server**
+- firebase: **Notifications**
+- jest: **Unit testing**
+- Vue Styleguidist: **Functional Documtentation**
+- vue-context: **context menu**
 
 # Main commands for running the Project
 
@@ -40,13 +56,13 @@ npm run styleguide:build
 npm run lint --fix
 ```
 
-## Runing on Mock server
+## Running on Mock server
 
 For mocking we use **Mirage.js**
 The server is established in **development** environment automatically and runs on the same port as the frontend code 
 where it intercepts all the requests and api calls and mocks their responses through defined routes
 
-## Runing on real server from localhost (for debugging temporarily)
+## Running on real server from localhost (for debugging temporarily)
 some changes should be made in the development env :
 1. prevent mirage from runing by changing the condition in **main.js** from development to production
 ```javascript
@@ -60,7 +76,7 @@ axios.defaults.baseURL = "https://thesymphonia.ddns.net/api";
 ```
 
 
-## Runing on real server
+## Running on real server
 When deployed in a **Production environment**, the **Mirage** server is not established and it doesn't intercept the calls to the api
 The publicPath is taken form the domain name where the project runs
 
