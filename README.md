@@ -7,6 +7,7 @@
 # Symphonia FE 🎵
 A Project that mimics the FrontEnd part of Spotify Web player.
 
+[Video Demo](https://drive.google.com/file/d/1LH4QnwInvntVBSGwDsYmIcJ60ITtzAe3/view?usp=sharing)
 ___
 # Tools used
 - Vue js : **js framework**
